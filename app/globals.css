@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-cream-50 text-ink-800 antialiased;
+  font-feature-settings: 'kern';
+}
+
+/* Foco visível e acessível */
+:focus-visible {
+  outline: 2px solid theme('colors.clay.600');
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Estilos de prosa answer-first (usado em artigos e páginas legais) */
+.prose-emori {
+  @apply text-ink-800 leading-relaxed;
+}
+.prose-emori h2 {
+  @apply font-serif text-2xl md:text-3xl text-ink-900 mt-12 mb-4 scroll-mt-24;
+}
+.prose-emori h3 {
+  @apply font-serif text-xl text-ink-900 mt-8 mb-3;
+}
+.prose-emori p {
+  @apply my-4;
+}
+.prose-emori ul {
+  @apply my-4 list-disc pl-6 space-y-2;
+}
+.prose-emori ol {
+  @apply my-4 list-decimal pl-6 space-y-2;
+}
+.prose-emori a {
+  @apply text-clay-600 underline underline-offset-2 hover:text-clay-700;
+}
+.prose-emori strong {
+  @apply text-ink-900 font-semibold;
+}
+.prose-emori blockquote {
+  @apply border-l-4 border-clay-200 pl-4 italic text-ink-700 my-6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

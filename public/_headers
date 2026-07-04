@@ -1,0 +1,22 @@
+# Cloudflare Pages headers
+
+# Segurança básica em todas as páginas
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# Assets estáticos do Next com hash → cache imutável
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fontes
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Digital Asset Links precisa de content-type correto e ser cacheável
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600

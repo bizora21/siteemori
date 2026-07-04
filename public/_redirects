@@ -1,0 +1,11 @@
+# Cloudflare Pages redirects
+# Raiz → variante primária (PT-BR). 302 para permitir mudar a default no futuro.
+/                 /pt-br/            302
+
+# Atalhos sem barra final para as variantes
+/pt-br            /pt-br/            301
+/pt-pt            /pt-pt/            301
+
+# Aliases de conveniência (opcional)
+/br/*             /pt-br/:splat      301
+/pt/*             /pt-pt/:splat      301
