@@ -1,0 +1,19 @@
+{
+  // Configuração do Cloudflare Workers (Static Assets) para o site estático da Emori.
+  // O `next build` gera a pasta ./out; o `wrangler deploy` publica-a como assets.
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // >>> Deve corresponder ao nome do teu Worker no painel Cloudflare.
+  "name": "siteemori",
+
+  "compatibility_date": "2024-11-01",
+
+  "assets": {
+    // Pasta gerada pelo `next build` (output: 'export').
+    "directory": "./out",
+    // Serve out/404.html quando um caminho não existe.
+    // Os ficheiros public/_redirects e public/_headers (copiados para ./out)
+    // continuam a ser respeitados pelo Workers Static Assets.
+    "not_found_handling": "404-page"
+  }
+}
