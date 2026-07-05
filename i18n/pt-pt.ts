@@ -32,26 +32,26 @@ const ptPT: Dictionary = {
     readMore: 'Ler mais',
     freeBadge: 'Gratuito para começar',
     androidNote: 'Disponível para Android. iPhone em breve.',
-    betaNote: 'A Emori está em teste fechado no Android. Entra na fila e avisamos assim que a tua vaga abrir.',
+    betaNote: 'A Emori está a chegar ao Android. Entra na lista e avisamos assim que estiver disponível para ti.',
   },
 
   waitlist: {
-    badge: 'Teste fechado',
-    buttonLabel: 'Entrar na fila de espera',
-    dialogTitle: 'Entra na fila de espera da Emori',
+    badge: 'Em breve no Android',
+    buttonLabel: 'Entrar na lista de espera',
+    dialogTitle: 'Entra na lista de espera da Emori',
     dialogIntro:
-      'A Emori está em teste fechado no Android. Deixa o teu e-mail e avisamos assim que abrir uma vaga para ti.',
+      'A Emori está a chegar ao Android. Deixa o teu e-mail e avisamos assim que estiver disponível para ti.',
     emailLabel: 'O teu melhor e-mail',
     emailPlaceholder: 'tu@exemplo.com',
     submit: 'Quero ser avisado',
     submitting: 'A enviar…',
-    successTitle: 'Pronto! Estás na fila.',
+    successTitle: 'Pronto! Estás na lista.',
     successBody:
-      'Assim que abrirmos a tua vaga no teste, recebes o convite por e-mail. Obrigada pela paciência.',
+      'Assim que a Emori estiver disponível, recebes o aviso por e-mail. Obrigada por esperares.',
     errorTitle: 'Não resultou agora',
     errorBody: 'Tenta novamente dentro de momentos ou escreve para',
     close: 'Fechar',
-    privacyNote: 'Usamos o teu e-mail apenas para o convite do teste. Sem spam.',
+    privacyNote: 'Usamos o teu e-mail apenas para avisar do lançamento. Sem spam.',
   },
 
   footer: {
