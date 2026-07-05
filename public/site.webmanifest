@@ -1,0 +1,19 @@
+{
+  "name": "Emori — diário emocional com IA",
+  "short_name": "Emori",
+  "description": "Um diário emocional com inteligência artificial que conversa com você e lembra do que importa.",
+  "lang": "pt-BR",
+  "start_url": "/pt-br/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf5ec",
+  "theme_color": "#c0532e",
+  "icons": [
+    {
+      "src": "/icon-512.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

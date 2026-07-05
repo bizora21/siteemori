@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
 import LangSwitcher from './LangSwitcher';
+import Logo from './Logo';
 
 interface Props {
   lang: Locale;
@@ -21,11 +22,8 @@ export default function Header({ lang, dict, path }: Props) {
   return (
     <header className="sticky top-0 z-40 border-b border-clay-100/70 bg-cream-50/90 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-        <Link
-          href={localizedPath(lang, '')}
-          className="font-serif text-xl font-semibold text-clay-700"
-        >
-          Emori
+        <Link href={localizedPath(lang, '')} aria-label="Emori — início">
+          <Logo />
         </Link>
 
         <nav

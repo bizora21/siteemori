@@ -15,8 +15,23 @@ export const PLAY_STORE_URL =
 // Deixa vazio para não carregar o script.
 export const CLOUDFLARE_ANALYTICS_TOKEN = '';
 
-// Imagem Open Graph por defeito (1200x630). Substitui pelo asset final.
-export const DEFAULT_OG_IMAGE = '/og/og-default.png';
+// Imagem Open Graph por defeito (1200x630).
+// SVG funciona como placeholder; para melhor suporte em redes sociais, exporta um PNG
+// e troca a extensão aqui (ver README › Open Graph).
+export const DEFAULT_OG_IMAGE = '/og/og-default.svg';
 
-// E-mail de contacto (opcional, usado em metadados/estruturados).
+// E-mail de contacto (opcional, usado em metadados/estruturados e na fila de espera).
 export const CONTACT_EMAIL = 'ola@aemori.com';
+
+// --- Fase de teste fechado (closed beta) --------------------------------------
+// Enquanto TRUE, todos os CTAs abrem o diálogo de fila de espera em vez de
+// apontarem para a Google Play. Muda para FALSE quando a app for pública.
+export const CLOSED_BETA = true;
+
+// >>> COLA AQUI o endpoint que recebe os e-mails da fila de espera (POST).
+// Ex.: Formspree (https://formspree.io/f/xxxx), Tally, Google Forms (formResponse),
+// ou um Worker teu. Se ficar vazio, o botão de envio cai para um mailto de reserva.
+export const WAITLIST_ENDPOINT = '';
+
+// E-mail de reserva usado quando WAITLIST_ENDPOINT está vazio.
+export const WAITLIST_EMAIL = CONTACT_EMAIL;

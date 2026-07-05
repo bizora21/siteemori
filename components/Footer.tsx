@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
+import Logo from './Logo';
 
 interface Props {
   lang: Locale;
@@ -34,11 +35,8 @@ export default function Footer({ lang, dict }: Props) {
       <div className="mx-auto max-w-5xl px-4 py-12">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <Link
-              href={localizedPath(lang, '')}
-              className="font-serif text-xl font-semibold text-clay-700"
-            >
-              Emori
+            <Link href={localizedPath(lang, '')} aria-label="Emori — início">
+              <Logo />
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-700">
               {dict.footer.description}

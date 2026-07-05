@@ -30,6 +30,26 @@ const ptBR = {
     readMore: 'Ler mais',
     freeBadge: 'Grátis para começar',
     androidNote: 'Disponível para Android. iPhone em breve.',
+    betaNote: 'A Emori está em teste fechado no Android. Entre na fila e avisamos assim que a sua vaga abrir.',
+  },
+
+  waitlist: {
+    badge: 'Teste fechado',
+    buttonLabel: 'Entrar na fila de espera',
+    dialogTitle: 'Entre na fila de espera da Emori',
+    dialogIntro:
+      'A Emori está em teste fechado no Android. Deixe o seu e-mail e avisamos assim que abrir uma vaga para você.',
+    emailLabel: 'Seu melhor e-mail',
+    emailPlaceholder: 'voce@exemplo.com',
+    submit: 'Quero ser avisado',
+    submitting: 'Enviando…',
+    successTitle: 'Pronto! Você está na fila.',
+    successBody:
+      'Assim que abrirmos a sua vaga no teste, você recebe o convite por e-mail. Obrigada pela paciência.',
+    errorTitle: 'Não deu certo agora',
+    errorBody: 'Tente novamente em instantes ou escreva para',
+    close: 'Fechar',
+    privacyNote: 'Usamos o seu e-mail apenas para o convite do teste. Sem spam.',
   },
 
   footer: {

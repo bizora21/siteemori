@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#faf5ec"/>
+  <rect x="0" y="0" width="1200" height="630" fill="#faf5ec"/>
+  <!-- Marca -->
+  <g transform="translate(96 220)">
+    <rect width="120" height="120" rx="28" fill="#c0532e"/>
+    <path d="M84 70A28 28 0 1 1 53 39 22 22 0 0 0 84 70z"
+          transform="translate(9 9) scale(1.15)"
+          fill="none" stroke="#ffffff" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="240" y="300" font-family="Georgia, 'Times New Roman', serif"
+        font-size="72" font-weight="600" fill="#2a2420">Emori</text>
+  <text x="96" y="430" font-family="Georgia, 'Times New Roman', serif"
+        font-size="44" fill="#4a3f38">Um diário emocional que</text>
+  <text x="96" y="490" font-family="Georgia, 'Times New Roman', serif"
+        font-size="44" fill="#4a3f38">realmente lembra de você.</text>
+  <text x="96" y="575" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="30" fill="#a2481f">aemori.com · diário com IA para Android</text>
+</svg>

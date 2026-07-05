@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
 import '../globals.css';
 import { locales, bcp47, isLocale, type Locale } from '@/i18n/config';
@@ -32,9 +32,20 @@ export const metadata: Metadata = {
     default: 'Emori — diário emocional com IA que lembra de você',
     template: '%s',
   },
+  applicationName: 'Emori',
+  manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon-512.svg', type: 'image/svg+xml', sizes: 'any' },
+    ],
+    apple: '/icon-512.svg',
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#c0532e',
+  colorScheme: 'light',
 };
 
 export default function LangLayout({

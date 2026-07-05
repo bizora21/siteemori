@@ -32,6 +32,26 @@ const ptPT: Dictionary = {
     readMore: 'Ler mais',
     freeBadge: 'Gratuito para começar',
     androidNote: 'Disponível para Android. iPhone em breve.',
+    betaNote: 'A Emori está em teste fechado no Android. Entra na fila e avisamos assim que a tua vaga abrir.',
+  },
+
+  waitlist: {
+    badge: 'Teste fechado',
+    buttonLabel: 'Entrar na fila de espera',
+    dialogTitle: 'Entra na fila de espera da Emori',
+    dialogIntro:
+      'A Emori está em teste fechado no Android. Deixa o teu e-mail e avisamos assim que abrir uma vaga para ti.',
+    emailLabel: 'O teu melhor e-mail',
+    emailPlaceholder: 'tu@exemplo.com',
+    submit: 'Quero ser avisado',
+    submitting: 'A enviar…',
+    successTitle: 'Pronto! Estás na fila.',
+    successBody:
+      'Assim que abrirmos a tua vaga no teste, recebes o convite por e-mail. Obrigada pela paciência.',
+    errorTitle: 'Não resultou agora',
+    errorBody: 'Tenta novamente dentro de momentos ou escreve para',
+    close: 'Fechar',
+    privacyNote: 'Usamos o teu e-mail apenas para o convite do teste. Sem spam.',
   },
 
   footer: {

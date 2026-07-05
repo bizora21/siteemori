@@ -12,7 +12,7 @@ export function organizationSchema() {
     '@type': 'Organization',
     name: 'Emori',
     url: SITE_URL,
-    logo: absoluteUrl('/icon-512.png'),
+    logo: absoluteUrl('/icon-512.svg'),
     description:
       'Emori é um diário emocional com inteligência artificial que conversa com o usuário, lembra do contexto e ajuda a entender as emoções.',
     sameAs: [PLAY_STORE_URL],
@@ -72,7 +72,7 @@ export function articleSchema(input: {
     publisher: {
       '@type': 'Organization',
       name: 'Emori',
-      logo: { '@type': 'ImageObject', url: absoluteUrl('/icon-512.png') },
+      logo: { '@type': 'ImageObject', url: absoluteUrl('/icon-512.svg') },
     },
   };
 }

@@ -3,7 +3,7 @@ import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
 import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
-import PlayStoreButton from '@/components/PlayStoreButton';
+import CtaButton from '@/components/CtaButton';
 import TldrBlock from '@/components/TldrBlock';
 import FAQ from '@/components/FAQ';
 import JsonLd from '@/components/JsonLd';
@@ -65,7 +65,11 @@ export default function ProdutoPage({ params }: { params: { lang: Locale } }) {
 
         {/* CTA */}
         <div className="mt-12 flex flex-col items-start gap-3">
-          <PlayStoreButton label={dict.cta.download} campaign="produto" />
+          <CtaButton
+            label={dict.cta.download}
+            betaLabel={dict.waitlist.buttonLabel}
+            campaign="produto"
+          />
           <p className="text-sm text-ink-700">{dict.common.androidNote}</p>
         </div>
 

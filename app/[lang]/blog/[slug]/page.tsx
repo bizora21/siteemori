@@ -8,7 +8,7 @@ import PageShell from '@/components/PageShell';
 import Prose from '@/components/Prose';
 import TldrBlock from '@/components/TldrBlock';
 import FAQ from '@/components/FAQ';
-import PlayStoreButton from '@/components/PlayStoreButton';
+import CtaButton from '@/components/CtaButton';
 import JsonLd from '@/components/JsonLd';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import { getAllSlugs, getArticle } from '@/content/blog';
@@ -78,8 +78,9 @@ export default function ArticlePage({
         {/* CTA discreto */}
         <div className="mt-12 rounded-2xl bg-cream-100 p-6 text-center">
           <p className="mb-4 text-ink-800">{dict.meta.tagline}</p>
-          <PlayStoreButton
+          <CtaButton
             label={dict.cta.tryEmori}
+            betaLabel={dict.waitlist.buttonLabel}
             campaign={`blog_${meta.slug.replace(/-/g, '_')}`}
           />
         </div>

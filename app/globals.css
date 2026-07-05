@@ -52,8 +52,38 @@ body {
   @apply border-l-4 border-clay-200 pl-4 italic text-ink-700 my-6;
 }
 
+/* Diálogo (fila de espera) */
+dialog {
+  margin: auto;
+  max-height: min(90vh, 40rem);
+  position: relative;
+}
+dialog[open] {
+  animation: dialog-in 160ms ease-out;
+}
+dialog::backdrop {
+  backdrop-filter: blur(2px);
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* Impede scroll do fundo quando o diálogo modal está aberto */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  dialog[open] {
+    animation: none;
   }
 }

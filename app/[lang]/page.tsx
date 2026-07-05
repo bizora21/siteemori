@@ -4,9 +4,10 @@ import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
 import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
-import PlayStoreButton from '@/components/PlayStoreButton';
+import CtaButton from '@/components/CtaButton';
 import FAQ from '@/components/FAQ';
 import { localizedPath } from '@/lib/seo';
+import { CLOSED_BETA } from '@/lib/constants';
 
 export function generateStaticParams() {
   return [{ lang: 'pt-br' }, { lang: 'pt-pt' }];
@@ -32,7 +33,7 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
       {/* HERO — answer-first: H1 = tema, TL;DR logo abaixo */}
       <section className="mx-auto max-w-3xl text-center">
         <span className="inline-block rounded-full bg-sage-100 px-3 py-1 text-xs font-semibold text-sage-700">
-          {dict.common.freeBadge}
+          {CLOSED_BETA ? dict.waitlist.badge : dict.common.freeBadge}
         </span>
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink-900 md:text-5xl">
           {t.h1}
@@ -41,8 +42,14 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
           {t.tldr}
         </p>
         <div className="mt-8 flex flex-col items-center gap-3">
-          <PlayStoreButton label={dict.cta.download} campaign="home" />
-          <p className="text-sm text-ink-700">{t.primaryCtaNote}</p>
+          <CtaButton
+            label={dict.cta.download}
+            betaLabel={dict.waitlist.buttonLabel}
+            campaign="home"
+          />
+          <p className="text-sm text-ink-700">
+            {CLOSED_BETA ? dict.common.betaNote : t.primaryCtaNote}
+          </p>
           <p className="text-xs text-ink-700/80">{dict.common.androidNote}</p>
         </div>
       </section>
@@ -96,8 +103,9 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
       <section className="mt-20 rounded-3xl bg-clay-600 px-6 py-12 text-center text-cream-50">
         <h2 className="font-serif text-2xl md:text-3xl">{dict.cta.tryEmori}</h2>
         <div className="mt-6 flex justify-center">
-          <PlayStoreButton
+          <CtaButton
             label={dict.cta.download}
+            betaLabel={dict.waitlist.buttonLabel}
             campaign="home_footer"
             variant="secondary"
           />
