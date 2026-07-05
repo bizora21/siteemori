@@ -26,3 +26,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lockfile omitido do repo: gerado em Windows, o CI do Cloudflare corre em Linux
+# e o npm ci rejeita locks cruzados de SO. O Cloudflare usa npm install sem lock.
+package-lock.json
