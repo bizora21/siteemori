@@ -3,6 +3,7 @@ import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
 import brComecar from './pt-br/como-comecar-diario-emocional';
+import brEscolher from './pt-br/como-escolher-app-diario-emocional';
 import brOQue from './pt-br/o-que-escrever-no-diario';
 import brDiff from './pt-br/diario-ou-journaling-diferenca';
 import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
@@ -10,6 +11,7 @@ import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT (stubs localizados — corpo por traduzir)
 import ptComecar from './pt-pt/como-comecar-diario-emocional';
+import ptEscolher from './pt-pt/como-escolher-app-diario-emocional';
 import ptOQue from './pt-pt/o-que-escrever-no-diario';
 import ptDiff from './pt-pt/diario-ou-journaling-diferenca';
 import ptAnsiedade from './pt-pt/escrever-para-lidar-com-ansiedade';
@@ -18,6 +20,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
   'como-comecar-diario-emocional',
+  'como-escolher-app-diario-emocional',
   'o-que-escrever-no-diario',
   'diario-ou-journaling-diferenca',
   'escrever-para-lidar-com-ansiedade',
@@ -26,6 +29,7 @@ export const postOrder = [
 
 const registry: Record<string, LocalizedArticle> = {
   'como-comecar-diario-emocional': { 'pt-br': brComecar, 'pt-pt': ptComecar },
+  'como-escolher-app-diario-emocional': { 'pt-br': brEscolher, 'pt-pt': ptEscolher },
   'o-que-escrever-no-diario': { 'pt-br': brOQue, 'pt-pt': ptOQue },
   'diario-ou-journaling-diferenca': { 'pt-br': brDiff, 'pt-pt': ptDiff },
   'escrever-para-lidar-com-ansiedade': { 'pt-br': brAnsiedade, 'pt-pt': ptAnsiedade },

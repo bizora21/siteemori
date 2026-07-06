@@ -29,7 +29,7 @@ export function generateStaticParams() {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Emori — diário emocional com IA que lembra de você',
+    default: 'Emori — app de diário emocional com IA que lembra de você',
     template: '%s',
   },
   applicationName: 'Emori',
