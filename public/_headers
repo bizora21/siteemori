@@ -6,7 +6,10 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # HSTS moderado para site novo (6 meses, sem preload). Quando o HTTPS estiver
+  # comprovadamente estável, dá para subir para max-age=31536000 e adicionar
+  # "preload" + submeter em hstspreload.org.
+  Strict-Transport-Security: max-age=15552000; includeSubDomains
 
 # Assets estáticos do Next com hash → cache imutável
 /_next/static/*
