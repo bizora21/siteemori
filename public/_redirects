@@ -1,6 +1,7 @@
-# Cloudflare Pages redirects
-# Raiz → variante primária (PT-BR). 302 para permitir mudar a default no futuro.
-/                 /pt-br/            302
+# Cloudflare redirects
+# Raiz → variante primária (PT-BR). 301 (permanente) para o Google consolidar
+# os sinais em /pt-br/ e não indexar aemori.com/ como URL duplicado.
+/                 /pt-br/            301
 
 # Atalhos sem barra final para as variantes
 /pt-br            /pt-br/            301
