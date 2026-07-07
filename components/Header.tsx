@@ -17,6 +17,7 @@ export default function Header({ lang, dict, path }: Props) {
     { href: localizedPath(lang, 'produto'), label: dict.nav.produto },
     { href: localizedPath(lang, 'pro'), label: dict.nav.pro },
     { href: localizedPath(lang, 'blog'), label: dict.nav.blog },
+    { href: localizedPath(lang, 'sobre'), label: dict.nav.sobre },
   ];
 
   return (

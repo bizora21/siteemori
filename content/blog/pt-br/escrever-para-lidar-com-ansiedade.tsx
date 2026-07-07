@@ -51,10 +51,11 @@ function Body() {
 
       <h2>Como escrever quando estou ansioso demais para escrever?</h2>
       <p>
-        Fale. Nos picos, digitar pode ser difícil — as mãos tremem, a cabeça corre. Gravar
-        um áudio funciona melhor porque acompanha o ritmo acelerado do pensamento. É uma
-        das razões pelas quais a Emori permite desabafar por voz: nos momentos em que
-        escrever é demais, falar ainda é possível, e ela transcreve e organiza depois.
+        Baixe a régua. Nos picos, não tente redigir bonito — faça um despejo em frases
+        curtas, palavras soltas, tópicos. Não precisa de ordem nem de sentido. Se nem isso
+        vier, escreva “não consigo escrever agora” e descreva por que está difícil. Um app
+        que te faz uma pergunta simples (“o que está mais pesado agora?”) também ajuda a
+        dar o primeiro passo quando a página em branco paralisa.
       </p>
 
       <h2>Escrita para o dia a dia: prevenir, não só apagar incêndio</h2>
@@ -91,11 +92,11 @@ const faq = [
   },
   {
     q: 'O que escrever durante uma crise de ansiedade?',
-    a: 'Faça um despejo mental: escreva ou grave tudo que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguir, releia para separar o que é real do que é catastrofização.',
+    a: 'Faça um despejo mental: escreva tudo que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguir, releia para separar o que é real do que é catastrofização.',
   },
   {
-    q: 'É melhor escrever ou gravar áudio quando estou ansioso?',
-    a: 'Nos picos, muitas pessoas acham o áudio mais fácil, porque acompanha o ritmo acelerado do pensamento e não exige concentração para digitar. No dia a dia mais calmo, escrever ajuda a organizar melhor.',
+    q: 'Preciso escrever muito para aliviar a ansiedade?',
+    a: 'Não. Nos picos, poucas frases ou um despejo desorganizado já tiram parte do peso da cabeça. A regularidade importa mais do que a extensão — escrever pouco, mas com frequência, funciona melhor.',
   },
   {
     q: 'Com que frequência escrever para reduzir a ansiedade?',

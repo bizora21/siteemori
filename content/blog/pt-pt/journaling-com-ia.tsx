@@ -34,7 +34,7 @@ const faq = [
   },
   {
     q: 'Preciso de saber escrever bem para usar?',
-    a: 'Não. Aplicações como a Emori aceitam voz e fazem perguntas simples que te guiam. O foco é a honestidade e a reflexão, não a qualidade da escrita.',
+    a: 'Não. Aplicações como a Emori fazem perguntas simples que te guiam. O foco é a honestidade e a reflexão, não a qualidade da escrita.',
   },
 ];
 

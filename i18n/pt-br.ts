@@ -12,6 +12,7 @@ const ptBR = {
     produto: 'Produto',
     pro: 'Emori Pro',
     blog: 'Blog',
+    sobre: 'Sobre',
     privacidade: 'Privacidade',
     termos: 'Termos',
   },
@@ -66,27 +67,27 @@ const ptBR = {
   home: {
     metaTitle: 'Emori — app de diário emocional com IA que lembra de você',
     metaDescription:
-      'A Emori é um app (aplicativo) de diário emocional com inteligência artificial. Escreva ou fale sobre o seu dia, e a Emori lembra do que importa para te ajudar a entender o que você sente. Grátis para começar no Android.',
+      'A Emori é um app (aplicativo) de diário emocional com inteligência artificial. Escreva sobre o seu dia e a Emori lembra do que importa para te ajudar a entender o que você sente ao longo do tempo. Grátis para começar no Android.',
     h1: 'O app de diário emocional que realmente lembra de você',
     tldr:
-      'A Emori é um app de diário com inteligência artificial que conversa com você por texto ou voz, guarda o contexto do que você viveu e te ajuda a entender suas emoções ao longo do tempo. É grátis para começar e funciona no seu celular Android.',
+      'A Emori é um app de diário com inteligência artificial que conversa com você, guarda na memória o contexto do que você viveu e te ajuda a entender suas emoções ao longo do tempo. É grátis para começar e funciona no seu celular Android.',
     primaryCtaNote: 'Sem cartão. Comece a escrever em menos de um minuto.',
     valueTitle: 'Por que a Emori é diferente',
     values: [
       {
         title: 'Ela lembra do seu contexto',
         body:
-          'Diferente de um app de notas, a Emori guarda memória do que você já contou. Quando você volta, ela sabe quem são as pessoas, o que te preocupa e o que mudou desde a última vez.',
-      },
-      {
-        title: 'Escreva ou fale',
-        body:
-          'Nem sempre dá para digitar. Registre por voz quando estiver no ônibus, deitado ou sem vontade de escrever — a Emori transcreve e entende do mesmo jeito.',
+          'Diferente de um app de notas, a Emori guarda memória do que você já contou. Quando você volta, ela sabe quem são as pessoas, o que te preocupa e o que mudou desde a última vez. É o que a torna verdadeiramente sua.',
       },
       {
         title: 'Conversa, não formulário',
         body:
           'A Emori faz perguntas gentis que ajudam você a chegar no que está sentindo de verdade, em vez de deixar uma página em branco te encarando.',
+      },
+      {
+        title: 'Mostra seus padrões',
+        body:
+          'Ao longo das semanas, a Emori conecta o que você escreve e ajuda a reconhecer o que se repete — o que te tira do eixo e o que te devolve a paz.',
       },
       {
         title: 'Privado por padrão',
@@ -98,7 +99,7 @@ const ptBR = {
     howSteps: [
       {
         title: 'Abra e desabafe',
-        body: 'Digite ou grave um áudio contando como foi seu dia — do jeito que sair.',
+        body: 'Escreva contando como foi o seu dia — do jeito que sair, sem se preocupar com a forma.',
       },
       {
         title: 'A Emori responde',
@@ -112,7 +113,7 @@ const ptBR = {
     faq: [
       {
         q: 'O que é a Emori?',
-        a: 'A Emori é um aplicativo de diário emocional com inteligência artificial. Você escreve ou fala sobre o seu dia e ela conversa com você, lembrando do contexto para te ajudar a entender o que sente ao longo do tempo.',
+        a: 'A Emori é um aplicativo de diário emocional com inteligência artificial. Você escreve sobre o seu dia e ela conversa com você, lembrando do contexto para te ajudar a entender o que sente ao longo do tempo.',
       },
       {
         q: 'A Emori é grátis?',
@@ -120,7 +121,7 @@ const ptBR = {
       },
       {
         q: 'Preciso saber escrever bem para usar?',
-        a: 'Não. Você pode falar por áudio ou escrever de qualquer jeito. A Emori faz perguntas simples para te ajudar quando você não sabe por onde começar.',
+        a: 'Não. Você escreve do jeito que sair — frases soltas, desabafos, o que vier. A Emori faz perguntas simples para te ajudar quando você não sabe por onde começar.',
       },
       {
         q: 'Em quais aparelhos a Emori funciona?',
@@ -136,15 +137,15 @@ const ptBR = {
   produto: {
     metaTitle: 'App de diário emocional com IA e memória: como a Emori funciona',
     metaDescription:
-      'Entenda como a Emori funciona: diário por texto ou voz, memória que guarda o seu contexto e uma IA que conversa com você para te ajudar a entender suas emoções.',
+      'Entenda como a Emori funciona: diário por texto, memória que guarda o seu contexto e uma IA que conversa com você e reconhece padrões para te ajudar a entender suas emoções.',
     h1: 'O que é a Emori e como ela funciona',
     tldr:
-      'A Emori é um diário emocional com IA onde você escreve ou fala sobre o seu dia. O diferencial é a memória: ela guarda o contexto do que você conta e usa isso para conversar com você de forma cada vez mais pessoal, ajudando a reconhecer padrões emocionais.',
+      'A Emori é um diário emocional com IA onde você escreve sobre o seu dia. O diferencial é a memória: ela guarda o contexto do que você conta e usa isso para conversar com você de forma cada vez mais pessoal, ajudando a reconhecer padrões emocionais.',
     sections: [
       {
         h2: 'Um diário que conversa com você',
         body:
-          'A maioria dos diários é uma página em branco. A Emori é diferente: ela responde. Depois de você escrever ou gravar um áudio, a Emori reflete com você e faz uma pergunta gentil que ajuda a chegar no que você está sentindo de verdade. Não é um formulário nem um teste — é uma conversa no seu ritmo.',
+          'A maioria dos diários é uma página em branco. A Emori é diferente: ela responde. Depois de você escrever, a Emori reflete com você e faz uma pergunta gentil que ajuda a chegar no que você está sentindo de verdade. Não é um formulário nem um teste — é uma conversa no seu ritmo.',
       },
       {
         h2: 'A memória: o que torna a Emori única',
@@ -152,9 +153,9 @@ const ptBR = {
           'A Emori lembra. Ela guarda o contexto do que é importante para você — as pessoas da sua vida, o que te preocupa, o que te faz bem — e traz isso de volta quando faz sentido. Você não precisa se explicar do zero toda vez. Com o tempo, essa memória vira um retrato honesto da sua vida emocional.',
       },
       {
-        h2: 'Escreva ou fale, do seu jeito',
+        h2: 'Perguntas gentis que destravam',
         body:
-          'Você pode digitar quando tem calma para isso, ou gravar um áudio quando escrever parece demais. A Emori transcreve a sua voz e entende do mesmo jeito. Muita gente desabafa melhor falando — e a Emori foi feita para isso.',
+          'Escrever sozinho é difícil justamente porque você é quem pergunta e quem responde. A Emori faz a pergunta certa na hora certa — simples, sem julgamento — para você chegar mais fundo do que chegaria olhando para uma página vazia. Como ela lembra do seu contexto, a pergunta seguinte já vem mais afiada.',
       },
       {
         h2: 'Padrões que você passa a enxergar',
@@ -169,10 +170,10 @@ const ptBR = {
     ],
     featuresTitle: 'Principais recursos',
     features: [
-      'Diário por texto e por voz',
       'Memória que guarda o seu contexto',
       'IA que conversa e faz perguntas',
       'Reconhecimento de padrões emocionais',
+      'Diário por escrito, no seu ritmo',
       'Espaço privado e íntimo',
       'Grátis para começar',
     ],
@@ -182,8 +183,8 @@ const ptBR = {
         a: 'Sim. A memória é o recurso central da Emori. Ela guarda o contexto do que importa e usa isso para conversar com você de forma mais pessoal a cada dia.',
       },
       {
-        q: 'Posso usar só por voz?',
-        a: 'Pode. Você grava um áudio e a Emori transcreve e entende. É ideal para quando você não quer ou não pode digitar.',
+        q: 'A Emori reconhece padrões no que eu sinto?',
+        a: 'Sim. Ao longo do tempo, ela conecta os seus registros e ajuda você a notar o que se repete — gatilhos, ciclos e o que te faz bem — em vez de deixar esses padrões passarem despercebidos.',
       },
       {
         q: 'A Emori dá conselhos?',
@@ -199,10 +200,10 @@ const ptBR = {
   pro: {
     metaTitle: 'Emori Pro — memória estendida e recursos avançados',
     metaDescription:
-      'A Emori Pro amplia a memória, libera recursos avançados de reflexão e voz, e apoia o desenvolvimento da Emori. Continue usando o essencial de graça ou vá mais fundo com o Pro.',
+      'A Emori Pro amplia a memória, aprofunda as reflexões e os padrões, e apoia o desenvolvimento da Emori. Continue usando o essencial de graça ou vá mais fundo com o Pro.',
     h1: 'Emori Pro: para ir mais fundo',
     tldr:
-      'A Emori Pro é o plano opcional para quem quer mais: memória estendida, reflexões mais profundas e recursos avançados de voz. O essencial da Emori continua grátis — o Pro é para quem quer aprofundar a prática e apoiar o projeto.',
+      'A Emori Pro é o plano opcional para quem quer mais: memória estendida, reflexões mais profundas e uma leitura mais rica dos seus padrões emocionais. O essencial da Emori continua grátis — o Pro é para quem quer aprofundar a prática e apoiar o projeto.',
     intro:
       'A Emori é grátis porque acreditamos que todo mundo merece um espaço para se entender. A Emori Pro existe para quem faz do diário um hábito e quer ir além — e para ajudar a manter a Emori de pé.',
     benefitsTitle: 'O que você ganha com o Pro',
@@ -218,9 +219,9 @@ const ptBR = {
           'Perguntas e devolutivas mais elaboradas, que puxam conexões entre o que você viveu ao longo das semanas.',
       },
       {
-        title: 'Voz sem limites',
+        title: 'Padrões mais profundos',
         body:
-          'Registre por áudio o quanto quiser, com transcrição fluida para os dias em que escrever não é uma opção.',
+          'Uma leitura mais rica do que se repete nas suas emoções ao longo do tempo, para você enxergar ciclos e gatilhos com mais clareza.',
       },
       {
         title: 'Apoie a Emori',
@@ -234,7 +235,7 @@ const ptBR = {
     faq: [
       {
         q: 'Preciso pagar para usar a Emori?',
-        a: 'Não. A Emori é grátis para começar e usar no dia a dia. A Emori Pro é opcional, para quem quer memória estendida e recursos avançados.',
+        a: 'Não. A Emori é grátis para começar e usar no dia a dia. A Emori Pro é opcional, para quem quer memória estendida e uma leitura mais profunda dos padrões.',
       },
       {
         q: 'O que acontece se eu cancelar o Pro?',
@@ -245,6 +246,58 @@ const ptBR = {
         a: 'Não. A Emori é uma ferramenta de escrita e autoconhecimento, não um serviço de saúde. Ela complementa, mas não substitui, acompanhamento profissional.',
       },
     ],
+  },
+
+  sobre: {
+    metaTitle: 'Sobre a Emori — a missão por trás do app de diário emocional',
+    metaDescription:
+      'A Emori nasceu de uma ideia simples: todo mundo merece um espaço privado para se entender, que lembra de você. Conheça a missão, os valores e o compromisso da Emori com a sua privacidade.',
+    h1: 'Sobre a Emori',
+    tldr:
+      'A Emori é um app de diário emocional com IA criado para ser um espaço íntimo que lembra de você. Existe porque entender as próprias emoções não deveria ser caro, nem solitário, nem começar do zero toda vez.',
+    sections: [
+      {
+        h2: 'Por que a Emori existe',
+        body:
+          'A maioria dos apps de diário trata você como um estranho: cada dia começa do zero. A terapia, essencial e insubstituível, é cara e nem sempre acessível todos os dias. A Emori nasceu no meio desse vão — um espaço diário, privado, que lembra do que importa e conversa com você para te ajudar a entender o que sente. Não para substituir o cuidado humano, mas para caminhar ao seu lado nos dias comuns.',
+      },
+      {
+        h2: 'A memória no centro de tudo',
+        body:
+          'Construímos a Emori em torno de uma decisão: ela lembra. Guardar o seu contexto e trazê-lo de volta quando faz sentido é o que transforma anotações soltas num retrato honesto da sua vida emocional. É o que nos diferencia de um app de notas — e o que orienta cada decisão que tomamos.',
+      },
+      {
+        h2: 'A Emori é sempre ela',
+        body:
+          'A Emori é uma presença, não um recurso. Referimo-nos a ela sempre no feminino — "a Emori", "ela" — porque queremos que a relação seja calorosa e humana, e não fria e técnica. Ela conhece você, e isso importa.',
+      },
+    ],
+    valuesTitle: 'No que acreditamos',
+    values: [
+      {
+        title: 'Privacidade primeiro',
+        body:
+          'O seu diário é seu. Não vendemos os seus dados e tratamos a sua intimidade como o bem mais valioso que você nos confia.',
+      },
+      {
+        title: 'Sem julgamento',
+        body:
+          'Um espaço para dizer o que talvez não diria a ninguém, no seu ritmo, sem cobranças nem metas.',
+      },
+      {
+        title: 'Complemento, não substituto',
+        body:
+          'A Emori é autoconhecimento, não saúde. Ela caminha ao lado da terapia e do cuidado profissional, nunca no lugar deles.',
+      },
+      {
+        title: 'Acessível a todos',
+        body:
+          'O essencial da Emori é grátis, porque se entender não deveria ser um privilégio.',
+      },
+    ],
+    contactTitle: 'Fale com a Emori',
+    contactIntro:
+      'Tem uma dúvida, sugestão, ou quer falar sobre parcerias e imprensa? Escreva para',
   },
 
   privacidade: {
@@ -265,7 +318,7 @@ const ptBR = {
       {
         h2: '2. Dados que coletamos',
         body:
-          'Coletamos: (a) o conteúdo que você cria — textos e áudios do seu diário; (b) dados de conta, como identificador e e-mail, quando aplicável; (c) dados técnicos mínimos de funcionamento e diagnóstico, como tipo de dispositivo e versão do app. Não coletamos mais do que o necessário para a Emori funcionar.',
+          'Coletamos: (a) o conteúdo que você cria — os textos do seu diário; (b) dados de conta, como identificador e e-mail, quando aplicável; (c) dados técnicos mínimos de funcionamento e diagnóstico, como tipo de dispositivo e versão do app. Não coletamos mais do que o necessário para a Emori funcionar.',
       },
       {
         h2: '3. Como usamos os seus dados',

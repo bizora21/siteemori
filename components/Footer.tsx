@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
+import { CONTACT_EMAIL } from '@/lib/constants';
 import Logo from './Logo';
 
 interface Props {
@@ -22,8 +23,9 @@ export default function Footer({ lang, dict }: Props) {
       ],
     },
     {
-      title: dict.footer.legal,
+      title: dict.footer.company,
       links: [
+        { href: localizedPath(lang, 'sobre'), label: dict.nav.sobre },
         { href: localizedPath(lang, 'privacidade'), label: dict.nav.privacidade },
         { href: localizedPath(lang, 'termos'), label: dict.nav.termos },
       ],
@@ -41,6 +43,12 @@ export default function Footer({ lang, dict }: Props) {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-700">
               {dict.footer.description}
             </p>
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="mt-3 inline-block text-sm text-clay-600 hover:text-clay-700"
+            >
+              {CONTACT_EMAIL}
+            </a>
           </div>
 
           {cols.map((col) => (

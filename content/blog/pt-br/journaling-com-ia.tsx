@@ -54,8 +54,8 @@ function Body() {
           IA aponta repetições que passariam despercebidas.
         </li>
         <li>
-          <strong>Voz, não só texto:</strong> você desabafa falando e a IA transcreve e
-          entende — útil nos dias sem energia para escrever.
+          <strong>Memória que continua:</strong> diferente do papel, um bom app lembra do
+          que você escreveu e liga uma entrada à outra ao longo do tempo.
         </li>
         <li>
           <strong>Companhia sem julgamento:</strong> um espaço para dizer o que talvez não
@@ -82,8 +82,8 @@ function Body() {
           e deve ser tratado como tal.
         </li>
         <li>
-          <strong>Aceita voz?</strong> Poder falar amplia muito os momentos em que você
-          consegue usar.
+          <strong>Reconhece padrões?</strong> Ele conecta os seus registros ao longo do
+          tempo e ajuda a ver o que se repete, ou guarda tudo solto?
         </li>
         <li>
           <strong>Conversa ou interroga?</strong> As perguntas soam humanas e gentis, ou
@@ -117,7 +117,7 @@ const faq = [
   },
   {
     q: 'Preciso saber escrever bem para usar?',
-    a: 'Não. Apps como a Emori aceitam voz e fazem perguntas simples que guiam você. O foco é a honestidade e a reflexão, não a qualidade da escrita.',
+    a: 'Não. Apps como a Emori fazem perguntas simples que guiam você. O foco é a honestidade e a reflexão, não a qualidade da escrita.',
   },
 ];
 

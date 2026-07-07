@@ -26,11 +26,11 @@ const faq = [
   },
   {
     q: 'O que escrever durante uma crise de ansiedade?',
-    a: 'Faz um despejo mental: escreve ou grava tudo o que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguires, relê para separar o que é real do que é catastrofização.',
+    a: 'Faz um despejo mental: escreve tudo o que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguires, relê para separar o que é real do que é catastrofização.',
   },
   {
-    q: 'É melhor escrever ou gravar áudio quando estou ansioso?',
-    a: 'Nos picos, muitas pessoas acham o áudio mais fácil, porque acompanha o ritmo acelerado do pensamento e não exige concentração para escrever. No dia a dia mais calmo, escrever ajuda a organizar melhor.',
+    q: 'Preciso de escrever muito para aliviar a ansiedade?',
+    a: 'Não. Nos picos, poucas frases ou um despejo desorganizado já tiram parte do peso da cabeça. A regularidade importa mais do que a extensão — escrever pouco, mas com frequência, funciona melhor.',
   },
   {
     q: 'Com que frequência escrever para reduzir a ansiedade?',

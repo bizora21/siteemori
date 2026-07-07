@@ -4,8 +4,8 @@ const meta = {
   slug: 'como-escolher-app-diario-emocional',
   title: 'Como escolher um app de diário emocional (guia 2026)',
   description:
-    'Qual app de diário emocional escolher? Veja os critérios que importam de verdade — memória, voz, privacidade e preço — para encontrar o aplicativo certo para você.',
-  tldr: 'Para escolher um app de diário emocional, avalie cinco coisas: se ele lembra do seu contexto, se aceita voz além de texto, como trata a sua privacidade, se é fácil de manter como hábito e o preço. A memória é o critério que mais muda a experiência: um app que lembra do que você contou torna a reflexão pessoal em vez de genérica.',
+    'Qual app de diário emocional escolher? Veja os critérios que importam de verdade — memória, padrões, privacidade e preço — para encontrar o aplicativo certo para você.',
+  tldr: 'Para escolher um app de diário emocional, avalie cinco coisas: se ele lembra do seu contexto, se te ajuda a ver padrões, como trata a sua privacidade, se é fácil de manter como hábito e o preço. A memória é o critério que mais muda a experiência: um app que lembra do que você contou torna a reflexão pessoal em vez de genérica.',
   datePublished: '2026-07-05',
   readingMinutes: 7,
 };
@@ -39,12 +39,13 @@ function Body() {
         Emori de um app de notas comum.
       </p>
 
-      <h2>2. Aceita voz, ou só texto?</h2>
+      <h2>2. Ele te ajuda a ver padrões?</h2>
       <p>
-        Nem sempre dá para digitar — no ônibus, deitado, ou num dia sem energia. Um app que
-        aceita <strong>áudio</strong> (e transcreve) amplia enormemente os momentos em que
-        você consegue registrar o que sente. Muita gente desabafa melhor falando do que
-        escrevendo. Se a voz não estiver disponível, você provavelmente vai usar menos.
+        Escrever um dia isolado alivia. Mas o valor real aparece ao longo das semanas,
+        quando você percebe o que se repete — os gatilhos, os ciclos, o que te faz bem. Um
+        bom app não guarda só entradas soltas: ele <strong>conecta</strong> o que você
+        escreveu e te ajuda a enxergar esses padrões. Sem isso, o diário vira um arquivo
+        morto que você nunca revisita.
       </p>
 
       <h2>3. Como ele trata a sua privacidade?</h2>
@@ -69,13 +70,13 @@ function Body() {
         Muitos apps de diário são gratuitos no básico e cobram por recursos avançados. Isso
         é justo — desde que o essencial funcione de graça. Compare o que está no plano
         gratuito com o que exige assinatura, e pergunte-se se o plano pago entrega algo que
-        você usaria de fato (mais memória, voz sem limite, reflexões mais profundas).
+        você usaria de fato (mais memória, reflexões mais profundas, leitura de padrões).
       </p>
 
       <h2>Checklist rápido para decidir</h2>
       <ul>
         <li>✓ Lembra do que você contou antes (memória)</li>
-        <li>✓ Aceita voz além de texto</li>
+        <li>✓ Conecta seus registros e mostra padrões</li>
         <li>✓ Política de privacidade clara e sem venda de dados</li>
         <li>✓ Fácil de abrir e de manter como hábito</li>
         <li>✓ Plano gratuito útil, plano pago honesto</li>
@@ -85,10 +86,10 @@ function Body() {
       <h2>E a Emori nisso tudo?</h2>
       <p>
         A Emori foi desenhada em torno do critério que quase ninguém resolve: a{' '}
-        <strong>memória</strong>. Ela conversa com você por texto ou voz, lembra do seu
-        contexto para tornar cada conversa mais pessoal, é grátis para começar e trata o
-        seu diário como o espaço privado que ele deve ser. Se os cinco critérios acima
-        fazem sentido para você, vale conhecer.
+        <strong>memória</strong>. Ela conversa com você, lembra do seu contexto para
+        tornar cada conversa mais pessoal, conecta seus padrões ao longo do tempo, é
+        grátis para começar e trata o seu diário como o espaço privado que ele deve ser.
+        Se os cinco critérios acima fazem sentido para você, vale conhecer.
       </p>
     </>
   );
@@ -97,7 +98,7 @@ function Body() {
 const faq = [
   {
     q: 'Qual é o melhor app de diário emocional?',
-    a: 'Não existe um único "melhor" — depende do que você valoriza. Mas o critério que mais diferencia é a memória: um app que lembra do seu contexto torna a reflexão pessoal em vez de genérica. Avalie também voz, privacidade, facilidade de hábito e preço.',
+    a: 'Não existe um único "melhor" — depende do que você valoriza. Mas o critério que mais diferencia é a memória: um app que lembra do seu contexto torna a reflexão pessoal em vez de genérica. Avalie também padrões, privacidade, facilidade de hábito e preço.',
   },
   {
     q: 'Vale a pena usar um app de diário com IA?',
@@ -109,7 +110,7 @@ const faq = [
   },
   {
     q: 'Preciso pagar por um app de diário emocional?',
-    a: 'Nem sempre. Muitos, como a Emori, são grátis para começar e usar no dia a dia, com um plano pago opcional para recursos avançados como memória estendida e voz sem limite.',
+    a: 'Nem sempre. Muitos, como a Emori, são grátis para começar e usar no dia a dia, com um plano pago opcional para recursos avançados como memória estendida e uma leitura mais profunda dos padrões.',
   },
 ];
 

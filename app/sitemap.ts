@@ -18,6 +18,7 @@ const staticRoutes: Record<
   '': { priority: 1.0, changeFrequency: 'weekly' }, // home de cada idioma
   produto: { priority: 0.8, changeFrequency: 'monthly' },
   pro: { priority: 0.8, changeFrequency: 'monthly' },
+  sobre: { priority: 0.7, changeFrequency: 'monthly' },
   blog: { priority: 0.6, changeFrequency: 'weekly' }, // índice do blog
   privacidade: { priority: 0.3, changeFrequency: 'yearly' },
   termos: { priority: 0.3, changeFrequency: 'yearly' },
