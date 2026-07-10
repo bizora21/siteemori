@@ -28,10 +28,10 @@ export const CONTACT_EMAIL = 'ola@aemori.com';
 // apontarem para a Google Play. Muda para FALSE quando a app for pública.
 export const CLOSED_BETA = true;
 
-// >>> COLA AQUI o endpoint que recebe os e-mails da fila de espera (POST).
-// Ex.: Formspree (https://formspree.io/f/xxxx), Tally, Google Forms (formResponse),
-// ou um Worker teu. Se ficar vazio, o botão de envio cai para um mailto de reserva.
-export const WAITLIST_ENDPOINT = '';
+// Endpoint que recebe os e-mails da lista de espera (POST JSON).
+// Formspree — o diálogo envia { email, ... } com Accept: application/json.
+// Se ficar vazio, o botão de envio cai para um mailto de reserva.
+export const WAITLIST_ENDPOINT = 'https://formspree.io/f/xnjkebbr';
 
 // E-mail de reserva usado quando WAITLIST_ENDPOINT está vazio.
 export const WAITLIST_EMAIL = CONTACT_EMAIL;

@@ -30,7 +30,12 @@ export default function WaitlistDialog({ t }: { t: Dictionary['waitlist'] }) {
         const res = await fetch(WAITLIST_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ email, source: 'aemori.com', list: 'waitlist' }),
+          body: JSON.stringify({
+            email,
+            _subject: 'Nova inscrição — lista de espera Emori',
+            source: 'aemori.com',
+            list: 'waitlist',
+          }),
         });
         if (!res.ok) throw new Error('request failed');
       } else {
