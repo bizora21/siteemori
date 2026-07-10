@@ -13,8 +13,72 @@ const meta = {
 function Body() {
   return (
     <>
-      {/* TODO: localizar PT-PT — traduzir o corpo completo a partir da variante pt-br. */}
-      <p>{meta.tldr}</p>
+      <p>
+        As palavras são usadas quase como sinónimos, mas há uma diferença útil de
+        compreender. Não é sobre certo e errado — é sobre <strong>intenção</strong>. Saber
+        qual queres ajuda a escolher a prática (e a app) que realmente serve o teu
+        objetivo.
+      </p>
+
+      <h2>O que é um diário, no sentido clássico?</h2>
+      <p>
+        Um diário é, tradicionalmente, um registo do que aconteceu: o dia, os factos, os
+        acontecimentos, por vezes acompanhados do que sentiste. O foco é{' '}
+        <strong>documentar</strong>. O valor está na memória — poder voltar e reler quem
+        eras, o que viveste, como as coisas mudaram.
+      </p>
+
+      <h2>O que é journaling?</h2>
+      <p>
+        Journaling é usar a escrita como <strong>ferramenta</strong>, não só como registo.
+        Em vez de apenas contar o dia, escreves para pensar melhor, processar emoções,
+        tomar decisões ou desenvolver hábitos. Costuma envolver métodos: sugestões,
+        gratidão, escrita expressiva, morning pages, journaling emocional. O foco é a
+        transformação, não o arquivo.
+      </p>
+
+      <h2>Qual é a diferença prática entre os dois?</h2>
+      <ul>
+        <li>
+          <strong>Diário</strong> → “o que aconteceu?”. Orientado ao passado e à memória.
+        </li>
+        <li>
+          <strong>Journaling</strong> → “o que isto significa e o que faço com isto?”.
+          Orientado à reflexão e ao presente/futuro.
+        </li>
+        <li>
+          <strong>Diário</strong> é mais livre e narrativo; <strong>journaling</strong>{' '}
+          costuma ser mais guiado, com técnica.
+        </li>
+      </ul>
+
+      <h2>Qual devo escolher?</h2>
+      <p>Depende do que procuras:</p>
+      <ol>
+        <li>
+          Queres <strong>guardar a tua vida</strong> e reler no futuro? Diário.
+        </li>
+        <li>
+          Queres <strong>compreender e mudar</strong> algo em ti? Journaling.
+        </li>
+        <li>
+          Queres <strong>lidar com emoções</strong> do dia a dia? Journaling emocional — o
+          meio-termo mais procurado.
+        </li>
+      </ol>
+      <p>
+        A boa notícia: não precisas de escolher para sempre. Muita gente regista o dia
+        <em> e</em> usa sugestões para refletir. O importante é que a prática combine com a
+        tua intenção do momento.
+      </p>
+
+      <h2>Onde entra uma app com IA?</h2>
+      <p>
+        Uma app como a Emori esbate a fronteira entre os dois — no bom sentido. Registas o
+        dia (diário) e, ao mesmo tempo, ela faz perguntas que transformam esse registo em
+        reflexão (journaling). Como se lembra do teu contexto, a memória do diário alimenta
+        a profundidade do journaling: dois valores num só hábito.
+      </p>
     </>
   );
 }

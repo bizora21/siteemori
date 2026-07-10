@@ -13,8 +13,71 @@ const meta = {
 function Body() {
   return (
     <>
-      {/* TODO: localizar PT-PT — traduzir o corpo completo a partir da variante pt-br. */}
-      <p>{meta.tldr}</p>
+      <p>
+        A ansiedade adora o escuro da mente — onde os pensamentos se repetem, se misturam e
+        crescem sem controlo. Escrever acende a luz. Ao passar o que está na cabeça para o
+        papel (ou o ecrã), fazes algo que a ansiedade detesta: transformas névoa em objeto,
+        e um objeto conseguimos olhar de frente.
+      </p>
+
+      <h2>Porque é que escrever acalma a ansiedade?</h2>
+      <p>Por três razões principais:</p>
+      <ul>
+        <li>
+          <strong>Quebra a ruminação:</strong> os pensamentos ansiosos andam em ciclo
+          porque nunca “terminam”. No papel, terminam — têm princípio, meio e fim.
+        </li>
+        <li>
+          <strong>Nomear reduz a intensidade:</strong> dar nome a uma emoção (“isto é medo
+          de falhar”) diminui a ativação. O ato de rotular já é regulação.
+        </li>
+        <li>
+          <strong>Devolve controlo:</strong> a ansiedade é, no fundo, a sensação de que
+          algo está fora de controlo. Organizar o problema em palavras devolve uma dose de
+          agência.
+        </li>
+      </ul>
+
+      <h2>O que fazer num pico de ansiedade?</h2>
+      <p>
+        Faz um <strong>despejo mental</strong> (brain dump): escreve tudo o que está na tua
+        cabeça, sem ordem, sem filtro, sem parares para corrigir. Não organizes — esvazia.
+        O objetivo não é um texto bonito, é tirar o peso de dentro. Depois de esvaziar,
+        muitas pessoas percebem que dois ou três pensamentos se estavam a disfarçar de
+        vinte.
+      </p>
+
+      <h2>Como escrever quando estou ansioso demais para escrever?</h2>
+      <p>
+        Baixa a fasquia. Nos picos, não tentes redigir bonito — faz um despejo em frases
+        curtas, palavras soltas, tópicos. Não precisa de ordem nem de sentido. Se nem isso
+        vier, escreve “não consigo escrever agora” e descreve porque está difícil. Uma app
+        que te faz uma pergunta simples (“o que está mais pesado agora?”) também ajuda a dar
+        o primeiro passo quando a página em branco paralisa.
+      </p>
+
+      <h2>Escrita para o dia a dia: prevenir, não só apagar fogos</h2>
+      <p>
+        O maior ganho não vem só nos picos, mas na regularidade. Escrever um pouco todos os
+        dias cria um mapa dos teus gatilhos: começas a notar que a ansiedade sobe antes de
+        certas reuniões, a certas horas, com certas pessoas. Ver o padrão é o primeiro passo
+        para não seres apanhado de surpresa por ele.
+      </p>
+      <p>Algumas sugestões úteis para a ansiedade:</p>
+      <ul>
+        <li>“De que tenho medo exatamente aqui?”</li>
+        <li>“Qual é a pior coisa realista que pode acontecer — e eu aguentaria?”</li>
+        <li>“O que está sob o meu controlo nisto? E o que não está?”</li>
+        <li>“O que diria a um amigo a sentir isto?”</li>
+      </ul>
+
+      <h2>Escrever substitui tratamento para a ansiedade?</h2>
+      <p>
+        Não. Escrever é uma ferramenta de apoio poderosa, mas ansiedade intensa,
+        persistente ou incapacitante pede acompanhamento profissional. Pensa no diário como
+        um aliado do dia a dia — algo que caminha ao lado da terapia e do cuidado médico,
+        nunca no lugar deles. Se a ansiedade te está a dominar, procura ajuda especializada.
+      </p>
     </>
   );
 }

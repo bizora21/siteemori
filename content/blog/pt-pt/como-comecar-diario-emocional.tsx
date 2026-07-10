@@ -13,8 +13,84 @@ const meta = {
 function Body() {
   return (
     <>
-      {/* TODO: localizar PT-PT — traduzir o corpo completo a partir da variante pt-br. */}
-      <p>{meta.tldr}</p>
+      <p>
+        Um diário emocional é um espaço onde registas o que sentes, não apenas o que
+        acontece. Ao contrário de uma agenda ou de um diário de factos, o foco está nas
+        emoções: o que sentiste, quando, e o que pode ter provocado aquilo. Começar é mais
+        simples do que parece — e a parte mais difícil, manter o hábito, tem soluções
+        concretas.
+      </p>
+
+      <h2>O que é um diário emocional e para que serve?</h2>
+      <p>
+        Um diário emocional é a prática de escrever regularmente sobre as tuas emoções para
+        as compreenderes melhor. Serve para dar nome ao que sentes, notar padrões (o que te
+        tira do sério, o que te acalma) e criar uma distância saudável de pensamentos que,
+        na cabeça, andam às voltas. A investigação sobre escrita expressiva associa este
+        hábito a menos ruminação e mais clareza emocional.
+      </p>
+
+      <h2>Por onde começar quando não sei o que escrever?</h2>
+      <p>
+        Começa pelo presente. A pergunta mais útil é: <strong>“como estou agora?”</strong>{' '}
+        Escreve a primeira resposta que vier, mesmo que seja “não sei” ou “cansado”. A
+        partir daí, puxa o fio: porquê cansado? Desde quando? O que aconteceu hoje? Não
+        precisas de um tema — precisas de um ponto de partida, e o presente está sempre
+        disponível.
+      </p>
+      <ul>
+        <li>“Hoje senti… porque…”</li>
+        <li>“A coisa que mais pesou hoje foi…”</li>
+        <li>“Se pudesse mudar uma coisa do meu dia, seria…”</li>
+        <li>“Uma coisa boa, por menor que seja, foi…”</li>
+      </ul>
+
+      <h2>Quanto tempo e com que frequência devo escrever?</h2>
+      <p>
+        Começa com <strong>5 minutos por dia</strong>. É pouco o suficiente para não
+        adiares, e o bastante para chegares a algo real. A frequência importa mais do que a
+        duração: escrever 5 minutos todos os dias vale mais do que uma hora uma vez por
+        mês. Se cinco minutos parecerem demais num dia difícil, escreve uma frase. Uma
+        frase também conta.
+      </p>
+
+      <h2>Caderno ou aplicação: o que é melhor para iniciantes?</h2>
+      <p>
+        Os dois funcionam — o melhor é o que vais mesmo usar. O caderno tem o encanto do
+        analógico e zero distração. A aplicação tem uma vantagem prática enorme para quem
+        está a começar: está sempre no teu telemóvel, lembra-te de escrever e, no caso de
+        uma app com IA como a Emori, ainda conversa contigo e guarda o contexto, o que
+        ajuda quando a página em branco trava.
+      </p>
+
+      <h2>Como manter o hábito sem desistir na segunda semana?</h2>
+      <p>
+        A maioria das pessoas desiste porque tenta ser perfeita. Evita isso com três
+        regras:
+      </p>
+      <ol>
+        <li>
+          <strong>Ancora num gatilho:</strong> escreve sempre a seguir a algo que já fazes
+          (lavar os dentes, deitar-te na cama). O hábito antigo puxa o novo.
+        </li>
+        <li>
+          <strong>Baixa a fasquia:</strong> a meta é escrever, não escrever bem. Rabisco,
+          desabafo, lista solta — tudo vale.
+        </li>
+        <li>
+          <strong>Não falhes duas vezes:</strong> saltar um dia acontece. Só não saltes
+          dois seguidos. É a falha em série que mata o hábito, não o deslize isolado.
+        </li>
+      </ol>
+
+      <h2>E se escrever mexer com emoções difíceis?</h2>
+      <p>
+        É normal e, muitas vezes, é o objetivo. Mas respeita o teu limite: se um assunto
+        for pesado demais, escreve sobre ele de longe (“hoje não consigo falar disto, mas
+        sei que está aqui”) e volta quando estiveres pronto. Um diário é autoconhecimento,
+        não terapia. Se a dor for intensa ou constante, procura um profissional de saúde —
+        o diário pode caminhar ao lado desse cuidado, nunca no lugar dele.
+      </p>
     </>
   );
 }
