@@ -6,7 +6,7 @@ import type { Dictionary } from './pt-br';
 const ptPT: Dictionary = {
   meta: {
     siteName: 'Emori',
-    tagline: 'O teu diário emocional com IA que se lembra de ti',
+    tagline: 'A Emori: o teu diário emocional com IA que se lembra de ti',
   },
 
   nav: {

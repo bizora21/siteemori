@@ -49,6 +49,7 @@ export default function Footer({ lang, dict }: Props) {
             >
               {CONTACT_EMAIL}
             </a>
+            <p className="mt-3 text-xs text-ink-700/70">a Emori · aemori.com</p>
           </div>
 
           {cols.map((col) => (

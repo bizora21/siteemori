@@ -6,11 +6,16 @@ import { absoluteUrl } from './seo';
 import type { Locale } from '@/i18n/config';
 import { bcp47 } from '@/i18n/config';
 
+// Nomes alternativos da marca — ajudam o Google a associar "a Emori", "aemori"
+// e "app Emori" ao domínio, capturando as pesquisas long-tail da marca.
+const BRAND_ALTERNATE_NAMES = ['a Emori', 'aemori', 'Emori app', 'app Emori'];
+
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Emori',
+    alternateName: BRAND_ALTERNATE_NAMES,
     url: SITE_URL,
     logo: absoluteUrl('/icon-512.svg'),
     description:
@@ -24,6 +29,7 @@ export function websiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Emori',
+    alternateName: BRAND_ALTERNATE_NAMES,
     url: SITE_URL,
     inLanguage: ['pt-BR', 'pt-PT'],
   };

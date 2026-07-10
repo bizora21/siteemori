@@ -4,7 +4,7 @@
 const ptBR = {
   meta: {
     siteName: 'Emori',
-    tagline: 'Seu diário emocional com IA que lembra de você',
+    tagline: 'A Emori: seu diário emocional com IA que lembra de você',
   },
 
   nav: {
