@@ -50,19 +50,22 @@ export default function CtaButton({
     );
   }
 
+  // App publicada → badge OFICIAL da Google Play (cores e logótipo oficiais).
   return (
     <a
       href={playStoreHref(campaign)}
       rel="noopener"
-      className={`${base} ${styles(variant)} ${className}`}
+      aria-label={label}
+      className={`inline-block ${className}`}
     >
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-        <path d="M3.6 2.3c-.2.2-.3.5-.3.9v17.6c0 .4.1.7.3.9l.1.1L13.5 12v-.1L3.7 2.2l-.1.1z" />
-        <path d="M17 15.3l-3.3-3.3v-.1L17 8.7l.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3L17.1 15.2l-.1.1z" opacity=".9" />
-        <path d="M17.1 15.2 13.5 11.9 3.6 21.8c.4.4 1 .4 1.7 0l11.8-6.6" />
-        <path d="M17.1 8.7 5.3 2.1c-.7-.4-1.3-.4-1.7 0l9.9 9.8 3.6-3.2z" opacity=".7" />
-      </svg>
-      {label}
+      {/* eslint-disable-next-line @next/next/no-img-element -- static export; asset oficial da Google */}
+      <img
+        src="/badges/google-play-pt.png"
+        alt={label}
+        width={646}
+        height={250}
+        className="h-14 w-auto md:h-[60px]"
+      />
     </a>
   );
 }
