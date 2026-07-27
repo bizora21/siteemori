@@ -15,22 +15,19 @@ export const PLAY_STORE_URL =
 // Deixa vazio para não carregar o script.
 export const CLOUDFLARE_ANALYTICS_TOKEN = '';
 
-// Imagem Open Graph por defeito (1200x630).
-// SVG funciona como placeholder; para melhor suporte em redes sociais, exporta um PNG
-// e troca a extensão aqui (ver README › Open Graph).
-export const DEFAULT_OG_IMAGE = '/og/og-default.svg';
+// Imagem Open Graph por defeito (1200x630, PNG raster — renderiza em redes sociais
+// e é elegível para o Google Discover).
+export const DEFAULT_OG_IMAGE = '/og/og-default.png';
 
 // E-mail de contacto (opcional, usado em metadados/estruturados e na fila de espera).
 export const CONTACT_EMAIL = 'ola@aemori.com';
 
-// --- Fase de teste fechado (closed beta) --------------------------------------
-// Enquanto TRUE, todos os CTAs abrem o diálogo de fila de espera em vez de
-// apontarem para a Google Play. Muda para FALSE quando a app for pública.
-export const CLOSED_BETA = true;
+// A app já está publicada na Google Play → CTAs apontam para o download real.
+// (A antiga flag de teste fechado deixou de fazer sentido.)
+export const CLOSED_BETA = false;
 
-// Endpoint que recebe os e-mails da lista de espera (POST JSON).
-// Formspree — o diálogo envia { email, ... } com Accept: application/json.
-// Se ficar vazio, o botão de envio cai para um mailto de reserva.
+// Lista de espera do iOS: a versão para iPhone ainda não saiu. O diálogo
+// recolhe e-mails para avisar no lançamento iOS. Formspree recebe o POST JSON.
 export const WAITLIST_ENDPOINT = 'https://formspree.io/f/xnjkebbr';
 
 // E-mail de reserva usado quando WAITLIST_ENDPOINT está vazio.

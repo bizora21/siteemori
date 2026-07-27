@@ -37,22 +37,23 @@ const ptPT: Dictionary = {
   },
 
   waitlist: {
-    badge: 'Em breve no Android',
-    buttonLabel: 'Entrar na lista de espera',
-    dialogTitle: 'Entra na lista de espera da Emori',
+    badge: 'Em breve no iPhone',
+    buttonLabel: 'Avisa-me no lançamento iOS',
+    triggerIos: 'Tens iPhone? Avisamos quando a Emori chegar ao iOS.',
+    dialogTitle: 'A Emori está a chegar ao iPhone',
     dialogIntro:
-      'A Emori está a chegar ao Android. Deixa o teu e-mail e avisamos assim que estiver disponível para ti.',
+      'A Emori já está disponível para Android. A versão para iPhone está a caminho — deixa o teu e-mail e avisamos assim que sair no iOS.',
     emailLabel: 'O teu melhor e-mail',
     emailPlaceholder: 'tu@exemplo.com',
     submit: 'Quero ser avisado',
     submitting: 'A enviar…',
-    successTitle: 'Pronto! Estás na lista.',
+    successTitle: 'Pronto! Avisamos-te.',
     successBody:
-      'Assim que a Emori estiver disponível, recebes o aviso por e-mail. Obrigada por esperares.',
+      'Assim que a Emori chegar ao iPhone, recebes o aviso por e-mail. Obrigada!',
     errorTitle: 'Não resultou agora',
     errorBody: 'Tenta novamente dentro de momentos ou escreve para',
     close: 'Fechar',
-    privacyNote: 'Usamos o teu e-mail apenas para avisar do lançamento. Sem spam.',
+    privacyNote: 'Usamos o teu e-mail apenas para avisar do lançamento no iOS. Sem spam.',
   },
 
   footer: {

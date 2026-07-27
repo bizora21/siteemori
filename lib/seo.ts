@@ -64,7 +64,14 @@ export function buildMetadata({
     },
     robots: noindex
       ? { index: false, follow: false }
-      : { index: true, follow: true },
+      : {
+          index: true,
+          follow: true,
+          // Elegibilidade a Google Discover + previews ricos (imagem grande, snippet completo).
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+          'max-video-preview': -1,
+        },
     openGraph: {
       type,
       siteName: 'Emori',
@@ -73,7 +80,15 @@ export function buildMetadata({
       url: canonical,
       locale: ogLocale[lang],
       alternateLocale: locales.filter((l) => l !== lang).map((l) => ogLocale[l]),
-      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+          type: ogImageUrl.endsWith('.png') ? 'image/png' : undefined,
+        },
+      ],
       ...(publishedTime ? { publishedTime } : {}),
     },
     twitter: {

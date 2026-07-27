@@ -5,7 +5,10 @@ import { getDictionary } from '@/i18n';
 import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
 import CtaButton from '@/components/CtaButton';
+import IosWaitlistLink from '@/components/IosWaitlistLink';
 import FAQ from '@/components/FAQ';
+import JsonLd from '@/components/JsonLd';
+import { softwareApplicationSchema } from '@/lib/schema';
 import { localizedPath } from '@/lib/seo';
 import { CLOSED_BETA } from '@/lib/constants';
 
@@ -51,6 +54,7 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
             {CLOSED_BETA ? dict.common.betaNote : t.primaryCtaNote}
           </p>
           <p className="text-xs text-ink-700/80">{dict.common.androidNote}</p>
+          <IosWaitlistLink label={dict.waitlist.triggerIos} className="mt-1" />
         </div>
       </section>
 
@@ -119,6 +123,9 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
 
       {/* FAQ + FAQPage JSON-LD */}
       <FAQ title={dict.common.faqTitle} items={t.faq} />
+
+      {/* SoftwareApplication — ajuda a app a aparecer como rich result */}
+      <JsonLd data={softwareApplicationSchema(lang, t.metaDescription)} />
     </PageShell>
   );
 }

@@ -35,23 +35,51 @@ export function websiteSchema() {
   };
 }
 
-export function softwareApplicationSchema(lang: Locale, description: string) {
+interface AppSchemaOpts {
+  /** avaliação média real da Play Store (ex.: 4.7). Só passar com dados reais. */
+  ratingValue?: number;
+  ratingCount?: number;
+  /** URLs de screenshots reais do app (Front 3). */
+  screenshots?: string[];
+}
+
+export function softwareApplicationSchema(
+  lang: Locale,
+  description: string,
+  opts: AppSchemaOpts = {},
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Emori',
-    operatingSystem: 'Android',
+    alternateName: BRAND_ALTERNATE_NAMES,
+    operatingSystem: 'Android 8.0+',
     applicationCategory: 'LifestyleApplication',
     inLanguage: bcp47[lang],
     description,
+    url: SITE_URL,
     installUrl: PLAY_STORE_URL,
     downloadUrl: PLAY_STORE_URL,
     identifier: ANDROID_PACKAGE,
+    author: { '@type': 'Organization', name: 'Emori', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'Emori', url: SITE_URL },
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'BRL',
     },
+    ...(opts.screenshots?.length
+      ? { screenshot: opts.screenshots.map((s) => absoluteUrl(s)) }
+      : {}),
+    ...(opts.ratingValue && opts.ratingCount
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: opts.ratingValue,
+            ratingCount: opts.ratingCount,
+          },
+        }
+      : {}),
   };
 }
 

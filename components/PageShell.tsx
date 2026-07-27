@@ -1,6 +1,5 @@
 import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
-import { CLOSED_BETA } from '@/lib/constants';
 import Header from './Header';
 import Footer from './Footer';
 import WaitlistDialog from './WaitlistDialog';
@@ -23,7 +22,8 @@ export default function PageShell({ lang, path, children }: Props) {
         {children}
       </main>
       <Footer lang={lang} dict={dict} />
-      {CLOSED_BETA && <WaitlistDialog t={dict.waitlist} />}
+      {/* Diálogo da lista de espera do iOS — aberto pelo IosWaitlistLink */}
+      <WaitlistDialog t={dict.waitlist} />
     </>
   );
 }

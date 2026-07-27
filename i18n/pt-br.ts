@@ -35,22 +35,23 @@ const ptBR = {
   },
 
   waitlist: {
-    badge: 'Em breve no Android',
-    buttonLabel: 'Entrar na lista de espera',
-    dialogTitle: 'Entre na lista de espera da Emori',
+    badge: 'Em breve no iPhone',
+    buttonLabel: 'Avise-me no lançamento iOS',
+    triggerIos: 'Tem iPhone? Avisamos quando a Emori chegar ao iOS.',
+    dialogTitle: 'A Emori está a chegar ao iPhone',
     dialogIntro:
-      'A Emori está a chegar ao Android. Deixe o seu e-mail e avisamos assim que ela estiver disponível para você.',
+      'A Emori já está disponível para Android. A versão para iPhone está a caminho — deixe o seu e-mail e avisamos assim que ela sair no iOS.',
     emailLabel: 'Seu melhor e-mail',
     emailPlaceholder: 'voce@exemplo.com',
     submit: 'Quero ser avisado',
     submitting: 'Enviando…',
-    successTitle: 'Pronto! Você está na lista.',
+    successTitle: 'Pronto! Avisamos você.',
     successBody:
-      'Assim que a Emori estiver disponível, você recebe o aviso por e-mail. Obrigada por esperar.',
+      'Assim que a Emori chegar ao iPhone, você recebe o aviso por e-mail. Obrigada!',
     errorTitle: 'Não deu certo agora',
     errorBody: 'Tente novamente em instantes ou escreva para',
     close: 'Fechar',
-    privacyNote: 'Usamos o seu e-mail apenas para avisar do lançamento. Sem spam.',
+    privacyNote: 'Usamos o seu e-mail apenas para avisar do lançamento no iOS. Sem spam.',
   },
 
   footer: {
