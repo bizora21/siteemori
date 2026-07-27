@@ -111,6 +111,10 @@ const ptBR = {
         body: 'Com o tempo, padrões aparecem e você passa a reconhecer o que te afeta.',
       },
     ],
+    therapyTitle: 'Uma aliada da sua terapia',
+    therapyBody:
+      'A Emori não substitui o acompanhamento profissional — ela potencia. Registrando o que você sente no dia a dia, você chega às sessões com clareza e padrões concretos, em vez de tentar lembrar "como foi a semana". O seu psicólogo passa a trabalhar com o que realmente aconteceu, e o intervalo entre as consultas deixa de ser um vazio.',
+    therapyNote: 'Quiser? Você pode compartilhar esse retrato com o seu terapeuta.',
     faq: [
       {
         q: 'O que é a Emori?',
@@ -127,6 +131,10 @@ const ptBR = {
       {
         q: 'Em quais aparelhos a Emori funciona?',
         a: 'A Emori está disponível para celulares Android na Google Play. A versão para iPhone está em desenvolvimento.',
+      },
+      {
+        q: 'A Emori ajuda no acompanhamento com um psicólogo ou terapeuta?',
+        a: 'Sim. Muita gente usa a Emori entre as sessões para registrar o que sente e chegar à terapia com clareza e padrões concretos para discutir. Ela não substitui o acompanhamento profissional — complementa, ajudando você (e, se quiser, o seu terapeuta) a enxergar melhor a sua semana.',
       },
       {
         q: 'A Emori substitui terapia?',
@@ -168,12 +176,18 @@ const ptBR = {
         body:
           'A Emori foi pensada para o celular, para caber nos momentos reais do seu dia — na fila, antes de dormir, no intervalo. É rápida de abrir e não exige nada além de você estar presente por alguns minutos.',
       },
+      {
+        h2: 'Uma aliada da sua terapia',
+        body:
+          'A Emori não substitui o acompanhamento profissional — ela potencia. Quem faz terapia costuma perder metade da sessão tentando lembrar como foi a semana. Ao registrar o que sente no dia a dia, você chega com clareza e padrões concretos para discutir, e o seu psicólogo trabalha com o que realmente aconteceu, não só com a memória do último dia. Se quiser, você pode compartilhar esse retrato com o seu terapeuta. O intervalo entre as consultas deixa de ser um vazio.',
+      },
     ],
     featuresTitle: 'Principais recursos',
     features: [
       'Memória que guarda o seu contexto',
       'IA que conversa e faz perguntas',
       'Reconhecimento de padrões emocionais',
+      'Aliada do acompanhamento terapêutico',
       'Diário por escrito, no seu ritmo',
       'Espaço privado e íntimo',
       'Grátis para começar',
@@ -190,6 +204,10 @@ const ptBR = {
       {
         q: 'A Emori dá conselhos?',
         a: 'A Emori reflete com você e faz perguntas para te ajudar a se entender. Ela não é uma terapeuta nem dá diagnósticos — o foco é o autoconhecimento.',
+      },
+      {
+        q: 'Dá para usar a Emori junto com a terapia?',
+        a: 'Sim, e combinam muito bem. A Emori guarda o que você viveu entre as sessões, para você chegar à terapia com clareza e padrões concretos em vez de depender da memória. Ela complementa o acompanhamento profissional — nunca o substitui — e o retrato que ela devolve pode ser compartilhado com o seu terapeuta, se você quiser.',
       },
       {
         q: 'Quanto tempo por dia preciso usar?',

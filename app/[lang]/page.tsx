@@ -103,6 +103,20 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
         </ol>
       </section>
 
+      {/* Aliada da terapia — vantagem em destaque */}
+      <section
+        className="mt-20 rounded-3xl bg-sage-100 px-6 py-12 md:px-10"
+        aria-labelledby="terapia"
+      >
+        <h2 id="terapia" className="font-serif text-2xl text-ink-900 md:text-3xl">
+          {t.therapyTitle}
+        </h2>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-800">
+          {t.therapyBody}
+        </p>
+        <p className="mt-3 text-sm italic text-sage-700">{t.therapyNote}</p>
+      </section>
+
       {/* TL;DR reforço + CTA */}
       <section className="mt-20 rounded-3xl bg-clay-600 px-6 py-12 text-center text-cream-50">
         <h2 className="font-serif text-2xl md:text-3xl">{dict.cta.tryEmori}</h2>
