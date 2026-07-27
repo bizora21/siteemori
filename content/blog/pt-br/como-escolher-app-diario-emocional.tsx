@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Para escolher um app de diário emocional, avalie cinco coisas: se ele lembra do seu contexto, se te ajuda a ver padrões, como trata a sua privacidade, se é fácil de manter como hábito e o preço. A memória é o critério que mais muda a experiência: um app que lembra do que você contou torna a reflexão pessoal em vez de genérica.',
   datePublished: '2026-07-05',
   readingMinutes: 7,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1759296844873-e0c694c24284?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Um caderno com caneta e um celular sobre uma mesa de madeira',
+    credit: 'Jakub Żerdzicki',
+    creditUrl: 'https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {

@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Para começar um diário emocional, escolhe um sítio fixo (aplicação ou caderno), escreve durante 5 minutos sobre como te sentes agora — sem te preocupares com a forma — e repete à mesma hora todos os dias. O segredo não é escrever bonito, é escrever com frequência e honestidade.',
   datePublished: '2026-07-04',
   readingMinutes: 6,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1769794370990-614f765fa360?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxvcGVuJTIwYmxhbmslMjBub3RlYm9vayUyMHBlbiUyMHdhcm0lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNDd8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Uma vela acesa ao lado de um caderno aberto e um portátil',
+    credit: 'Yen Vu',
+    creditUrl: 'https://unsplash.com/@yenvu2410?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {

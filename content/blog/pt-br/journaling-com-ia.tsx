@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Journaling com IA é escrever num app onde uma inteligência artificial responde, faz perguntas e — no melhor caso — lembra do seu contexto. A memória é o que muda tudo: em vez de recomeçar do zero a cada dia, o app conecta o que você viveu ao longo do tempo, tornando a reflexão mais profunda e pessoal.',
   datePublished: '2026-07-04',
   readingMinutes: 6,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1774029764284-1e52eddb2e0f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Um celular sobre um papel enrolado numa mesa de madeira',
+    credit: 'Jakub Żerdzicki',
+    creditUrl: 'https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {

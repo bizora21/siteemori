@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Escrever ajuda na ansiedade porque tira os pensamentos do ciclo mental e transforma-os em palavras concretas, o que reduz a ruminação e devolve a sensação de controlo. Nos picos, funciona um “despejo” de tudo o que está na cabeça; no dia a dia, escrever regularmente ajuda a identificar gatilhos antes que cresçam.',
   datePublished: '2026-07-04',
   readingMinutes: 6,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1736819341395-15591452a54c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxjYWxtJTIwdGVhJTIwY3VwJTIwaGFuZHMlMjB3aW5kb3d8ZW58MXwwfHx8MTc4NTE1ODI1NXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Pessoa a segurar uma chávena em frente a uma janela',
+    credit: 'Leiada Krözjhen',
+    creditUrl: 'https://unsplash.com/@leiadakrozjhen?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {

@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Na prática, “diário” costuma significar registrar o que aconteceu no dia, enquanto “journaling” é usar a escrita como ferramenta intencional para pensar, sentir e crescer (com técnicas, prompts e temas). Se você quer memória, escolha o diário; se quer transformação, escolha o journaling — e nada impede juntar os dois.',
   datePublished: '2026-07-04',
   readingMinutes: 5,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxoYW5kcyUyMHdyaXRpbmclMjBqb3VybmFsJTIwbm90ZWJvb2slMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgzMDR8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Pessoa escrevendo com uma caneta num caderno',
+    credit: 'Thought Catalog',
+    creditUrl: 'https://unsplash.com/@thoughtcatalog?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {

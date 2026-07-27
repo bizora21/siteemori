@@ -8,6 +8,12 @@ const meta = {
   tldr: 'Quando você não sabe o que está sentindo, não tente nomear a emoção de cara. Comece descrevendo o corpo (“meu peito está apertado”), o que aconteceu no dia e o que você evita pensar. A emoção costuma aparecer sozinha quando você para de tentar forçá-la.',
   datePublished: '2026-07-04',
   readingMinutes: 6,
+  hero: {
+    src: 'https://images.unsplash.com/photo-1509029032154-54ba8b3216d4?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjB0aG91Z2h0ZnVsJTIwd2luZG93JTIwbW9ybmluZyUyMGxpZ2h0fGVufDF8MHx8fDE3ODUxNTgyNTF8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Um homem de óculos olhando pela janela, pensativo',
+    credit: 'Laurenz Kleinheider',
+    creditUrl: 'https://unsplash.com/@laurlenz?utm_source=aemori&utm_medium=referral',
+  },
 };
 
 function Body() {
