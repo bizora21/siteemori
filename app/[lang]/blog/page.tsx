@@ -38,13 +38,26 @@ export default function BlogIndex({ params }: { params: { lang: Locale } }) {
             <Link
               key={a.meta.slug}
               href={localizedPath(lang, `blog/${a.meta.slug}`)}
-              className="block rounded-2xl border border-clay-100 bg-cream-50 p-6 transition-colors hover:border-clay-200 hover:bg-cream-100"
+              className="block overflow-hidden rounded-2xl border border-clay-100 bg-cream-50 transition-colors hover:border-clay-200 hover:bg-cream-100"
             >
-              <h2 className="font-serif text-xl text-ink-900">{a.meta.title}</h2>
-              <p className="mt-2 leading-relaxed text-ink-700">{a.meta.description}</p>
-              <p className="mt-3 text-sm text-clay-600">
-                {a.meta.readingMinutes} {dict.blog.readingTime} · {dict.common.readMore} →
-              </p>
+              {a.meta.hero && (
+                // eslint-disable-next-line @next/next/no-img-element -- static export, imagem externa
+                <img
+                  src={a.meta.hero.src}
+                  alt={a.meta.hero.alt}
+                  width={1600}
+                  height={900}
+                  loading="lazy"
+                  className="aspect-[16/9] w-full object-cover"
+                />
+              )}
+              <div className="p-6">
+                <h2 className="font-serif text-xl text-ink-900">{a.meta.title}</h2>
+                <p className="mt-2 leading-relaxed text-ink-700">{a.meta.description}</p>
+                <p className="mt-3 text-sm text-clay-600">
+                  {a.meta.readingMinutes} {dict.blog.readingTime} · {dict.common.readMore} →
+                </p>
+              </div>
             </Link>
           ))}
         </div>

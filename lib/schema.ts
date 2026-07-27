@@ -101,7 +101,9 @@ export function articleSchema(input: {
     mainEntityOfPage: { '@type': 'WebPage', '@id': input.url },
     datePublished: input.datePublished,
     dateModified: input.dateModified ?? input.datePublished,
-    ...(input.image ? { image: [absoluteUrl(input.image)] } : {}),
+    ...(input.image
+      ? { image: [input.image.startsWith('http') ? input.image : absoluteUrl(input.image)] }
+      : {}),
     author: { '@type': 'Organization', name: 'Emori' },
     publisher: {
       '@type': 'Organization',

@@ -9,6 +9,7 @@ import Prose from '@/components/Prose';
 import TldrBlock from '@/components/TldrBlock';
 import FAQ from '@/components/FAQ';
 import CtaButton from '@/components/CtaButton';
+import ArticleHeroImage from '@/components/ArticleHeroImage';
 import JsonLd from '@/components/JsonLd';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import { getAllSlugs, getArticle } from '@/content/blog';
@@ -34,7 +35,7 @@ export function generateMetadata({
     description: article.meta.description,
     type: 'article',
     publishedTime: article.meta.datePublished,
-    ogImage: article.meta.ogImage,
+    ogImage: article.meta.hero?.src ?? article.meta.ogImage,
   });
 }
 
@@ -69,6 +70,8 @@ export default function ArticlePage({
           {dict.blog.readingTime}
         </p>
 
+        {meta.hero && <ArticleHeroImage hero={meta.hero} />}
+
         <TldrBlock label={dict.common.tldrLabel}>{meta.tldr}</TldrBlock>
 
         <Prose>
@@ -98,7 +101,7 @@ export default function ArticlePage({
             url,
             datePublished: meta.datePublished,
             dateModified: meta.dateModified,
-            image: meta.ogImage,
+            image: meta.hero?.src ?? meta.ogImage,
           }),
           breadcrumbSchema([
             { name: 'Emori', url: absoluteUrl(localizedPath(lang, '')) },
