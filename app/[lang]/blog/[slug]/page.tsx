@@ -12,7 +12,7 @@ import CtaButton from '@/components/CtaButton';
 import ArticleHeroImage from '@/components/ArticleHeroImage';
 import JsonLd from '@/components/JsonLd';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
-import { getAllSlugs, getArticle } from '@/content/blog';
+import { getAllSlugs, getArticle, getArticles } from '@/content/blog';
 
 export const dynamicParams = false;
 
@@ -51,6 +51,10 @@ export default function ArticlePage({
 
   const { meta, Body, faq } = article;
   const url = absoluteUrl(localizedPath(lang, `blog/${meta.slug}`));
+  // Links internos: até 3 outros artigos (reforça SEO e navegação).
+  const related = getArticles(lang)
+    .filter((a) => a.meta.slug !== meta.slug)
+    .slice(0, 3);
 
   return (
     <PageShell lang={lang} path={`blog/${meta.slug}`}>
@@ -90,6 +94,39 @@ export default function ArticlePage({
         </div>
 
         <FAQ title={dict.common.faqTitle} items={faq} />
+
+        {/* Leia também — links internos */}
+        {related.length > 0 && (
+          <section className="mt-16" aria-labelledby="related">
+            <h2 id="related" className="font-serif text-2xl text-ink-900">
+              {dict.blog.related}
+            </h2>
+            <div className="mt-6 grid gap-5 sm:grid-cols-3">
+              {related.map((a) => (
+                <Link
+                  key={a.meta.slug}
+                  href={localizedPath(lang, `blog/${a.meta.slug}`)}
+                  className="group block overflow-hidden rounded-2xl border border-clay-100 bg-cream-50 transition-colors hover:border-clay-200 hover:bg-cream-100"
+                >
+                  {a.meta.hero && (
+                    // eslint-disable-next-line @next/next/no-img-element -- static export, imagem externa
+                    <img
+                      src={a.meta.hero.src}
+                      alt={a.meta.hero.alt}
+                      width={1600}
+                      height={900}
+                      loading="lazy"
+                      className="aspect-[16/9] w-full object-cover"
+                    />
+                  )}
+                  <h3 className="p-4 font-serif text-base leading-snug text-ink-900 group-hover:text-clay-700">
+                    {a.meta.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </article>
 
       {/* JSON-LD: Article + Breadcrumb (FAQPage é emitido pelo componente FAQ) */}

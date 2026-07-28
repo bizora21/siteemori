@@ -466,6 +466,7 @@ const ptBR = {
     publishedOn: 'Publicado em',
     by: 'Por',
     author: 'Equipe Emori',
+    related: 'Leia também',
   },
 } as const;
 

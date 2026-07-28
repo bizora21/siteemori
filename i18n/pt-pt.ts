@@ -468,6 +468,7 @@ const ptPT: Dictionary = {
     publishedOn: 'Publicado a',
     by: 'Por',
     author: 'Equipa Emori',
+    related: 'Lê também',
   },
 };
 

@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brGratidao from './pt-br/diario-de-gratidao';
 import brHumor from './pt-br/diario-de-humor';
 import brComecar from './pt-br/como-comecar-diario-emocional';
 import brEscolher from './pt-br/como-escolher-app-diario-emocional';
@@ -11,6 +12,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptGratidao from './pt-pt/diario-de-gratidao';
 import ptHumor from './pt-pt/diario-de-humor';
 import ptComecar from './pt-pt/como-comecar-diario-emocional';
 import ptEscolher from './pt-pt/como-escolher-app-diario-emocional';
@@ -21,6 +23,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'diario-de-gratidao',
   'diario-de-humor',
   'como-comecar-diario-emocional',
   'como-escolher-app-diario-emocional',
@@ -31,6 +34,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'diario-de-gratidao': { 'pt-br': brGratidao, 'pt-pt': ptGratidao },
   'diario-de-humor': { 'pt-br': brHumor, 'pt-pt': ptHumor },
   'como-comecar-diario-emocional': { 'pt-br': brComecar, 'pt-pt': ptComecar },
   'como-escolher-app-diario-emocional': { 'pt-br': brEscolher, 'pt-pt': ptEscolher },
