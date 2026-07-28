@@ -15,6 +15,10 @@ export const PLAY_STORE_URL =
 // Deixa vazio para não carregar o script.
 export const CLOUDFLARE_ANALYTICS_TOKEN = '';
 
+// Google Analytics 4 (gtag.js). Vazio = não carrega. Nota: usa cookies —
+// para visitantes da UE/PT pode ser exigido um aviso de consentimento (LGPD/RGPD).
+export const GA_MEASUREMENT_ID = 'G-DBJXCJ0SWG';
+
 // Imagem Open Graph por defeito (1200x630, PNG raster — renderiza em redes sociais
 // e é elegível para o Google Discover).
 export const DEFAULT_OG_IMAGE = '/og/og-default.png';

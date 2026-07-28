@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
+import Script from 'next/script';
 import '../globals.css';
 import { locales, bcp47, isLocale, type Locale } from '@/i18n/config';
-import { SITE_URL, CLOUDFLARE_ANALYTICS_TOKEN } from '@/lib/constants';
+import { SITE_URL, CLOUDFLARE_ANALYTICS_TOKEN, GA_MEASUREMENT_ID } from '@/lib/constants';
 import JsonLd from '@/components/JsonLd';
 import { organizationSchema, websiteSchema } from '@/lib/schema';
 
@@ -81,6 +82,23 @@ export default function LangLayout({
             src="https://static.cloudflareinsights.com/beacon.min.js"
             data-cf-beacon={`{"token": "${CLOUDFLARE_ANALYTICS_TOKEN}"}`}
           />
+        )}
+
+        {/* Google Analytics 4 (gtag.js). O GA4 (medição avançada) regista as
+            navegações SPA do Next automaticamente via eventos de histórico. */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}');`}
+            </Script>
+          </>
         )}
       </body>
     </html>
