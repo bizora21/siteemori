@@ -1,7 +1,7 @@
 // Geradores de JSON-LD (schema.org) para rich results do Google.
 // Nota: pode não afetar diretamente citações de IA, mas ajuda no Google.
 
-import { SITE_URL, ANDROID_PACKAGE, PLAY_STORE_URL } from './constants';
+import { SITE_URL, ANDROID_PACKAGE, PLAY_STORE_URL, FOUNDER } from './constants';
 import { absoluteUrl } from './seo';
 import type { Locale } from '@/i18n/config';
 import { bcp47 } from '@/i18n/config';
@@ -21,6 +21,12 @@ export function organizationSchema() {
     description:
       'Emori é um diário emocional com inteligência artificial que conversa com o usuário, lembra do contexto e ajuda a entender as emoções.',
     sameAs: [PLAY_STORE_URL],
+    founder: {
+      '@type': 'Person',
+      name: FOUNDER.name,
+      url: FOUNDER.linkedin,
+      sameAs: [FOUNDER.linkedin],
+    },
   };
 }
 

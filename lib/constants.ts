@@ -22,6 +22,18 @@ export const DEFAULT_OG_IMAGE = '/og/og-default.png';
 // E-mail de contacto (opcional, usado em metadados/estruturados e na fila de espera).
 export const CONTACT_EMAIL = 'ola@aemori.com';
 
+// Pessoa por trás da Emori (E-E-A-T: usado no rodapé e no schema Organization.founder).
+export const FOUNDER = {
+  name: 'Antonio Chauque',
+  linkedin: 'https://www.linkedin.com/in/antonio-chauque-1b05531b2',
+};
+
+// Redes sociais mostradas no rodapé. Para acrescentar (Instagram, TikTok…),
+// adiciona uma entrada aqui — o rodapé mostra automaticamente o ícone.
+export const SOCIAL_LINKS: { name: 'LinkedIn' | 'Instagram' | 'TikTok'; href: string }[] = [
+  { name: 'LinkedIn', href: FOUNDER.linkedin },
+];
+
 // A app já está publicada na Google Play → CTAs apontam para o download real.
 // (A antiga flag de teste fechado deixou de fazer sentido.)
 export const CLOSED_BETA = false;
