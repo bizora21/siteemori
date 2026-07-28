@@ -74,6 +74,10 @@ const ptPT: Dictionary = {
     h1: 'A aplicação de diário emocional que realmente se lembra de ti',
     tldr:
       'A Emori é uma aplicação de diário com inteligência artificial que conversa contigo, guarda na memória o contexto do que viveste e ajuda-te a compreender as tuas emoções ao longo do tempo. É gratuito para começar e funciona no teu telemóvel Android.',
+    eyebrow: 'Diário emocional com IA',
+    cartaLabel: 'A tua carta da Emori',
+    cartaBody:
+      'Este mês, notei que passaste por altos e baixos — mais calma nos fins de semana, e a ansiedade a crescer nas vésperas de dias exigentes. Reparei em como foste cuidando de ti, mesmo nos dias difíceis.',
     primaryCtaNote: 'Sem cartão. Começa a escrever em menos de um minuto.',
     valueTitle: 'Porque é que a Emori é diferente',
     values: [

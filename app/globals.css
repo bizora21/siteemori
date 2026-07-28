@@ -14,6 +14,31 @@ html {
 body {
   @apply bg-cream-50 text-ink-800 antialiased;
   font-feature-settings: 'kern';
+  position: relative;
+}
+
+/* Grão de papel subtil sobre todo o site — dá tatilidade e foge ao look "flat/IA". */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Rótulo editorial (versaletes) */
+.eyebrow {
+  @apply text-xs font-semibold uppercase text-clay-600;
+  letter-spacing: 0.18em;
+}
+
+/* Numeral serifado grande dos passos */
+.serif-num {
+  @apply font-serif text-clay-200;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 /* Foco visível e acessível */
