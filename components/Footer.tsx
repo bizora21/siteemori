@@ -3,7 +3,7 @@ import { Linkedin, Instagram, Music2 } from 'lucide-react';
 import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
-import { CONTACT_EMAIL, SOCIAL_LINKS, FOUNDER } from '@/lib/constants';
+import { CONTACT_EMAIL, SOCIAL_LINKS } from '@/lib/constants';
 import Logo from './Logo';
 
 const SOCIAL_ICON = { LinkedIn: Linkedin, Instagram, TikTok: Music2 } as const;
@@ -94,17 +94,6 @@ export default function Footer({ lang, dict }: Props) {
         <div className="mt-10 flex flex-col items-start justify-between gap-2 border-t border-clay-100 pt-6 text-sm text-ink-700 md:flex-row md:items-center">
           <p>
             © {year} Emori. {dict.footer.rights}
-          </p>
-          <p className="italic">
-            {dict.footer.madeWith}{' '}
-            <a
-              href={FOUNDER.linkedin}
-              target="_blank"
-              rel="noopener"
-              className="not-italic text-clay-600 hover:text-clay-700"
-            >
-              por {FOUNDER.name}
-            </a>
           </p>
         </div>
       </div>
