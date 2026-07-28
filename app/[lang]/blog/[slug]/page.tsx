@@ -66,6 +66,7 @@ export default function ArticlePage({
           {meta.title}
         </h1>
         <p className="mt-3 text-sm text-ink-700">
+          {dict.blog.by} <span className="font-medium text-ink-800">{dict.blog.author}</span> ·{' '}
           {dict.blog.publishedOn} {meta.datePublished} · {meta.readingMinutes}{' '}
           {dict.blog.readingTime}
         </p>
@@ -102,6 +103,7 @@ export default function ArticlePage({
             datePublished: meta.datePublished,
             dateModified: meta.dateModified,
             image: meta.hero?.src ?? meta.ogImage,
+            authorName: dict.blog.author,
           }),
           breadcrumbSchema([
             { name: 'Emori', url: absoluteUrl(localizedPath(lang, '')) },

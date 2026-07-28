@@ -22,9 +22,11 @@ export const DEFAULT_OG_IMAGE = '/og/og-default.png';
 // E-mail de contacto (opcional, usado em metadados/estruturados e na fila de espera).
 export const CONTACT_EMAIL = 'ola@aemori.com';
 
-// Pessoa por trás da Emori (E-E-A-T: usado no rodapé e no schema Organization.founder).
+// Pessoa por trás da Emori (E-E-A-T: usado no rodapé, na página Sobre e no
+// schema Organization.founder). Antonio é psicólogo — sinal de credibilidade forte.
 export const FOUNDER = {
   name: 'Antonio Chauque',
+  role: 'Psicólogo',
   linkedin: 'https://www.linkedin.com/in/antonio-chauque-1b05531b2',
 };
 

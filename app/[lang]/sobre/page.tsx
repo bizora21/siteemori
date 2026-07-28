@@ -5,7 +5,7 @@ import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
 import TldrBlock from '@/components/TldrBlock';
 import CtaButton from '@/components/CtaButton';
-import { CONTACT_EMAIL } from '@/lib/constants';
+import { CONTACT_EMAIL, FOUNDER } from '@/lib/constants';
 
 export function generateStaticParams() {
   return [{ lang: 'pt-br' }, { lang: 'pt-pt' }];
@@ -57,6 +57,23 @@ export default function SobrePage({ params }: { params: { lang: Locale } }) {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Quem está por trás — psicólogo fundador (E-E-A-T) */}
+        <section className="mt-14">
+          <h2 className="font-serif text-2xl text-ink-900">{t.founderTitle}</h2>
+          <p className="mt-3 leading-relaxed text-ink-800">
+            {t.founderBefore}{' '}
+            <a
+              href={FOUNDER.linkedin}
+              target="_blank"
+              rel="noopener"
+              className="font-medium text-clay-600 underline underline-offset-2 hover:text-clay-700"
+            >
+              {FOUNDER.name}
+            </a>
+            {t.founderAfter}
+          </p>
         </section>
 
         {/* Contacto */}

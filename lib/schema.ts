@@ -24,6 +24,7 @@ export function organizationSchema() {
     founder: {
       '@type': 'Person',
       name: FOUNDER.name,
+      jobTitle: FOUNDER.role,
       url: FOUNDER.linkedin,
       sameAs: [FOUNDER.linkedin],
     },
@@ -97,6 +98,7 @@ export function articleSchema(input: {
   datePublished: string;
   dateModified?: string;
   image?: string;
+  authorName?: string;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -110,7 +112,7 @@ export function articleSchema(input: {
     ...(input.image
       ? { image: [input.image.startsWith('http') ? input.image : absoluteUrl(input.image)] }
       : {}),
-    author: { '@type': 'Organization', name: 'Emori' },
+    author: { '@type': 'Organization', name: input.authorName ?? 'Emori', url: SITE_URL },
     publisher: {
       '@type': 'Organization',
       name: 'Emori',

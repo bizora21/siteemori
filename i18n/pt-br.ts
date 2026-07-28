@@ -314,6 +314,10 @@ const ptBR = {
           'O essencial da Emori é grátis, porque se entender não deveria ser um privilégio.',
       },
     ],
+    founderTitle: 'Quem está por trás',
+    founderBefore: 'A Emori foi criada por',
+    founderAfter:
+      ', psicólogo — alguém que conhece de perto o valor, e os limites, do acompanhamento emocional. É por isso que a Emori foi pensada para caminhar ao lado da terapia, nunca no lugar dela.',
     contactTitle: 'Fale com a Emori',
     contactIntro:
       'Tem uma dúvida, sugestão, ou quer falar sobre parcerias e imprensa? Escreva para',
@@ -456,6 +460,8 @@ const ptBR = {
     allPosts: 'Todos os artigos',
     backToBlog: 'Voltar ao blog',
     publishedOn: 'Publicado em',
+    by: 'Por',
+    author: 'Equipe Emori',
   },
 } as const;
 
