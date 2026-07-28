@@ -468,6 +468,14 @@ const ptBR = {
     author: 'Equipe Emori',
     related: 'Leia também',
   },
+
+  consent: {
+    aria: 'Aviso de cookies',
+    text: 'A Emori usa cookies do Google Analytics para entender como o site é usado. Você pode aceitar ou recusar.',
+    privacy: 'Política de privacidade',
+    accept: 'Aceitar',
+    reject: 'Recusar',
+  },
 } as const;
 
 export default ptBR;

@@ -470,6 +470,14 @@ const ptPT: Dictionary = {
     author: 'Equipa Emori',
     related: 'Lê também',
   },
+
+  consent: {
+    aria: 'Aviso de cookies',
+    text: 'A Emori usa cookies do Google Analytics para perceber como o site é usado. Podes aceitar ou recusar.',
+    privacy: 'Política de privacidade',
+    accept: 'Aceitar',
+    reject: 'Recusar',
+  },
 };
 
 export default ptPT;

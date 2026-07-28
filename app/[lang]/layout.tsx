@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
-import Script from 'next/script';
 import '../globals.css';
 import { locales, bcp47, isLocale, type Locale } from '@/i18n/config';
-import { SITE_URL, CLOUDFLARE_ANALYTICS_TOKEN, GA_MEASUREMENT_ID } from '@/lib/constants';
+import { SITE_URL, CLOUDFLARE_ANALYTICS_TOKEN } from '@/lib/constants';
+import { getDictionary } from '@/i18n';
+import { localizedPath } from '@/lib/seo';
 import JsonLd from '@/components/JsonLd';
+import ConsentBanner from '@/components/ConsentBanner';
 import { organizationSchema, websiteSchema } from '@/lib/schema';
 
 // Fontes self-hosted no build (zero layout shift, sem chamadas externas em runtime).
@@ -58,6 +60,7 @@ export default function LangLayout({
   params: { lang: string };
 }) {
   const lang: Locale = isLocale(params.lang) ? params.lang : 'pt-br';
+  const dict = getDictionary(lang);
 
   return (
     <html lang={bcp47[lang]} className={`${inter.variable} ${fraunces.variable}`}>
@@ -84,22 +87,8 @@ export default function LangLayout({
           />
         )}
 
-        {/* Google Analytics 4 (gtag.js). O GA4 (medição avançada) regista as
-            navegações SPA do Next automaticamente via eventos de histórico. */}
-        {GA_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_MEASUREMENT_ID}');`}
-            </Script>
-          </>
-        )}
+        {/* Consentimento de cookies: o Google Analytics só carrega após "Aceitar". */}
+        <ConsentBanner t={dict.consent} privacyHref={localizedPath(lang, 'privacidade')} />
       </body>
     </html>
   );
