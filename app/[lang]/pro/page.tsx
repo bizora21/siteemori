@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
 import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
+import PageHeader from '@/components/PageHeader';
 import CtaButton from '@/components/CtaButton';
 import TldrBlock from '@/components/TldrBlock';
 import FAQ from '@/components/FAQ';
@@ -29,9 +30,7 @@ export default function ProPage({ params }: { params: { lang: Locale } }) {
   return (
     <PageShell lang={lang} path="pro">
       <article className="mx-auto max-w-3xl">
-        <h1 className="font-serif text-3xl leading-tight text-ink-900 md:text-4xl">
-          {t.h1}
-        </h1>
+        <PageHeader eyebrow={dict.nav.pro} title={t.h1} />
         <TldrBlock label={dict.common.tldrLabel}>{t.tldr}</TldrBlock>
 
         <p className="text-lg leading-relaxed text-ink-700">{t.intro}</p>

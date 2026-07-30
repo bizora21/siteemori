@@ -3,6 +3,7 @@ import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
 import { buildMetadata } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
+import PageHeader from '@/components/PageHeader';
 import TldrBlock from '@/components/TldrBlock';
 import CtaButton from '@/components/CtaButton';
 import { CONTACT_EMAIL, FOUNDER } from '@/lib/constants';
@@ -29,9 +30,7 @@ export default function SobrePage({ params }: { params: { lang: Locale } }) {
   return (
     <PageShell lang={lang} path="sobre">
       <article className="mx-auto max-w-3xl">
-        <h1 className="font-serif text-3xl leading-tight text-ink-900 md:text-4xl">
-          {t.h1}
-        </h1>
+        <PageHeader eyebrow={dict.nav.sobre} title={t.h1} />
         <TldrBlock label={dict.common.tldrLabel}>{t.tldr}</TldrBlock>
 
         <div className="prose-emori">

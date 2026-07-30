@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brControlar from './pt-br/como-controlar-as-emocoes';
 import brAfirmacoes from './pt-br/afirmacoes-positivas';
 import brGratidao from './pt-br/diario-de-gratidao';
 import brHumor from './pt-br/diario-de-humor';
@@ -13,6 +14,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptControlar from './pt-pt/como-controlar-as-emocoes';
 import ptAfirmacoes from './pt-pt/afirmacoes-positivas';
 import ptGratidao from './pt-pt/diario-de-gratidao';
 import ptHumor from './pt-pt/diario-de-humor';
@@ -25,6 +27,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'como-controlar-as-emocoes',
   'afirmacoes-positivas',
   'diario-de-gratidao',
   'diario-de-humor',
@@ -37,6 +40,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'como-controlar-as-emocoes': { 'pt-br': brControlar, 'pt-pt': ptControlar },
   'afirmacoes-positivas': { 'pt-br': brAfirmacoes, 'pt-pt': ptAfirmacoes },
   'diario-de-gratidao': { 'pt-br': brGratidao, 'pt-pt': ptGratidao },
   'diario-de-humor': { 'pt-br': brHumor, 'pt-pt': ptHumor },

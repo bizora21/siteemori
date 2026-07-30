@@ -4,6 +4,7 @@ import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
 import { buildMetadata, localizedPath } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
+import PageHeader from '@/components/PageHeader';
 import { getArticles } from '@/content/blog';
 
 export function generateStaticParams() {
@@ -28,9 +29,7 @@ export default function BlogIndex({ params }: { params: { lang: Locale } }) {
   return (
     <PageShell lang={lang} path="blog">
       <div className="mx-auto max-w-3xl">
-        <h1 className="font-serif text-3xl leading-tight text-ink-900 md:text-4xl">
-          {dict.blog.h1}
-        </h1>
+        <PageHeader eyebrow={dict.nav.blog} title={dict.blog.h1} />
         <p className="mt-4 text-lg leading-relaxed text-ink-700">{dict.blog.tldr}</p>
 
         <div className="mt-10 space-y-5">

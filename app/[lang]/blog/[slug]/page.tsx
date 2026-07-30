@@ -66,7 +66,7 @@ export default function ArticlePage({
           ← {dict.blog.backToBlog}
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl leading-tight text-ink-900 md:text-4xl">
+        <h1 className="mt-4 font-serif text-[2.3rem] leading-[1.06] text-ink-900 md:text-5xl">
           {meta.title}
         </h1>
         <p className="mt-3 text-sm text-ink-700">
