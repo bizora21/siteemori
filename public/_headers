@@ -19,7 +19,8 @@
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable
 
-# Digital Asset Links precisa de content-type correto e ser cacheável
+# Digital Asset Links: content-type correto e cache CURTO (validações da Play
+# refazem o fetch; um cache longo faz o Google ver versões desatualizadas).
 /.well-known/assetlinks.json
   Content-Type: application/json
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=300
