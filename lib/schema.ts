@@ -19,7 +19,17 @@ export function organizationSchema() {
     url: SITE_URL,
     logo: absoluteUrl('/icon-512.svg'),
     description:
-      'Emori é um diário emocional com inteligência artificial que conversa com o usuário, lembra do contexto e ajuda a entender as emoções.',
+      'Emori é um app de diário emocional com inteligência artificial que conversa com o usuário, lembra do contexto e ajuda a entender as emoções. Ferramenta de bem-estar e autoconhecimento — não relacionada a comércio ou finanças.',
+    // Desambiguação de entidade: deixa claro que esta marca "Emori" é de
+    // bem-estar / saúde emocional (distinta de marcas homónimas de outras áreas).
+    knowsAbout: [
+      'Diário emocional',
+      'Journaling',
+      'Saúde emocional',
+      'Bem-estar emocional',
+      'Autoconhecimento',
+      'Inteligência emocional',
+    ],
     sameAs: [PLAY_STORE_URL],
     founder: {
       '@type': 'Person',
