@@ -34,13 +34,23 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      # --- FASE 4 (quando as contas estiverem ligadas no Zernio) --------------
-      # Descomentar e adicionar os secrets no repo (Settings → Secrets):
-      #   ZERNIO_API_KEY, ZERNIO_PROFILE_ID, ZERNIO_ACCOUNTS (JSON plataforma→id)
+      # Dry-run de publicação: mostra no log o que SERIA publicado (não publica).
+      # Serve de verificação em cada artigo novo, sem risco.
+      - name: Dry-run de publicação (Zernio)
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          ZERNIO_ACCOUNTS: ${{ secrets.ZERNIO_ACCOUNTS }}
+          ZERNIO_PINTEREST_BOARD_ID: ${{ secrets.ZERNIO_PINTEREST_BOARD_ID }}
+        run: npm run social:publish
+
+      # --- PUBLICAÇÃO REAL -----------------------------------------------------
+      # Descomentar quando quiseres auto-publicar em cada artigo novo.
+      # Nota: o vídeo do TikTok é gerado LOCALMENTE (a música é gitignored), por
+      # isso no CI só o Pin do Pinterest tem ficheiro disponível.
       #
       # - name: Publicar no Zernio
       #   env:
       #     ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
-      #     ZERNIO_PROFILE_ID: ${{ secrets.ZERNIO_PROFILE_ID }}
       #     ZERNIO_ACCOUNTS: ${{ secrets.ZERNIO_ACCOUNTS }}
-      #   run: npm run social:publish
+      #     ZERNIO_PINTEREST_BOARD_ID: ${{ secrets.ZERNIO_PINTEREST_BOARD_ID }}
+      #   run: npm run social:publish -- --live

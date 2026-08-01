@@ -66,7 +66,7 @@ ver, no **Play Console → Aquisição**, que canal/artigo trouxe cada instalaç
 | **1** | manifest + adaptação determinística + assets + UTM + atribuição | ✅ feito |
 | **2** | **Pin em PNG** in-house (SVG→PNG via resvg + fonte empacotada) | ✅ feito |
 | **3** | **Disparo automático** (GitHub Action no push a `content/blog/**/*.tsx`) | ✅ feito |
-| 4 | **Publicação automática** via API do Zernio | pendente (ver abaixo) |
+| **4** | **Publicação** via API do Zernio (dry-run por defeito) | ✅ feito |
 | **5** | **Vídeo in-house** (SVG→cenas→ffmpeg, 1080×1920) | ✅ feito |
 
 **Fase 5 — vídeo sem serviços externos.** `npm run social:video -- --slug=… --lang=…`
@@ -101,11 +101,30 @@ Base: `https://zernio.com/api/v1` · Auth: `Authorization: Bearer <ZERNIO_API_KE
   vez → folgado, mas o adaptador deve ler os headers `X-RateLimit-*` e recuar se preciso.
 - **TikTok:** o URL público resolve-se de forma assíncrona (webhook `post.tiktok.url_resolved`).
 
-**Adaptador previsto** (`publish(...)` agnóstico já esboçado):
-```ts
-// map plataforma → socialAccountId (config/secret)
-// agrupar peças por formato → 1 POST /post por grupo com socialAccountIds + text + media + scheduledAt
+### Publisher (`npm run social:publish`)
+
+```bash
+# DRY-RUN (por defeito) — mostra o que seria publicado, sem publicar:
+npm run social:publish -- --slug=diario-de-gratidao --lang=pt-br
+
+# publicar a sério:
+npm run social:publish -- --slug=diario-de-gratidao --lang=pt-br --live
+
+# agendar:
+npm run social:publish -- --slug=… --lang=… --live --schedule=2026-08-05T09:00:00Z
 ```
+
+Contrato real (verificado no OpenAPI):
+- `POST /media/upload-direct` (multipart) → `{ url }` — máx. 25 MB, expira em 7 dias.
+- `POST /posts` → `{ content, mediaItems[], platforms[], publishNow | scheduledFor }`
+  - `platforms[].platformSpecificData` (Pinterest): `{ title (≤100), boardId, link }` —
+    o `link` é o **destino do Pin**, onde entra o nosso URL com UTM.
+- **Idempotência:** header `x-request-id` (UUID por chamada) + dedup por hash de conteúdo
+  (HTTP **409** se repetires o mesmo conteúdo em 24h — o publisher trata isso como "ignorado").
+- Lê `X-RateLimit-Remaining` e avisa quando está a esgotar.
+
+**Segredos** (`.env.local` local · GitHub Secrets no CI): `ZERNIO_API_KEY`,
+`ZERNIO_ACCOUNTS` (JSON plataforma→id), `ZERNIO_PINTEREST_BOARD_ID`.
 
 ---
 
