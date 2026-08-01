@@ -67,7 +67,17 @@ ver, no **Play Console → Aquisição**, que canal/artigo trouxe cada instalaç
 | **2** | **Pin em PNG** in-house (SVG→PNG via resvg + fonte empacotada) | ✅ feito |
 | **3** | **Disparo automático** (GitHub Action no push a `content/blog/**/*.tsx`) | ✅ feito |
 | 4 | **Publicação automática** via API do Zernio | pendente (ver abaixo) |
-| 5 | **Vídeo** (HeyGen free) com *skip* gracioso se sem crédito | pendente |
+| **5** | **Vídeo in-house** (SVG→cenas→ffmpeg, 1080×1920) | ✅ feito |
+
+**Fase 5 — vídeo sem serviços externos.** `npm run social:video -- --slug=… --lang=…`
+gera `video.mp4` (vertical, ~32s): gancho → 3 perguntas da FAQ → CTA, na paleta da marca,
+com fades e música de fundo. Optámos por vídeo de texto em vez de avatar-IA (HeyGen):
+zero custo, sem limites de tier, e mais autêntico para o nicho de bem-estar.
+
+> 🎵 **Música:** coloca a tua faixa em `assets/audio/calm.mp3`. Está **gitignored** —
+> a Pixabay Content License permite *usar* a faixa, mas **não redistribuir o ficheiro**
+> autonomamente (o que um repo público faria). Sem o ficheiro, o vídeo gera-se em silêncio.
+> Por isso o vídeo é gerado **localmente**, não no CI.
 
 **Fase 2/3 na prática:** a Action `\.github/workflows/social.yml` corre `npm run social`
 em cada artigo novo e publica `social/` como **artefacto descarregável** (30 dias). A fonte
