@@ -42,7 +42,7 @@ for (const entry of targets) {
     if (p.format === 'video') {
       writeFileSync(`${dir}/${p.platform}.txt`, `${p.videoScript}\n\n— LEGENDA (colar) —\n${p.caption}\n`);
     } else if (p.format === 'pin') {
-      writeFileSync(`${dir}/pinterest.txt`, `${p.caption}\n\nIMAGEM (Pin): ${p.image ?? '(sem capa)'}\n`);
+      writeFileSync(`${dir}/pinterest.txt`, `${p.caption}\n\nIMAGEM (Pin): pin.png (gerado neste diretório)\n`);
     } else {
       writeFileSync(`${dir}/facebook.txt`, `${p.caption}\n\n(Preview OG puxa a capa do artigo automaticamente.)\n`);
     }

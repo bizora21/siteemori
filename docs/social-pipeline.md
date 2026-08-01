@@ -64,10 +64,14 @@ ver, no **Play Console → Aquisição**, que canal/artigo trouxe cada instalaç
 | Fase | O quê | Estado |
 |---|---|---|
 | **1** | manifest + adaptação determinística + assets + UTM + atribuição | ✅ feito |
-| 2 | Geração do **Pin em PNG** in-house (SVG→PNG via resvg, como o OG) | pendente |
-| 3 | **Disparo automático** (GitHub Action no push a `content/blog/**`) | pendente |
+| **2** | **Pin em PNG** in-house (SVG→PNG via resvg + fonte empacotada) | ✅ feito |
+| **3** | **Disparo automático** (GitHub Action no push a `content/blog/**/*.tsx`) | ✅ feito |
 | 4 | **Publicação automática** via API do Zernio | pendente (ver abaixo) |
 | 5 | **Vídeo** (HeyGen free) com *skip* gracioso se sem crédito | pendente |
+
+**Fase 2/3 na prática:** a Action `\.github/workflows/social.yml` corre `npm run social`
+em cada artigo novo e publica `social/` como **artefacto descarregável** (30 dias). A fonte
+serifada vive em `assets/fonts/` (OFL) para o Pin renderizar igual no CI.
 
 ---
 

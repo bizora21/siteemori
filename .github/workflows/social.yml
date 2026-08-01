@@ -1,0 +1,46 @@
+name: Gerar assets sociais
+
+# Dispara quando um artigo novo/editado é commitado (ficheiros TSX do blog).
+# Gera manifest + imagem do Pin + textos, e publica tudo como artefacto para
+# download. (A publicação automática via Zernio entra na Fase 4, aqui mesmo.)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/blog/**/*.tsx'
+  workflow_dispatch: {}
+
+jobs:
+  social:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+
+      - name: Gerar manifest + imagens + textos sociais
+        run: npm run social
+
+      - name: Publicar assets como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-assets
+          path: social/
+          if-no-files-found: error
+          retention-days: 30
+
+      # --- FASE 4 (quando as contas estiverem ligadas no Zernio) --------------
+      # Descomentar e adicionar os secrets no repo (Settings → Secrets):
+      #   ZERNIO_API_KEY, ZERNIO_PROFILE_ID, ZERNIO_ACCOUNTS (JSON plataforma→id)
+      #
+      # - name: Publicar no Zernio
+      #   env:
+      #     ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+      #     ZERNIO_PROFILE_ID: ${{ secrets.ZERNIO_PROFILE_ID }}
+      #     ZERNIO_ACCOUNTS: ${{ secrets.ZERNIO_ACCOUNTS }}
+      #   run: npm run social:publish
