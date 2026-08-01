@@ -469,6 +469,9 @@ const ptPT: Dictionary = {
     by: 'Por',
     author: 'Equipa Emori',
     related: 'Lê também',
+    share: 'Partilhar',
+    copyLink: 'Copiar link',
+    copied: 'Copiado!',
   },
 
   consent: {

@@ -1,7 +1,7 @@
 // Geradores de JSON-LD (schema.org) para rich results do Google.
 // Nota: pode não afetar diretamente citações de IA, mas ajuda no Google.
 
-import { SITE_URL, ANDROID_PACKAGE, PLAY_STORE_URL, FOUNDER } from './constants';
+import { SITE_URL, ANDROID_PACKAGE, PLAY_STORE_URL, FOUNDER, SOCIAL_LINKS } from './constants';
 import { absoluteUrl } from './seo';
 import type { Locale } from '@/i18n/config';
 import { bcp47 } from '@/i18n/config';
@@ -30,7 +30,8 @@ export function organizationSchema() {
       'Autoconhecimento',
       'Inteligência emocional',
     ],
-    sameAs: [PLAY_STORE_URL],
+    // Perfis oficiais: ajudam o Google a ligar as contas sociais a esta entidade.
+    sameAs: [PLAY_STORE_URL, ...SOCIAL_LINKS.map((s) => s.href)],
     founder: {
       '@type': 'Person',
       name: FOUNDER.name,

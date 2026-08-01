@@ -128,6 +128,29 @@ Contrato real (verificado no OpenAPI):
 
 ---
 
+---
+
+## Links internos (fazer SEMPRE em cada artigo novo)
+
+Dois níveis, ambos importantes para SEO:
+
+1. **Automático** — a secção "Leia também" no fim de cada artigo (até 3 outros).
+2. **Manual e contextual** — 2 a 3 links **dentro do corpo**, na frase certa. Valem mais
+   do que a lista, porque o Google usa o texto à volta como contexto do destino:
+   ```tsx
+   import InlineLink from '@/components/InlineLink';
+   …
+   <InlineLink href="/pt-br/blog/o-que-escrever-no-diario/">
+     o que escrever no diário
+   </InlineLink>
+   ```
+   O caminho inclui o idioma (cada artigo já é por idioma) e termina em `/`.
+
+**Regra:** cada artigo novo deve **receber** links de artigos antigos relacionados e
+**apontar** para 2-3 deles. Assim nenhuma página fica órfã.
+
+---
+
 ## O que configuras (fora do código)
 - **Contas Business:** Pinterest, TikTok, Facebook (Página), YouTube (canal) — ligadas no Zernio (OAuth).
 - **Secrets no GitHub (`bizora21/siteemori`):** `ZERNIO_API_KEY`, `ZERNIO_PROFILE_ID`,

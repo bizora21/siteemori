@@ -1,4 +1,5 @@
 import type { ArticleModule } from '../types';
+import InlineLink from '@/components/InlineLink';
 
 const meta = {
   slug: 'como-desabafar',
@@ -83,7 +84,11 @@ function Body() {
       </ul>
       <p>
         Uma frase puxa a outra. O primeiro parágrafo é quase sempre o mais difícil — e o
-        único que exige mesmo esforço.
+        único que exige mesmo esforço. Se travares mesmo assim, temos um guia só sobre isso:{' '}
+        <InlineLink href="/pt-pt/blog/o-que-escrever-no-diario/">
+          o que escrever no diário quando não sabes o que estás a sentir
+        </InlineLink>
+        .
       </p>
 
       <h2>Desabafar sem ser julgado</h2>
@@ -110,7 +115,12 @@ function Body() {
       </p>
       <p>
         E se o que falta são pessoas: desabafar por escrito hoje pode ser precisamente o que
-        te dá clareza para, amanhã, conseguires falar com alguém.
+        te dá clareza para, amanhã, conseguires falar com alguém. Se quiseres transformar
+        isto num hábito em vez de um recurso de emergência, vê{' '}
+        <InlineLink href="/pt-pt/blog/como-comecar-diario-emocional/">
+          como começar um diário emocional
+        </InlineLink>
+        .
       </p>
     </>
   );

@@ -36,7 +36,16 @@ export const FOUNDER = {
 
 // Redes sociais mostradas no rodapé. Para acrescentar (Instagram, TikTok…),
 // adiciona uma entrada aqui — o rodapé mostra automaticamente o ícone.
-export const SOCIAL_LINKS: { name: 'LinkedIn' | 'Instagram' | 'TikTok'; href: string }[] = [
+// Perfis oficiais da Emori. Também alimentam o `sameAs` do schema Organization,
+// o que ajuda o Google a consolidar a entidade da marca.
+export const SOCIAL_LINKS: {
+  name: 'TikTok' | 'Pinterest' | 'YouTube' | 'Instagram' | 'LinkedIn';
+  href: string;
+}[] = [
+  { name: 'TikTok', href: 'https://tiktok.com/@emoriapp' },
+  { name: 'Pinterest', href: 'https://pinterest.com/emoriapp' },
+  // >>> Descomenta quando o canal existir:
+  // { name: 'YouTube', href: 'https://youtube.com/@emoriapp' },
   { name: 'LinkedIn', href: FOUNDER.linkedin },
 ];
 

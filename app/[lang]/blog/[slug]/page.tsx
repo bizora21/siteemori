@@ -10,6 +10,7 @@ import TldrBlock from '@/components/TldrBlock';
 import FAQ from '@/components/FAQ';
 import CtaButton from '@/components/CtaButton';
 import ArticleHeroImage from '@/components/ArticleHeroImage';
+import ShareButtons from '@/components/ShareButtons';
 import JsonLd from '@/components/JsonLd';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import { getAllSlugs, getArticle, getArticles } from '@/content/blog';
@@ -92,6 +93,16 @@ export default function ArticlePage({
             campaign={`blog_${meta.slug.replace(/-/g, '_')}`}
           />
         </div>
+
+        <ShareButtons
+          url={url}
+          title={meta.title}
+          labels={{
+            share: dict.blog.share,
+            copy: dict.blog.copyLink,
+            copied: dict.blog.copied,
+          }}
+        />
 
         <FAQ title={dict.common.faqTitle} items={faq} />
 

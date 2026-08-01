@@ -1,12 +1,18 @@
 import Link from 'next/link';
-import { Linkedin, Instagram, Music2 } from 'lucide-react';
+import { Linkedin, Instagram, Music2, Youtube, Pin } from 'lucide-react';
 import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
 import { CONTACT_EMAIL, SOCIAL_LINKS } from '@/lib/constants';
 import Logo from './Logo';
 
-const SOCIAL_ICON = { LinkedIn: Linkedin, Instagram, TikTok: Music2 } as const;
+const SOCIAL_ICON = {
+  TikTok: Music2,
+  Pinterest: Pin,
+  YouTube: Youtube,
+  Instagram,
+  LinkedIn: Linkedin,
+} as const;
 
 interface Props {
   lang: Locale;

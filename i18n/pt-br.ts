@@ -467,6 +467,9 @@ const ptBR = {
     by: 'Por',
     author: 'Equipe Emori',
     related: 'Leia também',
+    share: 'Compartilhar',
+    copyLink: 'Copiar link',
+    copied: 'Copiado!',
   },
 
   consent: {
