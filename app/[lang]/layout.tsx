@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   },
   applicationName: 'Emori',
   manifest: '/site.webmanifest',
+  // Verificação de domínio do Pinterest (conta business).
+  other: { 'p:domain_verify': 'b023d475af3c2d7310b04812e7db5f85' },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
