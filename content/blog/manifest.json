@@ -1,6 +1,82 @@
 [
   {
     "lang": "pt-br",
+    "slug": "como-desabafar",
+    "url": "https://aemori.com/pt-br/blog/como-desabafar/",
+    "title": "Como desabafar quando você não tem com quem falar",
+    "description": "Sem ninguém para ouvir? Existem formas reais de desabafar sozinho — escrever, nomear o que dói e tirar o peso de dentro. Um guia honesto para quando falar não é uma opção.",
+    "tldr": "Quando não há ninguém para ouvir, desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e não exige que você espere pela disponibilidade de outra pessoa. Não substitui companhia humana — mas funciona, e está disponível às três da manhã.",
+    "datePublished": "2026-08-01",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1641753543685-268866ef4c6d?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBhbG9uZSUyMG5pZ2h0JTIwd2luZG93JTIwY2l0eSUyMGxvbmVseSUyMHdhcm18ZW58MXwwfHx8MTc4NTYwNjM2MXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma pessoa sentada junto à janela, com a mão no rosto",
+      "credit": "Sean Boyd",
+      "creditUrl": "https://unsplash.com/@seanfboyd?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como desabafar quando não tenho ninguém para conversar?",
+        "a": "Escreva. Desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e está disponível a qualquer hora. Escreva como se estivesse falando, sem se preocupar com a forma."
+      },
+      {
+        "q": "Desabafar por escrito funciona mesmo?",
+        "a": "Funciona. Colocar em palavras interrompe o ciclo de pensamentos repetitivos e transforma um mal-estar difuso em algo concreto que você consegue olhar de fora. Muitas pessoas relatam alívio físico logo depois."
+      },
+      {
+        "q": "O que escrever quando eu travo?",
+        "a": "Comece por “o que mais está pesando em mim agora é…” ou “estou cansado de…”. O primeiro parágrafo é o mais difícil; depois dele, uma frase puxa a outra."
+      },
+      {
+        "q": "Desabafar com um app é a mesma coisa que falar com alguém?",
+        "a": "Não é a mesma coisa — companhia humana é insubstituível. Mas um app de diário oferece algo que nem sempre está disponível: um espaço privado, imediato e sem julgamento, a qualquer hora. Funciona bem como complemento, não como substituto."
+      },
+      {
+        "q": "Quando devo procurar ajuda profissional?",
+        "a": "Se o peso não passa há semanas, se você não consegue funcionar no dia a dia, ou se tem pensamentos de se machucar. Nesses casos, procure um psicólogo ou os serviços de emergência do seu país — desabafar por escrito ajuda, mas não substitui acompanhamento."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "como-desabafar",
+    "url": "https://aemori.com/pt-pt/blog/como-desabafar/",
+    "title": "Como desabafar quando não tens com quem falar",
+    "description": "Sem ninguém para ouvir? Há formas reais de desabafar sozinho — escrever, nomear o que dói e tirar o peso de dentro. Um guia honesto para quando falar não é uma opção.",
+    "tldr": "Quando não há ninguém para ouvir, desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e não te obriga a esperar pela disponibilidade de outra pessoa. Não substitui companhia humana — mas resulta, e está disponível às três da manhã.",
+    "datePublished": "2026-08-01",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1641753543685-268866ef4c6d?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBhbG9uZSUyMG5pZ2h0JTIwd2luZG93JTIwY2l0eSUyMGxvbmVseSUyMHdhcm18ZW58MXwwfHx8MTc4NTYwNjM2MXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma pessoa sentada junto à janela, com a mão no rosto",
+      "credit": "Sean Boyd",
+      "creditUrl": "https://unsplash.com/@seanfboyd?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como desabafar quando não tenho ninguém com quem falar?",
+        "a": "Escreve. Desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e está disponível a qualquer hora. Escreve como se estivesses a falar, sem te preocupares com a forma."
+      },
+      {
+        "q": "Desabafar por escrito resulta mesmo?",
+        "a": "Resulta. Pôr em palavras interrompe o ciclo de pensamentos repetitivos e transforma um mal-estar difuso em algo concreto que consegues olhar de fora. Muitas pessoas relatam alívio físico logo a seguir."
+      },
+      {
+        "q": "O que escrever quando travo?",
+        "a": "Começa por “o que mais está a pesar em mim agora é…” ou “estou cansado de…”. O primeiro parágrafo é o mais difícil; depois dele, uma frase puxa a outra."
+      },
+      {
+        "q": "Desabafar com uma app é o mesmo que falar com alguém?",
+        "a": "Não é o mesmo — a companhia humana é insubstituível. Mas uma app de diário oferece algo que nem sempre está disponível: um espaço privado, imediato e sem julgamento, a qualquer hora. Funciona bem como complemento, não como substituto."
+      },
+      {
+        "q": "Quando devo procurar ajuda profissional?",
+        "a": "Se o peso não passa há semanas, se não consegues funcionar no dia a dia, ou se tens pensamentos de te magoar. Nesses casos, procura um psicólogo ou os serviços de emergência do teu país — desabafar por escrito ajuda, mas não substitui acompanhamento."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "como-controlar-as-emocoes",
     "url": "https://aemori.com/pt-br/blog/como-controlar-as-emocoes/",
     "title": "Como controlar as emoções: o que funciona (e o que só piora)",
