@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Moon } from 'lucide-react';
 import { CLOSED_BETA } from '@/lib/constants';
-import { playStoreHref } from './PlayStoreButton';
+import { buildPlayHref } from '@/lib/play';
 import { WAITLIST_DIALOG_ID } from './WaitlistDialog';
 
 // CTA principal do site. Em teste fechado (CLOSED_BETA) abre o diálogo de fila de
@@ -33,6 +34,13 @@ export default function CtaButton({
   variant = 'primary',
   className = '',
 }: Props) {
+  // Link da Play com referrer; no SSR usa o fallback site/organic, e no cliente
+  // enriquece com o UTM de entrada (para atribuir instalações ao canal social).
+  const [href, setHref] = useState(() => buildPlayHref(campaign));
+  useEffect(() => {
+    setHref(buildPlayHref(campaign, window.location.search));
+  }, [campaign]);
+
   if (CLOSED_BETA) {
     return (
       <button
@@ -53,7 +61,7 @@ export default function CtaButton({
   // App publicada → badge OFICIAL da Google Play (cores e logótipo oficiais).
   return (
     <a
-      href={playStoreHref(campaign)}
+      href={href}
       rel="noopener"
       aria-label={label}
       className={`inline-block ${className}`}
