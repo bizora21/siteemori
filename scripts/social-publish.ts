@@ -32,6 +32,9 @@ const args: Record<string, string | boolean> = Object.fromEntries(
 );
 const LIVE = args.live === true;
 const SCHEDULE = typeof args.schedule === 'string' ? args.schedule : undefined;
+/** --platform=pinterest limita a publicação a uma plataforma (omitir = todas). */
+const ONLY = typeof args.platform === 'string' ? args.platform : undefined;
+const wants = (p: string) => !ONLY || ONLY === p;
 
 if (!KEY) {
   console.error('❌ Falta ZERNIO_API_KEY (usa: node --env-file=.env.local, ou secret no CI).');
@@ -106,7 +109,7 @@ for (const entry of targets) {
   // --- Pinterest (imagem) ---
   const pin = pieces.find((p) => p.format === 'pin');
   const pinFile = `${dir}/pin.png`;
-  if (pin && ACCOUNTS.pinterest) {
+  if (pin && ACCOUNTS.pinterest && wants('pinterest')) {
     if (!existsSync(pinFile)) {
       console.warn(`  ⏭  pinterest: falta ${pinFile} (corre \`npm run social\`) — ignorado.`);
     } else {
@@ -147,7 +150,7 @@ for (const entry of targets) {
   // --- TikTok (vídeo) ---
   const vid = pieces.find((p) => p.format === 'video' && p.platform === 'tiktok');
   const vidFile = `${dir}/video.mp4`;
-  if (vid && ACCOUNTS.tiktok) {
+  if (vid && ACCOUNTS.tiktok && wants('tiktok')) {
     if (!existsSync(vidFile)) {
       console.warn(`  ⏭  tiktok: falta ${vidFile} (corre \`npm run social:video\`) — ignorado.`);
     } else {
