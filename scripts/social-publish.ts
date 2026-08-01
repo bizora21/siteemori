@@ -35,6 +35,9 @@ const SCHEDULE = typeof args.schedule === 'string' ? args.schedule : undefined;
 /** --platform=pinterest limita a publicação a uma plataforma (omitir = todas). */
 const ONLY = typeof args.platform === 'string' ? args.platform : undefined;
 const wants = (p: string) => !ONLY || ONLY === p;
+/** --draft envia o vídeo para a Caixa de Entrada do Criador do TikTok
+ *  (nada fica público; terminas a publicação na app). */
+const DRAFT = args.draft === true;
 
 if (!KEY) {
   console.error('❌ Falta ZERNIO_API_KEY (usa: node --env-file=.env.local, ou secret no CI).');
@@ -157,7 +160,16 @@ for (const entry of targets) {
       const body = {
         content: vid.caption,
         mediaItems: [{ type: 'video', url: '<upload>', mimeType: 'video/mp4' }],
-        platforms: [{ platform: 'tiktok', accountId: ACCOUNTS.tiktok }],
+        platforms: [
+          {
+            platform: 'tiktok',
+            accountId: ACCOUNTS.tiktok,
+            // draft → Caixa de Entrada do Criador (nada público até confirmares na app)
+            platformSpecificData: DRAFT
+              ? { draft: true }
+              : { allowComment: true, allowDuet: true, allowStitch: true },
+          },
+        ],
         ...(SCHEDULE ? { scheduledFor: SCHEDULE } : { publishNow: true }),
       };
 
@@ -166,6 +178,7 @@ for (const entry of targets) {
         console.log(`     vídeo:  ${vidFile}`);
         console.log(`     legenda: ${vid.caption.split('\n')[0]}…`);
         console.log(`     link:   ${vid.link}`);
+        console.log(`     modo:   ${DRAFT ? 'RASCUNHO (Caixa do Criador)' : 'publicação direta'}`);
       } else {
         console.log('  🎬 tiktok: a enviar vídeo…');
         body.mediaItems[0].url = await uploadMedia(vidFile, 'video/mp4');
