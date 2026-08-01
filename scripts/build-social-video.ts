@@ -1,25 +1,31 @@
-// Gera o vídeo vertical (1080×1920) de cada artigo — in-house, sem serviços externos.
-// Cenas (gancho → 3 pontos → CTA) renderizadas em PNG pelo resvg e montadas pelo
-// ffmpeg com fades + música de fundo opcional.
+// Gera o vídeo vertical (1080×1920) de cada artigo — in-house, sem serviços pagos.
 //
 //   npm run social:video -- --slug=diario-de-gratidao --lang=pt-br
-//   npm run social:video                      → todos os artigos (demora)
+//   npm run social:video -- --slug=… --lang=… --no-voice      (sem voz off)
 //
-// Música: assets/audio/calm.mp3 (gitignored — Pixabay não permite redistribuir o
-// ficheiro). Se não existir, o vídeo é gerado à mesma, em silêncio.
+// Como funciona:
+//   1. Cada cena vira narração → Edge TTS (voz neural PT grátis) devolve o áudio
+//      e o tempo exato de cada palavra;
+//   2. As palavras são agrupadas em legendas curtas e cada uma vira um frame PNG
+//      (resvg), com a duração exata da fala → legendas perfeitamente sincronizadas;
+//   3. ffmpeg junta os frames, a voz e (se existir) a música de fundo.
+//
+// Música: assets/audio/calm.mp3 (gitignored — Pixabay não permite redistribuir).
+// Sem o ficheiro, o vídeo sai só com voz.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { Resvg } from '@resvg/resvg-js';
 import ffmpegPath from 'ffmpeg-static';
 import type { SocialManifestEntry } from '../lib/social/types';
+import { synthesize, toCaptions, cleanNarration, type WordTiming } from '../lib/social/tts';
+import type { Locale } from '../i18n/config';
 
 const W = 1080;
 const H = 1920;
-const PAD = 110;
+const PAD = 100;
 const FONTS = ['assets/fonts/PTSerif-Bold.ttf', 'assets/fonts/PTSerif-Regular.ttf'];
 const AUDIO = 'assets/audio/calm.mp3';
-const FADE = 0.6; // segundos de transição entre cenas
 
 function xmlEscape(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -45,38 +51,44 @@ function firstSentence(text: string): string {
   return (m ? m[0] : text).trim();
 }
 
+/** Ícones do nicho (linha, estilo lucide) desenhados como path SVG. */
+const ICONS: Record<string, string> = {
+  moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+  heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z',
+  book: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z',
+  sparkle: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z',
+};
+
 interface Scene {
   eyebrow?: string;
   title: string;
-  body?: string;
-  seconds: number;
+  narration: string;
+  icon: keyof typeof ICONS;
   accent?: boolean;
 }
 
-/** Uma cena: fundo creme, lua, rótulo, título serifado grande e corpo opcional. */
-function sceneSvg(scene: Scene): string {
-  const titleSize = scene.title.length > 60 ? 62 : scene.title.length > 34 ? 72 : 84;
-  const titleMax = scene.title.length > 60 ? 24 : 20;
-  const titleLines = wrap(scene.title, titleMax).slice(0, 7);
-  const lineH = titleSize + 22;
-  const bodyLines = scene.body ? wrap(scene.body, 32).slice(0, 6) : [];
-
-  // Bloco de texto centrado verticalmente.
-  const totalH = titleLines.length * lineH + (bodyLines.length ? 60 + bodyLines.length * 52 : 0);
-  const top = Math.max(420, (H - totalH) / 2);
+/** Uma cena com a legenda actual destacada em baixo. */
+function frameSvg(scene: Scene, caption: string): string {
+  const titleSize = scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
+  const titleLines = wrap(scene.title, scene.title.length > 58 ? 24 : 20).slice(0, 5);
+  const lineH = titleSize + 20;
+  const titleTop = 700;
 
   const titleEls = titleLines
     .map(
       (l, i) =>
-        `<text x="${PAD}" y="${top + i * lineH}" font-family="PT Serif" font-weight="bold" font-size="${titleSize}" fill="${scene.accent ? '#84391b' : '#2a2420'}">${xmlEscape(l)}</text>`,
+        `<text x="${PAD}" y="${titleTop + i * lineH}" font-family="PT Serif" font-weight="bold" font-size="${titleSize}" fill="${scene.accent ? '#84391b' : '#2a2420'}">${xmlEscape(l)}</text>`,
     )
     .join('\n  ');
 
-  const bodyTop = top + titleLines.length * lineH + 60;
-  const bodyEls = bodyLines
+  // Legenda: bloco central-baixo, grande e legível sem som.
+  const capLines = wrap(caption, 22).slice(0, 3);
+  // Logo abaixo do título (mantendo distância do rodapé, onde a UI do TikTok tapa).
+  const capTop = titleTop + titleLines.length * lineH + 170;
+  const capEls = capLines
     .map(
       (l, i) =>
-        `<text x="${PAD}" y="${bodyTop + i * 52}" font-family="PT Serif" font-weight="normal" font-size="40" fill="#6f6154">${xmlEscape(l)}</text>`,
+        `<text x="${W / 2}" y="${capTop + i * 76}" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="62" fill="#2a2420">${xmlEscape(l)}</text>`,
     )
     .join('\n  ');
 
@@ -84,22 +96,30 @@ function sceneSvg(scene: Scene): string {
   <defs>
     <mask id="moon">
       <rect width="${W}" height="${H}" fill="black"/>
-      <circle cx="820" cy="300" r="240" fill="white"/>
-      <circle cx="920" cy="235" r="220" fill="black"/>
+      <circle cx="830" cy="300" r="235" fill="white"/>
+      <circle cx="930" cy="238" r="215" fill="black"/>
     </mask>
   </defs>
   <rect width="${W}" height="${H}" fill="#faf5ec"/>
   <rect width="${W}" height="${H}" fill="#f3ddc9" mask="url(#moon)"/>
-  ${scene.eyebrow ? `<text x="${PAD}" y="290" font-family="PT Serif" font-weight="bold" font-size="34" letter-spacing="7" fill="#a2481f">${xmlEscape(scene.eyebrow)}</text>` : ''}
+
+  <g transform="translate(${PAD} 300) scale(2.6)" fill="none" stroke="#c05a2e" stroke-width="1.7"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="${ICONS[scene.icon]}"/>
+  </g>
+
+  ${scene.eyebrow ? `<text x="${PAD}" y="520" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="#a2481f">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
-  ${bodyEls}
-  <rect x="${PAD}" y="1700" width="130" height="5" fill="#dd9470"/>
-  <text x="${PAD}" y="1790" font-family="PT Serif" font-weight="bold" font-size="46" fill="#84391b">aemori.com</text>
+
+  <rect x="${W / 2 - 60}" y="${capTop - 100}" width="120" height="4" fill="#dd9470"/>
+  ${capEls}
+
+  <text x="${W / 2}" y="1790" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="#84391b">aemori.com</text>
 </svg>`;
 }
 
-function renderScene(scene: Scene, file: string) {
-  const png = new Resvg(sceneSvg(scene), {
+function renderFrame(scene: Scene, caption: string, file: string) {
+  const png = new Resvg(frameSvg(scene, caption), {
     fitTo: { mode: 'width', value: W },
     font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'PT Serif' },
     background: '#faf5ec',
@@ -112,109 +132,168 @@ function renderScene(scene: Scene, file: string) {
 function buildScenes(entry: SocialManifestEntry): Scene[] {
   const isPT = entry.lang === 'pt-pt';
   const points = entry.faq.slice(0, 3);
+  const icons: (keyof typeof ICONS)[] = ['book', 'heart', 'sparkle'];
+
   return [
-    { eyebrow: 'DIÁRIO EMOCIONAL', title: entry.title, seconds: 5 },
-    ...points.map((f) => ({
+    {
+      eyebrow: 'DIÁRIO EMOCIONAL',
+      title: entry.title,
+      narration: entry.title,
+      icon: 'moon',
+    },
+    // A pergunta fica no ecrã (título) e a voz narra só a resposta — assim a
+    // legenda nunca repete o que já se lê em cima.
+    ...points.map((f, i) => ({
       title: f.q,
-      body: firstSentence(f.a),
-      seconds: 7,
+      narration: cleanNarration(firstSentence(f.a)),
+      icon: icons[i] ?? 'sparkle',
     })),
     {
       title: isPT ? 'A Emori lembra-se de ti.' : 'A Emori lembra de você.',
-      body: isPT
-        ? 'Guia completo e app gratuita no site.'
-        : 'Guia completo e app grátis no site.',
-      seconds: 6,
+      narration: isPT
+        ? 'A Emori lembra-se de ti. Guia completo e aplicação gratuita no site aemori ponto com.'
+        : 'A Emori lembra de você. Guia completo e aplicativo grátis no site aemori ponto com.',
+      icon: 'moon',
       accent: true,
     },
   ];
 }
 
-// ---- run ---------------------------------------------------------------------
+// ---- execução ----------------------------------------------------------------
 
-const manifest: SocialManifestEntry[] = JSON.parse(readFileSync('content/blog/manifest.json', 'utf8'));
-const args = Object.fromEntries(
-  process.argv.slice(2).map((a) => {
-    const [k, v] = a.replace(/^--/, '').split('=');
-    return [k, v ?? true];
-  }),
-);
+async function main() {
+  const manifest: SocialManifestEntry[] = JSON.parse(readFileSync('content/blog/manifest.json', 'utf8'));
+  const args: Record<string, string | boolean> = Object.fromEntries(
+    process.argv.slice(2).map((a): [string, string | boolean] => {
+      const [k, v] = a.replace(/^--/, '').split('=');
+      return [k, v ?? true];
+    }),
+  );
 
-let targets = manifest;
-if (args.slug) targets = targets.filter((e) => e.slug === args.slug);
-if (args.lang) targets = targets.filter((e) => e.lang === args.lang);
-if (targets.length === 0) {
-  console.error('Nenhum artigo corresponde aos filtros.');
-  process.exit(1);
-}
-
-const ffmpeg = ffmpegPath as unknown as string;
-const hasAudio = existsSync(AUDIO);
-if (!hasAudio) {
-  console.warn(`⚠ ${AUDIO} não encontrado — vídeo será gerado sem música.`);
-}
-
-for (const entry of targets) {
-  const dir = `social/${entry.slug}/${entry.lang}`;
-  const tmp = `${dir}/.frames`;
-  mkdirSync(tmp, { recursive: true });
-
-  const scenes = buildScenes(entry);
-  scenes.forEach((s, i) => renderScene(s, `${tmp}/scene-${i}.png`));
-
-  const total = scenes.reduce((a, s) => a + s.seconds, 0);
-
-  // Cada cena vira um clip com fade in/out; concatenados em sequência.
-  const inputs: string[] = [];
-  const filters: string[] = [];
-  scenes.forEach((s, i) => {
-    inputs.push('-loop', '1', '-t', String(s.seconds), '-i', `${tmp}/scene-${i}.png`);
-    filters.push(
-      `[${i}:v]scale=${W}:${H},fps=30,format=yuv420p,` +
-        `fade=t=in:st=0:d=${FADE},fade=t=out:st=${s.seconds - FADE}:d=${FADE}[v${i}]`,
-    );
-  });
-  const concat = scenes.map((_, i) => `[v${i}]`).join('') + `concat=n=${scenes.length}:v=1:a=0[v]`;
-
-  const audioArgs: string[] = [];
-  let filterComplex = `${filters.join(';')};${concat}`;
-  if (hasAudio) {
-    audioArgs.push('-i', AUDIO);
-    const ai = scenes.length; // índice do input de áudio
-    filterComplex += `;[${ai}:a]atrim=0:${total},afade=t=in:st=0:d=1,afade=t=out:st=${total - 2}:d=2,volume=0.35[a]`;
-  }
-
-  const out = `${dir}/video.mp4`;
-  const cmd = [
-    '-y',
-    ...inputs,
-    ...audioArgs,
-    '-filter_complex',
-    filterComplex,
-    '-map',
-    '[v]',
-    ...(hasAudio ? ['-map', '[a]'] : []),
-    '-c:v',
-    'libx264',
-    '-preset',
-    'medium',
-    '-crf',
-    '20',
-    '-pix_fmt',
-    'yuv420p',
-    ...(hasAudio ? ['-c:a', 'aac', '-b:a', '128k'] : []),
-    '-movflags',
-    '+faststart',
-    out,
-  ];
-
-  try {
-    execFileSync(ffmpeg, cmd, { stdio: ['ignore', 'ignore', 'pipe'] });
-  } catch (err) {
-    const e = err as { stderr?: Buffer; message?: string };
-    console.error('ffmpeg falhou:\n', e.stderr?.toString().slice(-2500) ?? e.message);
+  let targets = manifest;
+  if (args.slug) targets = targets.filter((e) => e.slug === args.slug);
+  if (args.lang) targets = targets.filter((e) => e.lang === args.lang);
+  if (targets.length === 0) {
+    console.error('Nenhum artigo corresponde aos filtros.');
     process.exit(1);
   }
-  rmSync(tmp, { recursive: true, force: true });
-  console.log(`✓ ${out} (${total}s${hasAudio ? ' + música' : ', sem música'})`);
+
+  const ffmpeg = ffmpegPath as unknown as string;
+  const withVoice = args['no-voice'] !== true;
+  const hasMusic = existsSync(AUDIO);
+
+  for (const entry of targets) {
+    const dir = `social/${entry.slug}/${entry.lang}`;
+    const tmp = `${dir}/.frames`;
+    mkdirSync(tmp, { recursive: true });
+
+    const scenes = buildScenes(entry);
+    const frames: { file: string; seconds: number }[] = [];
+    const voiceFiles: string[] = [];
+    let sceneIndex = 0;
+
+    for (const scene of scenes) {
+      let captions: WordTiming[];
+
+      if (withVoice) {
+        const voiceFile = `${tmp}/voice-${sceneIndex}.mp3`;
+        const { words } = await synthesize(scene.narration, entry.lang as Locale, voiceFile);
+        voiceFiles.push(voiceFile);
+        captions = toCaptions(words);
+        // Pequena pausa no fim de cada cena, para respirar.
+        if (captions.length) captions[captions.length - 1].end += 0.5;
+      } else {
+        // Sem voz: ritmo fixo de leitura.
+        const chunks = wrap(scene.narration, 28);
+        captions = chunks.map((c, i) => ({ text: c, start: i * 1.8, end: (i + 1) * 1.8 }));
+      }
+
+      captions.forEach((cap, i) => {
+        const file = `${tmp}/f-${sceneIndex}-${i}.png`;
+        renderFrame(scene, cap.text, file);
+        frames.push({ file, seconds: Math.max(0.5, cap.end - cap.start) });
+      });
+      sceneIndex += 1;
+    }
+
+    // Lista para o concat demuxer (duração exata por frame = sincronia perfeita).
+    const listFile = `${tmp}/frames.txt`;
+    const listBody = frames
+      .map((f) => `file '${f.file.split('/').pop()}'\nduration ${f.seconds.toFixed(3)}`)
+      .join('\n');
+    writeFileSync(listFile, `${listBody}\nfile '${frames[frames.length - 1].file.split('/').pop()}'\n`);
+
+    const total = frames.reduce((a, f) => a + f.seconds, 0);
+
+    // Voz: concatena os ficheiros das cenas.
+    let voiceFile: string | null = null;
+    if (withVoice && voiceFiles.length) {
+      const vList = `${tmp}/voices.txt`;
+      writeFileSync(vList, voiceFiles.map((v) => `file '${v.split('/').pop()}'`).join('\n'));
+      voiceFile = `${tmp}/voice.mp3`;
+      execFileSync(ffmpeg, ['-y', '-f', 'concat', '-safe', '0', '-i', vList, '-c', 'copy', voiceFile], {
+        stdio: ['ignore', 'ignore', 'pipe'],
+      });
+    }
+
+    // Montagem final.
+    const inputs = ['-f', 'concat', '-safe', '0', '-i', listFile];
+    const filters: string[] = [];
+    const maps = ['-map', '0:v'];
+
+    if (voiceFile && hasMusic) {
+      inputs.push('-i', voiceFile, '-stream_loop', '-1', '-i', AUDIO);
+      filters.push(
+        `[2:a]atrim=0:${total},volume=0.10,afade=t=out:st=${Math.max(0, total - 2)}:d=2[bg]`,
+        `[1:a][bg]amix=inputs=2:duration=first:dropout_transition=0[a]`,
+      );
+      maps.push('-map', '[a]');
+    } else if (voiceFile) {
+      inputs.push('-i', voiceFile);
+      maps.push('-map', '1:a');
+    } else if (hasMusic) {
+      inputs.push('-stream_loop', '-1', '-i', AUDIO);
+      filters.push(`[1:a]atrim=0:${total},volume=0.35,afade=t=out:st=${Math.max(0, total - 2)}:d=2[a]`);
+      maps.push('-map', '[a]');
+    }
+
+    const out = `${dir}/video.mp4`;
+    const cmd = [
+      '-y',
+      ...inputs,
+      ...(filters.length ? ['-filter_complex', filters.join(';')] : []),
+      ...maps,
+      '-vf',
+      `scale=${W}:${H},fps=30,format=yuv420p`,
+      '-c:v',
+      'libx264',
+      '-preset',
+      'medium',
+      '-crf',
+      '20',
+      ...(voiceFile || hasMusic ? ['-c:a', 'aac', '-b:a', '128k', '-shortest'] : []),
+      '-movflags',
+      '+faststart',
+      out,
+    ];
+
+    try {
+      execFileSync(ffmpeg, cmd, { stdio: ['ignore', 'ignore', 'pipe'] });
+    } catch (err) {
+      const e = err as { stderr?: Buffer; message?: string };
+      console.error('ffmpeg falhou:\n', e.stderr?.toString().slice(-2500) ?? e.message);
+      process.exit(1);
+    }
+
+    rmSync(tmp, { recursive: true, force: true });
+    console.log(
+      `✓ ${out} — ${total.toFixed(1)}s, ${frames.length} legendas` +
+        `${withVoice ? ' + voz' : ''}${hasMusic ? ' + música' : ''}`,
+    );
+  }
 }
+
+main().catch((err) => {
+  console.error('❌', err instanceof Error ? err.message : err);
+  process.exit(1);
+});

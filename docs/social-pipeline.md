@@ -70,9 +70,19 @@ ver, no **Play Console → Aquisição**, que canal/artigo trouxe cada instalaç
 | **5** | **Vídeo in-house** (SVG→cenas→ffmpeg, 1080×1920) | ✅ feito |
 
 **Fase 5 — vídeo sem serviços externos.** `npm run social:video -- --slug=… --lang=…`
-gera `video.mp4` (vertical, ~32s): gancho → 3 perguntas da FAQ → CTA, na paleta da marca,
-com fades e música de fundo. Optámos por vídeo de texto em vez de avatar-IA (HeyGen):
-zero custo, sem limites de tier, e mais autêntico para o nicho de bem-estar.
+gera `video.mp4` (vertical 1080×1920, ~22s) com:
+
+- **Voz off** via **Edge TTS** (vozes neurais da Microsoft — grátis, sem API key):
+  `pt-BR-FranciscaNeural` / `pt-PT-RaquelNeural` (femininas — a Emori é sempre "ela").
+- **Legendas sincronizadas ao milissegundo:** o Edge TTS devolve o *word boundary* de
+  cada palavra; agrupamos em blocos curtos e cada bloco é um frame com a duração exata
+  da fala. É o maior fator de retenção — a maioria vê **sem som**.
+- **Ícones do nicho** (lua, livro, coração, brilho) e divisão clara: a **pergunta** fica
+  no título e a **voz narra a resposta**, para a legenda nunca repetir o que já se lê.
+- `--no-voice` gera só com música e ritmo de leitura fixo.
+
+Optámos por isto em vez de avatar-IA (HeyGen/Synthesia): zero custo, sem limites de
+tier, e mais autêntico para o nicho de bem-estar.
 
 > 🎵 **Música:** coloca a tua faixa em `assets/audio/calm.mp3`. Está **gitignored** —
 > a Pixabay Content License permite *usar* a faixa, mas **não redistribuir o ficheiro**
