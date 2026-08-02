@@ -108,11 +108,51 @@ async function createPost(body: unknown): Promise<void> {
   }
   if (!res.ok) throw new Error(`POST /posts falhou (${res.status}): ${text}`);
 
-  const json = JSON.parse(text) as {
-    post?: { platforms?: { platform: string; platformPostUrl?: string }[] };
-  };
-  const urls = json.post?.platforms?.map((p) => p.platformPostUrl).filter(Boolean) ?? [];
-  console.log(`  ✅ publicado${urls.length ? `: ${urls.join(', ')}` : ' (URL resolve em breve)'}`);
+  const json = JSON.parse(text) as { post?: { _id?: string } };
+  const postId = json.post?._id;
+  if (!postId) {
+    console.log('  ✅ aceite pelo Zernio (sem id para confirmar).');
+    return;
+  }
+  await confirmDelivery(postId);
+}
+
+/**
+ * O Zernio aceita o post (200) e entrega à plataforma de forma ASSÍNCRONA — por
+ * isso um 200 não significa publicado. Confirmamos o estado real de cada
+ * plataforma antes de reportar sucesso.
+ */
+async function confirmDelivery(postId: string, tries = 6, waitMs = 5000): Promise<void> {
+  for (let i = 0; i < tries; i += 1) {
+    await new Promise((r) => setTimeout(r, waitMs));
+    const res = await fetch(`${BASE}/posts/${postId}`, {
+      headers: { Authorization: `Bearer ${KEY}`, Accept: 'application/json' },
+    });
+    if (!res.ok) continue;
+
+    const { post } = (await res.json()) as {
+      post?: {
+        platforms?: {
+          platform: string;
+          status: string;
+          platformPostUrl?: string;
+          errorMessage?: string;
+        }[];
+      };
+    };
+    const platforms = post?.platforms ?? [];
+    if (platforms.some((p) => p.status === 'pending' || p.status === 'processing')) continue;
+
+    for (const p of platforms) {
+      if (p.status === 'published') {
+        console.log(`  ✅ ${p.platform}: publicado${p.platformPostUrl ? ` — ${p.platformPostUrl}` : ''}`);
+      } else {
+        console.warn(`  ❌ ${p.platform}: ${p.status}${p.errorMessage ? ` — ${p.errorMessage}` : ''}`);
+      }
+    }
+    return;
+  }
+  console.warn('  ⏳ ainda a processar no Zernio — confirma no painel daqui a pouco.');
 }
 
 // ---- execução ----------------------------------------------------------------
