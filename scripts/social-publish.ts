@@ -90,6 +90,21 @@ async function createPost(body: unknown): Promise<void> {
     console.warn('  ⏭  já publicado nas últimas 24h (dedup do Zernio) — ignorado.');
     return;
   }
+  if (res.status === 429) {
+    // Conta temporariamente limitada (comum em contas novas). Não é erro nosso:
+    // avisamos com a hora de libertação e seguimos para a próxima peça.
+    let until = '';
+    try {
+      const j = JSON.parse(text) as { details?: { rateLimitedUntil?: string } };
+      if (j.details?.rateLimitedUntil) {
+        until = ` — liberta às ${new Date(j.details.rateLimitedUntil).toLocaleString('pt-PT')}`;
+      }
+    } catch {
+      /* mensagem sem JSON */
+    }
+    console.warn(`  ⏭  conta temporariamente limitada pela plataforma${until}. Tenta mais tarde.`);
+    return;
+  }
   if (!res.ok) throw new Error(`POST /posts falhou (${res.status}): ${text}`);
 
   const json = JSON.parse(text) as {
