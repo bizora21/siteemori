@@ -54,6 +54,28 @@ if (targets.length === 0) {
   process.exit(1);
 }
 
+/**
+ * O Pinterest limita contas novas de forma agressiva e cada tentativa falhada
+ * ESTENDE o bloqueio. Verificamos antes de enviar para não piorar a situação.
+ */
+async function rateLimitedUntil(accountId: string): Promise<Date | null> {
+  try {
+    const res = await fetch(`${BASE}/accounts`, {
+      headers: { Authorization: `Bearer ${KEY}`, Accept: 'application/json' },
+    });
+    if (!res.ok) return null;
+    const { accounts } = (await res.json()) as {
+      accounts?: { _id: string; rateLimitedUntil?: string }[];
+    };
+    const acc = accounts?.find((a) => a._id === accountId);
+    if (!acc?.rateLimitedUntil) return null;
+    const until = new Date(acc.rateLimitedUntil);
+    return until > new Date() ? until : null;
+  } catch {
+    return null;
+  }
+}
+
 function logRate(res: Response) {
   const rem = res.headers.get('X-RateLimit-Remaining');
   if (rem && Number(rem) < 10) console.warn(`  ⚠ rate limit a esgotar: ${rem} pedidos restantes`);
@@ -199,9 +221,17 @@ for (const entry of targets) {
         console.log(`     link:   ${pin.link}`);
         console.log(`     board:  ${BOARD_ID ?? '(primeiro disponível)'}`);
       } else {
-        console.log('  📌 pinterest: a enviar imagem…');
-        body.mediaItems[0].url = await uploadMedia(pinFile, 'image/png');
-        await createPost(body);
+        const until = await rateLimitedUntil(ACCOUNTS.pinterest);
+        if (until) {
+          console.warn(
+            `  ⏭  pinterest: conta limitada até ${until.toLocaleString('pt-PT')} — ` +
+              'ignorado (tentar agora só estenderia o bloqueio).',
+          );
+        } else {
+          console.log('  📌 pinterest: a enviar imagem…');
+          body.mediaItems[0].url = await uploadMedia(pinFile, 'image/png');
+          await createPost(body);
+        }
       }
     }
   }
