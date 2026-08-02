@@ -65,6 +65,8 @@ interface Scene {
   narration: string;
   icon: keyof typeof ICONS;
   accent?: boolean;
+  /** Cenas em que o título já é o texto falado — legenda seria redundante. */
+  hideCaption?: boolean;
 }
 
 /** Uma cena com a legenda actual destacada em baixo. */
@@ -82,7 +84,7 @@ function frameSvg(scene: Scene, caption: string): string {
     .join('\n  ');
 
   // Legenda: bloco central-baixo, grande e legível sem som.
-  const capLines = wrap(caption, 22).slice(0, 3);
+  const capLines = caption ? wrap(caption, 22).slice(0, 3) : [];
   // Logo abaixo do título (mantendo distância do rodapé, onde a UI do TikTok tapa).
   const capTop = titleTop + titleLines.length * lineH + 170;
   const capEls = capLines
@@ -111,7 +113,7 @@ function frameSvg(scene: Scene, caption: string): string {
   ${scene.eyebrow ? `<text x="${PAD}" y="520" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="#a2481f">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
 
-  <rect x="${W / 2 - 60}" y="${capTop - 100}" width="120" height="4" fill="#dd9470"/>
+  ${capLines.length ? `<rect x="${W / 2 - 60}" y="${capTop - 100}" width="120" height="4" fill="#dd9470"/>` : ''}
   ${capEls}
 
   <text x="${W / 2}" y="1790" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="#84391b">aemori.com</text>
@@ -138,8 +140,9 @@ function buildScenes(entry: SocialManifestEntry): Scene[] {
     {
       eyebrow: 'DIÁRIO EMOCIONAL',
       title: entry.title,
-      narration: entry.title,
+      narration: cleanNarration(entry.title),
       icon: 'moon',
+      hideCaption: true,
     },
     // A pergunta fica no ecrã (título) e a voz narra só a resposta — assim a
     // legenda nunca repete o que já se lê em cima.
@@ -210,7 +213,7 @@ async function main() {
 
       captions.forEach((cap, i) => {
         const file = `${tmp}/f-${sceneIndex}-${i}.png`;
-        renderFrame(scene, cap.text, file);
+        renderFrame(scene, scene.hideCaption ? '' : cap.text, file);
         frames.push({ file, seconds: Math.max(0.5, cap.end - cap.start) });
       });
       sceneIndex += 1;
