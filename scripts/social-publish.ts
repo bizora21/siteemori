@@ -16,6 +16,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { buildPieces } from '../lib/social/adapt';
+import { uploadVideo } from '../lib/social/youtube';
 import type { SocialManifestEntry } from '../lib/social/types';
 
 const BASE = 'https://zernio.com/api/v1';
@@ -201,6 +202,40 @@ for (const entry of targets) {
       }
     }
   }
+  // --- YouTube Shorts (API nativa — não passa pelo Zernio) ---
+  const yt = pieces.find((p) => p.format === 'video' && p.platform === 'youtube');
+  if (yt && wants('youtube') && process.env.YOUTUBE_REFRESH_TOKEN) {
+    if (!existsSync(vidFile)) {
+      console.warn(`  ⏭  youtube: falta ${vidFile} (corre \`npm run social:video\`) — ignorado.`);
+    } else {
+      const title = `${entry.title} #Shorts`.slice(0, 100);
+      const description = `${entry.tldr}\n\n${yt.link}\n\n#diarioemocional #journaling #saudemental #autoconhecimento`;
+      const privacy = (args.public === true ? 'public' : 'private') as 'public' | 'private';
+
+      if (!LIVE) {
+        console.log('  ▶️  youtube (dry-run):');
+        console.log(`     vídeo:      ${vidFile}`);
+        console.log(`     título:     ${title}`);
+        console.log(`     link:       ${yt.link}`);
+        console.log(`     visibilidade: ${privacy}`);
+      } else {
+        console.log(`  ▶️  youtube: a enviar vídeo (${privacy})…`);
+        try {
+          const { url } = await uploadVideo({
+            file: vidFile,
+            title,
+            description,
+            tags: ['diário emocional', 'journaling', 'saúde mental', 'autoconhecimento', 'emori'],
+            privacyStatus: privacy,
+          });
+          console.log(`  ✅ publicado: ${url}`);
+        } catch (err) {
+          console.error(`  ❌ youtube: ${err instanceof Error ? err.message : err}`);
+        }
+      }
+    }
+  }
+
   console.log('');
 }
 

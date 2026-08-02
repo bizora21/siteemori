@@ -99,6 +99,7 @@ export function shortPost(entry: SocialManifestEntry, link: string): string {
 
 const PLATFORM_FORMAT: { platform: Platform; format: Format }[] = [
   { platform: 'tiktok', format: 'video' },
+  // YouTube publica pela API nativa (grátis, sem contar para o limite do Zernio)
   { platform: 'youtube', format: 'video' },
   { platform: 'facebook', format: 'post' },
   { platform: 'pinterest', format: 'pin' },
