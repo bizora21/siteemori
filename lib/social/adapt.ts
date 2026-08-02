@@ -108,7 +108,13 @@ const PLATFORM_FORMAT: { platform: Platform; format: Format }[] = [
 /** Constrói todas as peças (com link+UTM próprios) a partir de um artigo. */
 export function buildPieces(entry: SocialManifestEntry): SocialPiece[] {
   return PLATFORM_FORMAT.map(({ platform, format }) => {
-    const link = utmLink(entry.url, { source: platform, campaign: entry.slug, content: format });
+    // O Pinterest marca como spam URLs com query strings longas (domínios novos
+    // são especialmente vigiados). Usamos só utm_source — continua a ser medível
+    // no GA4 e reduz muito o risco de bloqueio do link.
+    const link =
+      platform === 'pinterest'
+        ? `${entry.url}?utm_source=pinterest`
+        : utmLink(entry.url, { source: platform, campaign: entry.slug, content: format });
 
     if (format === 'video') {
       const caption = `${entry.title}\n\n${COPY[entry.lang].linkNote} ${link}\n${HASHTAGS.join(' ')}`;
