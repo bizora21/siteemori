@@ -232,7 +232,13 @@ async function main() {
   }
 
   const withVoice = args['no-voice'] !== true;
-  const hasMusic = existsSync(AUDIO);
+  // Música DESLIGADA por defeito: faixas ditas "livres" (incl. Pixabay) podem estar
+  // registadas no Content ID por terceiros e bloquear o vídeo globalmente no YouTube.
+  // Com voz off a música é decorativa — não compensa o risco. Usa --music para ligar.
+  const hasMusic = args.music === true && existsSync(AUDIO);
+  if (args.music === true && !existsSync(AUDIO)) {
+    console.warn(`⚠ ${AUDIO} não encontrado — a gerar sem música.`);
+  }
 
   for (const entry of targets) {
     const dir = `social/${entry.slug}/${entry.lang}`;
