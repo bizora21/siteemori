@@ -6,9 +6,10 @@ import { writeFileSync } from 'node:fs';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
 import type { Locale } from '@/i18n/config';
 
-/** Voz feminina e calma em cada variante — a Emori é sempre "ela". */
+/** Voz feminina e calma em cada variante — a Emori é sempre "ela".
+ *  Thalita é a geração "multilingual" (mais recente e natural que a Francisca). */
 export const VOICE: Record<Locale, string> = {
-  'pt-br': 'pt-BR-FranciscaNeural',
+  'pt-br': 'pt-BR-ThalitaMultilingualNeural',
   'pt-pt': 'pt-PT-RaquelNeural',
 };
 
@@ -22,10 +23,32 @@ export interface WordTiming {
 /** Os offsets do Edge TTS vêm em unidades de 100 nanossegundos. */
 const TICKS_PER_SECOND = 10_000_000;
 
+/** Sintetiza com tentativas — a ligação ao Edge TTS falha ocasionalmente. */
 export async function synthesize(
   text: string,
   lang: Locale,
   outFile: string,
+  rate = '-8%',
+  attempts = 3,
+): Promise<{ words: WordTiming[]; duration: number }> {
+  for (let i = 1; i <= attempts; i += 1) {
+    try {
+      return await synthesizeOnce(text, lang, outFile, rate);
+    } catch (err) {
+      if (i === attempts) throw err;
+      console.warn(`  ⚠ TTS falhou (tentativa ${i}/${attempts}) — a repetir…`);
+      await new Promise((r) => setTimeout(r, 1500 * i));
+    }
+  }
+  throw new Error('inalcançável');
+}
+
+async function synthesizeOnce(
+  text: string,
+  lang: Locale,
+  outFile: string,
+  /** ritmo da fala; ligeiramente mais lento soa mais calmo e dá tempo de ler */
+  rate = '-8%',
 ): Promise<{ words: WordTiming[]; duration: number }> {
   const tts = new MsEdgeTTS();
   await tts.setMetadata(VOICE[lang], OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
@@ -33,7 +56,7 @@ export async function synthesize(
     sentenceBoundaryEnabled: false,
   });
 
-  const { audioStream, metadataStream } = tts.toStream(text);
+  const { audioStream, metadataStream } = tts.toStream(text, { rate });
 
   const chunks: Buffer[] = [];
   audioStream.on('data', (c: Buffer) => chunks.push(c));
@@ -94,6 +117,37 @@ export function toCaptions(words: WordTiming[], maxWords = 4, maxChars = 26): Wo
   }
   flush();
   return out;
+}
+
+/** Uma linha de legenda com as palavras que a compõem (para realçar a atual). */
+export interface CaptionLine {
+  words: WordTiming[];
+  start: number;
+  end: number;
+}
+
+/**
+ * Agrupa as palavras em linhas curtas, mantendo cada palavra individual — o que
+ * permite mostrar a linha inteira e realçar apenas a que está a ser lida.
+ */
+export function toCaptionLines(words: WordTiming[], maxWords = 5, maxChars = 30): CaptionLine[] {
+  const lines: CaptionLine[] = [];
+  let buf: WordTiming[] = [];
+
+  const flush = () => {
+    if (!buf.length) return;
+    lines.push({ words: buf, start: buf[0].start, end: buf[buf.length - 1].end });
+    buf = [];
+  };
+
+  for (const w of words) {
+    const candidate = [...buf, w].map((x) => x.text).join(' ');
+    if (buf.length >= maxWords || candidate.length > maxChars) flush();
+    buf.push(w);
+    if (/[.!?,;:—]$/.test(w.text)) flush();
+  }
+  flush();
+  return lines;
 }
 
 /**
