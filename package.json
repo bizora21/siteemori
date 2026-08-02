@@ -12,6 +12,7 @@
     "social:images": "tsx scripts/build-social-images.ts",
     "social:video": "tsx scripts/build-social-video.ts",
     "social:publish": "tsx scripts/social-publish.ts",
+    "go": "tsx scripts/social-all.ts",
     "youtube:auth": "node --env-file=.env.local scripts/youtube-auth.mjs",
     "social:assets": "tsx scripts/build-social-assets.ts",
     "social": "npm run social:manifest && npm run social:images && npm run social:assets"
