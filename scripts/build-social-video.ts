@@ -24,6 +24,7 @@ import {
   type CaptionLine,
 } from '../lib/social/tts';
 import type { Locale } from '../i18n/config';
+import { ICON_VOCAB, iconForText } from '../lib/social/icons';
 
 const W = 1080;
 const H = 1920;
@@ -94,13 +95,21 @@ interface Scene {
   cta?: string;
 }
 
-/** Um frame: cena + linha de legenda com a palavra atual realçada. */
-function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): string {
+/** Um frame: cena + símbolo do que está a ser dito + legenda com a palavra atual. */
+function frameSvg(
+  scene: Scene,
+  line: CaptionLine | null,
+  activeWord: number,
+  /** símbolo semântico da frase corrente (muda ao longo da narração) */
+  liveIcon?: string,
+  /** 0→1: entrada animada do símbolo quando ele muda */
+  iconIn = 1,
+): string {
   const C = THEME[scene.theme];
   const titleSize = scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
   const titleLines = wrap(scene.title, scene.title.length > 58 ? 24 : 20).slice(0, 5);
   const lineH = titleSize + 20;
-  const titleTop = 640;
+  const titleTop = 700;
 
   const titleEls = titleLines
     .map(
@@ -151,14 +160,31 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   <text x="${W / 2}" y="1630" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="46" fill="#faf5ec">${xmlEscape(scene.cta)}</text>`
     : '';
 
+  // Símbolo do que está a ser narrado: grande, centrado e com entrada animada
+  // (escala + opacidade). É a âncora visual que ilustra a frase corrente.
+  const iconPath = liveIcon ? ICON_VOCAB[liveIcon]?.path : ICONS[scene.icon];
+  const S = 300; // tamanho final do símbolo em px — tem de ser grande para ancorar o olhar
+  const grow = 0.88 + 0.12 * iconIn;
+  const cx = W / 2;
+  const cy = 360;
+  const symbolEls = iconPath
+    ? `<g transform="translate(${cx} ${cy}) scale(${(S * grow) / 24}) translate(-12 -12)"
+     fill="none" stroke="${C.active}" stroke-width="1.15" stroke-linecap="round"
+     stroke-linejoin="round" opacity="${(0.35 + 0.65 * iconIn).toFixed(2)}">
+    <path d="${iconPath}"/>
+  </g>`
+    : '';
+
   // Fundo: foto escurecida (máximo contraste) ou cor sólida com a lua.
   const bg =
     scene.theme === 'photo' && scene.photo
       ? `<image href="${scene.photo}" x="0" y="0" width="${W}" height="${H}"
         preserveAspectRatio="xMidYMid slice"/>
   <rect width="${W}" height="${H}" fill="#140f0b" opacity="0.62"/>`
-      : `<rect width="${W}" height="${H}" fill="${C.bg}"/>
-  <rect width="${W}" height="${H}" fill="${scene.theme === 'dark' ? '#3b322a' : scene.tint}" mask="url(#moon)"/>`;
+      : // Sem a lua de fundo: o símbolo semântico é agora o elemento visual e a
+        // lua competiria com ele. Fica só um halo suave atrás do símbolo.
+        `<rect width="${W}" height="${H}" fill="${C.bg}"/>
+  <circle cx="${W / 2}" cy="360" r="300" fill="${scene.theme === 'dark' ? '#3b322a' : scene.tint}" opacity="0.55"/>`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
@@ -170,12 +196,9 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   </defs>
   ${bg}
 
-  <g transform="translate(${PAD} 300) scale(2.6)" fill="none" stroke="${C.active}" stroke-width="1.7"
-     stroke-linecap="round" stroke-linejoin="round">
-    <path d="${ICONS[scene.icon]}"/>
-  </g>
+  ${symbolEls}
 
-  ${scene.eyebrow ? `<text x="${PAD}" y="520" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="${C.active}">${xmlEscape(scene.eyebrow)}</text>` : ''}
+  ${scene.eyebrow ? `<text x="${W / 2}" y="580" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="${C.active}">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
   ${capEls}
   ${ctaEls}
@@ -184,8 +207,15 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
 </svg>`;
 }
 
-function renderFrame(scene: Scene, line: CaptionLine | null, active: number, file: string) {
-  const png = new Resvg(frameSvg(scene, line, active), {
+function renderFrame(
+  scene: Scene,
+  line: CaptionLine | null,
+  active: number,
+  file: string,
+  liveIcon?: string,
+  iconIn = 1,
+) {
+  const png = new Resvg(frameSvg(scene, line, active, liveIcon, iconIn), {
     fitTo: { mode: 'width', value: W },
     font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'PT Serif' },
     background: '#faf5ec',
@@ -318,14 +348,30 @@ async function main() {
 
       if (flat.length === 0) {
         const file = `${tmp}/f-${si}-0.png`;
-        renderFrame(scene, null, -1, file);
+        renderFrame(scene, null, -1, file, iconForText(scene.title) ?? undefined);
         frames.push({ file, seconds: sceneDuration });
         continue;
       }
 
+      // Símbolo semântico por linha de legenda: muda quando a frase muda de
+      // assunto e mantém-se quando nada casa (evita piscar).
+      let currentIcon = iconForText(scene.title) ?? scene.icon;
+      let lastLine: CaptionLine | null = null;
+      let iconJustChanged = false;
+
       flat.forEach((f, i) => {
+        if (f.line !== lastLine) {
+          const match = iconForText(f.line.words.map((w) => w.text).join(' '));
+          iconJustChanged = match !== null && match !== currentIcon;
+          if (match) currentIcon = match;
+          lastLine = f.line;
+        } else {
+          iconJustChanged = false;
+        }
+
         const file = `${tmp}/f-${si}-${i}.png`;
-        renderFrame(scene, f.line, f.wordIdx, file);
+        // Entrada animada só no primeiro frame após a troca de símbolo.
+        renderFrame(scene, f.line, f.wordIdx, file, currentIcon, iconJustChanged ? 0.55 : 1);
         // O primeiro frame absorve o silêncio inicial (start = 0).
         const from = i === 0 ? 0 : f.start;
         const to = i + 1 < flat.length ? flat[i + 1].start : sceneDuration;
