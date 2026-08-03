@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brInteligencia from './pt-br/inteligencia-emocional';
 import brDesabafar from './pt-br/como-desabafar';
 import brControlar from './pt-br/como-controlar-as-emocoes';
 import brAfirmacoes from './pt-br/afirmacoes-positivas';
@@ -15,6 +16,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptInteligencia from './pt-pt/inteligencia-emocional';
 import ptDesabafar from './pt-pt/como-desabafar';
 import ptControlar from './pt-pt/como-controlar-as-emocoes';
 import ptAfirmacoes from './pt-pt/afirmacoes-positivas';
@@ -29,6 +31,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'inteligencia-emocional',
   'como-desabafar',
   'como-controlar-as-emocoes',
   'afirmacoes-positivas',
@@ -43,6 +46,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'inteligencia-emocional': { 'pt-br': brInteligencia, 'pt-pt': ptInteligencia },
   'como-desabafar': { 'pt-br': brDesabafar, 'pt-pt': ptDesabafar },
   'como-controlar-as-emocoes': { 'pt-br': brControlar, 'pt-pt': ptControlar },
   'afirmacoes-positivas': { 'pt-br': brAfirmacoes, 'pt-pt': ptAfirmacoes },

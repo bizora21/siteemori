@@ -1,6 +1,82 @@
 [
   {
     "lang": "pt-br",
+    "slug": "inteligencia-emocional",
+    "url": "https://aemori.com/pt-br/blog/inteligencia-emocional/",
+    "title": "Inteligência emocional: o que é e como desenvolver na prática",
+    "description": "Inteligência emocional é reconhecer, entender e lidar com o que você sente — e com o que os outros sentem. Veja os 5 pilares e como treinar cada um no dia a dia.",
+    "tldr": "Inteligência emocional é a capacidade de reconhecer o que você sente, entender de onde vem e escolher o que fazer com isso — em vez de apenas reagir. Não é dom nem personalidade: é um conjunto de habilidades que se treina, e o primeiro passo é o mais simples — dar nome ao que se sente.",
+    "datePublished": "2026-08-02",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1776109764926-ae63208aeced?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw2fHxzdW5yaXNlJTIwY2FsbSUyMGhvcml6b24lMjB3YXJtJTIwbWluaW1hbCUyMG5hdHVyZXxlbnwxfDB8fHwxNzg1Nzc4MjY4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pôr do sol dourado sobre um horizonte de oceano calmo",
+      "credit": "César Couto",
+      "creditUrl": "https://unsplash.com/@xcrap?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "O que é inteligência emocional?",
+        "a": "É a capacidade de reconhecer o que você sente, entender de onde vem e escolher o que fazer com isso, em vez de apenas reagir. Inclui também perceber e responder às emoções dos outros."
+      },
+      {
+        "q": "Quais são os pilares da inteligência emocional?",
+        "a": "São cinco: autoconsciência (perceber o que sente), autorregulação (não agir no impulso), motivação, empatia e habilidades sociais. A autoconsciência é a base — sem ela, os outros não se sustentam."
+      },
+      {
+        "q": "Inteligência emocional se aprende ou já se nasce com ela?",
+        "a": "Aprende-se. Ao contrário do que se pensa, não é traço de personalidade fixo: é um conjunto de habilidades que se treina com prática deliberada, como nomear emoções e observar padrões ao longo do tempo."
+      },
+      {
+        "q": "Como desenvolver inteligência emocional no dia a dia?",
+        "a": "Pergunte-se “o que estou sentindo?” duas vezes por dia, amplie o vocabulário emocional, comece pelo corpo (tensão, respiração), espere a onda passar antes de decidir, e escreva. Escrever é o treino mais direto porque transforma sensação difusa em palavra concreta."
+      },
+      {
+        "q": "Escrever um diário ajuda a inteligência emocional?",
+        "a": "Ajuda muito. Ao escrever, você identifica a emoção, dá-lhe nome e encontra a causa — os três primeiros passos da inteligência emocional num só gesto. E, ao reler, os padrões aparecem."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "inteligencia-emocional",
+    "url": "https://aemori.com/pt-pt/blog/inteligencia-emocional/",
+    "title": "Inteligência emocional: o que é e como desenvolver na prática",
+    "description": "Inteligência emocional é reconhecer, compreender e lidar com o que sentes — e com o que os outros sentem. Vê os 5 pilares e como treinar cada um no dia a dia.",
+    "tldr": "Inteligência emocional é a capacidade de reconhecer o que sentes, perceber de onde vem e escolher o que fazer com isso — em vez de apenas reagir. Não é dom nem personalidade: é um conjunto de competências que se treina, e o primeiro passo é o mais simples — dar nome ao que se sente.",
+    "datePublished": "2026-08-02",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1776109764926-ae63208aeced?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw2fHxzdW5yaXNlJTIwY2FsbSUyMGhvcml6b24lMjB3YXJtJTIwbWluaW1hbCUyMG5hdHVyZXxlbnwxfDB8fHwxNzg1Nzc4MjY4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pôr do sol dourado sobre um horizonte de oceano calmo",
+      "credit": "César Couto",
+      "creditUrl": "https://unsplash.com/@xcrap?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "O que é inteligência emocional?",
+        "a": "É a capacidade de reconhecer o que sentes, perceber de onde vem e escolher o que fazer com isso, em vez de apenas reagir. Inclui também perceber e responder às emoções dos outros."
+      },
+      {
+        "q": "Quais são os pilares da inteligência emocional?",
+        "a": "São cinco: autoconsciência (perceber o que sentes), autorregulação (não agir por impulso), motivação, empatia e competências sociais. A autoconsciência é a base — sem ela, as outras não se sustentam."
+      },
+      {
+        "q": "A inteligência emocional aprende-se ou nasce-se com ela?",
+        "a": "Aprende-se. Ao contrário do que se pensa, não é um traço de personalidade fixo: é um conjunto de competências que se treina com prática deliberada, como nomear emoções e observar padrões ao longo do tempo."
+      },
+      {
+        "q": "Como desenvolver inteligência emocional no dia a dia?",
+        "a": "Pergunta-te “o que estou a sentir?” duas vezes por dia, alarga o vocabulário emocional, começa pelo corpo (tensão, respiração), espera a onda passar antes de decidir, e escreve. Escrever é o treino mais direto porque transforma sensação difusa em palavra concreta."
+      },
+      {
+        "q": "Escrever um diário ajuda a inteligência emocional?",
+        "a": "Ajuda muito. Ao escreveres, identificas a emoção, dás-lhe nome e encontras a causa — os três primeiros passos da inteligência emocional num só gesto. E, ao releres, os padrões aparecem."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "como-desabafar",
     "url": "https://aemori.com/pt-br/blog/como-desabafar/",
     "title": "Como desabafar quando você não tem com quem falar",

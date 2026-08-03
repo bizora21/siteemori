@@ -73,13 +73,22 @@ const ICONS: Record<string, string> = {
 /** Tons de fundo por cena — dá cor e variação sem sair da marca. */
 const TINTS = ['#f3ddc9', '#e9efe6', '#f6ddd0', '#eef0e3', '#f3e3d3'];
 
+/** Paleta por tema de cena: escuro dá muito mais contraste no telemóvel. */
+const THEME = {
+  light: { bg: '#faf5ec', title: '#2a2420', caption: '#8a7d70', active: '#a2481f', foot: '#84391b' },
+  dark: { bg: '#2a2420', title: '#faf5ec', caption: '#a89a8c', active: '#e0a079', foot: '#e0a079' },
+  photo: { bg: '#1c1713', title: '#ffffff', caption: '#d8cec4', active: '#f0b98f', foot: '#f0b98f' },
+} as const;
+
 interface Scene {
   eyebrow?: string;
   title: string;
   narration: string;
   icon: keyof typeof ICONS;
   tint: string;
-  accent?: boolean;
+  theme: keyof typeof THEME;
+  /** foto de fundo em base64 (data URI), usada no tema 'photo' */
+  photo?: string;
   hideCaption?: boolean;
   /** texto do botão final (ex.: "Baixar grátis") */
   cta?: string;
@@ -87,6 +96,7 @@ interface Scene {
 
 /** Um frame: cena + linha de legenda com a palavra atual realçada. */
 function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): string {
+  const C = THEME[scene.theme];
   const titleSize = scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
   const titleLines = wrap(scene.title, scene.title.length > 58 ? 24 : 20).slice(0, 5);
   const lineH = titleSize + 20;
@@ -95,7 +105,7 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   const titleEls = titleLines
     .map(
       (l, i) =>
-        `<text x="${PAD}" y="${titleTop + i * lineH}" font-family="PT Serif" font-weight="bold" font-size="${titleSize}" fill="${scene.accent ? '#84391b' : '#2a2420'}">${xmlEscape(l)}</text>`,
+        `<text x="${PAD}" y="${titleTop + i * lineH}" font-family="PT Serif" font-weight="bold" font-size="${titleSize}" fill="${C.title}">${xmlEscape(l)}</text>`,
     )
     .join('\n  ');
 
@@ -126,7 +136,7 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
           .map((p, pi) => {
             const idx = r.from + pi;
             const on = idx === activeWord;
-            const el = `<text x="${x}" y="${capTop + ri * 78}" font-family="PT Serif" font-weight="bold" font-size="62" fill="${on ? '#a2481f' : '#8a7d70'}">${xmlEscape(p)}</text>`;
+            const el = `<text x="${x}" y="${capTop + ri * 78}" font-family="PT Serif" font-weight="bold" font-size="62" fill="${on ? C.active : C.caption}">${xmlEscape(p)}</text>`;
             x += (p.length + 1) * 31;
             return el;
           })
@@ -141,6 +151,15 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   <text x="${W / 2}" y="1630" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="46" fill="#faf5ec">${xmlEscape(scene.cta)}</text>`
     : '';
 
+  // Fundo: foto escurecida (máximo contraste) ou cor sólida com a lua.
+  const bg =
+    scene.theme === 'photo' && scene.photo
+      ? `<image href="${scene.photo}" x="0" y="0" width="${W}" height="${H}"
+        preserveAspectRatio="xMidYMid slice"/>
+  <rect width="${W}" height="${H}" fill="#140f0b" opacity="0.62"/>`
+      : `<rect width="${W}" height="${H}" fill="${C.bg}"/>
+  <rect width="${W}" height="${H}" fill="${scene.theme === 'dark' ? '#3b322a' : scene.tint}" mask="url(#moon)"/>`;
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     <mask id="moon">
@@ -149,20 +168,19 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
       <circle cx="930" cy="238" r="215" fill="black"/>
     </mask>
   </defs>
-  <rect width="${W}" height="${H}" fill="#faf5ec"/>
-  <rect width="${W}" height="${H}" fill="${scene.tint}" mask="url(#moon)"/>
+  ${bg}
 
-  <g transform="translate(${PAD} 300) scale(2.6)" fill="none" stroke="#c05a2e" stroke-width="1.7"
+  <g transform="translate(${PAD} 300) scale(2.6)" fill="none" stroke="${C.active}" stroke-width="1.7"
      stroke-linecap="round" stroke-linejoin="round">
     <path d="${ICONS[scene.icon]}"/>
   </g>
 
-  ${scene.eyebrow ? `<text x="${PAD}" y="520" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="#a2481f">${xmlEscape(scene.eyebrow)}</text>` : ''}
+  ${scene.eyebrow ? `<text x="${PAD}" y="520" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="${C.active}">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
   ${capEls}
   ${ctaEls}
 
-  <text x="${W / 2}" y="${scene.cta ? 1780 : 1790}" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="#84391b">aemori.com</text>
+  <text x="${W / 2}" y="${scene.cta ? 1780 : 1790}" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
 </svg>`;
 }
 
@@ -177,7 +195,20 @@ function renderFrame(scene: Scene, line: CaptionLine | null, active: number, fil
   writeFileSync(file, png);
 }
 
-function buildScenes(entry: SocialManifestEntry): Scene[] {
+/** Descarrega a foto do artigo e devolve-a como data URI (para embutir no SVG). */
+async function fetchPhoto(url: string): Promise<string | undefined> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return undefined;
+    const buf = Buffer.from(await res.arrayBuffer());
+    const mime = res.headers.get('content-type') ?? 'image/jpeg';
+    return `data:${mime};base64,${buf.toString('base64')}`;
+  } catch {
+    return undefined;
+  }
+}
+
+function buildScenes(entry: SocialManifestEntry, photo?: string): Scene[] {
   const isPT = entry.lang === 'pt-pt';
   // Até 4 perguntas e a resposta COMPLETA → vídeo mais longo e com mais substância.
   const points = entry.faq.slice(0, 4);
@@ -190,22 +221,28 @@ function buildScenes(entry: SocialManifestEntry): Scene[] {
       narration: cleanNarration(entry.title),
       icon: 'moon',
       tint: TINTS[0],
+      // Abre com a foto do artigo escurecida: máximo contraste e impacto.
+      theme: photo ? 'photo' : 'dark',
+      photo,
       hideCaption: true,
     },
+    // Alterna claro/escuro entre pontos — dá ritmo e mantém sempre alto contraste.
     ...points.map((f, i) => ({
       title: f.q,
       narration: cleanNarration(f.a),
       icon: icons[i] ?? 'sparkle',
       tint: TINTS[(i + 1) % TINTS.length],
+      theme: (i % 2 === 0 ? 'light' : 'dark') as keyof typeof THEME,
     })),
     {
-      title: isPT ? 'Já disponível na Google Play' : 'Já disponível na Google Play',
+      title: 'Já disponível na Google Play',
       narration: isPT
         ? 'A Emori já está disponível na Google Play. Descarrega gratuitamente e começa hoje.'
         : 'A Emori já está disponível na Google Play. Baixe grátis e comece hoje.',
       icon: 'moon',
       tint: TINTS[0],
-      accent: true,
+      theme: photo ? 'photo' : 'dark',
+      photo,
       hideCaption: true,
       cta: isPT ? 'Descarregar grátis' : 'Baixar grátis',
     },
@@ -245,7 +282,9 @@ async function main() {
     const tmp = `${dir}/.frames`;
     mkdirSync(tmp, { recursive: true });
 
-    const scenes = buildScenes(entry);
+    // Foto do artigo como fundo das cenas de abertura e CTA (contraste + impacto).
+    const photo = entry.hero?.src ? await fetchPhoto(entry.hero.src) : undefined;
+    const scenes = buildScenes(entry, photo);
     const frames: { file: string; seconds: number }[] = [];
     const voiceFiles: string[] = [];
 
