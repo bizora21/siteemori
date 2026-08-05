@@ -68,9 +68,10 @@ const ptPT: Dictionary = {
   },
 
   home: {
-    metaTitle: 'Emori — aplicação de diário emocional com IA que se lembra de ti',
+    // Keyword primeiro, marca no fim — os primeiros caracteres decidem o clique.
+    metaTitle: 'Diário emocional com IA que se lembra de ti | Emori',
     metaDescription:
-      'A Emori é uma aplicação (app) de diário emocional com inteligência artificial. Escreve sobre o teu dia e a Emori lembra-se do que importa para te ajudar a compreender o que sentes ao longo do tempo. Gratuito para começar no Android.',
+      'Escreve o que sentes e a Emori responde. Lembra-se do teu contexto, ajuda-te a compreender as emoções e mostra os teus padrões ao longo do tempo. Gratuito no Android, privado e sem julgamento.',
     h1: 'A aplicação de diário emocional que realmente se lembra de ti',
     tldr:
       'A Emori é uma aplicação de diário com inteligência artificial que conversa contigo, guarda na memória o contexto do que viveste e ajuda-te a compreender as tuas emoções ao longo do tempo. É gratuito para começar e funciona no teu telemóvel Android.',

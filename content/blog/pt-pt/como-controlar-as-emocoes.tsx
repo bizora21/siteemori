@@ -4,7 +4,7 @@ const meta = {
   slug: 'como-controlar-as-emocoes',
   title: 'Como controlar as emoções: o que funciona (e o que só piora)',
   description:
-    'Não dá para desligar as emoções — e reprimir costuma piorar. Vê o que realmente funciona para regular o que sentes: nomear, permitir e escolher a resposta.',
+    'Reprimir o que sentes costuma piorar. Vê os 4 passos que realmente funcionam para lidar com raiva, ansiedade e tristeza no momento — e porque nomear a emoção já reduz a intensidade.',
   tldr: 'Não dá para “controlar” as emoções no sentido de as desligar — e tentar reprimi-las quase sempre piora. O que funciona é regulá-las: reconhecer o que sentes, dar-lhe nome, deixar a onda passar e só então escolher a resposta. Só nomear a emoção já reduz a intensidade; escrever ajuda a criar a distância necessária.',
   datePublished: '2026-07-28',
   readingMinutes: 8,
