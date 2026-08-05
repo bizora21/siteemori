@@ -25,6 +25,7 @@ import {
 } from '../lib/social/tts';
 import type { Locale } from '../i18n/config';
 import { ICON_VOCAB, iconForText } from '../lib/social/icons';
+import { synthesizePiper, piperAvailable } from '../lib/social/piper';
 
 const W = 1080;
 const H = 1920;
@@ -324,7 +325,16 @@ async function main() {
 
       if (withVoice) {
         const voiceFile = `${tmp}/voice-${si}.mp3`;
-        const { words } = await synthesize(scene.narration, entry.lang as Locale, voiceFile);
+        let words;
+        try {
+          // 1ª opção: Edge TTS (vozes neurais, timing por palavra nativo).
+          ({ words } = await synthesize(scene.narration, entry.lang as Locale, voiceFile));
+        } catch (err) {
+          // 2ª opção: Piper offline — nunca depende de endpoints de terceiros.
+          if (!piperAvailable(entry.lang as Locale)) throw err;
+          if (si === 0) console.warn('  ⚠ Edge TTS indisponível — a usar Piper (offline).');
+          ({ words } = synthesizePiper(scene.narration, entry.lang as Locale, voiceFile, tmp));
+        }
         voiceFiles.push(voiceFile);
         lines = toCaptionLines(words);
         // Duração REAL do áudio — é o que garante a sincronia (não o último word boundary).

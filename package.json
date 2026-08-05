@@ -11,6 +11,7 @@
     "social:manifest": "tsx scripts/build-social-manifest.ts",
     "social:images": "tsx scripts/build-social-images.ts",
     "social:video": "tsx scripts/build-social-video.ts",
+    "tts:setup": "node scripts/setup-piper.mjs",
     "social:publish": "tsx scripts/social-publish.ts",
     "go": "tsx scripts/social-all.ts",
     "youtube:auth": "node --env-file=.env.local scripts/youtube-auth.mjs",

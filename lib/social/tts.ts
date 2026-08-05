@@ -35,7 +35,10 @@ export async function synthesize(
     try {
       return await synthesizeOnce(text, lang, outFile, rate);
     } catch (err) {
-      if (i === attempts) throw err;
+      // 403 = a Microsoft mudou a autenticação do endpoint; repetir não resolve.
+      // Falha já, para o chamador cair no Piper sem esperas inúteis.
+      const msg = err instanceof Error ? err.message : String(err);
+      if (/40[13]/.test(msg) || i === attempts) throw err;
       console.warn(`  ⚠ TTS falhou (tentativa ${i}/${attempts}) — a repetir…`);
       await new Promise((r) => setTimeout(r, 1500 * i));
     }

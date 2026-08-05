@@ -34,6 +34,11 @@ package-lock.json
 # Assets sociais gerados (derivados do manifest — regenerar com `npm run social`)
 /social/
 
+# Ferramentas locais de geração (binário do Piper + modelos de voz, ~75MB).
+# Descarregadas com `npm run tts:setup` — não fazem sentido num repo de código.
+/tools/
+/tmp-tts/
+
 # Áudio de fundo dos vídeos (Pixabay Content License: permite usar, mas NÃO
 # redistribuir o ficheiro autonomamente — por isso fica fora deste repo público).
 # Coloca a tua faixa em assets/audio/calm.mp3; o gerador usa-a se existir.
