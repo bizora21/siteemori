@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brAutoestima from './pt-br/como-melhorar-autoestima';
 import brInteligencia from './pt-br/inteligencia-emocional';
 import brDesabafar from './pt-br/como-desabafar';
 import brControlar from './pt-br/como-controlar-as-emocoes';
@@ -16,6 +17,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptAutoestima from './pt-pt/como-melhorar-autoestima';
 import ptInteligencia from './pt-pt/inteligencia-emocional';
 import ptDesabafar from './pt-pt/como-desabafar';
 import ptControlar from './pt-pt/como-controlar-as-emocoes';
@@ -31,6 +33,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'como-melhorar-autoestima',
   'inteligencia-emocional',
   'como-desabafar',
   'como-controlar-as-emocoes',
@@ -46,6 +49,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'como-melhorar-autoestima': { 'pt-br': brAutoestima, 'pt-pt': ptAutoestima },
   'inteligencia-emocional': { 'pt-br': brInteligencia, 'pt-pt': ptInteligencia },
   'como-desabafar': { 'pt-br': brDesabafar, 'pt-pt': ptDesabafar },
   'como-controlar-as-emocoes': { 'pt-br': brControlar, 'pt-pt': ptControlar },

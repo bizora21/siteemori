@@ -1,6 +1,82 @@
 [
   {
     "lang": "pt-br",
+    "slug": "como-melhorar-autoestima",
+    "url": "https://aemori.com/pt-br/blog/como-melhorar-autoestima/",
+    "title": "Como melhorar a autoestima: o que funciona de verdade",
+    "description": "Autoestima não se constrói repetindo que você é incrível. Constrói-se com evidência. Veja o método que realmente funciona — e por que os elogios a si mesmo não colam.",
+    "tldr": "Autoestima não se constrói com elogios a si mesmo — constrói-se com evidência. O cérebro não acredita em afirmações que contradizem o que ele observa, mas acredita em provas acumuladas. Por isso o caminho é registar pequenas evidências reais do que você faz, e não repetir frases que não sente.",
+    "datePublished": "2026-08-05",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1736625356065-fd22220a78c5?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxtaXJyb3IlMjByZWZsZWN0aW9uJTIwc29mdCUyMGxpZ2h0JTIwbWluaW1hbCUyMHdhcm18ZW58MXwwfHx8MTc4NTk0ODgyMHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Um quarto com cortinas e um espelho, em luz suave",
+      "credit": "Kellen Riggin",
+      "creditUrl": "https://unsplash.com/@kalaniparker?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como melhorar a autoestima de verdade?",
+        "a": "Reunindo evidência, não elogios. Registe diariamente uma coisa concreta que você fez e escreva o que aquilo mostra sobre si. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas ao longo do tempo."
+      },
+      {
+        "q": "Por que elogiar a si mesmo não aumenta a autoestima?",
+        "a": "Porque cria contradição. Quando a afirmação está longe do que você sente, o cérebro responde listando provas do contrário — o chamado efeito bumerangue. Quem tem autoestima baixa costuma sentir-se pior depois de repetir elogios que não acredita."
+      },
+      {
+        "q": "Qual a diferença entre autoestima e autoconfiança?",
+        "a": "Autoconfiança é sobre capacidade (“eu consigo fazer isto”); autoestima é sobre valor (“eu importo, mesmo quando falho”). Dá para ser muito competente e ter autoestima baixa."
+      },
+      {
+        "q": "Escrever um diário ajuda na autoestima?",
+        "a": "Ajuda, e é o método central: a sua memória é enviesada contra si, o registo não. Ao reler semanas de evidências concretas, você deixa de tentar acreditar em algo e passa a olhar para dados."
+      },
+      {
+        "q": "Quanto tempo demora a melhorar a autoestima?",
+        "a": "Meses, não dias — ela erode ao longo de anos. O primeiro sinal de progresso não é sentir-se ótimo, mas notar que a crítica interna perdeu automaticidade: ainda fala, mas você já não acredita nela sem questionar."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "como-melhorar-autoestima",
+    "url": "https://aemori.com/pt-pt/blog/como-melhorar-autoestima/",
+    "title": "Como melhorar a autoestima: o que funciona mesmo",
+    "description": "A autoestima não se constrói a repetir que és incrível. Constrói-se com evidência. Vê o método que resulta — e porque é que os elogios a ti mesmo não colam.",
+    "tldr": "A autoestima não se constrói com elogios a ti mesmo — constrói-se com evidência. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas. Por isso o caminho é registar pequenas evidências reais do que fazes, e não repetir frases que não sentes.",
+    "datePublished": "2026-08-05",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1736625356065-fd22220a78c5?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxtaXJyb3IlMjByZWZsZWN0aW9uJTIwc29mdCUyMGxpZ2h0JTIwbWluaW1hbCUyMHdhcm18ZW58MXwwfHx8MTc4NTk0ODgyMHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Um quarto com cortinas e um espelho, em luz suave",
+      "credit": "Kellen Riggin",
+      "creditUrl": "https://unsplash.com/@kalaniparker?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como melhorar a autoestima a sério?",
+        "a": "Reunindo evidência, não elogios. Regista diariamente uma coisa concreta que fizeste e escreve o que aquilo mostra sobre ti. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas ao longo do tempo."
+      },
+      {
+        "q": "Porque é que elogiar-me não aumenta a autoestima?",
+        "a": "Porque cria contradição. Quando a afirmação está longe do que sentes, o cérebro responde a listar provas do contrário — o chamado efeito bumerangue. Quem tem autoestima baixa costuma sentir-se pior depois de repetir elogios em que não acredita."
+      },
+      {
+        "q": "Qual a diferença entre autoestima e autoconfiança?",
+        "a": "A autoconfiança é sobre capacidade (“consigo fazer isto”); a autoestima é sobre valor (“eu importo, mesmo quando falho”). Dá para seres muito competente e teres autoestima baixa."
+      },
+      {
+        "q": "Escrever um diário ajuda na autoestima?",
+        "a": "Ajuda, e é o método central: a tua memória está enviesada contra ti, o registo não. Ao releres semanas de evidências concretas, deixas de tentar acreditar em algo e passas a olhar para dados."
+      },
+      {
+        "q": "Quanto tempo demora a melhorar a autoestima?",
+        "a": "Meses, não dias — erode ao longo de anos. O primeiro sinal de progresso não é sentires-te ótimo, mas notares que a crítica interna perdeu automatismo: ainda fala, mas já não acreditas nela sem questionar."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "inteligencia-emocional",
     "url": "https://aemori.com/pt-br/blog/inteligencia-emocional/",
     "title": "Inteligência emocional: o que é e como desenvolver na prática",
@@ -156,7 +232,7 @@
     "slug": "como-controlar-as-emocoes",
     "url": "https://aemori.com/pt-br/blog/como-controlar-as-emocoes/",
     "title": "Como controlar as emoções: o que funciona (e o que só piora)",
-    "description": "Não dá para desligar as emoções — e reprimir costuma piorar. Veja o que realmente funciona para regular o que você sente: nomear, permitir e escolher a resposta.",
+    "description": "Reprimir o que sente costuma piorar. Veja os 4 passos que realmente funcionam para lidar com raiva, ansiedade e tristeza no momento — e por que nomear a emoção já reduz a intensidade.",
     "tldr": "Não dá para “controlar” as emoções no sentido de desligá-las — e tentar reprimi-las quase sempre piora. O que funciona é regulá-las: reconhecer o que você sente, dar nome, deixar a onda passar e então escolher a resposta. Só nomear a emoção já reduz a intensidade; escrever ajuda a criar a distância necessária.",
     "datePublished": "2026-07-28",
     "readingMinutes": 8,
@@ -194,7 +270,7 @@
     "slug": "como-controlar-as-emocoes",
     "url": "https://aemori.com/pt-pt/blog/como-controlar-as-emocoes/",
     "title": "Como controlar as emoções: o que funciona (e o que só piora)",
-    "description": "Não dá para desligar as emoções — e reprimir costuma piorar. Vê o que realmente funciona para regular o que sentes: nomear, permitir e escolher a resposta.",
+    "description": "Reprimir o que sentes costuma piorar. Vê os 4 passos que realmente funcionam para lidar com raiva, ansiedade e tristeza no momento — e porque nomear a emoção já reduz a intensidade.",
     "tldr": "Não dá para “controlar” as emoções no sentido de as desligar — e tentar reprimi-las quase sempre piora. O que funciona é regulá-las: reconhecer o que sentes, dar-lhe nome, deixar a onda passar e só então escolher a resposta. Só nomear a emoção já reduz a intensidade; escrever ajuda a criar a distância necessária.",
     "datePublished": "2026-07-28",
     "readingMinutes": 8,
