@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brCansaco from './pt-br/cansaco-que-dormir-nao-resolve';
 import brAutoestima from './pt-br/como-melhorar-autoestima';
 import brInteligencia from './pt-br/inteligencia-emocional';
 import brDesabafar from './pt-br/como-desabafar';
@@ -17,6 +18,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptCansaco from './pt-pt/cansaco-que-dormir-nao-resolve';
 import ptAutoestima from './pt-pt/como-melhorar-autoestima';
 import ptInteligencia from './pt-pt/inteligencia-emocional';
 import ptDesabafar from './pt-pt/como-desabafar';
@@ -33,6 +35,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'cansaco-que-dormir-nao-resolve',
   'como-melhorar-autoestima',
   'inteligencia-emocional',
   'como-desabafar',
@@ -49,6 +52,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'cansaco-que-dormir-nao-resolve': { 'pt-br': brCansaco, 'pt-pt': ptCansaco },
   'como-melhorar-autoestima': { 'pt-br': brAutoestima, 'pt-pt': ptAutoestima },
   'inteligencia-emocional': { 'pt-br': brInteligencia, 'pt-pt': ptInteligencia },
   'como-desabafar': { 'pt-br': brDesabafar, 'pt-pt': ptDesabafar },
