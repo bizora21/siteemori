@@ -10,9 +10,9 @@
 // Legendas: mostra a linha inteira e realça a palavra que está a ser lida (karaoke).
 // Movimento: zoom lento e contínuo (retenção) — nunca brusco.
 //
-// Música: assets/audio/calm.mp3 (gitignored). Sem o ficheiro, sai só com voz.
+// Música: a 1ª faixa em assets/audio/ (gitignored), ligada com --music.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { Resvg } from '@resvg/resvg-js';
 import ffmpegPath from 'ffmpeg-static';
@@ -26,13 +26,25 @@ import {
 import type { Locale } from '../i18n/config';
 import { ICON_VOCAB, iconForText } from '../lib/social/icons';
 import { synthesizePiper, piperAvailable } from '../lib/social/piper';
+import { fetchBackground, backgroundQuery } from '../lib/social/pexels';
 
 const W = 1080;
 const H = 1920;
 const PAD = 100;
 const FONTS = ['assets/fonts/PTSerif-Bold.ttf', 'assets/fonts/PTSerif-Regular.ttf'];
-const AUDIO = 'assets/audio/calm.mp3';
+const AUDIO_DIR = 'assets/audio';
 const ffmpeg = ffmpegPath as unknown as string;
+
+/**
+ * Primeira faixa em assets/audio/. Aceita qualquer nome de propósito: o nome
+ * do ficheiro traz o título e o artista, e é isso que tem de ir no crédito da
+ * descrição — obrigar a renomear para "calm.mp3" apagava essa informação.
+ */
+function musicTrack(): string | null {
+  if (!existsSync(AUDIO_DIR)) return null;
+  const f = readdirSync(AUDIO_DIR).find((n) => /\.(mp3|m4a|wav|ogg)$/i.test(n));
+  return f ? `${AUDIO_DIR}/${f}` : null;
+}
 
 function xmlEscape(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -80,6 +92,8 @@ const THEME = {
   light: { bg: '#faf5ec', title: '#2a2420', caption: '#8a7d70', active: '#a2481f', foot: '#84391b' },
   dark: { bg: '#2a2420', title: '#faf5ec', caption: '#a89a8c', active: '#e0a079', foot: '#e0a079' },
   photo: { bg: '#1c1713', title: '#ffffff', caption: '#d8cec4', active: '#f0b98f', foot: '#f0b98f' },
+  // Texto sobre vídeo: branco puro e alto contraste (o clip já vai escurecido).
+  video: { bg: 'transparent', title: '#ffffff', caption: '#ddd4ca', active: '#f5c39a', foot: '#f5c39a' },
 } as const;
 
 interface Scene {
@@ -92,8 +106,6 @@ interface Scene {
   /** foto de fundo em base64 (data URI), usada no tema 'photo' */
   photo?: string;
   hideCaption?: boolean;
-  /** texto do botão final (ex.: "Baixar grátis") */
-  cta?: string;
 }
 
 /** Um frame: cena + símbolo do que está a ser dito + legenda com a palavra atual. */
@@ -138,28 +150,21 @@ function frameSvg(
 
     capEls = rows
       .map((r, ri) => {
-        const parts = r.text.split(' ');
-        // Largura aproximada para centrar manualmente (a serifada ~0.5em/char).
-        const totalW = r.text.length * 31;
-        let x = W / 2 - totalW / 2;
-        const tspans = parts
+        // Um único <text> centrado, com um <tspan> por palavra. Assim quem
+        // mede as larguras é o renderizador, com os glifos reais: posicionar
+        // à mão (largura fixa por carácter) fazia as palavras longas colidirem
+        // com a seguinte, porque a PT Serif não é monoespaçada.
+        const tspans = r.text
+          .split(' ')
           .map((p, pi) => {
-            const idx = r.from + pi;
-            const on = idx === activeWord;
-            const el = `<text x="${x}" y="${capTop + ri * 78}" font-family="PT Serif" font-weight="bold" font-size="62" fill="${on ? C.active : C.caption}">${xmlEscape(p)}</text>`;
-            x += (p.length + 1) * 31;
-            return el;
+            const on = r.from + pi === activeWord;
+            return `<tspan fill="${on ? C.active : C.caption}">${xmlEscape(p)}</tspan>`;
           })
-          .join('');
-        return tspans;
+          .join(' ');
+        return `<text x="${W / 2}" y="${capTop + ri * 78}" text-anchor="middle" xml:space="preserve" font-family="PT Serif" font-weight="bold" font-size="62">${tspans}</text>`;
       })
       .join('\n  ');
   }
-
-  const ctaEls = scene.cta
-    ? `<rect x="${W / 2 - 300}" y="1560" width="600" height="110" rx="55" fill="#a2481f"/>
-  <text x="${W / 2}" y="1630" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="46" fill="#faf5ec">${xmlEscape(scene.cta)}</text>`
-    : '';
 
   // Símbolo do que está a ser narrado: grande, centrado e com entrada animada
   // (escala + opacidade). É a âncora visual que ilustra a frase corrente.
@@ -176,15 +181,22 @@ function frameSvg(
   </g>`
     : '';
 
-  // Fundo: foto escurecida (máximo contraste) ou cor sólida com a lua.
+  // Fundo. Com vídeo por trás (tema 'video'), o frame fica TRANSPARENTE — o
+  // ffmpeg compõe o texto sobre o clip já escurecido. É isso que dá movimento
+  // real em vez de um slide parado.
   const bg =
-    scene.theme === 'photo' && scene.photo
-      ? `<image href="${scene.photo}" x="0" y="0" width="${W}" height="${H}"
+    scene.theme === 'video'
+      ? // Scrim: gradiente escuro por trás do texto. Sem isto, um clip claro
+        // "come" o texto branco e a legibilidade depende da sorte do fundo.
+        `<rect width="${W}" height="${H}" fill="url(#scrim)"/>
+  <circle cx="${W / 2}" cy="360" r="300" fill="#140f0b" opacity="0.30"/>`
+      : scene.theme === 'photo' && scene.photo
+        ? `<image href="${scene.photo}" x="0" y="0" width="${W}" height="${H}"
         preserveAspectRatio="xMidYMid slice"/>
   <rect width="${W}" height="${H}" fill="#140f0b" opacity="0.62"/>`
-      : // Sem a lua de fundo: o símbolo semântico é agora o elemento visual e a
-        // lua competiria com ele. Fica só um halo suave atrás do símbolo.
-        `<rect width="${W}" height="${H}" fill="${C.bg}"/>
+        : // Sem a lua de fundo: o símbolo semântico é o elemento visual e a lua
+          // competiria com ele. Fica só um halo suave atrás do símbolo.
+          `<rect width="${W}" height="${H}" fill="${C.bg}"/>
   <circle cx="${W / 2}" cy="360" r="300" fill="${scene.theme === 'dark' ? '#3b322a' : scene.tint}" opacity="0.55"/>`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -194,6 +206,12 @@ function frameSvg(
       <circle cx="830" cy="300" r="235" fill="white"/>
       <circle cx="930" cy="238" r="215" fill="black"/>
     </mask>
+    <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#140f0b" stop-opacity="0.30"/>
+      <stop offset="28%" stop-color="#140f0b" stop-opacity="0.62"/>
+      <stop offset="75%" stop-color="#140f0b" stop-opacity="0.66"/>
+      <stop offset="100%" stop-color="#140f0b" stop-opacity="0.45"/>
+    </linearGradient>
   </defs>
   ${bg}
 
@@ -202,9 +220,8 @@ function frameSvg(
   ${scene.eyebrow ? `<text x="${W / 2}" y="580" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="${C.active}">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
   ${capEls}
-  ${ctaEls}
 
-  <text x="${W / 2}" y="${scene.cta ? 1780 : 1790}" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
+  <text x="${W / 2}" y="1790" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
 </svg>`;
 }
 
@@ -219,7 +236,9 @@ function renderFrame(
   const png = new Resvg(frameSvg(scene, line, active, liveIcon, iconIn), {
     fitTo: { mode: 'width', value: W },
     font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'PT Serif' },
-    background: '#faf5ec',
+    // Sobre vídeo o frame TEM de manter alfa, para o ffmpeg poder compor o
+    // texto por cima do clip. Nos outros temas o fundo é opaco.
+    ...(scene.theme === 'video' ? {} : { background: '#faf5ec' }),
   })
     .render()
     .asPng();
@@ -239,7 +258,39 @@ async function fetchPhoto(url: string): Promise<string | undefined> {
   }
 }
 
-function buildScenes(entry: SocialManifestEntry, photo?: string): Scene[] {
+function buildScenes(entry: SocialManifestEntry, photo?: string, hasVideoBg = false): Scene[] {
+  if (hasVideoBg) return buildVideoScenes(entry);
+  return buildStaticScenes(entry, photo);
+}
+
+/** Cenas para fundo em vídeo: todas transparentes, texto branco sobre o clip. */
+function buildVideoScenes(entry: SocialManifestEntry): Scene[] {
+  const isPT = entry.lang === 'pt-pt';
+  const points = entry.faq.slice(0, 4);
+  const icons: (keyof typeof ICONS)[] = ['book', 'heart', 'sparkle', 'sun'];
+
+  return [
+    {
+      eyebrow: 'DIÁRIO EMOCIONAL',
+      title: entry.title,
+      narration: cleanNarration(entry.title),
+      icon: 'moon',
+      tint: TINTS[0],
+      theme: 'video',
+      hideCaption: true,
+    },
+    ...points.map((f, i) => ({
+      title: f.q,
+      narration: cleanNarration(f.a),
+      icon: icons[i] ?? ('sparkle' as keyof typeof ICONS),
+      tint: TINTS[(i + 1) % TINTS.length],
+      theme: 'video' as keyof typeof THEME,
+    })),
+    closingScene(isPT, 'video'),
+  ];
+}
+
+function buildStaticScenes(entry: SocialManifestEntry, photo?: string): Scene[] {
   const isPT = entry.lang === 'pt-pt';
   // Até 4 perguntas e a resposta COMPLETA → vídeo mais longo e com mais substância.
   const points = entry.faq.slice(0, 4);
@@ -265,19 +316,28 @@ function buildScenes(entry: SocialManifestEntry, photo?: string): Scene[] {
       tint: TINTS[(i + 1) % TINTS.length],
       theme: (i % 2 === 0 ? 'light' : 'dark') as keyof typeof THEME,
     })),
-    {
-      title: 'Já disponível na Google Play',
-      narration: isPT
-        ? 'A Emori já está disponível na Google Play. Descarrega gratuitamente e começa hoje.'
-        : 'A Emori já está disponível na Google Play. Baixe grátis e comece hoje.',
-      icon: 'moon',
-      tint: TINTS[0],
-      theme: photo ? 'photo' : 'dark',
-      photo,
-      hideCaption: true,
-      cta: isPT ? 'Descarregar grátis' : 'Baixar grátis',
-    },
+    { ...closingScene(isPT, photo ? 'photo' : 'dark'), photo },
   ];
+}
+
+/**
+ * Fecho. Não vende: fecha a ideia. Um remate de produto ("já disponível na
+ * Google Play", botão de descarregar) faz a peça inteira ler-se como anúncio e
+ * mata a retenção nos últimos segundos — que é justamente o sinal que as
+ * plataformas usam para distribuir. A marca fica no aemori.com do rodapé, que
+ * já está em todos os frames, e na lua.
+ */
+function closingScene(isPT: boolean, theme: keyof typeof THEME): Scene {
+  return {
+    title: isPT ? 'Dá nome ao que sentes' : 'Dê nome ao que você sente',
+    narration: isPT
+      ? 'O que tem nome deixa de andar às voltas.'
+      : 'O que tem nome deixa de dar voltas.',
+    icon: 'moon',
+    tint: TINTS[0],
+    theme,
+    hideCaption: true,
+  };
 }
 
 // ---- execução ----------------------------------------------------------------
@@ -300,12 +360,18 @@ async function main() {
   }
 
   const withVoice = args['no-voice'] !== true;
-  // Música DESLIGADA por defeito: faixas ditas "livres" (incl. Pixabay) podem estar
-  // registadas no Content ID por terceiros e bloquear o vídeo globalmente no YouTube.
-  // Com voz off a música é decorativa — não compensa o risco. Usa --music para ligar.
-  const hasMusic = args.music === true && existsSync(AUDIO);
-  if (args.music === true && !existsSync(AUDIO)) {
-    console.warn(`⚠ ${AUDIO} não encontrado — a gerar sem música.`);
+  const noVideoBg = args['no-video-bg'] === true;
+  // Música DESLIGADA por defeito: "livre de direitos" não chega. Uma faixa do
+  // Pixabay já nos valeu uma reivindicação de Content ID (Audiam/HAAWK) que
+  // bloqueou o vídeo em todo o mundo. Só ligar com faixas de fontes que emitam
+  // isenção para o canal (Uppbeat) ou da Biblioteca de Áudio do YouTube.
+  // Coloca a faixa em assets/audio/ e gera com --music.
+  const track = args.music === true ? musicTrack() : null;
+  const hasMusic = track !== null;
+  if (args.music === true && !track) {
+    console.warn(`⚠ Nenhuma faixa em ${AUDIO_DIR}/ — a gerar sem música.`);
+  } else if (track) {
+    console.log(`  ♪ música: ${track.split('/').pop()}`);
   }
 
   for (const entry of targets) {
@@ -313,9 +379,14 @@ async function main() {
     const tmp = `${dir}/.frames`;
     mkdirSync(tmp, { recursive: true });
 
-    // Foto do artigo como fundo das cenas de abertura e CTA (contraste + impacto).
-    const photo = entry.hero?.src ? await fetchPhoto(entry.hero.src) : undefined;
-    const scenes = buildScenes(entry, photo);
+    // Fundo em VÍDEO (Pexels) — movimento real é o que separa um slide de um
+    // vídeo que prende. Sem chave/clip, cai no fundo estático com a foto.
+    const bgFile = `${tmp}/bg.mp4`;
+    const clip = noVideoBg ? null : await fetchBackground(backgroundQuery(entry.slug), bgFile);
+    if (clip) console.log(`  ▸ fundo: Pexels #${clip.id} (${clip.author}), ${clip.duration}s`);
+
+    const photo = clip ? undefined : entry.hero?.src ? await fetchPhoto(entry.hero.src) : undefined;
+    const scenes = buildScenes(entry, photo, Boolean(clip));
     const frames: { file: string; seconds: number }[] = [];
     const voiceFiles: string[] = [];
 
@@ -365,7 +436,11 @@ async function main() {
 
       // Símbolo semântico por linha de legenda: muda quando a frase muda de
       // assunto e mantém-se quando nada casa (evita piscar).
-      let currentIcon = iconForText(scene.title) ?? scene.icon;
+      // Abertura e fecho (as cenas sem legenda) fixam o símbolo declarado — a
+      // lua da marca. São os dois momentos que se repetem em todos os vídeos,
+      // e é dessa repetição que nasce o reconhecimento. Só as cenas do meio
+      // deixam o símbolo seguir o assunto.
+      let currentIcon = scene.hideCaption ? scene.icon : (iconForText(scene.title) ?? scene.icon);
       let lastLine: CaptionLine | null = null;
       let iconJustChanged = false;
 
@@ -431,30 +506,64 @@ async function main() {
       `x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=${W}x${H},format=yuv420p`;
 
     const inputs = ['-f', 'concat', '-safe', '0', '-i', listFile];
-    const filters = [`[0:v]${zoom}[v]`];
+    const filters: string[] = [];
     const maps = ['-map', '[v]'];
+    // Quantos inputs antes das faixas de voz (as imagens e, se houver, o clip).
+    let audioBase = 1;
 
-    // Índices: [0] imagens · [1..n] vozes · [n+1] música
+    if (clip) {
+      // Fundo em vídeo: repete o clip até cobrir a duração, corta ao formato,
+      // escurece, e compõe o texto (com alfa) por cima.
+      inputs.push('-stream_loop', '-1', '-i', bgFile);
+      audioBase = 2;
+      filters.push(
+        `[1:v]scale=${W}:${H}:force_original_aspect_ratio=increase,` +
+          `crop=${W}:${H},fps=${fps},trim=0:${total},setpts=PTS-STARTPTS,` +
+          `eq=brightness=-0.18:saturation=0.75,format=yuv420p[bg]`,
+        `[0:v]fps=${fps},format=rgba[txt]`,
+        `[bg][txt]overlay=0:0:shortest=1,format=yuv420p[v]`,
+      );
+    } else {
+      filters.push(`[0:v]${zoom}[v]`);
+    }
+
+    // Índices: [0] imagens · [1] clip (se houver) · seguintes: vozes · depois música
     if (hasVoice) {
       voiceFiles.forEach((v) => inputs.push('-i', v));
-      const chain = voiceFiles.map((_, i) => `[${i + 1}:a]`).join('');
+      const chain = voiceFiles.map((_, i) => `[${i + audioBase}:a]`).join('');
       filters.push(`${chain}concat=n=${voiceFiles.length}:v=0:a=1[voice]`);
     }
 
+    let mixLabel: string | null = null;
     if (hasVoice && hasMusic) {
-      const mi = voiceFiles.length + 1;
-      inputs.push('-stream_loop', '-1', '-i', AUDIO);
+      const mi = voiceFiles.length + audioBase;
+      inputs.push('-stream_loop', '-1', '-i', track as string);
       filters.push(
-        `[${mi}:a]atrim=0:${total},volume=0.08,afade=t=out:st=${Math.max(0, total - 2)}:d=2[bg]`,
-        `[voice][bg]amix=inputs=2:duration=first:dropout_transition=0[a]`,
+        // Cama sonora a -20 dB: presente, nunca a competir com a voz. Entra e
+        // sai em fade — música que arranca ou corta a seco denuncia a montagem.
+        `[${mi}:a]atrim=0:${total},volume=0.10,` +
+          `afade=t=in:st=0:d=2,afade=t=out:st=${Math.max(0, total - 3)}:d=3[mus]`,
+        // normalize=0 é essencial: por defeito o amix divide cada entrada por
+        // n, o que enterrava a voz 6 dB. Os níveis já vêm definidos acima.
+        `[voice][mus]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mix]`,
       );
-      maps.push('-map', '[a]');
+      mixLabel = '[mix]';
     } else if (hasVoice) {
-      maps.push('-map', '[voice]');
+      mixLabel = '[voice]';
     } else if (hasMusic) {
-      inputs.push('-stream_loop', '-1', '-i', AUDIO);
-      filters.push(`[1:a]atrim=0:${total},volume=0.35[a]`);
-      maps.push('-map', '[a]');
+      inputs.push('-stream_loop', '-1', '-i', track as string);
+      filters.push(`[${audioBase}:a]atrim=0:${total},volume=0.35[mus]`);
+      mixLabel = '[mus]';
+    }
+
+    if (mixLabel) {
+      // Normalização final para -16 LUFS. O YouTube alinha tudo a cerca de
+      // -14 LUFS; sem isto o vídeo tocava ~10 dB abaixo do resto do feed, o
+      // que se lê como amadorismo e faz as pessoas passarem à frente em vez
+      // de subirem o volume. TP=-1.5 deixa margem para a recompressão da
+      // plataforma não distorcer os picos.
+      filters.push(`${mixLabel}loudnorm=I=-16:TP=-1.5:LRA=11[aout]`);
+      maps.push('-map', '[aout]');
     }
 
     const out = `${dir}/video.mp4`;

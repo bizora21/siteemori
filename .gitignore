@@ -43,3 +43,7 @@ package-lock.json
 # redistribuir o ficheiro autonomamente — por isso fica fora deste repo público).
 # Coloca a tua faixa em assets/audio/calm.mp3; o gerador usa-a se existir.
 /assets/audio/
+
+# Cache dos clips de fundo do Pexels. Licença Pexels permite uso comercial, mas
+# não faz sentido versionar vídeo binário — regenera-se sozinho na 1ª geração.
+/assets/video-bg/
