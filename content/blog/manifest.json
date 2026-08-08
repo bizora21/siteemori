@@ -1,6 +1,82 @@
 [
   {
     "lang": "pt-br",
+    "slug": "como-parar-de-pensar-demais",
+    "url": "https://aemori.com/pt-br/blog/como-parar-de-pensar-demais/",
+    "title": "Como parar de pensar demais",
+    "description": "Sua mente repassa a mesma cena há horas e não chega a lugar nenhum. Entenda por que ruminar parece útil sem ser, e o que realmente interrompe o ciclo.",
+    "tldr": "Pensar demais não é pensar muito — é pensar em círculo. A ruminação se disfarça de solução de problema, mas nunca chega a uma decisão, porque faz a pergunta errada: pergunta \"por quê\" em vez de \"o quê\". Mandar a mente parar piora. O que interrompe o ciclo é dar ao pensamento um fim que ele sozinho não tem: escrever até chegar a uma decisão ou à conclusão de que aquilo não depende de você.",
+    "datePublished": "2026-08-08",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1505929184174-3cd3716bd799?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxhd2FrZSUyMGF0JTIwbmlnaHQlMjB0aGlua2luZyUyMHdpbmRvd3xlbnwxfDB8fHwxNzg2MTg5ODkwfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Mulher sentada junto a uma janela, olhando para fora, num ambiente escuro",
+      "credit": "JD Mason",
+      "creditUrl": "https://unsplash.com/@jmason?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como parar de pensar demais?",
+        "a": "Não tentando parar, e sim dando um fim ao pensamento. Reconheça que está ruminando, troque as perguntas \"por quê\" por perguntas \"o quê\" (o que eu faço agora, o que depende de mim), separe o que está na sua mão do que não está, e escreva o que está girando até chegar a uma decisão. Mandar a mente parar não funciona porque verificar se você parou já é pensar no assunto."
+      },
+      {
+        "q": "Por que minha mente não para de pensar?",
+        "a": "Porque o assunto continua em aberto. A mente não larga o que não foi concluído, e a ruminação nunca conclui nada — ela repassa o mesmo material sem chegar a uma decisão. Enquanto não houver um desfecho, mesmo que seja \"isso não depende de mim\", ela continua voltando."
+      },
+      {
+        "q": "Qual a diferença entre pensar e ruminar?",
+        "a": "Pensar avança e termina: você examina, decide e para. Ruminar gira: você percorre o mesmo material repetidamente sem que nada vire decisão. O sinal mais claro é o formato das perguntas — ruminação pergunta \"por quê\" e olha para trás; pensar pergunta \"o quê\" e olha para frente."
+      },
+      {
+        "q": "Pensar demais é ansiedade?",
+        "a": "Nem sempre, mas os dois andam juntos com frequência. Ruminar de vez em quando é normal. Se os pensamentos não param na maior parte dos dias, atrapalham o sono com regularidade, vêm com o corpo em alerta ou assustam você, pode ser transtorno de ansiedade, TOC ou depressão — e vale procurar um psicólogo."
+      },
+      {
+        "q": "Escrever ajuda a parar de pensar demais?",
+        "a": "Ajuda, por dois motivos. Uma frase tem começo e ponto final, então escrever obriga o pensamento a assumir um formato que exige um fim. E no papel a repetição fica visível: na cabeça você repassa a mesma ideia trinta vezes achando que avança, escrita ela aparece duas vezes e o círculo fica óbvio."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "como-parar-de-pensar-demais",
+    "url": "https://aemori.com/pt-pt/blog/como-parar-de-pensar-demais/",
+    "title": "Como parar de pensar demais",
+    "description": "A tua cabeça repassa a mesma cena há horas e não chega a lado nenhum. Percebe porque ruminar parece útil sem o ser, e o que interrompe mesmo o ciclo.",
+    "tldr": "Pensar demais não é pensar muito — é pensar em círculo. A ruminação disfarça-se de resolução de problemas, mas nunca chega a uma decisão, porque faz a pergunta errada: pergunta \"porquê\" em vez de \"o quê\". Mandar a cabeça parar piora. O que interrompe o ciclo é dar ao pensamento um fim que ele sozinho não tem: escrever até chegar a uma decisão ou à conclusão de que aquilo não depende de ti.",
+    "datePublished": "2026-08-08",
+    "readingMinutes": 9,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1505929184174-3cd3716bd799?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxhd2FrZSUyMGF0JTIwbmlnaHQlMjB0aGlua2luZyUyMHdpbmRvd3xlbnwxfDB8fHwxNzg2MTg5ODkwfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Mulher sentada junto a uma janela, a olhar para fora, num ambiente escuro",
+      "credit": "JD Mason",
+      "creditUrl": "https://unsplash.com/@jmason?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como parar de pensar demais?",
+        "a": "Não tentando parar, mas dando um fim ao pensamento. Reconhece que estás a ruminar, troca as perguntas \"porquê\" por perguntas \"o quê\" (o que faço agora, o que depende de mim), separa o que está na tua mão do que não está, e escreve o que anda a girar até chegares a uma decisão. Mandar a cabeça parar não resulta porque verificar se paraste já é pensar no assunto."
+      },
+      {
+        "q": "Porque é que a minha cabeça não pára de pensar?",
+        "a": "Porque o assunto continua em aberto. A cabeça não larga o que não foi concluído, e a ruminação nunca conclui nada — repassa o mesmo material sem chegar a uma decisão. Enquanto não houver um desfecho, mesmo que seja \"isto não depende de mim\", continua a voltar."
+      },
+      {
+        "q": "Qual é a diferença entre pensar e ruminar?",
+        "a": "Pensar avança e termina: examinas, decides e paras. Ruminar gira: percorres o mesmo material repetidamente sem que nada vire decisão. O sinal mais claro é o formato das perguntas — a ruminação pergunta \"porquê\" e olha para trás; pensar pergunta \"o quê\" e olha para a frente."
+      },
+      {
+        "q": "Pensar demais é ansiedade?",
+        "a": "Nem sempre, mas andam juntos com frequência. Ruminar de vez em quando é normal. Se os pensamentos não param na maior parte dos dias, estragam o sono com regularidade, vêm com o corpo em alerta ou te assustam, pode ser perturbação de ansiedade, POC ou depressão — e vale a pena procurar um psicólogo."
+      },
+      {
+        "q": "Escrever ajuda a parar de pensar demais?",
+        "a": "Ajuda, por dois motivos. Uma frase tem princípio e ponto final, por isso escrever obriga o pensamento a assumir um formato que exige um fim. E no papel a repetição fica visível: na cabeça repassas a mesma ideia trinta vezes a achar que avanças, escrita aparece duas vezes e o círculo torna-se óbvio."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "cansaco-que-dormir-nao-resolve",
     "url": "https://aemori.com/pt-br/blog/cansaco-que-dormir-nao-resolve/",
     "title": "O cansaço que dormir não resolve",
