@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brDizerNao from './pt-br/como-dizer-nao-sem-culpa';
 import brPensar from './pt-br/como-parar-de-pensar-demais';
 import brCansaco from './pt-br/cansaco-que-dormir-nao-resolve';
 import brAutoestima from './pt-br/como-melhorar-autoestima';
@@ -19,6 +20,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptDizerNao from './pt-pt/como-dizer-nao-sem-culpa';
 import ptPensar from './pt-pt/como-parar-de-pensar-demais';
 import ptCansaco from './pt-pt/cansaco-que-dormir-nao-resolve';
 import ptAutoestima from './pt-pt/como-melhorar-autoestima';
@@ -37,6 +39,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'como-dizer-nao-sem-culpa',
   'como-parar-de-pensar-demais',
   'cansaco-que-dormir-nao-resolve',
   'como-melhorar-autoestima',
@@ -55,6 +58,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'como-dizer-nao-sem-culpa': { 'pt-br': brDizerNao, 'pt-pt': ptDizerNao },
   'como-parar-de-pensar-demais': { 'pt-br': brPensar, 'pt-pt': ptPensar },
   'cansaco-que-dormir-nao-resolve': { 'pt-br': brCansaco, 'pt-pt': ptCansaco },
   'como-melhorar-autoestima': { 'pt-br': brAutoestima, 'pt-pt': ptAutoestima },
