@@ -1,6 +1,90 @@
 [
   {
     "lang": "pt-br",
+    "slug": "me-sinto-sozinho-mesmo-acompanhado",
+    "url": "https://aemori.com/pt-br/blog/me-sinto-sozinho-mesmo-acompanhado/",
+    "title": "Por que me sinto sozinho mesmo cercado de gente",
+    "description": "Você está cercado de gente e mesmo assim se sente sozinho. Entenda por que solidão não é falta de companhia — é falta de ser conhecido — e o que muda isso.",
+    "tldr": "Solidão não é a mesma coisa que estar sozinho. Você pode ter agenda cheia, grupo de amigos e família por perto e ainda assim se sentir só, porque a solidão não mede quantas pessoas estão em volta: mede quantas sabem como você realmente está. O que a diminui não é mais convivência — é ser conhecido por alguém, e isso começa por você conseguir dizer, com precisão, o que está sentindo.",
+    "datePublished": "2026-08-10",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1783525460733-b9e391a5edd9?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxhbG9uZSUyMGluJTIwY3Jvd2QlMjBjaXR5JTIwZXZlbmluZyUyMHdhcm0lMjBsaWdodHN8ZW58MXwwfHx8MTc4NjM3OTI3Mnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoas caminhando por uma rua movimentada da cidade ao anoitecer",
+      "credit": "Sebastiano Raciti",
+      "creditUrl": "https://unsplash.com/@sebiano?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Por que me sinto sozinho mesmo cercado de gente?",
+        "a": "Porque solidão não mede quantas pessoas estão em volta, e sim quantas sabem como você realmente está. É a distância entre o que você sente por dentro e o quanto disso alguém conhece — e essa distância não diminui só por ter mais gente por perto."
+      },
+      {
+        "q": "Qual a diferença entre estar sozinho e sentir solidão?",
+        "a": "Estar sozinho é uma situação: não tem ninguém por perto, e isso pode ser bom. Solidão é uma sensação de desconexão que independe de companhia. Dá para estar sozinho e se sentir bem, e dá para estar acompanhado e se sentir só."
+      },
+      {
+        "q": "Como parar de me sentir sozinho?",
+        "a": "Não é saindo mais: é sendo conhecido por alguém. Troque quantidade por profundidade, diga uma frase verdadeira a mais depois do \"tudo certo\", aceite convites antes de sentir vontade (na solidão a vontade chega depois) e aprenda a nomear o que sente, que é o passo que sustenta os outros."
+      },
+      {
+        "q": "Por que a solidão parece piorar sozinha?",
+        "a": "Porque ela se confirma. Quem se sente distante passa a interpretar sinais neutros como rejeição, se protege aceitando menos convites, a distância aumenta de verdade e a sensação inicial ganha prova. O único passo que você controla é o de se proteger — e é o que parece mais razoável na hora."
+      },
+      {
+        "q": "Escrever ajuda a lidar com a solidão?",
+        "a": "Ajuda, mas não por substituir companhia: por te dar o que dizer quando ela aparece. Escrever transforma \"tô estranho\" em algo específico e contável, e é justamente a falta de palavras precisas que costuma travar a aproximação."
+      },
+      {
+        "q": "Sentir solidão é sinal de depressão?",
+        "a": "Nem sempre. A solidão é comum e passageira em várias fases da vida. Mas se dura meses, vem com perda de vontade de tudo, afastamento generalizado ou a sensação de que ninguém sentiria sua falta, pode ser depressão — nesse caso procure um psicólogo. Se pensar em se machucar, ligue 188 (CVV, Brasil) ou 213 544 545 (SOS Voz Amiga, Portugal)."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "me-sinto-sozinho-mesmo-acompanhado",
+    "url": "https://aemori.com/pt-pt/blog/me-sinto-sozinho-mesmo-acompanhado/",
+    "title": "Porque me sinto sozinho mesmo rodeado de gente",
+    "description": "Estás rodeado de gente e mesmo assim sentes-te sozinho. Percebe porque a solidão não é falta de companhia — é falta de ser conhecido — e o que muda isso.",
+    "tldr": "Solidão não é o mesmo que estar sozinho. Podes ter a agenda cheia, um grupo de amigos e família por perto e ainda assim sentires-te só, porque a solidão não mede quantas pessoas estão à volta: mede quantas sabem como tu estás. O que a diminui não é mais convívio — é seres conhecido por alguém, e isso começa por conseguires dizer, com precisão, o que estás a sentir.",
+    "datePublished": "2026-08-10",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1783525460733-b9e391a5edd9?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxhbG9uZSUyMGluJTIwY3Jvd2QlMjBjaXR5JTIwZXZlbmluZyUyMHdhcm0lMjBsaWdodHN8ZW58MXwwfHx8MTc4NjM3OTI3Mnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoas a caminhar por uma rua movimentada da cidade ao anoitecer",
+      "credit": "Sebastiano Raciti",
+      "creditUrl": "https://unsplash.com/@sebiano?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Porque me sinto sozinho mesmo rodeado de gente?",
+        "a": "Porque a solidão não mede quantas pessoas estão à volta, mas quantas sabem como tu estás. É a distância entre o que sentes por dentro e o quanto disso alguém conhece — e essa distância não diminui só por haver mais gente por perto."
+      },
+      {
+        "q": "Qual a diferença entre estar sozinho e sentir solidão?",
+        "a": "Estar sozinho é uma situação: não está ninguém por perto, e isso pode ser bom. Solidão é uma sensação de desconexão que independe de companhia. Dá para estar sozinho e sentir-se bem, e dá para estar acompanhado e sentir-se só."
+      },
+      {
+        "q": "Como deixar de me sentir sozinho?",
+        "a": "Não é saindo mais: é sendo conhecido por alguém. Troca quantidade por profundidade, diz uma frase verdadeira a mais depois do \"está tudo bem\", aceita convites antes de te apetecer (na solidão a vontade chega depois) e aprende a nomear o que sentes, que é o passo que sustenta os outros."
+      },
+      {
+        "q": "Porque é que a solidão parece piorar sozinha?",
+        "a": "Porque se confirma. Quem se sente distante passa a interpretar sinais neutros como rejeição, protege-se aceitando menos convites, a distância aumenta a sério e a sensação inicial ganha prova. O único passo que controlas é o de te protegeres — e é o que parece mais razoável na hora."
+      },
+      {
+        "q": "Escrever ajuda a lidar com a solidão?",
+        "a": "Ajuda, mas não por substituir companhia: por te dar o que dizer quando ela aparece. Escrever transforma \"ando estranho\" em algo específico e contável, e é justamente a falta de palavras precisas que costuma travar a aproximação."
+      },
+      {
+        "q": "Sentir solidão é sinal de depressão?",
+        "a": "Nem sempre. A solidão é comum e passageira em várias fases da vida. Mas se dura meses, vem com perda de vontade para tudo, afastamento generalizado ou a sensação de que ninguém daria pela tua falta, pode ser depressão — nesse caso procura um psicólogo. Se pensares em magoar-te, liga 213 544 545 (SOS Voz Amiga, Portugal) ou 188 (CVV, Brasil)."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "como-dizer-nao-sem-culpa",
     "url": "https://aemori.com/pt-br/blog/como-dizer-nao-sem-culpa/",
     "title": "Como dizer não sem sentir culpa",
