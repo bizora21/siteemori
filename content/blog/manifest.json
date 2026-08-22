@@ -1,6 +1,90 @@
 [
   {
     "lang": "pt-br",
+    "slug": "choro-por-qualquer-coisa",
+    "url": "https://aemori.com/pt-br/blog/choro-por-qualquer-coisa/",
+    "title": "Por que eu choro por qualquer coisa?",
+    "description": "Você chora com propaganda, com música, com um elogio. Entenda por que o choro fácil quase nunca é fraqueza — é um sistema emocional sobrecarregado pedindo espaço.",
+    "tldr": "Chorar por qualquer coisa raramente significa que você é sensível demais. Na maior parte das vezes significa que há emoção acumulada sem saída, e o choro passa a transbordar em situações pequenas porque são as únicas em que a guarda baixa. O choro não é o problema: é o sintoma de que faltou processar o que veio antes.",
+    "datePublished": "2026-08-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1616824726805-1c991ae55757?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBjcnlpbmclMjBhbG9uZSUyMHNvZnQlMjB3aW5kb3clMjBsaWdodCUyMGVtb3Rpb25hbHxlbnwxfDB8fHwxNzg3Mzk1MTAxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoa de suéter branco olhando pela janela enquanto neva lá fora",
+      "credit": "Daniil Onischenko",
+      "creditUrl": "https://unsplash.com/@flyvk?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Por que eu choro por qualquer coisa?",
+        "a": "Porque quase sempre há emoção acumulada sem saída. O choro não reage ao que está acontecendo agora: transborda numa situação pequena porque foi ali que a sua guarda baixou. Nas situações difíceis você estava ocupado se segurando."
+      },
+      {
+        "q": "Chorar fácil é sinal de fraqueza?",
+        "a": "Não. Costuma ser o contrário: quem chora com facilidade normalmente é quem mais se segurou por mais tempo. O choro é vazão de pressão acumulada, não falta de força."
+      },
+      {
+        "q": "Por que choro com coisas boas, como gentileza e reencontros?",
+        "a": "Porque essas cenas não exigem que você seja forte. Diante de uma dificuldade o corpo entra em modo de resolver; diante de uma gentileza não há nada a resolver, e é aí que a guarda baixa e o acumulado sai."
+      },
+      {
+        "q": "Como parar de chorar por qualquer coisa?",
+        "a": "Não segurando mais — isso aumenta a pressão. O que reduz é dar saída antes do transbordo: escrever o que ficou por dizer do dia, perguntar \"o que mais está aberto essa semana?\" em vez de \"por que estou chorando com isso\", e tratar o cansaço, que derruba o controle emocional antes de derrubar o corpo."
+      },
+      {
+        "q": "Chorar demais é sinal de depressão?",
+        "a": "Pode ser, mas nem sempre. Se o choro dura semanas quase todos os dias, vem com perda de vontade de tudo, atrapalha trabalhar ou conviver, ou aparece sem emoção junto, procure um psicólogo. Se começou de repente com alterações de sono, apetite ou peso, vale também um médico."
+      },
+      {
+        "q": "O que fazer na hora em que a vontade de chorar aparece?",
+        "a": "Se o contexto permitir, deixe acontecer: chorar é o corpo terminando um processo, e interromper deixa pela metade. Se não permitir, respire devagar e marque para voltar ao assunto depois, escrevendo — o que fica sem saída volta a transbordar na próxima situação pequena."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "choro-por-qualquer-coisa",
+    "url": "https://aemori.com/pt-pt/blog/choro-por-qualquer-coisa/",
+    "title": "Porque é que choro por tudo e por nada?",
+    "description": "Choras com um anúncio, com uma música, com um elogio. Percebe porque o choro fácil quase nunca é fraqueza — é um sistema emocional sobrecarregado a pedir espaço.",
+    "tldr": "Chorar por tudo e por nada raramente significa que és sensível demais. Na maior parte das vezes significa que há emoção acumulada sem saída, e o choro passa a transbordar em situações pequenas porque são as únicas em que a guarda baixa. O choro não é o problema: é o sinal de que faltou processar o que veio antes.",
+    "datePublished": "2026-08-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1616824726805-1c991ae55757?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBjcnlpbmclMjBhbG9uZSUyMHNvZnQlMjB3aW5kb3clMjBsaWdodCUyMGVtb3Rpb25hbHxlbnwxfDB8fHwxNzg3Mzk1MTAxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoa de camisola branca a olhar pela janela enquanto neva lá fora",
+      "credit": "Daniil Onischenko",
+      "creditUrl": "https://unsplash.com/@flyvk?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Porque é que choro por tudo e por nada?",
+        "a": "Porque quase sempre há emoção acumulada sem saída. O choro não reage ao que está a acontecer agora: transborda numa situação pequena porque foi aí que a tua guarda baixou. Nas situações difíceis estavas ocupado a segurar-te."
+      },
+      {
+        "q": "Chorar com facilidade é sinal de fraqueza?",
+        "a": "Não. Costuma ser o contrário: quem chora com facilidade normalmente é quem mais se segurou durante mais tempo. O choro é vazão de pressão acumulada, não falta de força."
+      },
+      {
+        "q": "Porque é que choro com coisas boas, como gentileza e reencontros?",
+        "a": "Porque essas cenas não exigem que sejas forte. Perante uma dificuldade o corpo entra em modo de resolver; perante uma gentileza não há nada a resolver, e é aí que a guarda baixa e o acumulado sai."
+      },
+      {
+        "q": "Como deixar de chorar por tudo?",
+        "a": "Não te segurando mais — isso aumenta a pressão. O que reduz é dar saída antes do transbordo: escrever o que ficou por dizer do dia, perguntar \"o que mais está em aberto esta semana?\" em vez de \"porque estou a chorar com isto\", e tratar o cansaço, que derruba o controlo emocional antes de derrubar o corpo."
+      },
+      {
+        "q": "Chorar demais é sinal de depressão?",
+        "a": "Pode ser, mas nem sempre. Se o choro dura semanas quase todos os dias, vem com perda de vontade para tudo, atrapalha trabalhar ou conviver, ou aparece sem emoção associada, procura um psicólogo. Se começou de repente com alterações de sono, apetite ou peso, vale também um médico."
+      },
+      {
+        "q": "O que fazer no momento em que a vontade de chorar aparece?",
+        "a": "Se o contexto permitir, deixa acontecer: chorar é o corpo a terminar um processo, e interromper deixa-o a meio. Se não permitir, respira devagar e marca para voltares ao assunto depois, a escrever — o que fica sem saída volta a transbordar na próxima situação pequena."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "me-sinto-sozinho-mesmo-acompanhado",
     "url": "https://aemori.com/pt-br/blog/me-sinto-sozinho-mesmo-acompanhado/",
     "title": "Por que me sinto sozinho mesmo cercado de gente",

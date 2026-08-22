@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brChoro from './pt-br/choro-por-qualquer-coisa';
 import brSozinho from './pt-br/me-sinto-sozinho-mesmo-acompanhado';
 import brDizerNao from './pt-br/como-dizer-nao-sem-culpa';
 import brPensar from './pt-br/como-parar-de-pensar-demais';
@@ -21,6 +22,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptChoro from './pt-pt/choro-por-qualquer-coisa';
 import ptSozinho from './pt-pt/me-sinto-sozinho-mesmo-acompanhado';
 import ptDizerNao from './pt-pt/como-dizer-nao-sem-culpa';
 import ptPensar from './pt-pt/como-parar-de-pensar-demais';
@@ -41,6 +43,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'choro-por-qualquer-coisa',
   'me-sinto-sozinho-mesmo-acompanhado',
   'como-dizer-nao-sem-culpa',
   'como-parar-de-pensar-demais',
@@ -61,6 +64,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'choro-por-qualquer-coisa': { 'pt-br': brChoro, 'pt-pt': ptChoro },
   'me-sinto-sozinho-mesmo-acompanhado': { 'pt-br': brSozinho, 'pt-pt': ptSozinho },
   'como-dizer-nao-sem-culpa': { 'pt-br': brDizerNao, 'pt-pt': ptDizerNao },
   'como-parar-de-pensar-demais': { 'pt-br': brPensar, 'pt-pt': ptPensar },
