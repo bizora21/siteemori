@@ -14,6 +14,17 @@ const CACHE = 'assets/video-bg';
 
 const cacheKey = (query: string) => query.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 
+/** Tamanho de um ficheiro remoto, sem o descarregar. `null` se não disser. */
+async function contentLength(url: string): Promise<number | null> {
+  try {
+    const res = await fetch(url, { method: 'HEAD' });
+    const n = Number(res.headers.get('content-length'));
+    return Number.isFinite(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
 export interface BackgroundClip {
   id: number;
   author: string;
@@ -87,16 +98,56 @@ export async function fetchBackground(
   const all = (data.videos ?? []).filter((v) => v.duration >= 5);
   if (!all.length) return null;
 
-  // Janela de duração: 8–25s. Clips longos pesam 100+ MB e a CDN do Pexels
-  // serve a ~0,1 MB/s — o download rebentava por timeout. Um clip curto em
-  // loop, com o zoom lento por cima, é visualmente indistinguível e desce
-  // o peso para ~1/4. Dentro da janela, o mais longo (menos repetição).
+  // Janela de duração: 8–25s. Em loop, com o zoom lento por cima, um clip curto
+  // é visualmente indistinguível de um longo e pesa uma fração.
   const janela = all.filter((v) => v.duration >= 8 && v.duration <= 25);
-  const video = (janela.length ? janela : all).sort((a, b) => b.duration - a.duration)[0];
-  const file = video.video_files
-    .filter((f) => f.file_type === 'video/mp4' && f.height > f.width && f.width >= 720)
-    .sort((a, b) => Math.abs(a.width - 1080) - Math.abs(b.width - 1080))[0];
-  if (!file) return null;
+  const candidatos = (janela.length ? janela : all).sort((a, b) => b.duration - a.duration).slice(0, 6);
+
+  // Escolhe pelo TAMANHO REAL, não pela duração. Filtrar só por duração não
+  // chega: um clip de 20s em taxa alta dá 60 MB, e a CDN do Pexels serve-nos a
+  // ~1 MB/min — foram 28 minutos num único clip antes desta verificação. Um
+  // HEAD por candidato custa milissegundos e evita isso.
+  const LIMITE = 20 * 1024 * 1024;
+  type Video = (typeof candidatos)[0];
+  type File = Video['video_files'][0];
+  let video: Video | null = null;
+  let file: File | null = null;
+  // Guarda o mais pequeno que vimos, mesmo acima do limite: é melhor um clip
+  // grande do que nenhum. Sem ele, a cena repetia o plano anterior e o vídeo
+  // perdia o corte — que é precisamente o que estamos a tentar ganhar.
+  let menor: { v: Video; f: File; size: number } | null = null;
+
+  for (const v of candidatos) {
+    const opcoes = v.video_files
+      .filter((f) => f.file_type === 'video/mp4' && f.height > f.width && f.width >= 720)
+      // Do mais pequeno para cima: 720 chega para um fundo desfocado e escurecido.
+      .sort((a, b) => a.width - b.width);
+
+    for (const f of opcoes) {
+      const size = await contentLength(f.link);
+      if (size === null) continue;
+      if (size <= LIMITE) {
+        video = v;
+        file = f;
+        break;
+      }
+      if (!menor || size < menor.size) menor = { v, f, size };
+    }
+    if (file) break;
+  }
+  if ((!video || !file) && menor) {
+    video = menor.v;
+    file = menor.f;
+  }
+  // Último recurso: a API não deu tamanhos. Vai no 1º candidato às cegas.
+  if (!video || !file) {
+    video = candidatos[0] ?? null;
+    file =
+      video?.video_files
+        .filter((f) => f.file_type === 'video/mp4' && f.height > f.width && f.width >= 720)
+        .sort((a, b) => a.width - b.width)[0] ?? null;
+  }
+  if (!video || !file) return null;
 
   // Download com curl, não com fetch: a CDN do Pexels corta ligações longas
   // (ECONNRESET) e o fetch do Node não recupera. O curl retoma e repete sozinho.

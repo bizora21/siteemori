@@ -12,7 +12,9 @@
 //
 // Música: a 1ª faixa em assets/audio/ (gitignored), ligada com --music.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync } from 'node:fs';
+import {
+  readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, readdirSync, statSync, copyFileSync,
+} from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { Resvg } from '@resvg/resvg-js';
 import ffmpegPath from 'ffmpeg-static';
@@ -24,9 +26,9 @@ import {
   type CaptionLine,
 } from '../lib/social/tts';
 import type { Locale } from '../i18n/config';
-import { ICON_VOCAB, iconForText } from '../lib/social/icons';
+import { visualForText, visualQuery } from '../lib/social/visuals';
 import { synthesizePiper, piperAvailable } from '../lib/social/piper';
-import { fetchBackground, backgroundQuery } from '../lib/social/pexels';
+import { fetchBackground, type BackgroundClip } from '../lib/social/pexels';
 
 const W = 1080;
 const H = 1920;
@@ -68,21 +70,77 @@ function wrap(text: string, maxChars: number): string[] {
 /** Duração real de um ficheiro de áudio, em segundos (via ffmpeg).
  *  Usa spawnSync porque o ffmpeg escreve a duração no stderr e termina com
  *  sucesso — com execFileSync+try/catch o valor perdia-se e vinha 0. */
+/** Corre o ffmpeg e falha ruidosamente, com o stderr que interessa. */
+function run(bin: string, args: string[]): void {
+  try {
+    execFileSync(bin, args, { stdio: ['ignore', 'ignore', 'pipe'] });
+  } catch (err) {
+    const e = err as { stderr?: Buffer; message?: string };
+    throw new Error(e.stderr?.toString().slice(-1200) ?? e.message ?? 'ffmpeg falhou');
+  }
+}
+
+/**
+ * Corta o silêncio no FIM da faixa de voz (deixa 0,15s de respiração).
+ *
+ * O Piper fecha cada frase com meio segundo de silêncio. Como a duração da
+ * cena é a duração real do áudio, esse silêncio esticava cada plano — e no
+ * primeiro, que é o que decide a entrega, empurrava o corte para os 4,6s.
+ * Sete cenas × meio segundo são também ~3s de vídeo sem nada a acontecer.
+ *
+ * Só o fim, nunca o início: os tempos das palavras vêm do TTS contados desde
+ * o zero, e cortar à cabeça desalinharia a legenda toda.
+ */
+function trimTail(file: string, tmp: string): void {
+  const out = `${tmp}/trim-${file.split('/').pop()}`;
+  try {
+    run(ffmpeg, [
+      '-y', '-loglevel', 'error', '-i', file,
+      '-af', 'areverse,silenceremove=start_periods=1:start_silence=0.15:start_threshold=-45dB,areverse',
+      out,
+    ]);
+    if (existsSync(out) && statSync(out).size > 1000) copyFileSync(out, file);
+  } catch {
+    /* sem corte, segue com a faixa original */
+  }
+}
+
+/**
+ * Luminância média de um clip (0–255). Os clips do Pexels variam muito: uns
+ * vêm quase pretos, outros lavados. Sem medir, o resultado dependia da sorte.
+ */
+function clipLuma(file: string): number {
+  const res = spawnSync(
+    ffmpeg,
+    ['-t', '2', '-i', file, '-vf', 'signalstats,metadata=print:key=lavfi.signalstats.YAVG', '-f', 'null', '-'],
+    { encoding: 'utf8' },
+  );
+  const vals = [...`${res.stderr ?? ''}`.matchAll(/YAVG=([0-9.]+)/g)].map((m) => +m[1]);
+  return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 128;
+}
+
+/**
+ * Correção de brilho para trazer o clip a um alvo comum.
+ *
+ * Medimos a abertura a 39/255 (~15%) — num feed, um frame quase preto lê-se
+ * como "não há nada aqui" e perde-se o espectador antes de a voz dizer a
+ * primeira frase. O alvo deixa a filmagem visível mantendo o texto branco
+ * legível; o scrim faz o resto.
+ */
+function lumaFix(file: string): string {
+  const TARGET = 88;
+  const luma = clipLuma(file);
+  const delta = (TARGET - luma) / 255;
+  const b = Math.max(-0.12, Math.min(0.30, delta)).toFixed(3);
+  return `eq=brightness=${b}:saturation=0.95:contrast=1.04`;
+}
+
 function audioDuration(file: string): number {
   const res = spawnSync(ffmpeg, ['-i', file, '-f', 'null', '-'], { encoding: 'utf8' });
   const out = `${res.stderr ?? ''}`;
   const m = out.match(/Duration:\s*(\d+):(\d+):([\d.]+)/);
   return m ? +m[1] * 3600 + +m[2] * 60 + parseFloat(m[3]) : 0;
 }
-
-/** Ícones do nicho (traço, estilo lucide). */
-const ICONS: Record<string, string> = {
-  moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
-  heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8z',
-  book: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z',
-  sparkle: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z',
-  sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4',
-};
 
 /** Tons de fundo por cena — dá cor e variação sem sair da marca. */
 const TINTS = ['#f3ddc9', '#e9efe6', '#f6ddd0', '#eef0e3', '#f3e3d3'];
@@ -100,7 +158,10 @@ interface Scene {
   eyebrow?: string;
   title: string;
   narration: string;
-  icon: keyof typeof ICONS;
+  /** visual de arranque da cena (nome no VISUAL_VOCAB) */
+  visual: string;
+  /** linha de apoio sob o título (usada no CTA final) */
+  note?: string;
   tint: string;
   theme: keyof typeof THEME;
   /** foto de fundo em base64 (data URI), usada no tema 'photo' */
@@ -109,20 +170,15 @@ interface Scene {
 }
 
 /** Um frame: cena + símbolo do que está a ser dito + legenda com a palavra atual. */
-function frameSvg(
-  scene: Scene,
-  line: CaptionLine | null,
-  activeWord: number,
-  /** símbolo semântico da frase corrente (muda ao longo da narração) */
-  liveIcon?: string,
-  /** 0→1: entrada animada do símbolo quando ele muda */
-  iconIn = 1,
-): string {
+function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): string {
   const C = THEME[scene.theme];
   const titleSize = scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
   const titleLines = wrap(scene.title, scene.title.length > 58 ? 24 : 20).slice(0, 5);
   const lineH = titleSize + 20;
-  const titleTop = 700;
+  // Zona segura do TikTok: a legenda e o nome do autor tapam ~300px em baixo e
+  // os botões de ação ~160px à direita. Todo o texto vive entre os 450 e os
+  // 1560 px — fora disso, a plataforma tapa-o e o espectador não o lê.
+  const titleTop = 500;
 
   const titleEls = titleLines
     .map(
@@ -166,19 +222,12 @@ function frameSvg(
       .join('\n  ');
   }
 
-  // Símbolo do que está a ser narrado: grande, centrado e com entrada animada
-  // (escala + opacidade). É a âncora visual que ilustra a frase corrente.
-  const iconPath = liveIcon ? ICON_VOCAB[liveIcon]?.path : ICONS[scene.icon];
-  const S = 300; // tamanho final do símbolo em px — tem de ser grande para ancorar o olhar
-  const grow = 0.88 + 0.12 * iconIn;
-  const cx = W / 2;
-  const cy = 360;
-  const symbolEls = iconPath
-    ? `<g transform="translate(${cx} ${cy}) scale(${(S * grow) / 24}) translate(-12 -12)"
-     fill="none" stroke="${C.active}" stroke-width="1.15" stroke-linecap="round"
-     stroke-linejoin="round" opacity="${(0.35 + 0.65 * iconIn).toFixed(2)}">
-    <path d="${iconPath}"/>
-  </g>`
+  // Linha de apoio do CTA: texto, nunca um botão. Um botão desenhado num vídeo
+  // não é clicável — só sinaliza "anúncio" e faz saltar. A instrução real vai
+  // na voz, que é o que as pessoas seguem no TikTok.
+  const noteEls = scene.note
+    ? `<text x="${W / 2}" y="${titleTop + titleLines.length * lineH + 60}" text-anchor="middle"
+     font-family="PT Serif" font-weight="bold" font-size="48" fill="${C.active}">${xmlEscape(scene.note)}</text>`
     : '';
 
   // Fundo. Com vídeo por trás (tema 'video'), o frame fica TRANSPARENTE — o
@@ -188,52 +237,35 @@ function frameSvg(
     scene.theme === 'video'
       ? // Scrim: gradiente escuro por trás do texto. Sem isto, um clip claro
         // "come" o texto branco e a legibilidade depende da sorte do fundo.
-        `<rect width="${W}" height="${H}" fill="url(#scrim)"/>
-  <circle cx="${W / 2}" cy="360" r="300" fill="#140f0b" opacity="0.30"/>`
+        `<rect width="${W}" height="${H}" fill="url(#scrim)"/>`
       : scene.theme === 'photo' && scene.photo
         ? `<image href="${scene.photo}" x="0" y="0" width="${W}" height="${H}"
         preserveAspectRatio="xMidYMid slice"/>
   <rect width="${W}" height="${H}" fill="#140f0b" opacity="0.62"/>`
-        : // Sem a lua de fundo: o símbolo semântico é o elemento visual e a lua
-          // competiria com ele. Fica só um halo suave atrás do símbolo.
-          `<rect width="${W}" height="${H}" fill="${C.bg}"/>
-  <circle cx="${W / 2}" cy="360" r="300" fill="${scene.theme === 'dark' ? '#3b322a' : scene.tint}" opacity="0.55"/>`;
+        : `<rect width="${W}" height="${H}" fill="${C.bg}"/>`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <mask id="moon">
-      <rect width="${W}" height="${H}" fill="black"/>
-      <circle cx="830" cy="300" r="235" fill="white"/>
-      <circle cx="930" cy="238" r="215" fill="black"/>
-    </mask>
     <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#140f0b" stop-opacity="0.30"/>
-      <stop offset="28%" stop-color="#140f0b" stop-opacity="0.62"/>
-      <stop offset="75%" stop-color="#140f0b" stop-opacity="0.66"/>
-      <stop offset="100%" stop-color="#140f0b" stop-opacity="0.45"/>
+      <stop offset="0%" stop-color="#140f0b" stop-opacity="0.10"/>
+      <stop offset="25%" stop-color="#140f0b" stop-opacity="0.42"/>
+      <stop offset="78%" stop-color="#140f0b" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#140f0b" stop-opacity="0.28"/>
     </linearGradient>
   </defs>
   ${bg}
 
-  ${symbolEls}
-
   ${scene.eyebrow ? `<text x="${W / 2}" y="580" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="32" letter-spacing="7" fill="${C.active}">${xmlEscape(scene.eyebrow)}</text>` : ''}
   ${titleEls}
+  ${noteEls}
   ${capEls}
 
-  <text x="${W / 2}" y="1790" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
+  <text x="${W / 2}" y="1560" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
 </svg>`;
 }
 
-function renderFrame(
-  scene: Scene,
-  line: CaptionLine | null,
-  active: number,
-  file: string,
-  liveIcon?: string,
-  iconIn = 1,
-) {
-  const png = new Resvg(frameSvg(scene, line, active, liveIcon, iconIn), {
+function renderFrame(scene: Scene, line: CaptionLine | null, active: number, file: string) {
+  const png = new Resvg(frameSvg(scene, line, active), {
     fitTo: { mode: 'width', value: W },
     font: { fontFiles: FONTS, loadSystemFonts: false, defaultFontFamily: 'PT Serif' },
     // Sobre vídeo o frame TEM de manter alfa, para o ffmpeg poder compor o
@@ -263,26 +295,171 @@ function buildScenes(entry: SocialManifestEntry, photo?: string, hasVideoBg = fa
   return buildStaticScenes(entry, photo);
 }
 
+/**
+ * Gancho de abertura, em DOIS tempos curtos.
+ *
+ * Uma frase declarativa sozinha ("a tua mente repassa a mesma cena há horas")
+ * dá reconhecimento mas fecha-se: o espectador concorda e vai-se embora. O que
+ * segura é um ciclo aberto — reconhecimento e, logo a seguir, a pergunta que
+ * ele próprio não sabe responder. A resposta fica em dívida, e é essa dívida
+ * que faz ver até ao fim.
+ *
+ * Curtos de propósito: dois planos em ~4s dão logo um corte, e movimento cedo
+ * é o que distingue "vídeo" de "imagem com legenda" aos olhos de quem passa.
+ */
+function sentences(text: string, n: number): string {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .slice(0, n)
+    .join(' ')
+    .trim();
+}
+
+/**
+ * Frases inteiras dentro de uma janela de palavras (nunca corta a meio).
+ *
+ * Precisa de mínimo E máximo. Só com máximo, uma resposta que abre com uma
+ * frase curta ("Esvaziando, não dormindo mais.") produzia um vídeo de 4
+ * segundos — curto demais para dizer alguma coisa e para o algoritmo o
+ * considerar conteúdo. Abaixo do mínimo, aceita ultrapassar o máximo.
+ */
+function clampWords(text: string, min: number, max: number): string {
+  const frases = text.split(/(?<=[.!?])\s+/);
+  const out: string[] = [];
+  let n = 0;
+  for (const f of frases) {
+    const w = f.trim().split(/\s+/).length;
+    if (out.length && n >= min && n + w > max) break;
+    out.push(f.trim());
+    n += w;
+  }
+  return out.join(' ');
+}
+
+function hookOf(entry: SocialManifestEntry): string {
+  const first = sentences(entry.description, 1);
+  return first.length >= 25 && first.length <= 120 ? first : entry.title;
+}
+
+/**
+ * Parte o gancho em dois planos.
+ *
+ * O TikTok disse-nos onde perdemos as pessoas: **0:02**. Nessa altura o vídeo
+ * antigo ainda estava no primeiro plano, com onze palavras em serifada para
+ * ler. Ninguém lê onze palavras enquanto decide se fica. Partido em dois, cada
+ * plano tem 5–7 palavras — legível de relance — e ganha-se um CORTE antes do
+ * instante da decisão, em vez de só aos 4 segundos.
+ *
+ * Corta numa fronteira natural (vírgula, "e", "mas", travessão) para a voz não
+ * soar partida ao meio; sem fronteira, ao pé do meio.
+ */
+function splitHook(text: string): [string, string] | null {
+  const t = text.replace(/\.$/, '');
+  const marks = [...t.matchAll(/,\s+|\s+—\s+|\s+e\s+não\s+|\s+mas\s+|\s+e\s+/g)];
+  // A fronteira mais CEDO que ainda deixe as duas metades com corpo: quanto
+  // mais curto o 1º tempo, mais cedo cai o corte — e é o corte que segura.
+  const best = marks
+    .map((m) => ({ at: m.index ?? 0 }))
+    .filter((m) => m.at >= 12 && t.length - m.at >= 12)
+    .sort((a, b) => a.at - b.at)[0];
+
+  if (!best) return null;
+  const head = t.slice(0, best.at).trim();
+  const tail = t.slice(best.at).replace(/^[,\s—]+/, '').trim();
+  return head && tail ? [head, tail] : null;
+}
+
+/**
+ * UM vídeo curto por pergunta do FAQ: 15–20s, uma ideia só.
+ *
+ * A razão está nos números do TikTok, não em gosto. Os vídeos de 60s retinham
+ * 7,8s em média — 12% vistos, 1,7% de conclusão. O algoritmo pesa a CONCLUSÃO
+ * acima de tudo, por isso lia isso como "88% abandonaram" e parava de
+ * distribuir. Os mesmos 7,8s num vídeo de 15s leem-se como ~50% de conclusão:
+ * conteúdo igual, sinal oposto. A faixa de máxima viralidade é 11–18s.
+ *
+ * Efeito lateral bom: cada artigo passa a dar 3–4 peças em vez de uma.
+ */
+function buildShortScenes(entry: SocialManifestEntry, i: number): Scene[] {
+  const f = entry.faq[i];
+  // Orçamento por PALAVRAS, não por nº de frases: as respostas do FAQ variam
+  // muito de comprimento, e cortar "1 frase" dava peças de 6s numas e de 25s
+  // noutras. A ~2,5 palavras/segundo, 34 palavras ≈ 14s de resposta; com a
+  // pergunta à frente dá os 15–18s que é a faixa que o TikTok distribui.
+  const resposta = clampWords(f.a, 22, 42);
+  const vq = visualForText(f.q) ?? 'mente';
+  const va = visualForText(resposta) ?? (vq === 'calma' ? 'tempo' : 'calma');
+
+  return [
+    // Pergunta sozinha: o ciclo aberto, e o corte cai quando ela é respondida.
+    {
+      title: f.q,
+      narration: cleanNarration(f.q),
+      visual: vq,
+      tint: TINTS[0],
+      theme: 'video',
+      hideCaption: true,
+    },
+    // Resposta com legenda em karaokê. Sem cena de fecho nem CTA: aos 15s um
+    // remate de produto custaria 20% do vídeo e é justamente o que derruba a
+    // conclusão. A marca fica no aemori.com do rodapé e na bio.
+    {
+      title: f.q,
+      narration: cleanNarration(resposta),
+      visual: va !== vq ? va : 'tempo',
+      tint: TINTS[1],
+      theme: 'video',
+    },
+  ];
+}
+
 /** Cenas para fundo em vídeo: todas transparentes, texto branco sobre o clip. */
 function buildVideoScenes(entry: SocialManifestEntry): Scene[] {
   const isPT = entry.lang === 'pt-pt';
-  const points = entry.faq.slice(0, 4);
-  const icons: (keyof typeof ICONS)[] = ['book', 'heart', 'sparkle', 'sun'];
+  // TRÊS perguntas, não quatro, e só as 2 primeiras frases de cada resposta.
+  // No TikTok a taxa de conclusão pesa mais do que o conteúdo entregue: um
+  // vídeo de 45s visto até ao fim é distribuído, um de 90s abandonado a meio
+  // não é. O artigo continua a ter tudo — o vídeo é a isca, não o produto.
+  const points = entry.faq.slice(0, 3);
+  const hook = hookOf(entry);
+  // O ciclo aberto: a 1ª pergunta do FAQ é a que o espectador tem na cabeça.
+  const openLoop = entry.faq[0]?.q ?? entry.title;
+
+  // Gancho em 1 ou 2 planos, conforme parta bem — o corte cedo é o objetivo.
+  const parts = splitHook(hook) ?? [hook];
+  const v0 = visualForText(parts[0]) ?? 'mente';
+  // O 2º tempo TEM de ter clip diferente do 1º. As duas metades da mesma frase
+  // casam quase sempre no mesmo conceito ("mente" nas duas), e aí o vocabulário
+  // devolvia o mesmo clip: ficavam dois planos de texto sobre uma imagem só, ou
+  // seja, nenhum corte. Medimos o 1º corte aos 5,4s por causa disto — depois do
+  // instante em que o TikTok nos diz que as pessoas saem (0:02).
+  const v1raw = parts[1] ? (visualForText(parts[1]) ?? 'tempo') : null;
+  const v1 = v1raw && v1raw !== v0 ? v1raw : 'tempo';
 
   return [
+    ...parts.map((p, i) => ({
+      title: p,
+      narration: cleanNarration(p),
+      visual: i === 0 ? v0 : v1,
+      tint: TINTS[i % TINTS.length],
+      theme: 'video' as keyof typeof THEME,
+      hideCaption: true,
+    })),
     {
-      eyebrow: 'DIÁRIO EMOCIONAL',
-      title: entry.title,
-      narration: cleanNarration(entry.title),
-      icon: 'moon',
-      tint: TINTS[0],
+      title: openLoop,
+      narration: cleanNarration(openLoop),
+      // Mesmo visual da cena seguinte de propósito: a pergunta aparece sozinha
+      // e a resposta surge por baixo, no mesmo plano. Cortar aqui partiria o
+      // ciclo aberto exatamente no instante em que ele se fecha.
+      visual: visualForText(`${points[0]?.q ?? ''} ${points[0]?.a ?? ''}`) ?? 'mente',
+      tint: TINTS[1],
       theme: 'video',
       hideCaption: true,
     },
     ...points.map((f, i) => ({
       title: f.q,
-      narration: cleanNarration(f.a),
-      icon: icons[i] ?? ('sparkle' as keyof typeof ICONS),
+      narration: cleanNarration(sentences(f.a, 2)),
+      visual: visualForText(`${f.q} ${f.a}`) ?? 'calma',
       tint: TINTS[(i + 1) % TINTS.length],
       theme: 'video' as keyof typeof THEME,
     })),
@@ -294,14 +471,13 @@ function buildStaticScenes(entry: SocialManifestEntry, photo?: string): Scene[] 
   const isPT = entry.lang === 'pt-pt';
   // Até 4 perguntas e a resposta COMPLETA → vídeo mais longo e com mais substância.
   const points = entry.faq.slice(0, 4);
-  const icons: (keyof typeof ICONS)[] = ['book', 'heart', 'sparkle', 'sun'];
+  const hook = hookOf(entry);
 
   return [
     {
-      eyebrow: 'DIÁRIO EMOCIONAL',
-      title: entry.title,
-      narration: cleanNarration(entry.title),
-      icon: 'moon',
+      title: hook,
+      narration: cleanNarration(hook),
+      visual: visualForText(hook) ?? 'mente',
       tint: TINTS[0],
       // Abre com a foto do artigo escurecida: máximo contraste e impacto.
       theme: photo ? 'photo' : 'dark',
@@ -312,7 +488,7 @@ function buildStaticScenes(entry: SocialManifestEntry, photo?: string): Scene[] 
     ...points.map((f, i) => ({
       title: f.q,
       narration: cleanNarration(f.a),
-      icon: icons[i] ?? 'sparkle',
+      visual: visualForText(`${f.q} ${f.a}`) ?? 'calma',
       tint: TINTS[(i + 1) % TINTS.length],
       theme: (i % 2 === 0 ? 'light' : 'dark') as keyof typeof THEME,
     })),
@@ -321,19 +497,26 @@ function buildStaticScenes(entry: SocialManifestEntry, photo?: string): Scene[] 
 }
 
 /**
- * Fecho. Não vende: fecha a ideia. Um remate de produto ("já disponível na
- * Google Play", botão de descarregar) faz a peça inteira ler-se como anúncio e
- * mata a retenção nos últimos segundos — que é justamente o sinal que as
- * plataformas usam para distribuir. A marca fica no aemori.com do rodapé, que
- * já está em todos os frames, e na lua.
+ * Fecho com CTA — fundido numa só cena, de propósito.
+ *
+ * Uma cena de produto separada ("já disponível na Google Play" + botão) lê-se
+ * como anúncio colado no fim e faz saltar. Mas sem CTA nenhum ninguém sabe o
+ * que fazer a seguir, e no TikTok isso custa instalações. A solução é o CTA
+ * sair da mesma frase que fecha a ideia: primeiro o remate emocional, depois,
+ * na mesma respiração, onde encontrar a app.
+ *
+ * A instrução vai sobretudo na VOZ, que é o que se segue no TikTok — o ecrã só
+ * confirma. E diz "Play Store" por extenso: "baixe o app" sem dizer onde deixa
+ * a pessoa sem saber para onde ir.
  */
 function closingScene(isPT: boolean, theme: keyof typeof THEME): Scene {
   return {
     title: isPT ? 'Dá nome ao que sentes' : 'Dê nome ao que você sente',
     narration: isPT
-      ? 'O que tem nome deixa de andar às voltas.'
-      : 'O que tem nome deixa de dar voltas.',
-    icon: 'moon',
+      ? 'O que tem nome deixa de andar às voltas. A Emori é um diário emocional gratuito: descarregas na Play Store do Android, e tens o link aqui na bio.'
+      : 'O que tem nome deixa de dar voltas. A Emori é um diário emocional gratuito: você baixa na Play Store do Android, e o link está aqui na bio.',
+    note: isPT ? 'grátis na Play Store · link na bio' : 'grátis na Play Store · link na bio',
+    visual: 'escrever',
     tint: TINTS[0],
     theme,
     hideCaption: true,
@@ -374,20 +557,47 @@ async function main() {
     console.log(`  ♪ música: ${track.split('/').pop()}`);
   }
 
-  for (const entry of targets) {
+  // --short: uma peça de 15–20s por pergunta do FAQ, em vez de um vídeo longo.
+  const shortMode = args.short === true;
+  const jobs = targets.flatMap((entry) =>
+    shortMode
+      ? entry.faq.slice(0, 4).map((_, i) => ({ entry, i }))
+      : [{ entry, i: null as number | null }],
+  );
+
+  for (const { entry, i: shortIdx } of jobs) {
     const dir = `social/${entry.slug}/${entry.lang}`;
-    const tmp = `${dir}/.frames`;
+    const tmp = `${dir}/.frames${shortIdx === null ? '' : `-${shortIdx}`}`;
     mkdirSync(tmp, { recursive: true });
 
-    // Fundo em VÍDEO (Pexels) — movimento real é o que separa um slide de um
-    // vídeo que prende. Sem chave/clip, cai no fundo estático com a foto.
-    const bgFile = `${tmp}/bg.mp4`;
-    const clip = noVideoBg ? null : await fetchBackground(backgroundQuery(entry.slug), bgFile);
-    if (clip) console.log(`  ▸ fundo: Pexels #${clip.id} (${clip.author}), ${clip.duration}s`);
+    // Um clip POR CENA, escolhido pelo que está a ser dito nessa cena — fala em
+    // água, mostra água. É a substituição do símbolo desenhado: filmagem real do
+    // assunto lê-se de imediato, um ícone de linha tem de ser descodificado
+    // primeiro, e a 3 segundos por frase não há tempo para isso.
+    const bgTrack = `${tmp}/bg-track.mp4`;
+    const scenesDraft =
+      shortIdx === null
+        ? buildScenes(entry, undefined, !noVideoBg)
+        : buildShortScenes(entry, shortIdx);
+    const clips: (BackgroundClip | null)[] = [];
+    if (!noVideoBg) {
+      for (const [si, scene] of scenesDraft.entries()) {
+        const q = visualQuery(scene.visual);
+        clips.push(await fetchBackground(q, `${tmp}/bg-${si}.mp4`));
+      }
+      const ok = clips.filter(Boolean) as BackgroundClip[];
+      if (ok.length) {
+        const autores = [...new Set(ok.map((c) => c.author))].join(', ');
+        console.log(`  ▸ ${ok.length}/${clips.length} cenas com filmagem (Pexels: ${autores})`);
+      }
+    }
 
-    const photo = clip ? undefined : entry.hero?.src ? await fetchPhoto(entry.hero.src) : undefined;
-    const scenes = buildScenes(entry, photo, Boolean(clip));
-    const frames: { file: string; seconds: number }[] = [];
+    // Só cai na foto estática se NENHUMA cena arranjou filmagem.
+    const anyClip = clips.some(Boolean);
+    const photo = anyClip ? undefined : entry.hero?.src ? await fetchPhoto(entry.hero.src) : undefined;
+    const scenes =
+      anyClip || shortIdx !== null ? scenesDraft : buildScenes(entry, photo, false);
+    const frames: { file: string; seconds: number; scene: number }[] = [];
     const voiceFiles: string[] = [];
 
     for (const [si, scene] of scenes.entries()) {
@@ -406,6 +616,7 @@ async function main() {
           if (si === 0) console.warn('  ⚠ Edge TTS indisponível — a usar Piper (offline).');
           ({ words } = synthesizePiper(scene.narration, entry.lang as Locale, voiceFile, tmp));
         }
+        trimTail(voiceFile, tmp);
         voiceFiles.push(voiceFile);
         lines = toCaptionLines(words);
         // Duração REAL do áudio — é o que garante a sincronia (não o último word boundary).
@@ -429,40 +640,20 @@ async function main() {
 
       if (flat.length === 0) {
         const file = `${tmp}/f-${si}-0.png`;
-        renderFrame(scene, null, -1, file, iconForText(scene.title) ?? undefined);
-        frames.push({ file, seconds: sceneDuration });
+        renderFrame(scene, null, -1, file);
+        frames.push({ file, seconds: sceneDuration, scene: si });
         continue;
       }
 
-      // Símbolo semântico por linha de legenda: muda quando a frase muda de
-      // assunto e mantém-se quando nada casa (evita piscar).
-      // Abertura e fecho (as cenas sem legenda) fixam o símbolo declarado — a
-      // lua da marca. São os dois momentos que se repetem em todos os vídeos,
-      // e é dessa repetição que nasce o reconhecimento. Só as cenas do meio
-      // deixam o símbolo seguir o assunto.
-      let currentIcon = scene.hideCaption ? scene.icon : (iconForText(scene.title) ?? scene.icon);
-      let lastLine: CaptionLine | null = null;
-      let iconJustChanged = false;
-
       flat.forEach((f, i) => {
-        if (f.line !== lastLine) {
-          const match = iconForText(f.line.words.map((w) => w.text).join(' '));
-          iconJustChanged = match !== null && match !== currentIcon;
-          if (match) currentIcon = match;
-          lastLine = f.line;
-        } else {
-          iconJustChanged = false;
-        }
-
         const file = `${tmp}/f-${si}-${i}.png`;
-        // Entrada animada só no primeiro frame após a troca de símbolo.
-        renderFrame(scene, f.line, f.wordIdx, file, currentIcon, iconJustChanged ? 0.55 : 1);
+        renderFrame(scene, f.line, f.wordIdx, file);
         // O primeiro frame absorve o silêncio inicial (start = 0).
         const from = i === 0 ? 0 : f.start;
         const to = i + 1 < flat.length ? flat[i + 1].start : sceneDuration;
         // Sem piso artificial: um mínimo por frame inflaria as palavras curtas e
         // o vídeo ficaria mais longo que a voz. O quantizador garante ≥1 frame.
-        frames.push({ file, seconds: Math.max(0, to - from) });
+        frames.push({ file, seconds: Math.max(0, to - from), scene: si });
       });
     }
 
@@ -478,7 +669,14 @@ async function main() {
       const target = Math.round(exactAcc * FPS);
       const n = Math.max(1, target - emitted);
       emitted += n;
-      return { file: f.file, seconds: n / FPS };
+      return { file: f.file, seconds: n / FPS, scene: f.scene };
+    });
+
+    // Duração de cada cena JÁ quantizada — é sobre esta grelha que os segmentos
+    // de fundo têm de ser cortados, senão a imagem troca fora do sítio da voz.
+    const sceneFrames = new Map<number, number>();
+    quantized.forEach((f) => {
+      sceneFrames.set(f.scene, (sceneFrames.get(f.scene) ?? 0) + Math.round(f.seconds * FPS));
     });
 
     const listFile = `${tmp}/frames.txt`;
@@ -511,15 +709,48 @@ async function main() {
     // Quantos inputs antes das faixas de voz (as imagens e, se houver, o clip).
     let audioBase = 1;
 
-    if (clip) {
-      // Fundo em vídeo: repete o clip até cobrir a duração, corta ao formato,
-      // escurece, e compõe o texto (com alfa) por cima.
-      inputs.push('-stream_loop', '-1', '-i', bgFile);
+    if (anyClip) {
+      // Monta a faixa de fundo ANTES: um segmento por cena, cada um cortado à
+      // duração já quantizada dessa cena, e concatenados. Fazer isto num só
+      // filtergraph com N entradas seria ilegível e rebentava com o limite de
+      // filtros; em passes separados cada erro fica localizado.
+      const segs: string[] = [];
+      let lastOk: string | null = null;
+      scenes.forEach((_, si) => {
+        const nf = sceneFrames.get(si) ?? 0;
+        if (nf === 0) return;
+        const dur = (nf / FPS).toFixed(6);
+        const src = clips[si]?.file ?? lastOk; // sem clip próprio, repete o anterior
+        if (!src) return;
+        lastOk = src;
+        const seg = `${tmp}/seg-${si}.mp4`;
+        run(ffmpeg, [
+          '-y', '-loglevel', 'error',
+          '-stream_loop', '-1', '-i', src,
+          '-vf',
+          `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},` +
+            // Brilho medido e corrigido por clip, não um valor fixo: com um
+            // escurecimento constante os clips escuros ficavam pretos e os
+            // claros comiam o texto.
+            `fps=${fps},${lumaFix(src)},format=yuv420p`,
+          '-t', dur, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20',
+          seg,
+        ]);
+        segs.push(seg);
+      });
+
+      const segList = `${tmp}/segs.txt`;
+      writeFileSync(segList, segs.map((s) => `file '${s.split('/').pop()}'`).join('\n') + '\n');
+      run(ffmpeg, [
+        '-y', '-loglevel', 'error',
+        '-f', 'concat', '-safe', '0', '-i', segList,
+        '-c', 'copy', bgTrack,
+      ]);
+
+      inputs.push('-i', bgTrack);
       audioBase = 2;
       filters.push(
-        `[1:v]scale=${W}:${H}:force_original_aspect_ratio=increase,` +
-          `crop=${W}:${H},fps=${fps},trim=0:${total},setpts=PTS-STARTPTS,` +
-          `eq=brightness=-0.18:saturation=0.75,format=yuv420p[bg]`,
+        `[1:v]fps=${fps},trim=0:${total},setpts=PTS-STARTPTS[bg]`,
         `[0:v]fps=${fps},format=rgba[txt]`,
         `[bg][txt]overlay=0:0:shortest=1,format=yuv420p[v]`,
       );
@@ -566,7 +797,7 @@ async function main() {
       maps.push('-map', '[aout]');
     }
 
-    const out = `${dir}/video.mp4`;
+    const out = shortIdx === null ? `${dir}/video.mp4` : `${dir}/short-${shortIdx + 1}.mp4`;
     const cmd = [
       '-y',
       ...inputs,
