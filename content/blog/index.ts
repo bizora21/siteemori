@@ -2,6 +2,7 @@ import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
 // PT-BR (fonte completa)
+import brDesisto from './pt-br/por-que-desisto-do-diario';
 import brChoro from './pt-br/choro-por-qualquer-coisa';
 import brSozinho from './pt-br/me-sinto-sozinho-mesmo-acompanhado';
 import brDizerNao from './pt-br/como-dizer-nao-sem-culpa';
@@ -22,6 +23,7 @@ import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
 import brIa from './pt-br/journaling-com-ia';
 
 // PT-PT
+import ptDesisto from './pt-pt/por-que-desisto-do-diario';
 import ptChoro from './pt-pt/choro-por-qualquer-coisa';
 import ptSozinho from './pt-pt/me-sinto-sozinho-mesmo-acompanhado';
 import ptDizerNao from './pt-pt/como-dizer-nao-sem-culpa';
@@ -43,6 +45,7 @@ import ptIa from './pt-pt/journaling-com-ia';
 
 // Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
 export const postOrder = [
+  'por-que-desisto-do-diario',
   'choro-por-qualquer-coisa',
   'me-sinto-sozinho-mesmo-acompanhado',
   'como-dizer-nao-sem-culpa',
@@ -64,6 +67,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'por-que-desisto-do-diario': { 'pt-br': brDesisto, 'pt-pt': ptDesisto },
   'choro-por-qualquer-coisa': { 'pt-br': brChoro, 'pt-pt': ptChoro },
   'me-sinto-sozinho-mesmo-acompanhado': { 'pt-br': brSozinho, 'pt-pt': ptSozinho },
   'como-dizer-nao-sem-culpa': { 'pt-br': brDizerNao, 'pt-pt': ptDizerNao },

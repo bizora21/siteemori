@@ -1,6 +1,90 @@
 [
   {
     "lang": "pt-br",
+    "slug": "por-que-desisto-do-diario",
+    "url": "https://aemori.com/pt-br/blog/por-que-desisto-do-diario/",
+    "title": "Por que eu sempre desisto do diário",
+    "description": "Você começa animado e para na segunda semana. Não é falta de disciplina — é que o diário te faz recomeçar do zero toda vez. Entenda o mecanismo e como contorná-lo.",
+    "tldr": "Quase ninguém desiste do diário por preguiça. Desiste porque cada sessão começa do zero: página em branco, nenhuma memória do que você escreveu antes, e nenhum retorno visível pelo esforço. O que sustenta o hábito não é disciplina nem sequência de dias — é reduzir o custo de começar e conseguir enxergar algo de volta.",
+    "datePublished": "2026-08-23",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1556970181-98e37c414e87?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxjbG9zZWQlMjBub3RlYm9vayUyMHBlbiUyMGRlc2slMjBtb3JuaW5nJTIwbGlnaHR8ZW58MXwwfHx8MTc4NzUwNzcwN3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Caderno fechado sobre uma mesa de madeira com luz da manhã",
+      "credit": "Ellen Tanner",
+      "creditUrl": "https://unsplash.com/@ellentanner?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Por que eu sempre desisto do diário?",
+        "a": "Porque cada sessão começa do zero: página em branco, nenhum registro do contexto do que você já escreveu e nenhum retorno visível pelo esforço. Isso cria um custo de começar que, num dia cansado, é maior que a energia disponível — e não é falta de disciplina."
+      },
+      {
+        "q": "Como manter o hábito de escrever no diário?",
+        "a": "Baixe a régua até uma frase por dia, escreva quando algo acontece em vez de em horário fixo, comece sempre por uma pergunta em vez da página vazia, releia uma vez por semana e ignore contadores de dias seguidos."
+      },
+      {
+        "q": "Preciso escrever no diário todos os dias?",
+        "a": "Não. A frequência importa menos que o retorno. Escrever três vezes numa semana difícil vale mais que escrever todos os dias por obrigação, e voltar depois de semanas parado é continuar, não recomeçar."
+      },
+      {
+        "q": "Por que perco a motivação depois de alguns dias?",
+        "a": "Normalmente porque nada acontece com o que você escreveu. O esforço existe e o retorno não, e o cérebro para de investir no que não devolve nada. O retorno do diário está em ver o que se repete — e isso só aparece relendo."
+      },
+      {
+        "q": "Contador de dias seguidos ajuda a manter o diário?",
+        "a": "Costuma atrapalhar. Quando o valor está na sequência, quebrá-la apaga o valor: você deixa de ter \"onze dias escritos\" e passa a ter \"falhei\", que é motivo para largar. Os onze dias continuam valendo — o contador é que mente."
+      },
+      {
+        "q": "Diário no papel ou em aplicativo?",
+        "a": "Papel funciona bem para quem gosta do gesto. A diferença prática de um app é resolver dois custos que o caderno não resolve: lembrar do seu contexto, para você não reconstruir tudo a cada sessão, e mostrar padrões sem que você precise reler meses de anotações."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "por-que-desisto-do-diario",
+    "url": "https://aemori.com/pt-pt/blog/por-que-desisto-do-diario/",
+    "title": "Porque é que desisto sempre do diário",
+    "description": "Começas entusiasmado e paras na segunda semana. Não é falta de disciplina — é que o diário te faz recomeçar do zero de cada vez. Percebe o mecanismo e como contorná-lo.",
+    "tldr": "Quase ninguém desiste do diário por preguiça. Desiste porque cada sessão começa do zero: página em branco, nenhuma memória do que escreveste antes e nenhum retorno visível pelo esforço. O que sustenta o hábito não é disciplina nem sequências de dias — é baixar o custo de começar e conseguir ver algo de volta.",
+    "datePublished": "2026-08-23",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1556970181-98e37c414e87?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxjbG9zZWQlMjBub3RlYm9vayUyMHBlbiUyMGRlc2slMjBtb3JuaW5nJTIwbGlnaHR8ZW58MXwwfHx8MTc4NzUwNzcwN3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Caderno fechado sobre uma mesa de madeira com luz da manhã",
+      "credit": "Ellen Tanner",
+      "creditUrl": "https://unsplash.com/@ellentanner?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Porque é que desisto sempre do diário?",
+        "a": "Porque cada sessão começa do zero: página em branco, nenhum registo do contexto do que já escreveste e nenhum retorno visível pelo esforço. Isso cria um custo de começar que, num dia cansado, é maior do que a energia disponível — e não é falta de disciplina."
+      },
+      {
+        "q": "Como manter o hábito de escrever no diário?",
+        "a": "Baixa a fasquia até uma frase por dia, escreve quando acontece alguma coisa em vez de a horas fixas, começa sempre por uma pergunta em vez da página vazia, relê uma vez por semana e ignora contadores de dias seguidos."
+      },
+      {
+        "q": "É preciso escrever no diário todos os dias?",
+        "a": "Não. A frequência importa menos do que o retorno. Escrever três vezes numa semana difícil vale mais do que escrever todos os dias por obrigação, e voltar ao fim de semanas parado é continuar, não recomeçar."
+      },
+      {
+        "q": "Porque é que perco a motivação ao fim de alguns dias?",
+        "a": "Normalmente porque não acontece nada com o que escreveste. O esforço existe e o retorno não, e o cérebro deixa de investir no que não devolve nada. O retorno do diário está em ver o que se repete — e isso só aparece a reler."
+      },
+      {
+        "q": "Contadores de dias seguidos ajudam a manter o diário?",
+        "a": "Costumam atrapalhar. Quando o valor está na sequência, quebrá-la apaga o valor: deixas de ter \"onze dias escritos\" e passas a ter \"falhei\", que é motivo para largar. Os onze dias continuam a valer — o contador é que mente."
+      },
+      {
+        "q": "Diário em papel ou em aplicação?",
+        "a": "O papel resulta bem para quem gosta do gesto. A diferença prática de uma app é resolver dois custos que o caderno não resolve: lembrar-se do teu contexto, para não reconstruíres tudo a cada sessão, e mostrar padrões sem teres de reler meses de anotações."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
     "slug": "choro-por-qualquer-coisa",
     "url": "https://aemori.com/pt-br/blog/choro-por-qualquer-coisa/",
     "title": "Por que eu choro por qualquer coisa?",

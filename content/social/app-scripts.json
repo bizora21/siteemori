@@ -1,0 +1,72 @@
+{
+  "choro-por-qualquer-coisa": {
+    "pt-br": [
+      {
+        "narration": "Você chora com propaganda de banco.",
+        "typed": "chorei de novo hoje",
+        "typing": true
+      },
+      {
+        "narration": "E depois fica com raiva de si mesmo por isso.",
+        "typed": "chorei de novo hoje e nem sei por quê",
+        "typing": true
+      },
+      {
+        "narration": "O que aconteceu logo antes? Às vezes o choro não é sobre o momento em si.",
+        "typed": "chorei de novo hoje e nem sei por quê",
+        "reply": "O que aconteceu logo antes? Às vezes o choro não é sobre o momento em si.",
+        "typing": true
+      },
+      {
+        "narration": "O choro não reage ao que está acontecendo. Ele transborda onde a sua guarda baixa.",
+        "typed": "chorei de novo hoje e nem sei por quê",
+        "reply": "O que aconteceu logo antes? Às vezes o choro não é sobre o momento em si."
+      },
+      {
+        "narration": "E a guarda baixa diante de gentileza, não diante de dificuldade.",
+        "typed": "chorei de novo hoje e nem sei por quê",
+        "reply": "O que aconteceu logo antes? Às vezes o choro não é sobre o momento em si."
+      },
+      {
+        "narration": "É isso que a Emori faz: devolve a pergunta que você não pensou em fazer. É grátis no Android.",
+        "typed": "chorei de novo hoje e nem sei por quê",
+        "reply": "O que aconteceu logo antes? Às vezes o choro não é sobre o momento em si.",
+        "footer": "Emori · grátis no Android"
+      }
+    ],
+    "pt-pt": [
+      {
+        "narration": "Choras com um anúncio de banco.",
+        "typed": "chorei outra vez hoje",
+        "typing": true
+      },
+      {
+        "narration": "E depois ficas com raiva de ti próprio por isso.",
+        "typed": "chorei outra vez hoje e nem sei porquê",
+        "typing": true
+      },
+      {
+        "narration": "O que aconteceu mesmo antes? Às vezes o choro não é sobre o momento em si.",
+        "typed": "chorei outra vez hoje e nem sei porquê",
+        "reply": "O que aconteceu mesmo antes? Às vezes o choro não é sobre o momento em si.",
+        "typing": true
+      },
+      {
+        "narration": "O choro não reage ao que está a acontecer. Transborda onde a tua guarda baixa.",
+        "typed": "chorei outra vez hoje e nem sei porquê",
+        "reply": "O que aconteceu mesmo antes? Às vezes o choro não é sobre o momento em si."
+      },
+      {
+        "narration": "E a guarda baixa perante gentileza, não perante dificuldade.",
+        "typed": "chorei outra vez hoje e nem sei porquê",
+        "reply": "O que aconteceu mesmo antes? Às vezes o choro não é sobre o momento em si."
+      },
+      {
+        "narration": "É isto que a Emori faz: devolve a pergunta que não te lembraste de fazer. É grátis no Android.",
+        "typed": "chorei outra vez hoje e nem sei porquê",
+        "reply": "O que aconteceu mesmo antes? Às vezes o choro não é sobre o momento em si.",
+        "footer": "Emori · grátis no Android"
+      }
+    ]
+  }
+}

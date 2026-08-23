@@ -47,3 +47,7 @@ package-lock.json
 # Cache dos clips de fundo do Pexels. Licença Pexels permite uso comercial, mas
 # não faz sentido versionar vídeo binário — regenera-se sozinho na 1ª geração.
 /assets/video-bg/
+
+# Capturas/gravacoes da app para os videos. Podem conter texto pessoal de
+# diario, por isso ficam fora do repo.
+/assets/app/
