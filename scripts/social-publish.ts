@@ -295,7 +295,7 @@ for (const entry of targets) {
             file: vidFile,
             title,
             description,
-            tags: ['diário emocional', 'journaling', 'saúde mental', 'autoconhecimento', 'emori'],
+            tags: ['oração', 'fé cristã', 'versículos bíblicos', 'comunidade cristã', 'emori'],
             privacyStatus: privacy,
           });
           console.log(`  ✅ publicado: ${url}`);

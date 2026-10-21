@@ -21,14 +21,14 @@ function truncate(text: string, max: number): string {
 const COPY: Record<Locale, { ctaSpoken: string; ctaShort: string; readFull: string; linkNote: string }> = {
   'pt-br': {
     ctaSpoken:
-      'Salvei o guia completo no site, de graça. Toca no link e conhece a Emori — o diário emocional que lembra de você.',
+      'Salvei o guia completo no site, de graça. Toca no link e conhece a Emori — o app de oração que fortalece a sua fé.',
     ctaShort: 'Guia completo, grátis:',
     readFull: 'Leia o guia completo (grátis) →',
     linkNote: 'Link na descrição / bio.',
   },
   'pt-pt': {
     ctaSpoken:
-      'Guardei o guia completo no site, de graça. Toca no link e conhece a Emori — o diário emocional que se lembra de ti.',
+      'Guardei o guia completo no site, de graça. Toca no link e conhece a Emori — a app de oração que fortalece a tua fé.',
     ctaShort: 'Guia completo, grátis:',
     readFull: 'Lê o guia completo (grátis) →',
     linkNote: 'Link na descrição / bio.',
@@ -36,11 +36,11 @@ const COPY: Record<Locale, { ctaSpoken: string; ctaShort: string; readFull: stri
 };
 
 const HASHTAGS = [
-  '#diarioemocional',
-  '#journaling',
-  '#saudemental',
-  '#autoconhecimento',
-  '#bemestar',
+  '#oração',
+  '#fécristã',
+  '#versículos',
+  '#comunidadecristã',
+  '#vidadevocional',
 ];
 
 // ---- UTM ---------------------------------------------------------------------

@@ -30,7 +30,7 @@ export const CONTACT_EMAIL = 'ola@aemori.com';
 // schema Organization.founder). Antonio é psicólogo — sinal de credibilidade forte.
 export const FOUNDER = {
   name: 'Antonio Chauque',
-  role: 'Psicólogo',
+  role: 'Fundador',
   linkedin: 'https://www.linkedin.com/in/antonio-chauque-1b05531b2',
 };
 

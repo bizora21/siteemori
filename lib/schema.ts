@@ -19,16 +19,14 @@ export function organizationSchema() {
     url: SITE_URL,
     logo: absoluteUrl('/icon-512.svg'),
     description:
-      'Emori é um app de diário emocional com inteligência artificial que conversa com o usuário, lembra do contexto e ajuda a entender as emoções. Ferramenta de bem-estar e autoconhecimento — não relacionada a comércio ou finanças.',
-    // Desambiguação de entidade: deixa claro que esta marca "Emori" é de
-    // bem-estar / saúde emocional (distinta de marcas homónimas de outras áreas).
+      'Emori é um app cristão de oração e comunidade de fé. Registre orações, receba versículos bíblicos e reflexões, e ore com uma comunidade cristã. Gratuito para Android.',
     knowsAbout: [
-      'Diário emocional',
-      'Journaling',
-      'Saúde emocional',
-      'Bem-estar emocional',
-      'Autoconhecimento',
-      'Inteligência emocional',
+      'Oração cristã',
+      'Versículos bíblicos',
+      'Comunidade de fé',
+      'Vida devocional',
+      'Diário de oração',
+      'Intercessão',
     ],
     // Perfis oficiais: ajudam o Google a ligar as contas sociais a esta entidade.
     sameAs: [PLAY_STORE_URL, ...SOCIAL_LINKS.map((s) => s.href)],
@@ -73,6 +71,7 @@ export function softwareApplicationSchema(
     alternateName: BRAND_ALTERNATE_NAMES,
     operatingSystem: 'Android 8.0+',
     applicationCategory: 'LifestyleApplication',
+    additionalType: 'https://schema.org/ReligiousOrganization',
     inLanguage: bcp47[lang],
     description,
     url: SITE_URL,

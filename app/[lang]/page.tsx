@@ -50,7 +50,7 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
 
   return (
     <PageShell lang={lang} path="">
-      {/* HERO editorial e assimétrico */}
+      {/* HERO — oração e fé */}
       <section className="relative">
         <MoonGlyph className="-right-10 -top-20 h-64 w-64 text-clay-100 md:-right-4 md:h-96 md:w-96" />
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-10">
@@ -118,7 +118,7 @@ export default function HomePage({ params }: { params: { lang: Locale } }) {
         </ol>
       </section>
 
-      {/* ALIADA DA TERAPIA — painel salvia com filete */}
+      {/* VIDA ESPIRITUAL — painel salvia com filete */}
       <section
         className="mt-24 overflow-hidden rounded-[2rem] border border-sage-300/50 bg-sage-100/70 p-8 md:mt-36 md:p-12"
         aria-labelledby="terapia"

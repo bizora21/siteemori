@@ -4,7 +4,7 @@
 const ptBR = {
   meta: {
     siteName: 'Emori',
-    tagline: 'A Emori: seu diário emocional com IA que lembra de você',
+    tagline: 'Emori — a sua companheira de oração e fé cristã',
   },
 
   nav: {
@@ -20,7 +20,7 @@ const ptBR = {
   cta: {
     download: 'Baixar grátis na Play Store',
     downloadShort: 'Baixar grátis',
-    tryEmori: 'Experimentar a Emori',
+    tryEmori: 'Comece a orar com a Emori',
     openApp: 'Começar agora',
   },
 
@@ -31,16 +31,16 @@ const ptBR = {
     readMore: 'Ler mais',
     freeBadge: 'Grátis para começar',
     androidNote: 'Disponível para Android. iPhone em breve.',
-    betaNote: 'A Emori está a chegar ao Android. Entre na lista e avisamos assim que ela estiver disponível para você.',
+    betaNote: 'A Emori está chegando ao Android. Entre na lista e avisamos assim que estiver disponível para você.',
   },
 
   waitlist: {
     badge: 'Em breve no iPhone',
     buttonLabel: 'Avise-me no lançamento iOS',
     triggerIos: 'Tem iPhone? Avisamos quando a Emori chegar ao iOS.',
-    dialogTitle: 'A Emori está a chegar ao iPhone',
+    dialogTitle: 'A Emori está chegando ao iPhone',
     dialogIntro:
-      'A Emori já está disponível para Android. A versão para iPhone está a caminho — deixe o seu e-mail e avisamos assim que ela sair no iOS.',
+      'A Emori já está disponível para Android. A versão para iPhone está a caminho — deixe o seu e-mail e avisamos assim que sair no iOS.',
     emailLabel: 'Seu melhor e-mail',
     emailPlaceholder: 'voce@exemplo.com',
     submit: 'Quero ser avisado',
@@ -56,313 +56,312 @@ const ptBR = {
 
   footer: {
     description:
-      'A Emori é um diário emocional com inteligência artificial que conversa com você, lembra do que importa e ajuda a entender o que você sente.',
+      'A Emori é um app de oração e comunidade cristã. Registre suas orações, receba versículos e reflexões bíblicas, e ore com outros irmãos na fé.',
     product: 'Produto',
     company: 'A Emori',
     legal: 'Legal',
     rights: 'Todos os direitos reservados.',
-    madeWith: 'Feito com cuidado para quem sente muito.',
+    madeWith: 'Feito com fé para quem busca a Deus todos os dias.',
     langLabel: 'Idioma',
   },
 
   home: {
-    // O título começa pela KEYWORD, não pela marca: "Emori" ainda não tem procura,
-    // e os primeiros caracteres são os que decidem o clique.
-    metaTitle: 'Diário emocional com IA que lembra de você | Emori',
+    metaTitle: 'App de oração cristã e comunidade de fé | Emori',
     metaDescription:
-      'Escreva o que sente e a Emori responde. Ela lembra do seu contexto, ajuda a entender suas emoções e mostra seus padrões ao longo do tempo. Grátis no Android, privado e sem julgamento.',
-    h1: 'O app de diário emocional que realmente lembra de você',
+      'Registre suas orações, receba versículos bíblicos e reflexões diárias, e ore com uma comunidade de fé. App cristão grátis para Android — seu diário de oração no celular.',
+    h1: 'O app que fortalece a sua vida de oração',
     tldr:
-      'A Emori é um app de diário com inteligência artificial que conversa com você, guarda na memória o contexto do que você viveu e te ajuda a entender suas emoções ao longo do tempo. É grátis para começar e funciona no seu celular Android.',
-    eyebrow: 'Diário emocional com IA',
-    cartaLabel: 'A sua carta da Emori',
+      'A Emori é um app cristão de oração onde você registra os seus pedidos, recebe versículos e reflexões bíblicas personalizadas, e participa de uma comunidade que ora junto. Grátis no Android.',
+    eyebrow: 'Oração e fé cristã',
+    cartaLabel: 'Sua carta mensal de oração',
     cartaBody:
-      'Este mês, notei que você passou por altos e baixos — mais calma nos fins de semana, e a ansiedade crescendo nas vésperas de dias exigentes. Reparei em como você foi cuidando de si, mesmo nos dias difíceis.',
-    primaryCtaNote: 'Sem cartão. Comece a escrever em menos de um minuto.',
-    valueTitle: 'Por que a Emori é diferente',
+      'Este mês, você orou 18 vezes em 12 dias diferentes. Seus pedidos de intercessão aumentaram, e a gratidão esteve presente nas semanas mais difíceis. "O Senhor é o meu pastor; nada me faltará." — Salmos 23:1',
+    primaryCtaNote: 'Sem cartão. Comece a orar em menos de um minuto.',
+    valueTitle: 'Por que orar com a Emori',
     values: [
       {
-        title: 'Ela lembra do seu contexto',
+        title: 'Cada oração recebe uma resposta bíblica',
         body:
-          'Diferente de um app de notas, a Emori guarda memória do que você já contou. Quando você volta, ela sabe quem são as pessoas, o que te preocupa e o que mudou desde a última vez. É o que a torna verdadeiramente sua.',
+          'Quando você registra uma oração, a Emori responde com um versículo bíblico, uma palavra de encorajamento e uma reflexão para aprofundar a sua conversa com Deus. Cada tipo de oração — gratidão, pedido, louvor, intercessão, confissão — recebe uma resposta pensada para esse momento.',
       },
       {
-        title: 'Conversa, não formulário',
+        title: 'Comunidade que ora por você',
         body:
-          'A Emori faz perguntas gentis que ajudam você a chegar no que está sentindo de verdade, em vez de deixar uma página em branco te encarando.',
+          'Partilhe os seus pedidos de oração e ore pelos pedidos de outros irmãos. Quando Deus responder, marque a oração como atendida e encoraje toda a comunidade. Ninguém ora sozinho.',
       },
       {
-        title: 'Mostra seus padrões',
+        title: 'Acompanhe a sua jornada de fé',
         body:
-          'Ao longo das semanas, a Emori conecta o que você escreve e ajuda a reconhecer o que se repete — o que te tira do eixo e o que te devolve a paz.',
+          'Resumos semanais mostram quantas vezes você orou, os tipos de oração e como a sua vida de oração está crescendo. A carta mensal é um retrato completo do mês — com versículo e encorajamento.',
       },
       {
-        title: 'Privado por padrão',
+        title: 'Privado e seguro',
         body:
-          'Seu diário é seu. A Emori foi feita para ser um espaço seguro e íntimo — leia nossa política de privacidade para entender exatamente como cuidamos dos seus dados.',
+          'As suas orações são suas. A Emori foi feita para ser um espaço íntimo entre você e Deus. Leia a nossa política de privacidade para saber como protegemos seus dados.',
       },
     ],
     howTitle: 'Como funciona',
     howSteps: [
       {
-        title: 'Abra e desabafe',
-        body: 'Escreva contando como foi o seu dia — do jeito que sair, sem se preocupar com a forma.',
+        title: 'Escreva sua oração',
+        body: 'Escolha o tipo de oração — gratidão, pedido, louvor, intercessão ou confissão — e escreva o que está no seu coração. Pode também usar a voz.',
       },
       {
-        title: 'A Emori responde',
-        body: 'Ela reflete com você, faz uma pergunta e guarda o que importa na memória.',
+        title: 'Receba a Palavra',
+        body: 'A Emori responde com um versículo bíblico, uma reflexão e uma pergunta para aprofundar a sua conversa com Deus.',
       },
       {
-        title: 'Você se entende melhor',
-        body: 'Com o tempo, padrões aparecem e você passa a reconhecer o que te afeta.',
+        title: 'Ore em comunidade',
+        body: 'Partilhe pedidos, ore por outros irmãos e celebre quando Deus responder uma oração.',
       },
     ],
-    therapyTitle: 'Uma aliada da sua terapia',
+    therapyTitle: 'Uma aliada da sua vida espiritual',
     therapyBody:
-      'A Emori não substitui o acompanhamento profissional — ela potencia. Registrando o que você sente no dia a dia, você chega às sessões com clareza e padrões concretos, em vez de tentar lembrar "como foi a semana". O seu psicólogo passa a trabalhar com o que realmente aconteceu, e o intervalo entre as consultas deixa de ser um vazio.',
-    therapyNote: 'Quiser? Você pode compartilhar esse retrato com o seu terapeuta.',
+      'A Emori não substitui a igreja, o pastor ou a comunidade presencial — ela complementa. Nos dias em que você não consegue estar no culto, no momento antes de dormir, na pausa do trabalho, a Emori está ali para ajudar você a manter a conversa com Deus viva.',
+    therapyNote: 'Use a Emori no seu tempo devocional diário como um companheiro de oração.',
     faq: [
       {
         q: 'O que é a Emori?',
-        a: 'A Emori é um aplicativo de diário emocional com inteligência artificial. Você escreve sobre o seu dia e ela conversa com você, lembrando do contexto para te ajudar a entender o que sente ao longo do tempo.',
+        a: 'A Emori é um app cristão de oração e comunidade de fé. Você registra suas orações, recebe versículos bíblicos e reflexões, e pode orar com outros irmãos na comunidade.',
       },
       {
         q: 'A Emori é grátis?',
-        a: 'Sim. A Emori é grátis para começar e usar todos os dias. Existe um plano opcional, a Emori Pro, com memória estendida e recursos avançados para quem quer ir mais fundo.',
+        a: 'Sim. A Emori é grátis para usar todos os dias: registro de orações, respostas bíblicas, reflexões guiadas, resumo semanal e comunidade. A Emori Pro é opcional, para quem quer extras como a carta mensal e exportação em PDF.',
       },
       {
-        q: 'Preciso saber escrever bem para usar?',
-        a: 'Não. Você escreve do jeito que sair — frases soltas, desabafos, o que vier. A Emori faz perguntas simples para te ajudar quando você não sabe por onde começar.',
+        q: 'A Emori é de qual denominação cristã?',
+        a: 'A Emori é interdenominacional. Usamos a Bíblia como base e respeitamos todas as tradições cristãs. O foco é a oração e a relação pessoal com Deus.',
       },
       {
         q: 'Em quais aparelhos a Emori funciona?',
         a: 'A Emori está disponível para celulares Android na Google Play. A versão para iPhone está em desenvolvimento.',
       },
       {
-        q: 'A Emori ajuda no acompanhamento com um psicólogo ou terapeuta?',
-        a: 'Sim. Muita gente usa a Emori entre as sessões para registrar o que sente e chegar à terapia com clareza e padrões concretos para discutir. Ela não substitui o acompanhamento profissional — complementa, ajudando você (e, se quiser, o seu terapeuta) a enxergar melhor a sua semana.',
+        q: 'Posso orar por outras pessoas na Emori?',
+        a: 'Sim. Na comunidade de oração, você pode partilhar pedidos, orar pelos pedidos de outros e celebrar quando uma oração é atendida. É um espaço de fé e apoio mútuo.',
       },
       {
-        q: 'A Emori substitui terapia?',
-        a: 'Não. A Emori é uma ferramenta de autoconhecimento e escrita emocional, não um serviço de saúde. Ela pode ser um bom complemento, mas não substitui acompanhamento psicológico profissional.',
+        q: 'As minhas orações são privadas?',
+        a: 'Sim. O seu diário de oração é privado — só você vê. Na comunidade, você escolhe o que partilhar. A Emori foi feita para ser um espaço seguro entre você e Deus.',
       },
     ],
   },
 
   produto: {
-    metaTitle: 'App de diário emocional com IA e memória: como a Emori funciona',
+    metaTitle: 'App de oração cristã: como a Emori funciona — diário, versículos e comunidade',
     metaDescription:
-      'Entenda como a Emori funciona: diário por texto, memória que guarda o seu contexto e uma IA que conversa com você e reconhece padrões para te ajudar a entender suas emoções.',
-    h1: 'O que é a Emori e como ela funciona',
+      'Descubra como a Emori funciona: registre orações por tipo, receba versículos bíblicos e reflexões, acompanhe a sua jornada de fé com resumos semanais, e ore com uma comunidade cristã.',
+    h1: 'Como a Emori fortalece a sua oração',
     tldr:
-      'A Emori é um diário emocional com IA onde você escreve sobre o seu dia. O diferencial é a memória: ela guarda o contexto do que você conta e usa isso para conversar com você de forma cada vez mais pessoal, ajudando a reconhecer padrões emocionais.',
+      'A Emori é um app cristão onde você registra orações por tipo (gratidão, pedido, louvor, intercessão, confissão), recebe versículos e reflexões bíblicas, acompanha a evolução da sua vida de oração e participa de uma comunidade que ora junto.',
     sections: [
       {
-        h2: 'Um diário que conversa com você',
+        h2: 'Registre cada oração',
         body:
-          'A maioria dos diários é uma página em branco. A Emori é diferente: ela responde. Depois de você escrever, a Emori reflete com você e faz uma pergunta gentil que ajuda a chegar no que você está sentindo de verdade. Não é um formulário nem um teste — é uma conversa no seu ritmo.',
+          'A Emori oferece um espaço para escrever o que está no seu coração. Escolha o tipo de oração — gratidão, pedido, louvor, intercessão ou confissão — e escreva livremente, ou use a voz. Cada oração fica guardada no seu diário, formando um registro da sua caminhada com Deus.',
       },
       {
-        h2: 'A memória: o que torna a Emori única',
+        h2: 'Versículos e reflexões para cada momento',
         body:
-          'A Emori lembra. Ela guarda o contexto do que é importante para você — as pessoas da sua vida, o que te preocupa, o que te faz bem — e traz isso de volta quando faz sentido. Você não precisa se explicar do zero toda vez. Com o tempo, essa memória vira um retrato honesto da sua vida emocional.',
+          'Depois de registrar a sua oração, a Emori responde com um versículo bíblico selecionado para o tipo de oração que você fez, uma palavra de encorajamento e uma reflexão para aprofundar a conversa com Deus. Não é uma resposta genérica — é uma resposta pensada para aquele momento.',
       },
       {
-        h2: 'Perguntas gentis que destravam',
+        h2: 'Reflexão guiada',
         body:
-          'Escrever sozinho é difícil justamente porque você é quem pergunta e quem responde. A Emori faz a pergunta certa na hora certa — simples, sem julgamento — para você chegar mais fundo do que chegaria olhando para uma página vazia. Como ela lembra do seu contexto, a pergunta seguinte já vem mais afiada.',
+          'Quando quiser ir mais fundo, a reflexão guiada faz perguntas baseadas na Bíblia para ajudar você a examinar o coração, reconhecer a ação de Deus e fortalecer a fé. É como um momento devocional estruturado, no seu ritmo.',
       },
       {
-        h2: 'Padrões que você passa a enxergar',
+        h2: 'Resumo semanal da sua vida de oração',
         body:
-          'Escrever um dia isolado ajuda. Mas o valor real aparece ao longo das semanas: você começa a ver o que se repete, o que te tira do eixo e o que te devolve a paz. A Emori te ajuda a notar esses padrões em vez de deixá-los passar.',
+          'Toda semana, a Emori prepara um resumo: quantas vezes você orou, os tipos de oração, as categorias mais presentes e uma palavra de encorajamento com versículo. É uma forma de ver como a sua fé está crescendo.',
       },
       {
-        h2: 'Feita para o seu celular',
+        h2: 'Comunidade de oração',
         body:
-          'A Emori foi pensada para o celular, para caber nos momentos reais do seu dia — na fila, antes de dormir, no intervalo. É rápida de abrir e não exige nada além de você estar presente por alguns minutos.',
+          'Partilhe pedidos de oração com a comunidade e ore pelos pedidos de outros irmãos. Filtre por tipo de oração, e quando Deus responder, marque como "oração atendida" para encorajar a todos. Ninguém precisa orar sozinho.',
       },
       {
-        h2: 'Uma aliada da sua terapia',
+        h2: 'No seu celular, no seu tempo',
         body:
-          'A Emori não substitui o acompanhamento profissional — ela potencia. Quem faz terapia costuma perder metade da sessão tentando lembrar como foi a semana. Ao registrar o que sente no dia a dia, você chega com clareza e padrões concretos para discutir, e o seu psicólogo trabalha com o que realmente aconteceu, não só com a memória do último dia. Se quiser, você pode compartilhar esse retrato com o seu terapeuta. O intervalo entre as consultas deixa de ser um vazio.',
+          'A Emori foi feita para o celular, para caber nos momentos reais do seu dia — antes de dormir, na pausa, no transporte. É rápida de abrir e não exige nada além da sua disposição de conversar com Deus.',
       },
     ],
-    featuresTitle: 'Principais recursos',
+    featuresTitle: 'Funcionalidades',
     features: [
-      'Memória que guarda o seu contexto',
-      'IA que conversa e faz perguntas',
-      'Reconhecimento de padrões emocionais',
-      'Aliada do acompanhamento terapêutico',
-      'Diário por escrito, no seu ritmo',
-      'Espaço privado e íntimo',
+      'Diário de oração por categorias',
+      'Versículos bíblicos personalizados',
+      'Reflexão guiada com perguntas bíblicas',
+      'Resumo semanal de oração',
+      'Comunidade de oração e intercessão',
+      'Oração por voz',
+      'Espaço privado e seguro',
       'Grátis para começar',
     ],
     faq: [
       {
-        q: 'A Emori realmente lembra do que eu escrevi antes?',
-        a: 'Sim. A memória é o recurso central da Emori. Ela guarda o contexto do que importa e usa isso para conversar com você de forma mais pessoal a cada dia.',
+        q: 'A Emori tem versículos bíblicos?',
+        a: 'Sim. Cada vez que você registra uma oração, a Emori responde com um versículo bíblico selecionado para o tipo de oração e um encorajamento. Os resumos semanais e a carta mensal também trazem versículos.',
       },
       {
-        q: 'A Emori reconhece padrões no que eu sinto?',
-        a: 'Sim. Ao longo do tempo, ela conecta os seus registros e ajuda você a notar o que se repete — gatilhos, ciclos e o que te faz bem — em vez de deixar esses padrões passarem despercebidos.',
+        q: 'Que tipos de oração posso registrar?',
+        a: 'A Emori organiza as orações em cinco categorias: gratidão, pedido, louvor, intercessão e confissão. Você também pode orar sem escolher uma categoria.',
       },
       {
-        q: 'A Emori dá conselhos?',
-        a: 'A Emori reflete com você e faz perguntas para te ajudar a se entender. Ela não é uma terapeuta nem dá diagnósticos — o foco é o autoconhecimento.',
+        q: 'A comunidade é segura?',
+        a: 'Sim. A comunidade é moderada por denúncias. Conteúdo reportado é analisado e removido se necessário. O foco é oração e apoio mútuo.',
       },
       {
-        q: 'Dá para usar a Emori junto com a terapia?',
-        a: 'Sim, e combinam muito bem. A Emori guarda o que você viveu entre as sessões, para você chegar à terapia com clareza e padrões concretos em vez de depender da memória. Ela complementa o acompanhamento profissional — nunca o substitui — e o retrato que ela devolve pode ser compartilhado com o seu terapeuta, se você quiser.',
+        q: 'Posso usar a Emori no meu devocional diário?',
+        a: 'Sim, e muita gente faz isso. A Emori combina registro de oração, versículos e reflexão guiada — tudo o que você precisa para um momento devocional completo no celular.',
       },
       {
-        q: 'Quanto tempo por dia preciso usar?',
-        a: 'O que você tiver. Alguns minutos já bastam. A Emori se adapta ao seu ritmo, sem cobrança nem metas.',
+        q: 'A Emori funciona offline?',
+        a: 'Você pode escrever a oração offline. Quando a internet voltar, ela é enviada automaticamente e a resposta bíblica chega em seguida.',
       },
     ],
   },
 
   pro: {
-    metaTitle: 'Emori Pro — memória estendida e recursos avançados',
+    metaTitle: 'Emori Pro — carta mensal, exportação PDF e sem anúncios',
     metaDescription:
-      'A Emori Pro amplia a memória, aprofunda as reflexões e os padrões, e apoia o desenvolvimento da Emori. Continue usando o essencial de graça ou vá mais fundo com o Pro.',
-    h1: 'Emori Pro: para ir mais fundo',
+      'A Emori Pro remove anúncios, desbloqueia a carta mensal de oração com versículo, exportação em PDF e histórico ilimitado. Continue usando o essencial de graça ou vá mais fundo com o Pro.',
+    h1: 'Emori Pro: para aprofundar a oração',
     tldr:
-      'A Emori Pro é o plano opcional para quem quer mais: memória estendida, reflexões mais profundas e uma leitura mais rica dos seus padrões emocionais. O essencial da Emori continua grátis — o Pro é para quem quer aprofundar a prática e apoiar o projeto.',
+      'A Emori Pro é o plano opcional para quem quer ir mais fundo: carta mensal personalizada com versículo, exportação em PDF das suas orações, histórico ilimitado e sem anúncios. O essencial da Emori — oração diária, versículos, reflexão e comunidade — continua grátis.',
     intro:
-      'A Emori é grátis porque acreditamos que todo mundo merece um espaço para se entender. A Emori Pro existe para quem faz do diário um hábito e quer ir além — e para ajudar a manter a Emori de pé.',
+      'A Emori é grátis porque acreditamos que orar não deveria ter barreiras. A Emori Pro existe para quem faz da oração um hábito diário e quer ir além — e para ajudar a manter a Emori de pé.',
     benefitsTitle: 'O que você ganha com o Pro',
     benefits: [
       {
-        title: 'Memória estendida',
+        title: 'Carta mensal de oração',
         body:
-          'A Emori lembra de mais coisas, por mais tempo, com mais profundidade — para conversas cada vez mais suas.',
+          'Um retrato completo do seu mês de oração: quantas vezes orou, os temas mais presentes, um versículo escolhido para o momento e uma palavra de encorajamento personalizada.',
       },
       {
-        title: 'Reflexões mais profundas',
+        title: 'Sem anúncios',
         body:
-          'Perguntas e devolutivas mais elaboradas, que puxam conexões entre o que você viveu ao longo das semanas.',
+          'Uma experiência limpa e sem interrupções para os seus momentos de oração e reflexão.',
       },
       {
-        title: 'Padrões mais profundos',
+        title: 'Exportação em PDF',
         body:
-          'Uma leitura mais rica do que se repete nas suas emoções ao longo do tempo, para você enxergar ciclos e gatilhos com mais clareza.',
+          'Exporte as suas orações e cartas mensais em PDF para guardar, imprimir ou partilhar com o seu pastor ou grupo de oração.',
       },
       {
         title: 'Apoie a Emori',
         body:
-          'Assinar o Pro sustenta o desenvolvimento contínuo e mantém a Emori independente e centrada em você, não em anúncios.',
+          'Assinar o Pro sustenta o desenvolvimento contínuo e mantém a Emori independente e centrada na fé, não em anúncios.',
       },
     ],
     valueTitle: 'Por que vale a pena',
     valueBody:
-      'Terapia é essencial e insubstituível — mas cara e nem sempre acessível todo dia. Um app de anotações é barato, mas esquece de você. A Emori Pro fica no meio: um espaço diário, que lembra de você, por menos do que um café por semana. Não substitui terapia; complementa o cuidado com você mesmo, no intervalo entre as sessões.',
+      'A maioria dos apps cristãos ou é pago desde o início ou está cheio de anúncios. A Emori é diferente: o essencial é grátis e sempre será. O Pro é para quem quer uma experiência mais completa e quer apoiar o projeto — por menos do que um café por semana.',
     faq: [
       {
         q: 'Preciso pagar para usar a Emori?',
-        a: 'Não. A Emori é grátis para começar e usar no dia a dia. A Emori Pro é opcional, para quem quer memória estendida e uma leitura mais profunda dos padrões.',
+        a: 'Não. A Emori é grátis para orar todos os dias, receber versículos, usar a reflexão guiada, o resumo semanal e a comunidade. O Pro é opcional.',
       },
       {
         q: 'O que acontece se eu cancelar o Pro?',
-        a: 'Você volta ao plano grátis e continua com o essencial da Emori. Seus registros permanecem seus.',
+        a: 'Você volta ao plano grátis e continua com todas as funcionalidades essenciais. Suas orações continuam sendo suas.',
       },
       {
-        q: 'A Emori Pro substitui terapia?',
-        a: 'Não. A Emori é uma ferramenta de escrita e autoconhecimento, não um serviço de saúde. Ela complementa, mas não substitui, acompanhamento profissional.',
+        q: 'Como faço para assinar?',
+        a: 'A assinatura é feita direto no app, pela Google Play. Você pode cancelar a qualquer momento.',
       },
     ],
   },
 
   sobre: {
-    metaTitle: 'Sobre a Emori — a missão por trás do app de diário emocional',
+    metaTitle: 'Sobre a Emori — a missão por trás do app de oração cristã',
     metaDescription:
-      'A Emori nasceu de uma ideia simples: todo mundo merece um espaço privado para se entender, que lembra de você. Conheça a missão, os valores e o compromisso da Emori com a sua privacidade.',
+      'A Emori nasceu da convicção de que toda pessoa merece um espaço para conversar com Deus. Conheça a missão, os valores e o compromisso da Emori com a fé e a privacidade.',
     h1: 'Sobre a Emori',
     tldr:
-      'A Emori é um app de diário emocional com IA criado para ser um espaço íntimo que lembra de você. Existe porque entender as próprias emoções não deveria ser caro, nem solitário, nem começar do zero toda vez.',
+      'A Emori é um app de oração e comunidade cristã criado para ser um espaço íntimo de conversa com Deus. Existe porque acreditamos que a oração deveria ser acessível, diária e comunitária.',
     sections: [
       {
         h2: 'Por que a Emori existe',
         body:
-          'A maioria dos apps de diário trata você como um estranho: cada dia começa do zero. A terapia, essencial e insubstituível, é cara e nem sempre acessível todos os dias. A Emori nasceu no meio desse vão — um espaço diário, privado, que lembra do que importa e conversa com você para te ajudar a entender o que sente. Não para substituir o cuidado humano, mas para caminhar ao seu lado nos dias comuns.',
+          'Muita gente quer orar mais, mas não sabe por onde começar. Outros oram, mas se sentem sozinhos. A Emori nasceu para preencher esse espaço — um lugar no celular para registrar suas orações, receber a Palavra de Deus em resposta e orar junto com uma comunidade de fé. Não para substituir a igreja, mas para estar presente nos momentos em que ela não pode.',
       },
       {
-        h2: 'A memória no centro de tudo',
+        h2: 'A Palavra no centro',
         body:
-          'Construímos a Emori em torno de uma decisão: ela lembra. Guardar o seu contexto e trazê-lo de volta quando faz sentido é o que transforma anotações soltas num retrato honesto da sua vida emocional. É o que nos diferencia de um app de notas — e o que orienta cada decisão que tomamos.',
+          'Cada resposta, cada reflexão, cada resumo na Emori é fundamentado na Bíblia. Não inventamos frases motivacionais — entregamos a Palavra de Deus, com versículos reais e referências que você pode conferir. A Bíblia é a base de tudo o que a Emori oferece.',
       },
       {
-        h2: 'A Emori é sempre ela',
+        h2: 'Comunidade que ora junto',
         body:
-          'A Emori é uma presença, não um recurso. Referimo-nos a ela sempre no feminino — "a Emori", "ela" — porque queremos que a relação seja calorosa e humana, e não fria e técnica. Ela conhece você, e isso importa.',
+          'A Emori não é só um diário pessoal. Na comunidade, você partilha pedidos, ora por outros irmãos e celebra quando Deus responde. Porque a Bíblia nos ensina a levar as cargas uns dos outros.',
       },
     ],
     valuesTitle: 'No que acreditamos',
     values: [
       {
-        title: 'Privacidade primeiro',
+        title: 'Fundamentada na Bíblia',
         body:
-          'O seu diário é seu. Não vendemos os seus dados e tratamos a sua intimidade como o bem mais valioso que você nos confia.',
+          'Todo conteúdo da Emori tem base bíblica. Versículos reais, referências verificáveis, nada inventado.',
       },
       {
-        title: 'Sem julgamento',
+        title: 'Interdenominacional',
         body:
-          'Um espaço para dizer o que talvez não diria a ninguém, no seu ritmo, sem cobranças nem metas.',
+          'A Emori respeita todas as tradições cristãs. O foco é a oração e a relação com Deus, não uma denominação específica.',
       },
       {
-        title: 'Complemento, não substituto',
+        title: 'Privacidade como valor',
         body:
-          'A Emori é autoconhecimento, não saúde. Ela caminha ao lado da terapia e do cuidado profissional, nunca no lugar deles.',
+          'As suas orações são íntimas. Não vendemos seus dados e tratamos a privacidade como sagrada.',
       },
       {
         title: 'Acessível a todos',
         body:
-          'O essencial da Emori é grátis, porque se entender não deveria ser um privilégio.',
+          'O essencial da Emori é grátis, porque conversar com Deus não deveria ter um preço.',
       },
     ],
     founderTitle: 'Quem está por trás',
     founderBefore: 'A Emori foi criada por',
     founderAfter:
-      ', psicólogo — alguém que conhece de perto o valor, e os limites, do acompanhamento emocional. É por isso que a Emori foi pensada para caminhar ao lado da terapia, nunca no lugar dela.',
+      ' — alguém que conhece de perto a importância do cuidado emocional e espiritual. A Emori nasceu da convicção de que orar deveria ser tão natural quanto respirar, e que ninguém deveria se sentir sozinho nessa caminhada.',
     contactTitle: 'Fale com a Emori',
     contactIntro:
-      'Tem uma dúvida, sugestão, ou quer falar sobre parcerias e imprensa? Escreva para',
+      'Tem uma dúvida, sugestão, pedido de oração ou quer falar sobre parcerias? Escreva para',
   },
 
   privacidade: {
     metaTitle: 'Política de Privacidade — Emori',
     metaDescription:
-      'Como a Emori coleta, usa e protege os seus dados. Transparência sobre o seu diário emocional e as suas informações.',
+      'Como a Emori coleta, usa e protege os seus dados. Transparência sobre as suas orações e informações pessoais.',
     h1: 'Política de Privacidade',
     tldr:
-      'Esta política explica quais dados a Emori coleta, como são usados e quais são os seus direitos. O seu diário é seu: tratamos as suas informações com cuidado e nunca vendemos os seus dados pessoais.',
+      'Esta política explica quais dados a Emori coleta, como são usados e quais são os seus direitos. As suas orações são suas: tratamos as suas informações com cuidado e nunca vendemos os seus dados pessoais.',
     lastUpdatedLabel: 'Última atualização',
-    lastUpdated: '4 de julho de 2026',
+    lastUpdated: '21 de outubro de 2026',
     sections: [
       {
         h2: '1. Quem somos',
         body:
-          'A Emori é um aplicativo de diário emocional com inteligência artificial, disponível para Android sob o pacote app.emori. Este documento descreve como tratamos os dados dos usuários do aplicativo e do site aemori.com.',
+          'A Emori é um aplicativo de oração e comunidade cristã, disponível para Android sob o pacote app.emori. Este documento descreve como tratamos os dados dos usuários do aplicativo e do site aemori.com.',
       },
       {
         h2: '2. Dados que coletamos',
         body:
-          'Coletamos: (a) o conteúdo que você cria — os textos do seu diário; (b) dados de conta, como identificador e e-mail, quando aplicável; (c) dados técnicos mínimos de funcionamento e diagnóstico, como tipo de dispositivo e versão do app. Não coletamos mais do que o necessário para a Emori funcionar.',
+          'Coletamos: (a) o conteúdo que você cria — os textos das suas orações e os pedidos que partilha na comunidade; (b) dados de conta, como identificador e e-mail, quando aplicável; (c) dados técnicos mínimos de funcionamento e diagnóstico, como tipo de dispositivo e versão do app. Não coletamos mais do que o necessário para a Emori funcionar.',
       },
       {
         h2: '3. Como usamos os seus dados',
         body:
-          'Usamos os seus dados para: fornecer o serviço de diário; manter a memória que torna a Emori pessoal; melhorar o aplicativo; e garantir segurança. O conteúdo do seu diário é processado para gerar as respostas e a memória da Emori. Não usamos o conteúdo do seu diário para publicidade.',
+          'Usamos os seus dados para: fornecer o serviço de oração e comunidade; selecionar versículos e reflexões relevantes; gerar os resumos semanais e cartas mensais; melhorar o aplicativo; e garantir segurança. Não usamos o conteúdo das suas orações para publicidade.',
       },
       {
-        h2: '4. Inteligência artificial',
+        h2: '4. Processamento de dados',
         body:
-          'A Emori usa modelos de inteligência artificial para conversar com você e organizar a memória. Parte do processamento pode ocorrer em provedores de IA terceirizados, sob contrato e com salvaguardas de confidencialidade. Enviamos apenas o necessário para gerar a resposta.',
+          'A Emori processa as suas orações para gerar respostas com versículos bíblicos e reflexões, e para compilar os resumos da sua vida de oração. Parte deste processamento pode ocorrer em servidores de terceiros, sob contrato e com salvaguardas de confidencialidade.',
       },
       {
         h2: '5. Compartilhamento',
         body:
-          'Não vendemos os seus dados pessoais. Compartilhamos dados apenas com provedores essenciais (por exemplo, infraestrutura e IA), quando exigido por lei, ou com o seu consentimento.',
+          'Não vendemos os seus dados pessoais. Compartilhamos dados apenas com provedores essenciais de infraestrutura, quando exigido por lei, ou com o seu consentimento. Os pedidos que você partilha na comunidade são visíveis a outros usuários — o seu diário privado não é.',
       },
       {
         h2: '6. Retenção e exclusão',
@@ -372,7 +371,7 @@ const ptBR = {
       {
         h2: '7. Segurança',
         body:
-          'Adotamos medidas técnicas e organizacionais para proteger os seus dados, incluindo criptografia em trânsito. Nenhum sistema é 100% infalível, mas tratamos a segurança do seu diário como prioridade.',
+          'Adotamos medidas técnicas e organizacionais para proteger os seus dados, incluindo criptografia em trânsito. Nenhum sistema é 100% infalível, mas tratamos a segurança das suas orações como prioridade.',
       },
       {
         h2: '8. Seus direitos',
@@ -395,12 +394,12 @@ const ptBR = {
   termos: {
     metaTitle: 'Termos de Uso — Emori',
     metaDescription:
-      'Os termos de uso do aplicativo e do site da Emori: seus direitos, suas responsabilidades e as regras do serviço.',
+      'Os termos de uso do aplicativo e do site da Emori: seus direitos, suas responsabilidades e as regras do serviço de oração e comunidade cristã.',
     h1: 'Termos de Uso',
     tldr:
-      'Estes termos definem as regras para usar a Emori. Ao usar o aplicativo ou o site, você concorda com eles. A Emori é uma ferramenta de escrita emocional e autoconhecimento, e não substitui atendimento profissional de saúde.',
+      'Estes termos definem as regras para usar a Emori. Ao usar o aplicativo ou o site, você concorda com eles. A Emori é um app de oração e comunidade cristã, e não substitui aconselhamento pastoral ou profissional.',
     lastUpdatedLabel: 'Última atualização',
-    lastUpdated: '4 de julho de 2026',
+    lastUpdated: '21 de outubro de 2026',
     sections: [
       {
         h2: '1. Aceitação dos termos',
@@ -410,58 +409,58 @@ const ptBR = {
       {
         h2: '2. O que é a Emori',
         body:
-          'A Emori é um aplicativo de diário emocional com inteligência artificial. Ela oferece um espaço para escrever e refletir, com memória e respostas geradas por IA. A Emori não é um serviço médico, psicológico ou de emergência.',
+          'A Emori é um aplicativo de oração e comunidade cristã. Oferece um espaço para registrar orações, receber versículos bíblicos e reflexões, e participar de uma comunidade de fé. A Emori não é um serviço de aconselhamento pastoral, psicológico ou de emergência.',
       },
       {
         h2: '3. Uso adequado',
         body:
-          'Você concorda em usar a Emori de forma legal e pessoal. É proibido usar o serviço para atividades ilícitas, abusar da infraestrutura ou tentar acessar dados de outros usuários.',
+          'Você concorda em usar a Emori de forma legal, respeitosa e pessoal. É proibido usar o serviço para atividades ilícitas, publicar conteúdo ofensivo na comunidade, abusar da infraestrutura ou tentar acessar dados de outros usuários.',
       },
       {
-        h2: '4. Não substitui atendimento profissional',
+        h2: '4. Natureza do serviço',
         body:
-          'A Emori é uma ferramenta de autoconhecimento, não um serviço de saúde. Ela não diagnostica, trata nem previne doenças. Se você estiver em sofrimento intenso ou risco, procure um profissional de saúde ou serviços de emergência do seu país.',
+          'A Emori é uma ferramenta de oração e reflexão bíblica, não um serviço de saúde ou aconselhamento profissional. Se você estiver em sofrimento intenso ou risco, procure um profissional de saúde, o seu pastor ou serviços de emergência.',
       },
       {
         h2: '5. Sua conta e seu conteúdo',
         body:
-          'O conteúdo que você cria na Emori é seu. Você é responsável por manter a segurança do seu acesso. Concede à Emori as permissões estritamente necessárias para processar e armazenar o seu conteúdo e fornecer o serviço, conforme a Política de Privacidade.',
+          'O conteúdo que você cria na Emori — orações, reflexões e pedidos — é seu. Você é responsável por manter a segurança do seu acesso. Concede à Emori as permissões necessárias para processar e armazenar o seu conteúdo e fornecer o serviço, conforme a Política de Privacidade.',
       },
       {
-        h2: '6. Planos e pagamentos',
+        h2: '6. Comunidade',
+        body:
+          'Os pedidos partilhados na comunidade são visíveis a outros usuários. Você é responsável pelo que publica. Conteúdo reportado é analisado e pode ser removido. A Emori reserva-se o direito de remover conteúdo ou suspender contas que violem estas regras.',
+      },
+      {
+        h2: '7. Planos e pagamentos',
         body:
           'A Emori oferece um plano grátis e a assinatura opcional Emori Pro. Assinaturas são cobradas pela loja de aplicativos e seguem as regras dela, incluindo renovação e cancelamento.',
       },
       {
-        h2: '7. Disponibilidade e alterações',
+        h2: '8. Disponibilidade e alterações',
         body:
           'Buscamos manter a Emori sempre disponível, mas o serviço pode ter interrupções ou mudanças. Podemos alterar, suspender ou descontinuar recursos, avisando quando for razoável.',
       },
       {
-        h2: '8. Limitação de responsabilidade',
+        h2: '9. Limitação de responsabilidade',
         body:
           'A Emori é fornecida "como está". Na máxima medida permitida por lei, não nos responsabilizamos por danos indiretos decorrentes do uso do serviço. Nada nestes termos limita direitos que a lei não permite limitar.',
       },
       {
-        h2: '9. Alterações nos termos',
+        h2: '10. Alterações e contato',
         body:
-          'Podemos atualizar estes Termos de Uso. Mudanças relevantes serão comunicadas no aplicativo ou no site. O uso continuado após as mudanças significa concordância.',
-      },
-      {
-        h2: '10. Contato',
-        body:
-          'Dúvidas sobre estes termos podem ser enviadas pelos canais de contato indicados no aplicativo.',
+          'Podemos atualizar estes Termos de Uso. Mudanças relevantes serão comunicadas no aplicativo ou no site. O uso continuado após as mudanças significa concordância. Dúvidas podem ser enviadas pelos canais de contato indicados no aplicativo.',
       },
     ],
   },
 
   blog: {
-    metaTitle: 'Blog da Emori — diário emocional, journaling e autoconhecimento',
+    metaTitle: 'Blog da Emori — oração, fé cristã, versículos e vida devocional',
     metaDescription:
-      'Guias práticos sobre diário emocional, journaling, ansiedade e autoconhecimento. Aprenda a escrever sobre o que você sente com a Emori.',
+      'Guias práticos sobre oração, vida devocional, versículos bíblicos e crescimento espiritual. Fortaleça a sua fé com a Emori.',
     h1: 'O blog da Emori',
     tldr:
-      'Aqui reunimos guias práticos e honestos sobre diário emocional, journaling e autoconhecimento — para te ajudar a começar, manter o hábito e entender melhor o que você sente.',
+      'Aqui reunimos reflexões e guias sobre oração, vida devocional e crescimento na fé — para ajudar você a orar mais, entender a Palavra e caminhar mais perto de Deus.',
     readingTime: 'min de leitura',
     allPosts: 'Todos os artigos',
     backToBlog: 'Voltar ao blog',

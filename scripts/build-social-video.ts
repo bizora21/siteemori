@@ -511,10 +511,10 @@ function buildStaticScenes(entry: SocialManifestEntry, photo?: string): Scene[] 
  */
 function closingScene(isPT: boolean, theme: keyof typeof THEME): Scene {
   return {
-    title: isPT ? 'Dá nome ao que sentes' : 'Dê nome ao que você sente',
+    title: isPT ? 'Ora com o coração aberto' : 'Ore com o coração aberto',
     narration: isPT
-      ? 'O que tem nome deixa de andar às voltas. A Emori é um diário emocional gratuito: descarregas na Play Store do Android, e tens o link aqui na bio.'
-      : 'O que tem nome deixa de dar voltas. A Emori é um diário emocional gratuito: você baixa na Play Store do Android, e o link está aqui na bio.',
+      ? 'Cada oração conta. A Emori é uma app de oração cristã gratuita: descarregas na Play Store do Android, e tens o link aqui na bio.'
+      : 'Cada oração conta. A Emori é um app de oração cristã gratuito: você baixa na Play Store do Android, e o link está aqui na bio.',
     note: isPT ? 'grátis na Play Store · link na bio' : 'grátis na Play Store · link na bio',
     visual: 'escrever',
     tint: TINTS[0],

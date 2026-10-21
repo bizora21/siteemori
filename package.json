@@ -2,7 +2,7 @@
   "name": "aemori-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Site institucional/marketing da Emori — diário emocional com IA (aemori.com)",
+  "description": "Site institucional/marketing da Emori — app de oração e comunidade cristã (aemori.com)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

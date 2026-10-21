@@ -43,7 +43,7 @@ function wrap(text: string, maxChars: number): string[] {
 }
 
 function pinSvg(entry: SocialManifestEntry): string {
-  const eyebrow = 'DIÁRIO EMOCIONAL';
+  const eyebrow = 'ORAÇÃO E FÉ CRISTÃ';
   const readMore = entry.lang === 'pt-pt' ? 'Lê o guia gratuito' : 'Leia o guia grátis';
 
   // Título com tamanho adaptativo ao comprimento.
