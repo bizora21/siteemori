@@ -1,1413 +1,1217 @@
 [
   {
     "lang": "pt-br",
-    "slug": "por-que-desisto-do-diario",
-    "url": "https://aemori.com/pt-br/blog/por-que-desisto-do-diario/",
-    "title": "Por que eu sempre desisto do diário",
-    "description": "Você começa animado e para na segunda semana. Não é falta de disciplina — é que o diário te faz recomeçar do zero toda vez. Entenda o mecanismo e como contorná-lo.",
-    "tldr": "Quase ninguém desiste do diário por preguiça. Desiste porque cada sessão começa do zero: página em branco, nenhuma memória do que você escreveu antes, e nenhum retorno visível pelo esforço. O que sustenta o hábito não é disciplina nem sequência de dias — é reduzir o custo de começar e conseguir enxergar algo de volta.",
-    "datePublished": "2026-08-23",
+    "slug": "como-orar-iniciantes",
+    "url": "https://aemori.com/pt-br/blog/como-orar-iniciantes/",
+    "title": "Como orar: guia simples para quem está começando",
+    "description": "Não sabe como orar? Veja um passo a passo simples, o que dizer, onde e quando orar, e o que a Bíblia ensina sobre conversar com Deus.",
+    "tldr": "Orar é conversar com Deus com sinceridade — não existe fórmula obrigatória nem palavras difíceis. Para começar, escolha um momento tranquilo, diga a verdade sobre como você está, agradeça, apresente seus pedidos, faça um minuto de silêncio e termine com “amém”. Até os discípulos de Jesus pediram: “Senhor, ensina-nos a orar”.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1556970181-98e37c414e87?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxjbG9zZWQlMjBub3RlYm9vayUyMHBlbiUyMGRlc2slMjBtb3JuaW5nJTIwbGlnaHR8ZW58MXwwfHx8MTc4NzUwNzcwN3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Caderno fechado sobre uma mesa de madeira com luz da manhã",
-      "credit": "Ellen Tanner",
-      "creditUrl": "https://unsplash.com/@ellentanner?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1528222354212-a29573cdb844?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBwcmF5aW5nJTIwcXVpZXRseXxlbnwxfDB8fHwxNzkyNjkzMjk0fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Mulher orando junto a uma árvore",
+      "credit": "Ben White",
+      "creditUrl": "https://unsplash.com/@benwhitephotography?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Por que eu sempre desisto do diário?",
-        "a": "Porque cada sessão começa do zero: página em branco, nenhum registro do contexto do que você já escreveu e nenhum retorno visível pelo esforço. Isso cria um custo de começar que, num dia cansado, é maior que a energia disponível — e não é falta de disciplina."
+        "q": "Como começar a orar pela primeira vez?",
+        "a": "Escolha um momento tranquilo, diga a Deus como você realmente está, agradeça por algo, apresente seus pedidos e termine com “amém”. Não há fórmula obrigatória: o essencial, segundo o Salmo 145:18, é invocá-lo com sinceridade."
       },
       {
-        "q": "Como manter o hábito de escrever no diário?",
-        "a": "Baixe a régua até uma frase por dia, escreva quando algo acontece em vez de em horário fixo, comece sempre por uma pergunta em vez da página vazia, releia uma vez por semana e ignore contadores de dias seguidos."
+        "q": "Preciso usar palavras bonitas ou difíceis para orar?",
+        "a": "Não. Orar é conversar, e a Bíblia valoriza a sinceridade, não o vocabulário. Palavras simples e verdadeiras bastam, inclusive quando você só consegue dizer que está cansado ou confuso."
       },
       {
-        "q": "Preciso escrever no diário todos os dias?",
-        "a": "Não. A frequência importa menos que o retorno. Escrever três vezes numa semana difícil vale mais que escrever todos os dias por obrigação, e voltar depois de semanas parado é continuar, não recomeçar."
+        "q": "Posso orar em silêncio, só pensando?",
+        "a": "Pode. Orar em voz alta, em silêncio ou por escrito são formas válidas. Muita gente alterna conforme o lugar e o momento, e escrever ajuda quando a mente fica dispersa."
       },
       {
-        "q": "Por que perco a motivação depois de alguns dias?",
-        "a": "Normalmente porque nada acontece com o que você escreveu. O esforço existe e o retorno não, e o cérebro para de investir no que não devolve nada. O retorno do diário está em ver o que se repete — e isso só aparece relendo."
+        "q": "Quanto tempo uma oração deve durar?",
+        "a": "Não existe tempo mínimo. Para quem está começando, cinco minutos com atenção sincera já são um bom início, e a regularidade pesa mais do que a duração."
       },
       {
-        "q": "Contador de dias seguidos ajuda a manter o diário?",
-        "a": "Costuma atrapalhar. Quando o valor está na sequência, quebrá-la apaga o valor: você deixa de ter \"onze dias escritos\" e passa a ter \"falhei\", que é motivo para largar. Os onze dias continuam valendo — o contador é que mente."
-      },
-      {
-        "q": "Diário no papel ou em aplicativo?",
-        "a": "Papel funciona bem para quem gosta do gesto. A diferença prática de um app é resolver dois custos que o caderno não resolve: lembrar do seu contexto, para você não reconstruir tudo a cada sessão, e mostrar padrões sem que você precise reler meses de anotações."
+        "q": "Posso rezar um texto pronto, como o Pai-Nosso?",
+        "a": "Pode. O Pai-Nosso foi ensinado por Jesus como modelo (Lucas 11:1-4; Mateus 6:9-13) e muitos cristãos o rezam com frequência, de cor ou lendo. Ele também serve de roteiro para criar orações com palavras próprias."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "por-que-desisto-do-diario",
-    "url": "https://aemori.com/pt-pt/blog/por-que-desisto-do-diario/",
-    "title": "Porque é que desisto sempre do diário",
-    "description": "Começas entusiasmado e paras na segunda semana. Não é falta de disciplina — é que o diário te faz recomeçar do zero de cada vez. Percebe o mecanismo e como contorná-lo.",
-    "tldr": "Quase ninguém desiste do diário por preguiça. Desiste porque cada sessão começa do zero: página em branco, nenhuma memória do que escreveste antes e nenhum retorno visível pelo esforço. O que sustenta o hábito não é disciplina nem sequências de dias — é baixar o custo de começar e conseguir ver algo de volta.",
-    "datePublished": "2026-08-23",
+    "slug": "como-orar-iniciantes",
+    "url": "https://aemori.com/pt-pt/blog/como-orar-iniciantes/",
+    "title": "Como orar: guia simples para quem está a começar",
+    "description": "Não sabes como orar? Vê um passo a passo simples, o que dizer, onde e quando orar, e o que a Bíblia ensina sobre falar com Deus.",
+    "tldr": "Orar é falar com Deus com sinceridade — não há fórmula obrigatória nem palavras difíceis. Para começar, escolhe um momento tranquilo, diz a verdade sobre como estás, agradece, apresenta os teus pedidos, faz um minuto de silêncio e termina com “ámen”. Até os discípulos de Jesus pediram: “Senhor, ensina-nos a orar”.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1556970181-98e37c414e87?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxjbG9zZWQlMjBub3RlYm9vayUyMHBlbiUyMGRlc2slMjBtb3JuaW5nJTIwbGlnaHR8ZW58MXwwfHx8MTc4NzUwNzcwN3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Caderno fechado sobre uma mesa de madeira com luz da manhã",
-      "credit": "Ellen Tanner",
-      "creditUrl": "https://unsplash.com/@ellentanner?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1528222354212-a29573cdb844?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBwcmF5aW5nJTIwcXVpZXRseXxlbnwxfDB8fHwxNzkyNjkzMjk0fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Mulher a orar junto a uma árvore",
+      "credit": "Ben White",
+      "creditUrl": "https://unsplash.com/@benwhitephotography?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Porque é que desisto sempre do diário?",
-        "a": "Porque cada sessão começa do zero: página em branco, nenhum registo do contexto do que já escreveste e nenhum retorno visível pelo esforço. Isso cria um custo de começar que, num dia cansado, é maior do que a energia disponível — e não é falta de disciplina."
+        "q": "Como começar a orar pela primeira vez?",
+        "a": "Escolhe um momento tranquilo, diz a Deus como estás de verdade, agradece por algo, apresenta os teus pedidos e termina com “ámen”. Não há fórmula obrigatória: o essencial, segundo o Salmo 145:18, é invocá-lo com sinceridade."
       },
       {
-        "q": "Como manter o hábito de escrever no diário?",
-        "a": "Baixa a fasquia até uma frase por dia, escreve quando acontece alguma coisa em vez de a horas fixas, começa sempre por uma pergunta em vez da página vazia, relê uma vez por semana e ignora contadores de dias seguidos."
+        "q": "Preciso de palavras bonitas ou difíceis para orar?",
+        "a": "Não. Orar é conversar, e a Bíblia valoriza a sinceridade, não o vocabulário. Palavras simples e verdadeiras chegam, mesmo quando só consegues dizer que estás cansado ou confuso."
       },
       {
-        "q": "É preciso escrever no diário todos os dias?",
-        "a": "Não. A frequência importa menos do que o retorno. Escrever três vezes numa semana difícil vale mais do que escrever todos os dias por obrigação, e voltar ao fim de semanas parado é continuar, não recomeçar."
+        "q": "Posso orar em silêncio, só a pensar?",
+        "a": "Podes. Orar em voz alta, em silêncio ou por escrito são formas válidas. Muita gente alterna conforme o sítio e o momento, e escrever ajuda quando a mente se dispersa."
       },
       {
-        "q": "Porque é que perco a motivação ao fim de alguns dias?",
-        "a": "Normalmente porque não acontece nada com o que escreveste. O esforço existe e o retorno não, e o cérebro deixa de investir no que não devolve nada. O retorno do diário está em ver o que se repete — e isso só aparece a reler."
+        "q": "Quanto tempo deve durar uma oração?",
+        "a": "Não existe tempo mínimo. Para quem está a começar, cinco minutos com atenção sincera já são um bom início, e a regularidade pesa mais do que a duração."
       },
       {
-        "q": "Contadores de dias seguidos ajudam a manter o diário?",
-        "a": "Costumam atrapalhar. Quando o valor está na sequência, quebrá-la apaga o valor: deixas de ter \"onze dias escritos\" e passas a ter \"falhei\", que é motivo para largar. Os onze dias continuam a valer — o contador é que mente."
-      },
-      {
-        "q": "Diário em papel ou em aplicação?",
-        "a": "O papel resulta bem para quem gosta do gesto. A diferença prática de uma app é resolver dois custos que o caderno não resolve: lembrar-se do teu contexto, para não reconstruíres tudo a cada sessão, e mostrar padrões sem teres de reler meses de anotações."
+        "q": "Posso rezar um texto pronto, como o Pai-Nosso?",
+        "a": "Podes. O Pai-Nosso foi ensinado por Jesus como modelo (Lucas 11:1-4; Mateus 6:9-13) e muitos cristãos rezam-no com frequência, de cor ou a ler. Serve também de roteiro para criares orações com palavras tuas."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "choro-por-qualquer-coisa",
-    "url": "https://aemori.com/pt-br/blog/choro-por-qualquer-coisa/",
-    "title": "Por que eu choro por qualquer coisa?",
-    "description": "Você chora com propaganda, com música, com um elogio. Entenda por que o choro fácil quase nunca é fraqueza — é um sistema emocional sobrecarregado pedindo espaço.",
-    "tldr": "Chorar por qualquer coisa raramente significa que você é sensível demais. Na maior parte das vezes significa que há emoção acumulada sem saída, e o choro passa a transbordar em situações pequenas porque são as únicas em que a guarda baixa. O choro não é o problema: é o sintoma de que faltou processar o que veio antes.",
-    "datePublished": "2026-08-22",
+    "slug": "versiculos-sobre-ansiedade",
+    "url": "https://aemori.com/pt-br/blog/versiculos-sobre-ansiedade/",
+    "title": "Versículos sobre ansiedade: 7 textos da Bíblia para orar",
+    "description": "Sete versículos sobre ansiedade, com o contexto de cada um, o que significam e como transformá-los em oração, sem substituir o cuidado profissional.",
+    "tldr": "Os versículos da Bíblia mais usados diante da ansiedade são Filipenses 4:6-7, 1 Pedro 5:7, Mateus 6:25-34, Salmos 94:19, Isaías 41:10, Salmos 55:22 e Salmos 56:3. Em comum, convidam a levar a Deus aquilo que pesa, em oração e com gratidão, em vez de carregar tudo sozinho. A Bíblia acompanha o cuidado com a saúde, mas não o substitui: se a ansiedade é intensa ou persistente, procurar um profissional é sensato.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1616824726805-1c991ae55757?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBjcnlpbmclMjBhbG9uZSUyMHNvZnQlMjB3aW5kb3clMjBsaWdodCUyMGVtb3Rpb25hbHxlbnwxfDB8fHwxNzg3Mzk1MTAxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa de suéter branco olhando pela janela enquanto neva lá fora",
-      "credit": "Daniil Onischenko",
-      "creditUrl": "https://unsplash.com/@flyvk?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1662564803065-a3125024f40c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxjYWxtJTIwbW9ybmluZyUyMGxpZ2h0JTIwd2luZG93JTIwcGVhY2VmdWx8ZW58MXwwfHx8MTc5MjY5MzI4Nnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma janela com uma árvore do lado de fora, em luz suave",
+      "credit": "Andrea Wilkins",
+      "creditUrl": "https://unsplash.com/@andrea_dawn?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Por que eu choro por qualquer coisa?",
-        "a": "Porque quase sempre há emoção acumulada sem saída. O choro não reage ao que está acontecendo agora: transborda numa situação pequena porque foi ali que a sua guarda baixou. Nas situações difíceis você estava ocupado se segurando."
+        "q": "Qual é o melhor versículo da Bíblia para ansiedade?",
+        "a": "Não existe um único. Filipenses 4:6-7 é o mais citado porque une oração, gratidão e paz. Mas escolha o que corresponde ao seu momento: 1 Pedro 5:7 para entregar uma preocupação, Salmos 56:3 para um dia de medo, Mateus 6:34 quando o futuro pesa."
       },
       {
-        "q": "Chorar fácil é sinal de fraqueza?",
-        "a": "Não. Costuma ser o contrário: quem chora com facilidade normalmente é quem mais se segurou por mais tempo. O choro é vazão de pressão acumulada, não falta de força."
+        "q": "A Bíblia diz que ansiedade é pecado?",
+        "a": "Os textos sobre o tema são convites ao cuidado, não condenações. Jesus mesmo disse que sua alma estava triste até a morte (Marcos 14:34). A ansiedade como condição de saúde é diferente de uma simples preocupação e merece acompanhamento de um profissional, sem culpa."
       },
       {
-        "q": "Por que choro com coisas boas, como gentileza e reencontros?",
-        "a": "Porque essas cenas não exigem que você seja forte. Diante de uma dificuldade o corpo entra em modo de resolver; diante de uma gentileza não há nada a resolver, e é aí que a guarda baixa e o acumulado sai."
+        "q": "Orar substitui o tratamento da ansiedade?",
+        "a": "Não. A oração oferece companhia, sentido e descanso, e o tratamento cuida do corpo e da mente. Os dois caminham juntos. Se a ansiedade é forte, frequente ou atrapalha o seu dia a dia, procure um médico ou psicólogo."
       },
       {
-        "q": "Como parar de chorar por qualquer coisa?",
-        "a": "Não segurando mais — isso aumenta a pressão. O que reduz é dar saída antes do transbordo: escrever o que ficou por dizer do dia, perguntar \"o que mais está aberto essa semana?\" em vez de \"por que estou chorando com isso\", e tratar o cansaço, que derruba o controle emocional antes de derrubar o corpo."
+        "q": "Como decorar um versículo para usar quando a ansiedade vier?",
+        "a": "Escolha um versículo curto, como Salmos 56:3, e repita-o em voz alta de manhã e à noite durante uma semana. Escreva-o num papel ou como fundo do celular. Na hora da crise, respire devagar e diga-o em oração, uma frase por respiração."
       },
       {
-        "q": "Chorar demais é sinal de depressão?",
-        "a": "Pode ser, mas nem sempre. Se o choro dura semanas quase todos os dias, vem com perda de vontade de tudo, atrapalha trabalhar ou conviver, ou aparece sem emoção junto, procure um psicólogo. Se começou de repente com alterações de sono, apetite ou peso, vale também um médico."
-      },
-      {
-        "q": "O que fazer na hora em que a vontade de chorar aparece?",
-        "a": "Se o contexto permitir, deixe acontecer: chorar é o corpo terminando um processo, e interromper deixa pela metade. Se não permitir, respire devagar e marque para voltar ao assunto depois, escrevendo — o que fica sem saída volta a transbordar na próxima situação pequena."
+        "q": "O que orar quando a ansiedade me acorda de madrugada?",
+        "a": "Não precisa de uma oração elaborada. Dê nome à preocupação, entregue-a a Deus com uma frase simples e leia devagar um versículo como Salmos 4:8 ou 1 Pedro 5:7. Se os pensamentos continuarem, anote o que o preocupa para tratar no dia seguinte e tente descansar."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "choro-por-qualquer-coisa",
-    "url": "https://aemori.com/pt-pt/blog/choro-por-qualquer-coisa/",
-    "title": "Porque é que choro por tudo e por nada?",
-    "description": "Choras com um anúncio, com uma música, com um elogio. Percebe porque o choro fácil quase nunca é fraqueza — é um sistema emocional sobrecarregado a pedir espaço.",
-    "tldr": "Chorar por tudo e por nada raramente significa que és sensível demais. Na maior parte das vezes significa que há emoção acumulada sem saída, e o choro passa a transbordar em situações pequenas porque são as únicas em que a guarda baixa. O choro não é o problema: é o sinal de que faltou processar o que veio antes.",
-    "datePublished": "2026-08-22",
+    "slug": "versiculos-sobre-ansiedade",
+    "url": "https://aemori.com/pt-pt/blog/versiculos-sobre-ansiedade/",
+    "title": "Versículos sobre ansiedade: 7 textos da Bíblia para orar",
+    "description": "Sete versículos sobre ansiedade, com o contexto de cada um, o que significam e como os transformar em oração, sem substituir o acompanhamento profissional.",
+    "tldr": "Os versículos da Bíblia mais usados perante a ansiedade são Filipenses 4:6-7, 1 Pedro 5:7, Mateus 6:25-34, Salmos 94:19, Isaías 41:10, Salmos 55:22 e Salmos 56:3. Têm em comum o convite a levar a Deus aquilo que pesa, em oração e com gratidão, em vez de carregar tudo sozinho. A Bíblia acompanha o cuidado com a saúde, mas não o substitui: se a ansiedade é intensa ou persistente, procurar um profissional é sensato.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1616824726805-1c991ae55757?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBjcnlpbmclMjBhbG9uZSUyMHNvZnQlMjB3aW5kb3clMjBsaWdodCUyMGVtb3Rpb25hbHxlbnwxfDB8fHwxNzg3Mzk1MTAxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa de camisola branca a olhar pela janela enquanto neva lá fora",
-      "credit": "Daniil Onischenko",
-      "creditUrl": "https://unsplash.com/@flyvk?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1662564803065-a3125024f40c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxjYWxtJTIwbW9ybmluZyUyMGxpZ2h0JTIwd2luZG93JTIwcGVhY2VmdWx8ZW58MXwwfHx8MTc5MjY5MzI4Nnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma janela com uma árvore do lado de fora, em luz suave",
+      "credit": "Andrea Wilkins",
+      "creditUrl": "https://unsplash.com/@andrea_dawn?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Porque é que choro por tudo e por nada?",
-        "a": "Porque quase sempre há emoção acumulada sem saída. O choro não reage ao que está a acontecer agora: transborda numa situação pequena porque foi aí que a tua guarda baixou. Nas situações difíceis estavas ocupado a segurar-te."
+        "q": "Qual é o melhor versículo da Bíblia para a ansiedade?",
+        "a": "Não existe um único. Filipenses 4:6-7 é o mais citado porque une oração, gratidão e paz. Mas escolhe o que corresponde ao teu momento: 1 Pedro 5:7 para entregar uma preocupação, Salmos 56:3 para um dia de medo, Mateus 6:34 quando o futuro pesa."
       },
       {
-        "q": "Chorar com facilidade é sinal de fraqueza?",
-        "a": "Não. Costuma ser o contrário: quem chora com facilidade normalmente é quem mais se segurou durante mais tempo. O choro é vazão de pressão acumulada, não falta de força."
+        "q": "A Bíblia diz que a ansiedade é pecado?",
+        "a": "Os textos sobre o tema são convites ao cuidado, não condenações. O próprio Jesus disse que a sua alma estava triste até à morte (Marcos 14:34). A ansiedade como condição de saúde é diferente de uma simples preocupação e merece acompanhamento de um profissional, sem culpa."
       },
       {
-        "q": "Porque é que choro com coisas boas, como gentileza e reencontros?",
-        "a": "Porque essas cenas não exigem que sejas forte. Perante uma dificuldade o corpo entra em modo de resolver; perante uma gentileza não há nada a resolver, e é aí que a guarda baixa e o acumulado sai."
+        "q": "Orar substitui o tratamento da ansiedade?",
+        "a": "Não. A oração oferece companhia, sentido e descanso, e o tratamento cuida do corpo e da mente. Os dois caminham juntos. Se a ansiedade é forte, frequente ou atrapalha o teu dia a dia, procura um médico ou psicólogo."
       },
       {
-        "q": "Como deixar de chorar por tudo?",
-        "a": "Não te segurando mais — isso aumenta a pressão. O que reduz é dar saída antes do transbordo: escrever o que ficou por dizer do dia, perguntar \"o que mais está em aberto esta semana?\" em vez de \"porque estou a chorar com isto\", e tratar o cansaço, que derruba o controlo emocional antes de derrubar o corpo."
+        "q": "Como decorar um versículo para usar quando a ansiedade vier?",
+        "a": "Escolhe um versículo curto, como Salmos 56:3, e repete-o em voz alta de manhã e à noite durante uma semana. Escreve-o num papel ou usa-o como fundo do telemóvel. Na hora da crise, respira devagar e di-lo em oração, uma frase por respiração."
       },
       {
-        "q": "Chorar demais é sinal de depressão?",
-        "a": "Pode ser, mas nem sempre. Se o choro dura semanas quase todos os dias, vem com perda de vontade para tudo, atrapalha trabalhar ou conviver, ou aparece sem emoção associada, procura um psicólogo. Se começou de repente com alterações de sono, apetite ou peso, vale também um médico."
-      },
-      {
-        "q": "O que fazer no momento em que a vontade de chorar aparece?",
-        "a": "Se o contexto permitir, deixa acontecer: chorar é o corpo a terminar um processo, e interromper deixa-o a meio. Se não permitir, respira devagar e marca para voltares ao assunto depois, a escrever — o que fica sem saída volta a transbordar na próxima situação pequena."
+        "q": "O que orar quando a ansiedade me acorda de madrugada?",
+        "a": "Não precisas de uma oração elaborada. Dá nome à preocupação, entrega-a a Deus com uma frase simples e lê devagar um versículo como Salmos 4:8 ou 1 Pedro 5:7. Se os pensamentos continuarem, anota o que te preocupa para tratar no dia seguinte e tenta descansar."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "me-sinto-sozinho-mesmo-acompanhado",
-    "url": "https://aemori.com/pt-br/blog/me-sinto-sozinho-mesmo-acompanhado/",
-    "title": "Por que me sinto sozinho mesmo cercado de gente",
-    "description": "Você está cercado de gente e mesmo assim se sente sozinho. Entenda por que solidão não é falta de companhia — é falta de ser conhecido — e o que muda isso.",
-    "tldr": "Solidão não é a mesma coisa que estar sozinho. Você pode ter agenda cheia, grupo de amigos e família por perto e ainda assim se sentir só, porque a solidão não mede quantas pessoas estão em volta: mede quantas sabem como você realmente está. O que a diminui não é mais convivência — é ser conhecido por alguém, e isso começa por você conseguir dizer, com precisão, o que está sentindo.",
-    "datePublished": "2026-08-10",
-    "readingMinutes": 8,
+    "slug": "salmo-23-explicado",
+    "url": "https://aemori.com/pt-br/blog/salmo-23-explicado/",
+    "title": "Salmo 23: significado e explicação versículo a versículo",
+    "description": "O que o Salmo 23 quer dizer? Explicação simples de cada versículo, com o contexto do pastor e das ovelhas, e como orar com ele no dia a dia.",
+    "tldr": "O Salmo 23 é uma oração de confiança atribuída a Davi, que foi pastor antes de ser rei. Ele compara Deus a um pastor que cuida, guia e protege e, no fim, a um anfitrião que recebe à mesa. Entender a imagem do pastor torna cada versículo mais claro — e mais fácil de orar.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1783525460733-b9e391a5edd9?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxhbG9uZSUyMGluJTIwY3Jvd2QlMjBjaXR5JTIwZXZlbmluZyUyMHdhcm0lMjBsaWdodHN8ZW58MXwwfHx8MTc4NjM3OTI3Mnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoas caminhando por uma rua movimentada da cidade ao anoitecer",
-      "credit": "Sebastiano Raciti",
-      "creditUrl": "https://unsplash.com/@sebiano?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1598181162450-56296491375c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxzaGVwaGVyZCUyMHNoZWVwJTIwZ3JlZW4lMjBwYXN0dXJlfGVufDF8MHx8fDE3OTI2OTMyNzl8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Ovelhas brancas num pasto verde, junto a um lago",
+      "credit": "Svetlana Sinitsyna",
+      "creditUrl": "https://unsplash.com/@lanas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Por que me sinto sozinho mesmo cercado de gente?",
-        "a": "Porque solidão não mede quantas pessoas estão em volta, e sim quantas sabem como você realmente está. É a distância entre o que você sente por dentro e o quanto disso alguém conhece — e essa distância não diminui só por ter mais gente por perto."
+        "q": "Quem escreveu o Salmo 23?",
+        "a": "O título do salmo o atribui a Davi, e a tradição judaica e cristã sempre o leu assim. Davi foi pastor de ovelhas antes de ser rei, o que dá peso à imagem do pastor que domina o texto."
       },
       {
-        "q": "Qual a diferença entre estar sozinho e sentir solidão?",
-        "a": "Estar sozinho é uma situação: não tem ninguém por perto, e isso pode ser bom. Solidão é uma sensação de desconexão que independe de companhia. Dá para estar sozinho e se sentir bem, e dá para estar acompanhado e se sentir só."
+        "q": "O que significa “o Senhor é o meu pastor”?",
+        "a": "Significa que a pessoa confia em Deus como a ovelha confia em quem cuida dela: para ser guiada, alimentada, protegida e acolhida. A ovelha não consegue se cuidar sozinha, e o salmo reconhece essa dependência como algo bom, não como fraqueza."
       },
       {
-        "q": "Como parar de me sentir sozinho?",
-        "a": "Não é saindo mais: é sendo conhecido por alguém. Troque quantidade por profundidade, diga uma frase verdadeira a mais depois do \"tudo certo\", aceite convites antes de sentir vontade (na solidão a vontade chega depois) e aprenda a nomear o que sente, que é o passo que sustenta os outros."
+        "q": "O que é o “vale da sombra da morte”?",
+        "a": "É uma imagem de perigo e escuridão. O hebraico pode ser traduzido também como “vale de trevas profundas”, por isso o texto fala tanto da morte como de qualquer fase muito difícil. O salmo diz que, mesmo ali, Deus está presente e a pessoa não está sozinha."
       },
       {
-        "q": "Por que a solidão parece piorar sozinha?",
-        "a": "Porque ela se confirma. Quem se sente distante passa a interpretar sinais neutros como rejeição, se protege aceitando menos convites, a distância aumenta de verdade e a sensação inicial ganha prova. O único passo que você controla é o de se proteger — e é o que parece mais razoável na hora."
+        "q": "Para que serve a vara e o cajado?",
+        "a": "São instrumentos do pastor: a vara costuma ser entendida como defesa contra ameaças e o cajado como apoio para guiar e resgatar as ovelhas. No salmo, os dois são motivo de consolo, porque mostram que o pastor está atento e pronto para agir."
       },
       {
-        "q": "Escrever ajuda a lidar com a solidão?",
-        "a": "Ajuda, mas não por substituir companhia: por te dar o que dizer quando ela aparece. Escrever transforma \"tô estranho\" em algo específico e contável, e é justamente a falta de palavras precisas que costuma travar a aproximação."
-      },
-      {
-        "q": "Sentir solidão é sinal de depressão?",
-        "a": "Nem sempre. A solidão é comum e passageira em várias fases da vida. Mas se dura meses, vem com perda de vontade de tudo, afastamento generalizado ou a sensação de que ninguém sentiria sua falta, pode ser depressão — nesse caso procure um psicólogo. Se pensar em se machucar, ligue 188 (CVV, Brasil) ou 213 544 545 (SOS Voz Amiga, Portugal)."
+        "q": "Posso usar o Salmo 23 como oração?",
+        "a": "Sim. Ele é um salmo e os salmos foram feitos para ser orados. Leia devagar, escolha o versículo que mais toca o seu momento e diga a Deus, com as suas palavras, o que ele significa para você hoje."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "me-sinto-sozinho-mesmo-acompanhado",
-    "url": "https://aemori.com/pt-pt/blog/me-sinto-sozinho-mesmo-acompanhado/",
-    "title": "Porque me sinto sozinho mesmo rodeado de gente",
-    "description": "Estás rodeado de gente e mesmo assim sentes-te sozinho. Percebe porque a solidão não é falta de companhia — é falta de ser conhecido — e o que muda isso.",
-    "tldr": "Solidão não é o mesmo que estar sozinho. Podes ter a agenda cheia, um grupo de amigos e família por perto e ainda assim sentires-te só, porque a solidão não mede quantas pessoas estão à volta: mede quantas sabem como tu estás. O que a diminui não é mais convívio — é seres conhecido por alguém, e isso começa por conseguires dizer, com precisão, o que estás a sentir.",
-    "datePublished": "2026-08-10",
-    "readingMinutes": 8,
+    "slug": "salmo-23-explicado",
+    "url": "https://aemori.com/pt-pt/blog/salmo-23-explicado/",
+    "title": "Salmo 23: significado e explicação versículo a versículo",
+    "description": "O que quer dizer o Salmo 23? Explicação simples de cada versículo, com o contexto do pastor e das ovelhas, e como orar com ele no dia a dia.",
+    "tldr": "O Salmo 23 é uma oração de confiança atribuída a David, que foi pastor antes de ser rei. Compara Deus a um pastor que cuida, guia e protege e, no fim, a um anfitrião que recebe à mesa. Perceber a imagem do pastor torna cada versículo mais claro — e mais fácil de orar.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1783525460733-b9e391a5edd9?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxhbG9uZSUyMGluJTIwY3Jvd2QlMjBjaXR5JTIwZXZlbmluZyUyMHdhcm0lMjBsaWdodHN8ZW58MXwwfHx8MTc4NjM3OTI3Mnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoas a caminhar por uma rua movimentada da cidade ao anoitecer",
-      "credit": "Sebastiano Raciti",
-      "creditUrl": "https://unsplash.com/@sebiano?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1598181162450-56296491375c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxzaGVwaGVyZCUyMHNoZWVwJTIwZ3JlZW4lMjBwYXN0dXJlfGVufDF8MHx8fDE3OTI2OTMyNzl8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Ovelhas brancas num pasto verde, junto a um lago",
+      "credit": "Svetlana Sinitsyna",
+      "creditUrl": "https://unsplash.com/@lanas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Porque me sinto sozinho mesmo rodeado de gente?",
-        "a": "Porque a solidão não mede quantas pessoas estão à volta, mas quantas sabem como tu estás. É a distância entre o que sentes por dentro e o quanto disso alguém conhece — e essa distância não diminui só por haver mais gente por perto."
+        "q": "Quem escreveu o Salmo 23?",
+        "a": "O título do salmo atribui-o a David, e a tradição judaica e cristã sempre o leu assim. David foi pastor de ovelhas antes de ser rei, o que dá peso à imagem do pastor que domina o texto."
       },
       {
-        "q": "Qual a diferença entre estar sozinho e sentir solidão?",
-        "a": "Estar sozinho é uma situação: não está ninguém por perto, e isso pode ser bom. Solidão é uma sensação de desconexão que independe de companhia. Dá para estar sozinho e sentir-se bem, e dá para estar acompanhado e sentir-se só."
+        "q": "O que significa “o Senhor é o meu pastor”?",
+        "a": "Significa que a pessoa confia em Deus como a ovelha confia em quem cuida dela: para ser guiada, alimentada, protegida e acolhida. A ovelha não consegue cuidar de si sozinha, e o salmo reconhece essa dependência como algo bom, não como fraqueza."
       },
       {
-        "q": "Como deixar de me sentir sozinho?",
-        "a": "Não é saindo mais: é sendo conhecido por alguém. Troca quantidade por profundidade, diz uma frase verdadeira a mais depois do \"está tudo bem\", aceita convites antes de te apetecer (na solidão a vontade chega depois) e aprende a nomear o que sentes, que é o passo que sustenta os outros."
+        "q": "O que é o “vale da sombra da morte”?",
+        "a": "É uma imagem de perigo e escuridão. O hebraico pode ser traduzido também como “vale de trevas profundas”, por isso o texto fala tanto da morte como de qualquer fase muito difícil. O salmo diz que, mesmo aí, Deus está presente e a pessoa não está sozinha."
       },
       {
-        "q": "Porque é que a solidão parece piorar sozinha?",
-        "a": "Porque se confirma. Quem se sente distante passa a interpretar sinais neutros como rejeição, protege-se aceitando menos convites, a distância aumenta a sério e a sensação inicial ganha prova. O único passo que controlas é o de te protegeres — e é o que parece mais razoável na hora."
+        "q": "Para que servem a vara e o cajado?",
+        "a": "São instrumentos do pastor: a vara costuma ser entendida como defesa contra ameaças e o cajado como apoio para guiar e resgatar as ovelhas. No salmo, ambos são motivo de consolo, porque mostram que o pastor está atento e pronto a agir."
       },
       {
-        "q": "Escrever ajuda a lidar com a solidão?",
-        "a": "Ajuda, mas não por substituir companhia: por te dar o que dizer quando ela aparece. Escrever transforma \"ando estranho\" em algo específico e contável, e é justamente a falta de palavras precisas que costuma travar a aproximação."
-      },
-      {
-        "q": "Sentir solidão é sinal de depressão?",
-        "a": "Nem sempre. A solidão é comum e passageira em várias fases da vida. Mas se dura meses, vem com perda de vontade para tudo, afastamento generalizado ou a sensação de que ninguém daria pela tua falta, pode ser depressão — nesse caso procura um psicólogo. Se pensares em magoar-te, liga 213 544 545 (SOS Voz Amiga, Portugal) ou 188 (CVV, Brasil)."
+        "q": "Posso usar o Salmo 23 como oração?",
+        "a": "Sim. É um salmo, e os salmos foram feitos para ser orados. Lê devagar, escolhe o versículo que mais toca o teu momento e diz a Deus, com as tuas palavras, o que ele significa para ti hoje."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "como-dizer-nao-sem-culpa",
-    "url": "https://aemori.com/pt-br/blog/como-dizer-nao-sem-culpa/",
-    "title": "Como dizer não sem sentir culpa",
-    "description": "Você diz sim e passa o resto do dia com raiva de você mesmo. O problema não é não saber dizer não — é o que você aprendeu que acontece depois. Entenda e destrave.",
-    "tldr": "Você não tem dificuldade de dizer não: você tem facilidade de prever a decepção dos outros. A culpa que vem depois não é sinal de que você errou — é o preço de quebrar uma regra que aprendeu cedo, de que ser bom é estar disponível. Dizer não fica possível quando você para de tentar controlar a reação do outro e passa a definir o que você vai fazer.",
-    "datePublished": "2026-08-09",
-    "readingMinutes": 8,
+    "slug": "pai-nosso-significado",
+    "url": "https://aemori.com/pt-br/blog/pai-nosso-significado/",
+    "title": "Pai Nosso: significado de cada frase da oração",
+    "description": "Entenda o Pai Nosso frase a frase: o que Jesus ensinou, onde a oração aparece na Bíblia, por que existem versões diferentes e como orá-la com mais atenção.",
+    "tldr": "O Pai Nosso é a oração que Jesus ensinou aos discípulos e aparece em Mateus 6 e em Lucas 11. Em poucas frases ele reúne adoração, pedido, perdão e proteção, nessa ordem. Entender cada parte faz a diferença entre repetir a oração por hábito e orá-la de verdade.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1770228227994-0034e0b24e1a?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxxdWlldCUyMG1vbWVudCUyMGFsb25lJTIwd2FybSUyMHdpbmRvdyUyMGxpZ2h0JTIwdGhvdWdodGZ1bHxlbnwxfDB8fHwxNzg2Mjk4NTk5fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Homem sentado a uma mesa segurando uma xícara, em luz suave de janela",
-      "credit": "Yasin Onus",
-      "creditUrl": "https://unsplash.com/@yasinonus?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1770664064724-6f997d74e975?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxwcmF5aW5nJTIwaGFuZHMlMjBzb2Z0JTIwd2luZG93JTIwbGlnaHR8ZW58MXwwfHx8MTc5MjY5MzI5MHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Raios de sol atravessando as mãos de uma pessoa",
+      "credit": "Liana S",
+      "creditUrl": "https://unsplash.com/@cherstve_pechivo?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como dizer não sem sentir culpa?",
-        "a": "Ganhe tempo antes de responder (\"vou ver e te falo\"), seja breve na recusa e não peça desculpa por existir. A culpa costuma aparecer mesmo assim no começo — ela diminui com a repetição, não com a frase perfeita. O objetivo não é dizer não sem sentir nada, é dizer não mesmo sentindo."
+        "q": "Quem escreveu o Pai Nosso?",
+        "a": "Segundo os Evangelhos, foi o próprio Jesus quem ensinou a oração aos seus discípulos. Ela aparece em Mateus 6:9-13, no Sermão do Monte, e em uma versão mais curta em Lucas 11:2-4, quando um discípulo pediu: “Senhor, ensina-nos a orar”."
       },
       {
-        "q": "Por que sinto culpa quando digo não?",
-        "a": "Porque você quebrou uma regra aprendida cedo, de que ser boa pessoa é estar sempre disponível. Sob essa regra, recusar não parece uma escolha, parece falha de caráter — e por isso a culpa fica desproporcional ao que realmente aconteceu."
+        "q": "Por que existem versões diferentes do Pai Nosso?",
+        "a": "Por dois motivos: os Evangelhos de Mateus e de Lucas registram a oração com palavras um pouco diferentes, e as traduções e tradições escolhem formulações próprias, como “dívidas” ou “ofensas” e a inclusão, ou não, da frase final “porque teu é o reino”. O sentido geral é o mesmo."
       },
       {
-        "q": "O que são limites emocionais?",
-        "a": "Um limite é o que você vai fazer, não o que o outro tem que fazer. \"Pare de me ligar tarde\" é uma exigência e depende da pessoa obedecer. \"Depois das dez eu não atendo\" é um limite e funciona mesmo que ela continue ligando. Essa diferença é o que tira o medo da reação."
+        "q": "O que quer dizer “santificado seja o teu nome”?",
+        "a": "Quer dizer que o nome de Deus seja reconhecido como santo, honrado e respeitado. É o primeiro pedido da oração e não pede nada para quem ora: coloca Deus no centro antes de qualquer outra coisa."
       },
       {
-        "q": "Preciso justificar quando digo não?",
-        "a": "Não. Quanto mais longa a justificativa, mais negociável o não parece. \"Não vai dar\" encerra o assunto; uma lista de razões abre uma porta que a outra pessoa vai empurrar. Uma frase curta e gentil é suficiente."
+        "q": "Quem diz “porque teu é o reino e o poder, e a glória” está errado?",
+        "a": "Não. Essa frase não está nos manuscritos mais antigos de Mateus, por isso algumas Bíblias a trazem entre colchetes, mas é uma doxologia de louvor usada há muitos séculos em várias igrejas cristãs. Dizê-la ou não é uma questão de tradição, não de certo e errado."
       },
       {
-        "q": "Dizer não afasta as pessoas?",
-        "a": "Afasta quem só se aproximava pela sua disponibilidade — e aproxima quem prefere saber onde você está de verdade. Relações que só se sustentam enquanto você nunca recusa nada já eram desiguais antes do primeiro não."
+        "q": "Posso orar o Pai Nosso com as minhas palavras?",
+        "a": "Sim. Jesus o deu como modelo, e muitos cristãos oram cada frase com as suas próprias palavras, acrescentando o que vivem naquele dia. Também é perfeitamente válido dizê-lo exatamente como está, como oração conhecida e compartilhada."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "como-dizer-nao-sem-culpa",
-    "url": "https://aemori.com/pt-pt/blog/como-dizer-nao-sem-culpa/",
-    "title": "Como dizer não sem sentir culpa",
-    "description": "Dizes que sim e passas o resto do dia com raiva de ti mesmo. O problema não é não saberes dizer não — é o que aprendeste que acontece depois. Percebe e destrava.",
-    "tldr": "Não tens dificuldade em dizer não: tens facilidade em prever a desilusão dos outros. A culpa que vem a seguir não é sinal de que erraste — é o preço de quebrar uma regra que aprendeste cedo, a de que ser boa pessoa é estar disponível. Dizer não torna-se possível quando deixas de tentar controlar a reação do outro e passas a definir o que tu vais fazer.",
-    "datePublished": "2026-08-09",
-    "readingMinutes": 8,
+    "slug": "pai-nosso-significado",
+    "url": "https://aemori.com/pt-pt/blog/pai-nosso-significado/",
+    "title": "Pai Nosso: significado de cada frase da oração",
+    "description": "Percebe o Pai Nosso frase a frase: o que Jesus ensinou, onde a oração aparece na Bíblia, porque existem versões diferentes e como orá-la com mais atenção.",
+    "tldr": "O Pai Nosso é a oração que Jesus ensinou aos discípulos e aparece em Mateus 6 e em Lucas 11. Em poucas frases reúne adoração, pedido, perdão e proteção, por esta ordem. Perceber cada parte faz a diferença entre repetir a oração por hábito e orá-la a sério.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1770228227994-0034e0b24e1a?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxxdWlldCUyMG1vbWVudCUyMGFsb25lJTIwd2FybSUyMHdpbmRvdyUyMGxpZ2h0JTIwdGhvdWdodGZ1bHxlbnwxfDB8fHwxNzg2Mjk4NTk5fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Homem sentado a uma mesa a segurar uma chávena, em luz suave de janela",
-      "credit": "Yasin Onus",
-      "creditUrl": "https://unsplash.com/@yasinonus?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1770664064724-6f997d74e975?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxwcmF5aW5nJTIwaGFuZHMlMjBzb2Z0JTIwd2luZG93JTIwbGlnaHR8ZW58MXwwfHx8MTc5MjY5MzI5MHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Raios de sol a atravessar as mãos de uma pessoa",
+      "credit": "Liana S",
+      "creditUrl": "https://unsplash.com/@cherstve_pechivo?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como dizer não sem sentir culpa?",
-        "a": "Ganha tempo antes de responder (\"depois digo-te\"), sê breve na recusa e não peças desculpa por existires. A culpa costuma aparecer na mesma ao início — diminui com a repetição, não com a frase perfeita. O objectivo não é dizer não sem sentir nada, é dizer não mesmo sentindo."
+        "q": "Quem escreveu o Pai Nosso?",
+        "a": "Segundo os Evangelhos, foi o próprio Jesus quem ensinou a oração aos seus discípulos. Aparece em Mateus 6:9-13, no Sermão da Montanha, e numa versão mais curta em Lucas 11:2-4, quando um discípulo pediu: “Senhor, ensina-nos a orar”."
       },
       {
-        "q": "Porque é que sinto culpa quando digo não?",
-        "a": "Porque quebraste uma regra aprendida cedo, a de que ser boa pessoa é estar sempre disponível. Sob essa regra, recusar não parece uma escolha, parece falha de carácter — e por isso a culpa fica desproporcionada ao que realmente aconteceu."
+        "q": "Porque existem versões diferentes do Pai Nosso?",
+        "a": "Por dois motivos: os Evangelhos de Mateus e de Lucas registam a oração com palavras um pouco diferentes, e as traduções e tradições escolhem formulações próprias, como “dívidas” ou “ofensas” e a inclusão, ou não, da frase final “porque teu é o reino”. O sentido geral é o mesmo."
       },
       {
-        "q": "O que são limites emocionais?",
-        "a": "Um limite é o que tu vais fazer, não o que o outro tem de fazer. \"Para de me ligar tarde\" é uma exigência e depende de a pessoa obedecer. \"Depois das dez não atendo\" é um limite e funciona mesmo que ela continue a ligar. Essa diferença é o que tira o medo da reacção."
+        "q": "O que quer dizer “santificado seja o teu nome”?",
+        "a": "Quer dizer que o nome de Deus seja reconhecido como santo, honrado e respeitado. É o primeiro pedido da oração e não pede nada a quem ora: coloca Deus no centro antes de qualquer outra coisa."
       },
       {
-        "q": "Preciso de justificar quando digo não?",
-        "a": "Não. Quanto mais longa a justificação, mais negociável parece o não. \"Não vai dar\" encerra o assunto; uma lista de razões abre uma porta que a outra pessoa vai empurrar. Uma frase curta e gentil chega."
+        "q": "Quem diz “porque teu é o reino e o poder, e a glória” está errado?",
+        "a": "Não. Esta frase não consta dos manuscritos mais antigos de Mateus, por isso algumas Bíblias trazem-na entre parênteses retos, mas é uma doxologia de louvor usada há muitos séculos em várias igrejas cristãs. Dizê-la ou não é uma questão de tradição, não de certo e errado."
       },
       {
-        "q": "Dizer não afasta as pessoas?",
-        "a": "Afasta quem só se aproximava pela tua disponibilidade — e aproxima quem prefere saber onde estás de verdade. Relações que só se sustentam enquanto nunca recusas nada já eram desiguais antes do primeiro não."
+        "q": "Posso orar o Pai Nosso com as minhas palavras?",
+        "a": "Sim. Jesus deu-o como modelo, e muitos cristãos oram cada frase com as suas próprias palavras, acrescentando o que vivem nesse dia. Também é perfeitamente válido dizê-lo exatamente como está, como oração conhecida e partilhada."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "como-parar-de-pensar-demais",
-    "url": "https://aemori.com/pt-br/blog/como-parar-de-pensar-demais/",
-    "title": "Como parar de pensar demais",
-    "description": "Sua mente repassa a mesma cena há horas e não chega a lugar nenhum. Entenda por que ruminar parece útil sem ser, e o que realmente interrompe o ciclo.",
-    "tldr": "Pensar demais não é pensar muito — é pensar em círculo. A ruminação se disfarça de solução de problema, mas nunca chega a uma decisão, porque faz a pergunta errada: pergunta \"por quê\" em vez de \"o quê\". Mandar a mente parar piora. O que interrompe o ciclo é dar ao pensamento um fim que ele sozinho não tem: escrever até chegar a uma decisão ou à conclusão de que aquilo não depende de você.",
-    "datePublished": "2026-08-08",
-    "readingMinutes": 9,
+    "slug": "oracao-da-noite",
+    "url": "https://aemori.com/pt-br/blog/oracao-da-noite/",
+    "title": "Oração da noite: como orar antes de dormir, com versículos",
+    "description": "Como fazer a oração da noite antes de dormir: um roteiro simples de cinco passos, versículos sobre o descanso e o que fazer quando o sono não vem.",
+    "tldr": "A oração da noite é um momento curto para fechar o dia diante de Deus: agradecer, rever o que passou, entregar o que ficou por resolver e descansar. A Bíblia liga o sono à confiança, em textos como Salmos 4:8 e Provérbios 3:24. Cinco minutos e algumas frases honestas bastam.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1505929184174-3cd3716bd799?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxhd2FrZSUyMGF0JTIwbmlnaHQlMjB0aGlua2luZyUyMHdpbmRvd3xlbnwxfDB8fHwxNzg2MTg5ODkwfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Mulher sentada junto a uma janela, olhando para fora, num ambiente escuro",
-      "credit": "JD Mason",
-      "creditUrl": "https://unsplash.com/@jmason?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1719859061194-04c67413a472?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxxdWlldCUyMG5pZ2h0JTIwc2t5JTIwc3RhcnMlMjBwZWFjZWZ1bHxlbnwxfDB8fHwxNzkyNjkzMjg5fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Céu noturno cheio de estrelas sobre silhuetas de árvores",
+      "credit": "Brandon Griggs",
+      "creditUrl": "https://unsplash.com/@paralitik?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como parar de pensar demais?",
-        "a": "Não tentando parar, e sim dando um fim ao pensamento. Reconheça que está ruminando, troque as perguntas \"por quê\" por perguntas \"o quê\" (o que eu faço agora, o que depende de mim), separe o que está na sua mão do que não está, e escreva o que está girando até chegar a uma decisão. Mandar a mente parar não funciona porque verificar se você parou já é pensar no assunto."
+        "q": "Qual é uma boa oração curta para antes de dormir?",
+        "a": "Algo simples como: “Senhor, obrigado pelo dia. Perdoa o que errei, cuida de quem amo e recebe as minhas preocupações. Dá-me um sono tranquilo. Amém.” Se preferir um versículo, use Salmos 4:8: “Em paz me deitarei e dormirei, porque só tu, Senhor, me fazes habitar em segurança.”"
       },
       {
-        "q": "Por que minha mente não para de pensar?",
-        "a": "Porque o assunto continua em aberto. A mente não larga o que não foi concluído, e a ruminação nunca conclui nada — ela repassa o mesmo material sem chegar a uma decisão. Enquanto não houver um desfecho, mesmo que seja \"isso não depende de mim\", ela continua voltando."
+        "q": "Que versículo posso ler antes de dormir?",
+        "a": "Salmos 4:8, Salmos 3:5, Provérbios 3:24 e Salmos 121:3-4 são os mais usados porque falam de dormir em segurança e de alguém que guarda enquanto você descansa. Escolha um, leia devagar duas vezes e ore com as palavras dele."
       },
       {
-        "q": "Qual a diferença entre pensar e ruminar?",
-        "a": "Pensar avança e termina: você examina, decide e para. Ruminar gira: você percorre o mesmo material repetidamente sem que nada vire decisão. O sinal mais claro é o formato das perguntas — ruminação pergunta \"por quê\" e olha para trás; pensar pergunta \"o quê\" e olha para frente."
+        "q": "Posso fazer a oração da noite deitado?",
+        "a": "Sim. Não há posição obrigatória. O salmista fala de lembrar de Deus no leito (Salmos 63:6). Se perceber que o sono vence você, não há problema: muitos cristãos veem em adormecer em oração um sinal de confiança."
       },
       {
-        "q": "Pensar demais é ansiedade?",
-        "a": "Nem sempre, mas os dois andam juntos com frequência. Ruminar de vez em quando é normal. Se os pensamentos não param na maior parte dos dias, atrapalham o sono com regularidade, vêm com o corpo em alerta ou assustam você, pode ser transtorno de ansiedade, TOC ou depressão — e vale procurar um psicólogo."
+        "q": "O que fazer se a ansiedade me impede de dormir?",
+        "a": "Anote o que preocupa em um papel para tratar no dia seguinte, entregue a preocupação a Deus numa frase simples e leia um versículo devagar. Se a falta de sono é frequente ou dura semanas, procure um médico ou psicólogo; orar e cuidar da saúde caminham juntos."
       },
       {
-        "q": "Escrever ajuda a parar de pensar demais?",
-        "a": "Ajuda, por dois motivos. Uma frase tem começo e ponto final, então escrever obriga o pensamento a assumir um formato que exige um fim. E no papel a repetição fica visível: na cabeça você repassa a mesma ideia trinta vezes achando que avança, escrita ela aparece duas vezes e o círculo fica óbvio."
+        "q": "Como fazer a oração da noite com crianças?",
+        "a": "Mantenha curto e sempre igual: agradecer por uma coisa do dia, pedir proteção para a família e dizer boa noite. Deixe a criança falar com as próprias palavras e evite transformar o momento em cobrança."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "como-parar-de-pensar-demais",
-    "url": "https://aemori.com/pt-pt/blog/como-parar-de-pensar-demais/",
-    "title": "Como parar de pensar demais",
-    "description": "A tua cabeça repassa a mesma cena há horas e não chega a lado nenhum. Percebe porque ruminar parece útil sem o ser, e o que interrompe mesmo o ciclo.",
-    "tldr": "Pensar demais não é pensar muito — é pensar em círculo. A ruminação disfarça-se de resolução de problemas, mas nunca chega a uma decisão, porque faz a pergunta errada: pergunta \"porquê\" em vez de \"o quê\". Mandar a cabeça parar piora. O que interrompe o ciclo é dar ao pensamento um fim que ele sozinho não tem: escrever até chegar a uma decisão ou à conclusão de que aquilo não depende de ti.",
-    "datePublished": "2026-08-08",
-    "readingMinutes": 9,
+    "slug": "oracao-da-noite",
+    "url": "https://aemori.com/pt-pt/blog/oracao-da-noite/",
+    "title": "Oração da noite: como orar antes de dormir, com versículos",
+    "description": "Como fazer a oração da noite antes de dormir: um roteiro simples de cinco passos, versículos sobre o descanso e o que fazer quando o sono não vem.",
+    "tldr": "A oração da noite é um momento curto para fechar o dia diante de Deus: agradecer, rever o que passou, entregar o que ficou por resolver e descansar. A Bíblia liga o sono à confiança, em textos como Salmos 4:8 e Provérbios 3:24. Cinco minutos e algumas frases honestas chegam.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1505929184174-3cd3716bd799?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxhd2FrZSUyMGF0JTIwbmlnaHQlMjB0aGlua2luZyUyMHdpbmRvd3xlbnwxfDB8fHwxNzg2MTg5ODkwfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Mulher sentada junto a uma janela, a olhar para fora, num ambiente escuro",
-      "credit": "JD Mason",
-      "creditUrl": "https://unsplash.com/@jmason?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1719859061194-04c67413a472?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxxdWlldCUyMG5pZ2h0JTIwc2t5JTIwc3RhcnMlMjBwZWFjZWZ1bHxlbnwxfDB8fHwxNzkyNjkzMjg5fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Céu noturno cheio de estrelas sobre silhuetas de árvores",
+      "credit": "Brandon Griggs",
+      "creditUrl": "https://unsplash.com/@paralitik?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como parar de pensar demais?",
-        "a": "Não tentando parar, mas dando um fim ao pensamento. Reconhece que estás a ruminar, troca as perguntas \"porquê\" por perguntas \"o quê\" (o que faço agora, o que depende de mim), separa o que está na tua mão do que não está, e escreve o que anda a girar até chegares a uma decisão. Mandar a cabeça parar não resulta porque verificar se paraste já é pensar no assunto."
+        "q": "Qual é uma boa oração curta para antes de dormir?",
+        "a": "Algo simples como: “Senhor, obrigado pelo dia. Perdoa o que errei, cuida de quem amo e recebe as minhas preocupações. Dá-me um sono tranquilo. Ámen.” Se preferires um versículo, usa Salmos 4:8: “Em paz me deitarei e dormirei, porque só tu, Senhor, me fazes habitar em segurança.”"
       },
       {
-        "q": "Porque é que a minha cabeça não pára de pensar?",
-        "a": "Porque o assunto continua em aberto. A cabeça não larga o que não foi concluído, e a ruminação nunca conclui nada — repassa o mesmo material sem chegar a uma decisão. Enquanto não houver um desfecho, mesmo que seja \"isto não depende de mim\", continua a voltar."
+        "q": "Que versículo posso ler antes de dormir?",
+        "a": "Salmos 4:8, Salmos 3:5, Provérbios 3:24 e Salmos 121:3-4 são os mais usados porque falam de dormir em segurança e de alguém que guarda enquanto descansas. Escolhe um, lê devagar duas vezes e ora com as palavras dele."
       },
       {
-        "q": "Qual é a diferença entre pensar e ruminar?",
-        "a": "Pensar avança e termina: examinas, decides e paras. Ruminar gira: percorres o mesmo material repetidamente sem que nada vire decisão. O sinal mais claro é o formato das perguntas — a ruminação pergunta \"porquê\" e olha para trás; pensar pergunta \"o quê\" e olha para a frente."
+        "q": "Posso fazer a oração da noite deitado?",
+        "a": "Sim. Não há posição obrigatória. O salmista fala de lembrar Deus no leito (Salmos 63:6). Se o sono te vencer, não há problema: muitos cristãos veem em adormecer em oração um sinal de confiança."
       },
       {
-        "q": "Pensar demais é ansiedade?",
-        "a": "Nem sempre, mas andam juntos com frequência. Ruminar de vez em quando é normal. Se os pensamentos não param na maior parte dos dias, estragam o sono com regularidade, vêm com o corpo em alerta ou te assustam, pode ser perturbação de ansiedade, POC ou depressão — e vale a pena procurar um psicólogo."
+        "q": "O que fazer se a ansiedade não me deixa dormir?",
+        "a": "Anota o que te preocupa num papel para tratar no dia seguinte, entrega a preocupação a Deus numa frase simples e lê um versículo devagar. Se a falta de sono é frequente ou dura semanas, procura um médico ou psicólogo; orar e cuidar da saúde caminham juntos."
       },
       {
-        "q": "Escrever ajuda a parar de pensar demais?",
-        "a": "Ajuda, por dois motivos. Uma frase tem princípio e ponto final, por isso escrever obriga o pensamento a assumir um formato que exige um fim. E no papel a repetição fica visível: na cabeça repassas a mesma ideia trinta vezes a achar que avanças, escrita aparece duas vezes e o círculo torna-se óbvio."
+        "q": "Como fazer a oração da noite com crianças?",
+        "a": "Mantém curto e sempre igual: agradecer por uma coisa do dia, pedir proteção para a família e dizer boa noite. Deixa a criança falar com as próprias palavras e evita transformar o momento numa cobrança."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "cansaco-que-dormir-nao-resolve",
-    "url": "https://aemori.com/pt-br/blog/cansaco-que-dormir-nao-resolve/",
-    "title": "O cansaço que dormir não resolve",
-    "description": "Você dorme oito horas e acorda exausto. Não é preguiça nem falta de sono — é cansaço emocional, e ele funciona por outras regras. Entenda o que é e o que realmente descansa.",
-    "tldr": "Existe um cansaço que o sono não cura: o cansaço emocional. Ele vem de esforço invisível — decidir, conter reações, sustentar preocupações — e por isso dormir não o resolve, porque o sono repõe o corpo, não a atenção emocional. O que descansa esse tipo de cansaço é esvaziar, não dormir mais.",
-    "datePublished": "2026-08-06",
-    "readingMinutes": 8,
+    "slug": "oracao-da-manha",
+    "url": "https://aemori.com/pt-br/blog/oracao-da-manha/",
+    "title": "Oração da manhã: como começar o dia com Deus",
+    "description": "Como fazer uma oração da manhã em cinco minutos, com versículos dos Salmos e de Lamentações, um exemplo de oração e dicas para manhãs corridas.",
+    "tldr": "A oração da manhã é um momento curto, no começo do dia, para entregar o dia a Deus antes das tarefas. Em cinco minutos dá para respirar, ler um versículo, agradecer, apresentar o que o dia traz e pedir direção. A Bíblia incentiva: “Pela manhã ouves a minha voz, ó Senhor; pela manhã te apresento a minha oração, e vigio” (Salmos 5:3).",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1759523621990-58a409b68fad?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxlbXB0eSUyMGJlZCUyMG1vcm5pbmclMjBsaWdodCUyMHRpcmVkJTIwcXVpZXQlMjByb29tfGVufDF8MHx8fDE3ODYxMzM3NjZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Luz do sol a filtrar por cortinas finas num quarto em penumbra",
-      "credit": "Lilishia Gounder",
-      "creditUrl": "https://unsplash.com/@lilishia?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1632494570925-189fd0025985?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxxdWlldCUyMG1vcm5pbmclMjBzdW5yaXNlJTIwd2luZG93JTIwY29mZmVlfGVufDF8MHx8fDE3OTI2OTMyODN8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma xícara no parapeito de uma janela",
+      "credit": "Maheima Kapur",
+      "creditUrl": "https://unsplash.com/@maheima_kapur?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Por que acordo cansado mesmo dormindo bem?",
-        "a": "Provavelmente é cansaço emocional, não físico. Ele vem de esforço invisível — decidir o dia inteiro, conter reações, sustentar preocupações — e o sono não o resolve porque repõe o corpo, não a atenção emocional gasta."
+        "q": "Qual é uma boa oração para começar o dia?",
+        "a": "Uma oração simples que agradeça, entregue o dia a Deus e peça direção. Os Salmos oferecem um modelo: “faze-me saber o caminho que devo seguir, porque a ti elevo a minha alma” (Salmos 143:8). Você pode usar as suas próprias palavras."
       },
       {
-        "q": "O que é cansaço emocional?",
-        "a": "É o esgotamento causado por processamento emocional acumulado: coisas que você sentiu durante o dia e não teve tempo de olhar. Continuam em aberto em segundo plano, consumindo recursos, como abas que ficaram abertas."
+        "q": "Quanto tempo deve durar a oração da manhã?",
+        "a": "Cinco minutos bastam para respirar, ler um versículo, agradecer e entregar o dia. Em manhãs corridas, um minuto com um versículo e uma frase de entrega já é uma oração."
       },
       {
-        "q": "Quais são os sinais de cansaço emocional?",
-        "a": "Acordar cansado depois de dormir bem, tarefas pequenas parecerem pesadas, irritar-se com pouco, sentir-se anestesiado (nem mal nem bem), fins de semana que não descansam e vontade de estar sozinho. Costuma parecer indiferença, não tristeza."
+        "q": "A Bíblia manda orar de manhã?",
+        "a": "Não impõe um horário, mas apresenta a manhã como um bom momento de oração: o Salmo 5:3 fala em apresentar a oração pela manhã, e Jesus orava de madrugada (Marcos 1:35). O que a Bíblia destaca é a constância."
       },
       {
-        "q": "Como descansar do cansaço emocional?",
-        "a": "Esvaziando, não dormindo mais. Escreva o que ficou por dizer do dia, dê nome preciso ao que sente, evite descanso de ecrã (o scroll ocupa a atenção em vez de a descansar) e reduza o tempo a antecipar o que os outros precisam."
+        "q": "Qual versículo ler de manhã?",
+        "a": "Um que fale de recomeço, como Lamentações 3:22-23 (“renovam-se cada manhã”), Salmos 5:3 ou Salmos 143:8. Leia devagar, duas vezes, e converse com Deus a partir dele."
       },
       {
-        "q": "Cansaço emocional é o mesmo que burnout ou depressão?",
-        "a": "Não. Cansaço emocional é comum e costuma passar com descanso adequado. Se dura semanas, nada dá prazer, ou acordar virou a parte mais difícil do dia, pode ser burnout ou depressão — nesses casos procure um psicólogo ou médico."
+        "q": "E se eu perder a hora e não conseguir orar de manhã?",
+        "a": "Ore em outro momento do dia. A manhã é uma boa opção, mas não a única: o importante é manter um tempo regular de oração, sem culpa quando falhar."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "cansaco-que-dormir-nao-resolve",
-    "url": "https://aemori.com/pt-pt/blog/cansaco-que-dormir-nao-resolve/",
-    "title": "O cansaço que dormir não resolve",
-    "description": "Dormes oito horas e acordas exausto. Não é preguiça nem falta de sono — é cansaço emocional, e funciona por outras regras. Percebe o que é e o que descansa mesmo.",
-    "tldr": "Existe um cansaço que o sono não cura: o cansaço emocional. Vem de esforço invisível — decidir, conter reações, sustentar preocupações — e por isso dormir não o resolve, porque o sono repõe o corpo, não a atenção emocional. O que descansa esse tipo de cansaço é esvaziar, não dormir mais.",
-    "datePublished": "2026-08-06",
-    "readingMinutes": 8,
+    "slug": "oracao-da-manha",
+    "url": "https://aemori.com/pt-pt/blog/oracao-da-manha/",
+    "title": "Oração da manhã: como começar o dia com Deus",
+    "description": "Como fazer uma oração da manhã em cinco minutos, com versículos dos Salmos e de Lamentações, um exemplo de oração e dicas para manhãs apressadas.",
+    "tldr": "A oração da manhã é um momento curto, no início do dia, para entregar o dia a Deus antes das tarefas. Em cinco minutos dá para respirar, ler um versículo, agradecer, apresentar o que o dia traz e pedir direção. A Bíblia incentiva: “Pela manhã ouves a minha voz, ó Senhor; pela manhã te apresento a minha oração, e vigio” (Salmos 5:3).",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1759523621990-58a409b68fad?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxlbXB0eSUyMGJlZCUyMG1vcm5pbmclMjBsaWdodCUyMHRpcmVkJTIwcXVpZXQlMjByb29tfGVufDF8MHx8fDE3ODYxMzM3NjZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Luz do sol a filtrar por cortinas finas num quarto em penumbra",
-      "credit": "Lilishia Gounder",
-      "creditUrl": "https://unsplash.com/@lilishia?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1632494570925-189fd0025985?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxxdWlldCUyMG1vcm5pbmclMjBzdW5yaXNlJTIwd2luZG93JTIwY29mZmVlfGVufDF8MHx8fDE3OTI2OTMyODN8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma chávena no parapeito de uma janela",
+      "credit": "Maheima Kapur",
+      "creditUrl": "https://unsplash.com/@maheima_kapur?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Porque é que acordo cansado mesmo dormindo bem?",
-        "a": "Provavelmente é cansaço emocional, não físico. Vem de esforço invisível — decidir o dia inteiro, conter reações, sustentar preocupações — e o sono não o resolve porque repõe o corpo, não a atenção emocional gasta."
+        "q": "Qual é uma boa oração para começar o dia?",
+        "a": "Uma oração simples que agradeça, entregue o dia a Deus e peça direção. Os Salmos oferecem um modelo: “faze-me saber o caminho que devo seguir, porque a ti elevo a minha alma” (Salmos 143:8). Podes usar as tuas próprias palavras."
       },
       {
-        "q": "O que é cansaço emocional?",
-        "a": "É o esgotamento causado por processamento emocional acumulado: coisas que sentiste durante o dia e não tiveste tempo de olhar. Continuam em aberto em segundo plano, a consumir recursos, como separadores que ficaram abertos."
+        "q": "Quanto tempo deve durar a oração da manhã?",
+        "a": "Cinco minutos chegam para respirar, ler um versículo, agradecer e entregar o dia. Em manhãs apressadas, um minuto com um versículo e uma frase de entrega já é uma oração."
       },
       {
-        "q": "Quais são os sinais de cansaço emocional?",
-        "a": "Acordar cansado depois de dormir bem, tarefas pequenas parecerem pesadas, irritares-te com pouco, sentires-te anestesiado (nem mal nem bem), fins de semana que não descansam e vontade de estar sozinho. Costuma parecer indiferença, não tristeza."
+        "q": "A Bíblia manda orar de manhã?",
+        "a": "Não impõe um horário, mas apresenta a manhã como um bom momento de oração: o Salmo 5:3 fala em apresentar a oração pela manhã, e Jesus orava de madrugada (Marcos 1:35). O que a Bíblia destaca é a constância."
       },
       {
-        "q": "Como descansar do cansaço emocional?",
-        "a": "Esvaziando, não dormindo mais. Escreve o que ficou por dizer do dia, dá nome preciso ao que sentes, evita descanso de ecrã (o scroll ocupa a atenção em vez de a descansar) e reduz o tempo a antecipar o que os outros precisam."
+        "q": "Que versículo ler de manhã?",
+        "a": "Um que fale de recomeço, como Lamentações 3:22-23 (“renovam-se cada manhã”), Salmos 5:3 ou Salmos 143:8. Lê devagar, duas vezes, e conversa com Deus a partir dele."
       },
       {
-        "q": "Cansaço emocional é o mesmo que burnout ou depressão?",
-        "a": "Não. O cansaço emocional é comum e costuma passar com descanso adequado. Se dura semanas, nada dá prazer, ou acordar se tornou a parte mais difícil do dia, pode ser burnout ou depressão — nesses casos procura um psicólogo ou médico."
+        "q": "E se me atrasar e não conseguir orar de manhã?",
+        "a": "Ora noutro momento do dia. A manhã é uma boa opção, mas não a única: o importante é manter um tempo regular de oração, sem culpa quando falhares."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "como-melhorar-autoestima",
-    "url": "https://aemori.com/pt-br/blog/como-melhorar-autoestima/",
-    "title": "Como melhorar a autoestima: o que funciona de verdade",
-    "description": "Autoestima não se constrói repetindo que você é incrível. Constrói-se com evidência. Veja o método que realmente funciona — e por que os elogios a si mesmo não colam.",
-    "tldr": "Autoestima não se constrói com elogios a si mesmo — constrói-se com evidência. O cérebro não acredita em afirmações que contradizem o que ele observa, mas acredita em provas acumuladas. Por isso o caminho é registar pequenas evidências reais do que você faz, e não repetir frases que não sente.",
-    "datePublished": "2026-08-05",
-    "readingMinutes": 9,
+    "slug": "oracao-diaria-habito",
+    "url": "https://aemori.com/pt-br/blog/oracao-diaria-habito/",
+    "title": "Oração diária: como criar o hábito de orar todos os dias",
+    "description": "Quer orar todos os dias e não consegue manter? Veja o que a Bíblia mostra sobre a oração diária e um método simples, com exemplos, para criar o hábito.",
+    "tldr": "Para criar o hábito da oração diária, comece pequeno (cinco minutos), prenda a oração a algo que você já faz todo dia, escolha sempre o mesmo lugar e volte no dia seguinte quando falhar, sem culpa. A Bíblia mostra Jesus orando de madrugada e Daniel orando três vezes ao dia: o que sustenta a oração é a constância, não a emoção do momento.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1736625356065-fd22220a78c5?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxtaXJyb3IlMjByZWZsZWN0aW9uJTIwc29mdCUyMGxpZ2h0JTIwbWluaW1hbCUyMHdhcm18ZW58MXwwfHx8MTc4NTk0ODgyMHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um quarto com cortinas e um espelho, em luz suave",
-      "credit": "Kellen Riggin",
-      "creditUrl": "https://unsplash.com/@kalaniparker?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1643716991951-285e23e35961?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw5fHxjYW5kbGUlMjBxdWlldCUyMGV2ZW5pbmclMjByb3V0aW5lfGVufDF8MHx8fDE3OTI2OTMyOTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma vela acesa e um livro sobre uma manta",
+      "credit": "Mindaugas Norvilas",
+      "creditUrl": "https://unsplash.com/@norvilas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como melhorar a autoestima de verdade?",
-        "a": "Reunindo evidência, não elogios. Registe diariamente uma coisa concreta que você fez e escreva o que aquilo mostra sobre si. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas ao longo do tempo."
+        "q": "Quanto tempo devo orar por dia?",
+        "a": "Não há tempo mínimo na Bíblia. Para criar o hábito, cinco minutos todos os dias funcionam melhor do que sessões longas e raras. Quando a rotina estiver firme, o tempo costuma aumentar naturalmente."
       },
       {
-        "q": "Por que elogiar a si mesmo não aumenta a autoestima?",
-        "a": "Porque cria contradição. Quando a afirmação está longe do que você sente, o cérebro responde listando provas do contrário — o chamado efeito bumerangue. Quem tem autoestima baixa costuma sentir-se pior depois de repetir elogios que não acredita."
+        "q": "Qual é o melhor horário para orar?",
+        "a": "O que você consegue manter. Jesus orava de madrugada (Marcos 1:35) e Daniel orava três vezes ao dia (Daniel 6:10), mas a Bíblia não impõe um horário único. Escolha um momento fixo e prenda-o a algo que você já faz."
       },
       {
-        "q": "Qual a diferença entre autoestima e autoconfiança?",
-        "a": "Autoconfiança é sobre capacidade (“eu consigo fazer isto”); autoestima é sobre valor (“eu importo, mesmo quando falho”). Dá para ser muito competente e ter autoestima baixa."
+        "q": "O que fazer quando eu falho um dia de oração?",
+        "a": "Volte no dia seguinte, sem compensar e sem se culpar. O que quebra o hábito não é perder um dia, mas desistir depois dele."
       },
       {
-        "q": "Escrever um diário ajuda na autoestima?",
-        "a": "Ajuda, e é o método central: a sua memória é enviesada contra si, o registo não. Ao reler semanas de evidências concretas, você deixa de tentar acreditar em algo e passa a olhar para dados."
+        "q": "O que significa “orar sem cessar”?",
+        "a": "É a orientação de Paulo em 1 Tessalonicenses 5:17. Muitos leitores entendem como uma atitude constante de abertura a Deus ao longo do dia, alimentada por momentos fixos de oração, e não como falar o tempo todo."
       },
       {
-        "q": "Quanto tempo demora a melhorar a autoestima?",
-        "a": "Meses, não dias — ela erode ao longo de anos. O primeiro sinal de progresso não é sentir-se ótimo, mas notar que a crítica interna perdeu automaticidade: ainda fala, mas você já não acredita nela sem questionar."
+        "q": "Preciso orar sentindo algo especial?",
+        "a": "Não. Há dias de oração calorosa e dias de oração seca, e ambos contam. A constância importa mais do que a emoção."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "como-melhorar-autoestima",
-    "url": "https://aemori.com/pt-pt/blog/como-melhorar-autoestima/",
-    "title": "Como melhorar a autoestima: o que funciona mesmo",
-    "description": "A autoestima não se constrói a repetir que és incrível. Constrói-se com evidência. Vê o método que resulta — e porque é que os elogios a ti mesmo não colam.",
-    "tldr": "A autoestima não se constrói com elogios a ti mesmo — constrói-se com evidência. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas. Por isso o caminho é registar pequenas evidências reais do que fazes, e não repetir frases que não sentes.",
-    "datePublished": "2026-08-05",
-    "readingMinutes": 9,
+    "slug": "oracao-diaria-habito",
+    "url": "https://aemori.com/pt-pt/blog/oracao-diaria-habito/",
+    "title": "Oração diária: como criar o hábito de orar todos os dias",
+    "description": "Queres orar todos os dias e não consegues manter? Vê o que a Bíblia mostra sobre a oração diária e um método simples, com exemplos, para criares o hábito.",
+    "tldr": "Para criar o hábito da oração diária, começa pequeno (cinco minutos), liga a oração a algo que já fazes todos os dias, escolhe sempre o mesmo sítio e volta no dia seguinte quando falhares, sem culpa. A Bíblia mostra Jesus a orar de madrugada e Daniel a orar três vezes ao dia: o que sustenta a oração é a constância, não a emoção do momento.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1736625356065-fd22220a78c5?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxtaXJyb3IlMjByZWZsZWN0aW9uJTIwc29mdCUyMGxpZ2h0JTIwbWluaW1hbCUyMHdhcm18ZW58MXwwfHx8MTc4NTk0ODgyMHww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um quarto com cortinas e um espelho, em luz suave",
-      "credit": "Kellen Riggin",
-      "creditUrl": "https://unsplash.com/@kalaniparker?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1643716991951-285e23e35961?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw5fHxjYW5kbGUlMjBxdWlldCUyMGV2ZW5pbmclMjByb3V0aW5lfGVufDF8MHx8fDE3OTI2OTMyOTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma vela acesa e um livro sobre uma manta",
+      "credit": "Mindaugas Norvilas",
+      "creditUrl": "https://unsplash.com/@norvilas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como melhorar a autoestima a sério?",
-        "a": "Reunindo evidência, não elogios. Regista diariamente uma coisa concreta que fizeste e escreve o que aquilo mostra sobre ti. O cérebro não acredita em afirmações que contradizem o que observa, mas acredita em provas acumuladas ao longo do tempo."
+        "q": "Quanto tempo devo orar por dia?",
+        "a": "Não há tempo mínimo na Bíblia. Para criar o hábito, cinco minutos todos os dias funcionam melhor do que sessões longas e raras. Quando a rotina estiver firme, o tempo costuma aumentar naturalmente."
       },
       {
-        "q": "Porque é que elogiar-me não aumenta a autoestima?",
-        "a": "Porque cria contradição. Quando a afirmação está longe do que sentes, o cérebro responde a listar provas do contrário — o chamado efeito bumerangue. Quem tem autoestima baixa costuma sentir-se pior depois de repetir elogios em que não acredita."
+        "q": "Qual é a melhor hora para orar?",
+        "a": "A que consegues manter. Jesus orava de madrugada (Marcos 1:35) e Daniel orava três vezes ao dia (Daniel 6:10), mas a Bíblia não impõe um horário único. Escolhe um momento fixo e liga-o a algo que já fazes."
       },
       {
-        "q": "Qual a diferença entre autoestima e autoconfiança?",
-        "a": "A autoconfiança é sobre capacidade (“consigo fazer isto”); a autoestima é sobre valor (“eu importo, mesmo quando falho”). Dá para seres muito competente e teres autoestima baixa."
+        "q": "O que fazer quando falho um dia de oração?",
+        "a": "Volta no dia seguinte, sem compensar e sem te culpares. O que quebra o hábito não é perder um dia, mas desistir depois dele."
       },
       {
-        "q": "Escrever um diário ajuda na autoestima?",
-        "a": "Ajuda, e é o método central: a tua memória está enviesada contra ti, o registo não. Ao releres semanas de evidências concretas, deixas de tentar acreditar em algo e passas a olhar para dados."
+        "q": "O que significa “orar sem cessar”?",
+        "a": "É a orientação de Paulo em 1 Tessalonicenses 5:17. Muitos leitores entendem-na como uma atitude constante de abertura a Deus ao longo do dia, alimentada por momentos fixos de oração, e não como falar o tempo todo."
       },
       {
-        "q": "Quanto tempo demora a melhorar a autoestima?",
-        "a": "Meses, não dias — erode ao longo de anos. O primeiro sinal de progresso não é sentires-te ótimo, mas notares que a crítica interna perdeu automatismo: ainda fala, mas já não acreditas nela sem questionar."
+        "q": "Preciso de sentir algo especial quando oro?",
+        "a": "Não. Há dias de oração calorosa e dias de oração seca, e ambos contam. A constância importa mais do que a emoção."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "inteligencia-emocional",
-    "url": "https://aemori.com/pt-br/blog/inteligencia-emocional/",
-    "title": "Inteligência emocional: o que é e como desenvolver na prática",
-    "description": "Inteligência emocional é reconhecer, entender e lidar com o que você sente — e com o que os outros sentem. Veja os 5 pilares e como treinar cada um no dia a dia.",
-    "tldr": "Inteligência emocional é a capacidade de reconhecer o que você sente, entender de onde vem e escolher o que fazer com isso — em vez de apenas reagir. Não é dom nem personalidade: é um conjunto de habilidades que se treina, e o primeiro passo é o mais simples — dar nome ao que se sente.",
-    "datePublished": "2026-08-02",
-    "readingMinutes": 9,
+    "slug": "por-que-deus-nao-responde",
+    "url": "https://aemori.com/pt-br/blog/por-que-deus-nao-responde/",
+    "title": "Por que Deus não responde às minhas orações?",
+    "description": "Sente que Deus não responde às suas orações? Veja o que a Bíblia diz sobre silêncio, espera e respostas diferentes do esperado, com honestidade e sem fórmulas.",
+    "tldr": "Quando parece que Deus não responde, a Bíblia não dá uma explicação única, mas várias leituras honestas: os caminhos de Deus são diferentes dos nossos (Isaías 55:8-9), a resposta pode vir de outra forma, como a Paulo (2 Coríntios 12:8-9), e a própria Bíblia dá voz ao lamento de quem espera (Salmos 13). Você pode continuar orando, ser sincero, buscar apoio de pessoas e, se preciso, de profissionais.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 8,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1776109764926-ae63208aeced?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw2fHxzdW5yaXNlJTIwY2FsbSUyMGhvcml6b24lMjB3YXJtJTIwbWluaW1hbCUyMG5hdHVyZXxlbnwxfDB8fHwxNzg1Nzc4MjY4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pôr do sol dourado sobre um horizonte de oceano calmo",
-      "credit": "César Couto",
-      "creditUrl": "https://unsplash.com/@xcrap?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1789986186643-2212fa354ddc?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxxdWlldCUyMHdpbmRvdyUyMG1vcm5pbmclMjBsaWdodCUyMHdhaXRpbmd8ZW58MXwwfHx8MTc5MjY5MzMzNnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Silhueta de uma pessoa com uma xícara diante de uma grande janela em arco",
+      "credit": "Lina Bob",
+      "creditUrl": "https://unsplash.com/@anbb?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "O que é inteligência emocional?",
-        "a": "É a capacidade de reconhecer o que você sente, entender de onde vem e escolher o que fazer com isso, em vez de apenas reagir. Inclui também perceber e responder às emoções dos outros."
+        "q": "Por que Deus não responde às minhas orações?",
+        "a": "A Bíblia não oferece uma única explicação. Mostra que os caminhos de Deus são diferentes dos nossos (Isaías 55:8-9), que a resposta pode vir de outra forma (2 Coríntios 12:8-9) e que há pessoas fiéis que oraram com dor durante muito tempo (Salmos 13). O silêncio, por si só, não prova que você orou errado."
       },
       {
-        "q": "Quais são os pilares da inteligência emocional?",
-        "a": "São cinco: autoconsciência (perceber o que sente), autorregulação (não agir no impulso), motivação, empatia e habilidades sociais. A autoconsciência é a base — sem ela, os outros não se sustentam."
+        "q": "Deus sempre responde?",
+        "a": "Muitos cristãos resumem assim: a resposta pode ser “sim”, “não” ou “espera”. Não é uma frase bíblica, mas ajuda a lembrar que “não” e “espera” também são respostas. Ao mesmo tempo, é honesto reconhecer que há momentos em que o silêncio é difícil de entender, e que a Bíblia dá espaço para essa dor."
       },
       {
-        "q": "Inteligência emocional se aprende ou já se nasce com ela?",
-        "a": "Aprende-se. Ao contrário do que se pensa, não é traço de personalidade fixo: é um conjunto de habilidades que se treina com prática deliberada, como nomear emoções e observar padrões ao longo do tempo."
+        "q": "Posso reclamar a Deus na oração?",
+        "a": "Sim. Os Salmos têm muitas orações de queixa, como “Até quando, ó Senhor, te esquecerás de mim?” (Salmos 13:1). A honestidade na oração é bem-vinda. O que importa é não se afastar de Deus: continuar falando, mesmo cansado, é uma forma de confiança."
       },
       {
-        "q": "Como desenvolver inteligência emocional no dia a dia?",
-        "a": "Pergunte-se “o que estou sentindo?” duas vezes por dia, amplie o vocabulário emocional, comece pelo corpo (tensão, respiração), espere a onda passar antes de decidir, e escreva. Escrever é o treino mais direto porque transforma sensação difusa em palavra concreta."
+        "q": "Falta de fé impede Deus de responder?",
+        "a": "A Bíblia não apresenta a oração como um teste de fé que se passa ou reprova. Mostra pessoas com dúvidas e com dor que continuam orando. Dizer a quem sofre que falta fé costuma machucar e não ajuda. Muitas vezes o mais útil é ficar perto e orar junto."
       },
       {
-        "q": "Escrever um diário ajuda a inteligência emocional?",
-        "a": "Ajuda muito. Ao escrever, você identifica a emoção, dá-lhe nome e encontra a causa — os três primeiros passos da inteligência emocional num só gesto. E, ao reler, os padrões aparecem."
+        "q": "Quanto tempo devo esperar por uma resposta?",
+        "a": "Não há prazo bíblico definido. Lucas 18:1 fala em orar “sempre, e nunca desfalecer”. Enquanto espera, ajuda manter uma prática pequena e regular, anotar o que vai acontecendo, orar com outras pessoas e, quando houver necessidade prática, buscar também ajuda de profissionais."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "inteligencia-emocional",
-    "url": "https://aemori.com/pt-pt/blog/inteligencia-emocional/",
-    "title": "Inteligência emocional: o que é e como desenvolver na prática",
-    "description": "Inteligência emocional é reconhecer, compreender e lidar com o que sentes — e com o que os outros sentem. Vê os 5 pilares e como treinar cada um no dia a dia.",
-    "tldr": "Inteligência emocional é a capacidade de reconhecer o que sentes, perceber de onde vem e escolher o que fazer com isso — em vez de apenas reagir. Não é dom nem personalidade: é um conjunto de competências que se treina, e o primeiro passo é o mais simples — dar nome ao que se sente.",
-    "datePublished": "2026-08-02",
-    "readingMinutes": 9,
+    "slug": "por-que-deus-nao-responde",
+    "url": "https://aemori.com/pt-pt/blog/por-que-deus-nao-responde/",
+    "title": "Porque é que Deus não responde às minhas orações?",
+    "description": "Sentes que Deus não responde às tuas orações? Vê o que a Bíblia diz sobre silêncio, espera e respostas diferentes do esperado, com honestidade e sem fórmulas.",
+    "tldr": "Quando parece que Deus não responde, a Bíblia não dá uma explicação única, mas várias leituras honestas: os caminhos de Deus são diferentes dos nossos (Isaías 55:8-9), a resposta pode vir de outra forma, como a Paulo (2 Coríntios 12:8-9), e a própria Bíblia dá voz ao lamento de quem espera (Salmos 13). Podes continuar a orar, ser sincero, procurar o apoio de pessoas e, se for preciso, de profissionais.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 8,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1776109764926-ae63208aeced?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw2fHxzdW5yaXNlJTIwY2FsbSUyMGhvcml6b24lMjB3YXJtJTIwbWluaW1hbCUyMG5hdHVyZXxlbnwxfDB8fHwxNzg1Nzc4MjY4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pôr do sol dourado sobre um horizonte de oceano calmo",
-      "credit": "César Couto",
-      "creditUrl": "https://unsplash.com/@xcrap?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1789986186643-2212fa354ddc?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxxdWlldCUyMHdpbmRvdyUyMG1vcm5pbmclMjBsaWdodCUyMHdhaXRpbmd8ZW58MXwwfHx8MTc5MjY5MzMzNnww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Silhueta de uma pessoa com uma chávena diante de uma grande janela em arco",
+      "credit": "Lina Bob",
+      "creditUrl": "https://unsplash.com/@anbb?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "O que é inteligência emocional?",
-        "a": "É a capacidade de reconhecer o que sentes, perceber de onde vem e escolher o que fazer com isso, em vez de apenas reagir. Inclui também perceber e responder às emoções dos outros."
+        "q": "Porque é que Deus não responde às minhas orações?",
+        "a": "A Bíblia não oferece uma única explicação. Mostra que os caminhos de Deus são diferentes dos nossos (Isaías 55:8-9), que a resposta pode vir de outra forma (2 Coríntios 12:8-9) e que há pessoas fiéis que oraram com dor durante muito tempo (Salmos 13). O silêncio, por si só, não prova que oraste mal."
       },
       {
-        "q": "Quais são os pilares da inteligência emocional?",
-        "a": "São cinco: autoconsciência (perceber o que sentes), autorregulação (não agir por impulso), motivação, empatia e competências sociais. A autoconsciência é a base — sem ela, as outras não se sustentam."
+        "q": "Deus responde sempre?",
+        "a": "Muitos cristãos resumem assim: a resposta pode ser “sim”, “não” ou “espera”. Não é uma frase bíblica, mas ajuda a lembrar que “não” e “espera” também são respostas. Ao mesmo tempo, é honesto reconhecer que há momentos em que o silêncio é difícil de entender, e que a Bíblia dá espaço a essa dor."
       },
       {
-        "q": "A inteligência emocional aprende-se ou nasce-se com ela?",
-        "a": "Aprende-se. Ao contrário do que se pensa, não é um traço de personalidade fixo: é um conjunto de competências que se treina com prática deliberada, como nomear emoções e observar padrões ao longo do tempo."
+        "q": "Posso queixar-me a Deus na oração?",
+        "a": "Sim. Os Salmos têm muitas orações de queixa, como “Até quando, ó Senhor, te esquecerás de mim?” (Salmos 13:1). A honestidade na oração é bem-vinda. O que importa é não te afastares de Deus: continuar a falar, mesmo cansado, é uma forma de confiança."
       },
       {
-        "q": "Como desenvolver inteligência emocional no dia a dia?",
-        "a": "Pergunta-te “o que estou a sentir?” duas vezes por dia, alarga o vocabulário emocional, começa pelo corpo (tensão, respiração), espera a onda passar antes de decidir, e escreve. Escrever é o treino mais direto porque transforma sensação difusa em palavra concreta."
+        "q": "A falta de fé impede Deus de responder?",
+        "a": "A Bíblia não apresenta a oração como um teste de fé que se passa ou chumba. Mostra pessoas com dúvidas e com dor que continuam a orar. Dizer a quem sofre que lhe falta fé costuma magoar e não ajuda. Muitas vezes o mais útil é ficar por perto e orar em conjunto."
       },
       {
-        "q": "Escrever um diário ajuda a inteligência emocional?",
-        "a": "Ajuda muito. Ao escreveres, identificas a emoção, dás-lhe nome e encontras a causa — os três primeiros passos da inteligência emocional num só gesto. E, ao releres, os padrões aparecem."
+        "q": "Quanto tempo devo esperar por uma resposta?",
+        "a": "Não há prazo bíblico definido. Lucas 18:1 fala em orar “sempre, e nunca desfalecer”. Enquanto esperas, ajuda manter uma prática pequena e regular, anotar o que vai acontecendo, orar com outras pessoas e, quando houver necessidade prática, procurar também a ajuda de profissionais."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "como-desabafar",
-    "url": "https://aemori.com/pt-br/blog/como-desabafar/",
-    "title": "Como desabafar quando você não tem com quem falar",
-    "description": "Sem ninguém para ouvir? Existem formas reais de desabafar sozinho — escrever, nomear o que dói e tirar o peso de dentro. Um guia honesto para quando falar não é uma opção.",
-    "tldr": "Quando não há ninguém para ouvir, desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e não exige que você espere pela disponibilidade de outra pessoa. Não substitui companhia humana — mas funciona, e está disponível às três da manhã.",
-    "datePublished": "2026-08-01",
-    "readingMinutes": 8,
+    "slug": "versiculos-de-conforto",
+    "url": "https://aemori.com/pt-br/blog/versiculos-de-conforto/",
+    "title": "Versículos de conforto para momentos difíceis e de luto",
+    "description": "Versículos bíblicos de conforto para quem sofre, chora uma perda ou atravessa uma fase difícil, com contexto e orientação para ler e orar com calma.",
+    "tldr": "Os versículos de conforto mais lidos em tempos de dor são Salmos 34:18, Mateus 5:4, Salmos 46:1, Isaías 43:2 e João 14:27. A Bíblia não apressa o luto: mostra Jesus chorando (João 11:35) e pede que choremos com quem chora (Romanos 12:15). Ler, orar e aceitar a companhia de outras pessoas, e de um profissional quando for preciso, caminham juntos.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1641753543685-268866ef4c6d?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBhbG9uZSUyMG5pZ2h0JTIwd2luZG93JTIwY2l0eSUyMGxvbmVseSUyMHdhcm18ZW58MXwwfHx8MTc4NTYwNjM2MXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma pessoa sentada junto à janela, com a mão no rosto",
-      "credit": "Sean Boyd",
-      "creditUrl": "https://unsplash.com/@seanfboyd?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1789796694713-48991f57ae79?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxjb21mb3J0aW5nJTIwaGFuZCUyMGhvbGRpbmclMjBob3BlJTIwc3VucmlzZXxlbnwxfDB8fHwxNzkyNjkzMjkxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma mão se estendendo em direção ao sol baixo sobre a água",
+      "credit": "Liana S",
+      "creditUrl": "https://unsplash.com/@cherstve_pechivo?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como desabafar quando não tenho ninguém para conversar?",
-        "a": "Escreva. Desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e está disponível a qualquer hora. Escreva como se estivesse falando, sem se preocupar com a forma."
+        "q": "Qual versículo ler quando se perde alguém?",
+        "a": "Salmos 34:18, Salmos 23:4, Mateus 5:4 e Apocalipse 21:4 são muito lidos no luto. Comece por um só e leia devagar. Nenhum deles tem a pretensão de eliminar a dor; servem como companhia enquanto ela existe."
       },
       {
-        "q": "Desabafar por escrito funciona mesmo?",
-        "a": "Funciona. Colocar em palavras interrompe o ciclo de pensamentos repetitivos e transforma um mal-estar difuso em algo concreto que você consegue olhar de fora. Muitas pessoas relatam alívio físico logo depois."
+        "q": "A Bíblia diz que não devemos chorar?",
+        "a": "Não. Jesus chorou (João 11:35), os salmos são cheios de lamento e Mateus 5:4 diz “bem-aventurados os que choram, porque eles serão consolados”. Chorar é natural e a Bíblia lhe dá espaço."
       },
       {
-        "q": "O que escrever quando eu travo?",
-        "a": "Comece por “o que mais está pesando em mim agora é…” ou “estou cansado de…”. O primeiro parágrafo é o mais difícil; depois dele, uma frase puxa a outra."
+        "q": "Como consolar alguém que perdeu um ente querido?",
+        "a": "Esteja presente, escute mais do que fale e ofereça ajuda concreta. Evite explicações como “foi a vontade de Deus” ou “pelo menos…”. Volte a procurar a pessoa semanas depois, quando o apoio costuma diminuir."
       },
       {
-        "q": "Desabafar com um app é a mesma coisa que falar com alguém?",
-        "a": "Não é a mesma coisa — companhia humana é insubstituível. Mas um app de diário oferece algo que nem sempre está disponível: um espaço privado, imediato e sem julgamento, a qualquer hora. Funciona bem como complemento, não como substituto."
+        "q": "Por que Deus permite o sofrimento?",
+        "a": "A Bíblia não oferece uma explicação simples. Livros como Jó e os salmos de lamento dão espaço à pergunta, sem a encerrar depressa. Muitos cristãos encontram nelas, mais do que uma resposta, a certeza de que Deus acompanha quem sofre."
+      },
+      {
+        "q": "Orar ajuda no luto?",
+        "a": "Para muitas pessoas, sim: dá palavras, companhia e sentido. Orar não substitui o apoio de amigos, de uma comunidade e, quando necessário, de um psicólogo. Os caminhos se somam."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "versiculos-de-conforto",
+    "url": "https://aemori.com/pt-pt/blog/versiculos-de-conforto/",
+    "title": "Versículos de conforto para momentos difíceis e de luto",
+    "description": "Versículos bíblicos de conforto para quem sofre, chora uma perda ou atravessa uma fase difícil, com contexto e orientação para ler e orar com calma.",
+    "tldr": "Os versículos de conforto mais lidos em tempos de dor são Salmos 34:18, Mateus 5:4, Salmos 46:1, Isaías 43:2 e João 14:27. A Bíblia não apressa o luto: mostra Jesus a chorar (João 11:35) e pede que choremos com quem chora (Romanos 12:15). Ler, orar e aceitar a companhia de outras pessoas, e de um profissional quando for preciso, caminham juntos.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1789796694713-48991f57ae79?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxjb21mb3J0aW5nJTIwaGFuZCUyMGhvbGRpbmclMjBob3BlJTIwc3VucmlzZXxlbnwxfDB8fHwxNzkyNjkzMjkxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma mão a estender-se em direção ao sol baixo sobre a água",
+      "credit": "Liana S",
+      "creditUrl": "https://unsplash.com/@cherstve_pechivo?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Que versículo ler quando se perde alguém?",
+        "a": "Salmos 34:18, Salmos 23:4, Mateus 5:4 e Apocalipse 21:4 são muito lidos no luto. Começa por um só e lê devagar. Nenhum deles tem a pretensão de eliminar a dor; servem como companhia enquanto ela existe."
+      },
+      {
+        "q": "A Bíblia diz que não devemos chorar?",
+        "a": "Não. Jesus chorou (João 11:35), os salmos estão cheios de lamento e Mateus 5:4 diz “bem-aventurados os que choram, porque eles serão consolados”. Chorar é natural e a Bíblia dá-lhe espaço."
+      },
+      {
+        "q": "Como consolar alguém que perdeu um ente querido?",
+        "a": "Está presente, escuta mais do que falas e oferece ajuda concreta. Evita explicações como “foi a vontade de Deus” ou “pelo menos…”. Volta a procurar a pessoa semanas depois, quando o apoio costuma diminuir."
+      },
+      {
+        "q": "Porque é que Deus permite o sofrimento?",
+        "a": "A Bíblia não oferece uma explicação simples. Livros como Jó e os salmos de lamento dão espaço à pergunta, sem a encerrar depressa. Muitos cristãos encontram neles, mais do que uma resposta, a certeza de que Deus acompanha quem sofre."
+      },
+      {
+        "q": "Orar ajuda no luto?",
+        "a": "Para muitas pessoas, sim: dá palavras, companhia e sentido. Orar não substitui o apoio de amigos, de uma comunidade e, quando necessário, de um psicólogo. Os caminhos somam-se."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
+    "slug": "como-ler-a-biblia-iniciantes",
+    "url": "https://aemori.com/pt-br/blog/como-ler-a-biblia-iniciantes/",
+    "title": "Como ler a Bíblia: por onde começar (guia para iniciantes)",
+    "description": "Quer ler a Bíblia mas não sabe por onde começar? Roteiro simples com os livros certos para iniciar, como ler cada passagem e como criar o hábito.",
+    "tldr": "Não comece pelo Gênesis e vá até o fim: a Bíblia é uma biblioteca com vários tipos de texto, e o melhor começo costuma ser um Evangelho (Marcos ou João), seguido de Salmos e Provérbios. Escolha uma tradução que você entenda, leia 10 minutos por dia e pergunte a cada passagem quem escreve, a quem, e o que ela diz sobre Deus.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1766364984475-53b7cf4d33fe?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxvcGVuJTIwYmlibGUlMjBub3RlYm9vayUyMHBlbiUyMG1vcm5pbmclMjB0YWJsZXxlbnwxfDB8fHwxNzkyNjkzMjk0fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Livro aberto com café e óculos sobre uma mesa",
+      "credit": "CARMELA LUSTRE",
+      "creditUrl": "https://unsplash.com/@carmelalustrephotography?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Por onde começar a ler a Bíblia?",
+        "a": "Um bom caminho é começar por um Evangelho, Marcos (o mais curto) ou João, depois ler Salmos e Provérbios, em seguida Atos e uma carta curta, e só então voltar ao Gênesis. Assim você conhece Jesus primeiro e lê o resto à luz dele."
+      },
+      {
+        "q": "Posso ler a Bíblia do começo ao fim?",
+        "a": "Pode, mas muita gente desiste nos livros de leis e genealogias. Se quiser ler tudo, procure um plano de leitura que alterne livros de gêneros diferentes, para variar o ritmo, em vez de seguir estritamente a ordem do livro."
+      },
+      {
+        "q": "Qual é a melhor tradução da Bíblia para iniciantes?",
+        "a": "A melhor é a que você entende. Para começar, muitos preferem traduções de linguagem simples, como a NTLH ou a NVT. Com o tempo, vale comparar com uma tradução mais tradicional, como a Almeida, para enxergar nuances do texto."
+      },
+      {
+        "q": "Quanto tempo por dia devo ler a Bíblia?",
+        "a": "Dez minutos já são suficientes para começar. A constância importa mais do que a duração: ler um pouco todos os dias costuma ser mais proveitoso do que longas sessões ocasionais."
+      },
+      {
+        "q": "Preciso entender tudo o que leio?",
+        "a": "Não. Há passagens difíceis, e é normal ter dúvidas. Anote as perguntas, leia o texto em volta, compare traduções e converse com alguém mais experiente. O essencial costuma ser mais claro do que parece, e o resto pode ser aprendido aos poucos."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "como-ler-a-biblia-iniciantes",
+    "url": "https://aemori.com/pt-pt/blog/como-ler-a-biblia-iniciantes/",
+    "title": "Como ler a Bíblia: por onde começar (guia para iniciantes)",
+    "description": "Queres ler a Bíblia mas não sabes por onde começar? Roteiro simples com os livros certos para iniciar, como ler cada passagem e como criar o hábito.",
+    "tldr": "Não comeces pelo Génesis para ir até ao fim: a Bíblia é uma biblioteca com vários tipos de texto, e o melhor começo costuma ser um Evangelho (Marcos ou João), seguido de Salmos e Provérbios. Escolhe uma tradução que entendas, lê 10 minutos por dia e pergunta a cada passagem quem escreve, a quem, e o que diz sobre Deus.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 8,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1766364984475-53b7cf4d33fe?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxvcGVuJTIwYmlibGUlMjBub3RlYm9vayUyMHBlbiUyMG1vcm5pbmclMjB0YWJsZXxlbnwxfDB8fHwxNzkyNjkzMjk0fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Livro aberto com café e óculos sobre uma mesa",
+      "credit": "CARMELA LUSTRE",
+      "creditUrl": "https://unsplash.com/@carmelalustrephotography?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Por onde começar a ler a Bíblia?",
+        "a": "Um bom caminho é começar por um Evangelho, Marcos (o mais curto) ou João, depois ler Salmos e Provérbios, em seguida Atos e uma carta curta, e só então voltar ao Génesis. Assim conheces Jesus primeiro e lês o resto à luz dele."
+      },
+      {
+        "q": "Posso ler a Bíblia do princípio ao fim?",
+        "a": "Podes, mas muita gente desiste nos livros de leis e genealogias. Se quiseres ler tudo, procura um plano de leitura que alterne livros de géneros diferentes, para variar o ritmo, em vez de seguir estritamente a ordem do livro."
+      },
+      {
+        "q": "Qual é a melhor tradução da Bíblia para iniciantes?",
+        "a": "A melhor é a que entendes. Para começar, muitos preferem uma tradução em português corrente. Com o tempo, vale a pena comparar com uma tradução mais tradicional, como a de Almeida, para perceber nuances do texto."
+      },
+      {
+        "q": "Quanto tempo por dia devo ler a Bíblia?",
+        "a": "Dez minutos já chegam para começar. A constância importa mais do que a duração: ler um pouco todos os dias costuma ser mais proveitoso do que longas sessões ocasionais."
+      },
+      {
+        "q": "Preciso de entender tudo o que leio?",
+        "a": "Não. Há passagens difíceis, e é normal ter dúvidas. Anota as perguntas, lê o texto em redor, compara traduções e conversa com alguém mais experiente. O essencial costuma ser mais claro do que parece, e o resto aprende-se aos poucos."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
+    "slug": "diario-de-oracao",
+    "url": "https://aemori.com/pt-br/blog/diario-de-oracao/",
+    "title": "Diário de oração: como fazer e o que escrever",
+    "description": "O que é um diário de oração, por que escrever suas orações ajuda a fé, um modelo pronto de página e ideias do que anotar, inclusive as orações respondidas.",
+    "tldr": "Um diário de oração é um caderno (ou aplicativo) onde você registra o que apresenta a Deus, o que agradece e o que percebe com o tempo. Para começar, anote a data, como você está, uma gratidão, um pedido e um versículo; depois deixe um espaço para completar quando algo acontecer. Reler essas páginas ajuda a lembrar o que Deus já fez.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxoYW5kd3JpdHRlbiUyMGpvdXJuYWwlMjBwZW4lMjBub3RlYm9va3xlbnwxfDB8fHwxNzkyNjkzMjk3fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Caneta-tinteiro sobre um caderno de espiral",
+      "credit": "Aaron Burden",
+      "creditUrl": "https://unsplash.com/@aaronburden?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "O que escrever em um diário de oração?",
+        "a": "A data, como você está, uma ou mais gratidões, seus pedidos (por você e pelos outros), um versículo que lhe falou e um espaço para anotar depois a resposta. Duas ou três frases por dia já são suficientes."
+      },
+      {
+        "q": "A Bíblia fala em escrever as orações?",
+        "a": "Não há um mandamento de manter um diário, mas a Bíblia valoriza lembrar e registrar o que Deus faz: o salmista decide recordar os feitos do Senhor (Salmos 77:11-12), e há o registro “para a geração futura” (Salmos 102:18). O diário é uma forma prática de seguir esse espírito."
+      },
+      {
+        "q": "Como registrar orações respondidas?",
+        "a": "Volte à página do pedido, anote a data e o que aconteceu, com honestidade. Se a resposta veio diferente do que você pediu, escreva isso também. Ver os dois lado a lado ajuda a perceber o que mudou ao longo do tempo."
+      },
+      {
+        "q": "Prefiro digitar: um aplicativo serve como diário de oração?",
+        "a": "Serve, se você abrir com regularidade. O mais importante é manter o hábito: o suporte, caderno ou aplicativo, é secundário."
+      },
+      {
+        "q": "Com que frequência devo reler o diário?",
+        "a": "Uma vez por mês, ou ao fim de uma fase difícil, é um bom ritmo. A releitura mostra o que mudou, o que continua aberto e por que você tem a agradecer."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "diario-de-oracao",
+    "url": "https://aemori.com/pt-pt/blog/diario-de-oracao/",
+    "title": "Diário de oração: como fazer e o que escrever",
+    "description": "O que é um diário de oração, porque escrever as tuas orações ajuda a fé, um modelo pronto de página e ideias do que anotar, incluindo as orações respondidas.",
+    "tldr": "Um diário de oração é um caderno (ou aplicação) onde registas o que apresentas a Deus, o que agradeces e o que vais percebendo com o tempo. Para começar, anota a data, como estás, uma gratidão, um pedido e um versículo; depois deixa um espaço para completar quando algo acontecer. Reler estas páginas ajuda a lembrar o que Deus já fez.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxoYW5kd3JpdHRlbiUyMGpvdXJuYWwlMjBwZW4lMjBub3RlYm9va3xlbnwxfDB8fHwxNzkyNjkzMjk3fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Caneta-tinteiro sobre um caderno de espiral",
+      "credit": "Aaron Burden",
+      "creditUrl": "https://unsplash.com/@aaronburden?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "O que escrever num diário de oração?",
+        "a": "A data, como estás, uma ou mais gratidões, os teus pedidos (por ti e pelos outros), um versículo que te falou e um espaço para anotar depois a resposta. Duas ou três frases por dia já são suficientes."
+      },
+      {
+        "q": "A Bíblia fala em escrever as orações?",
+        "a": "Não há um mandamento de manter um diário, mas a Bíblia valoriza lembrar e registar o que Deus faz: o salmista decide recordar os feitos do Senhor (Salmos 77:11-12), e há o registo “para a geração futura” (Salmos 102:18). O diário é uma forma prática de seguir esse espírito."
+      },
+      {
+        "q": "Como registar orações respondidas?",
+        "a": "Volta à página do pedido, anota a data e o que aconteceu, com honestidade. Se a resposta veio diferente do que pediste, escreve isso também. Ver os dois lado a lado ajuda a perceber o que mudou ao longo do tempo."
+      },
+      {
+        "q": "Prefiro escrever no telemóvel: uma aplicação serve como diário de oração?",
+        "a": "Serve, se a abrires com regularidade. O mais importante é manter o hábito: o suporte, caderno ou aplicação, é secundário."
+      },
+      {
+        "q": "Com que frequência devo reler o diário?",
+        "a": "Uma vez por mês, ou no fim de uma fase difícil, é um bom ritmo. A releitura mostra o que mudou, o que continua em aberto e o que tens para agradecer."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
+    "slug": "oracao-de-gratidao",
+    "url": "https://aemori.com/pt-br/blog/oracao-de-gratidao/",
+    "title": "Oração de gratidão: como agradecer a Deus, com versículos",
+    "description": "Como fazer uma oração de gratidão, o que a Bíblia ensina sobre agradecer e um passo a passo simples para praticar a gratidão a Deus todos os dias.",
+    "tldr": "A oração de gratidão é agradecer a Deus de forma concreta, por pessoas, momentos e até pelo que se aprendeu nas dificuldades. A Bíblia pede gratidão “em tudo” (1 Tessalonicenses 5:18) e mostra Jesus notando quem voltou para agradecer (Lucas 17:15-19). Um bom começo é nomear três coisas específicas e dizer a Deus por que elas importam.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1639905517737-a994704df20c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxncmF0ZWZ1bCUyMGhhbmRzJTIwd2FybSUyMGN1cCUyMG1vcm5pbmd8ZW58MXwwfHx8MTc5MjY5MzI3NXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma pessoa segurando uma xícara de café sobre uma cama, em um momento tranquilo",
+      "credit": "Annie Spratt",
+      "creditUrl": "https://unsplash.com/@anniespratt?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como fazer uma oração de gratidão curta?",
+        "a": "Respire, escolha uma coisa específica pela qual você é grato e diga a Deus por quê. Por exemplo: “Senhor, obrigado pela chamada do meu amigo hoje, ela me lembrou que não estou sozinho.” Uma frase sincera vale mais do que um texto longo."
+      },
+      {
+        "q": "O que a Bíblia diz sobre gratidão?",
+        "a": "Pede gratidão em todas as circunstâncias (1 Tessalonicenses 5:18), trata o agradecimento como resposta à bondade de Deus (Salmos 107:1; 100:4), pede que não nos esqueçamos dos seus benefícios (Salmos 103:2) e mostra Jesus notando o único leproso curado que voltou para agradecer (Lucas 17:15-19)."
+      },
+      {
+        "q": "Preciso agradecer mesmo quando estou passando por dificuldade?",
+        "a": "Você pode agradecer pelo que ainda sustenta, sem chamar de bom o que dói. “Em tudo dai graças” fala de gratidão dentro das circunstâncias, não de negar a dor. Se agradecer parece impossível, comece por algo mínimo e fale também da sua tristeza com Deus."
+      },
+      {
+        "q": "Qual é a diferença entre oração de gratidão e oração de louvor?",
+        "a": "Em geral, a gratidão agradece o que Deus fez ou deu (um livramento, uma pessoa, o dia), e o louvor reconhece quem Deus é (sua bondade, seu cuidado). Na prática, as duas costumam andar juntas, como nos salmos."
+      },
+      {
+        "q": "Quantas vezes por dia devo fazer uma oração de gratidão?",
+        "a": "Não há número fixo. Muitas pessoas agradecem ao acordar, antes das refeições ou à noite. O que ajuda é a regularidade: um minuto todos os dias costuma fazer mais efeito do que uma longa oração de vez em quando."
+      }
+    ]
+  },
+  {
+    "lang": "pt-pt",
+    "slug": "oracao-de-gratidao",
+    "url": "https://aemori.com/pt-pt/blog/oracao-de-gratidao/",
+    "title": "Oração de gratidão: como agradecer a Deus, com versículos",
+    "description": "Como fazer uma oração de gratidão, o que a Bíblia ensina sobre agradecer e um passo a passo simples para praticares a gratidão a Deus todos os dias.",
+    "tldr": "A oração de gratidão é agradecer a Deus de forma concreta, por pessoas, momentos e até pelo que se aprendeu nas dificuldades. A Bíblia pede gratidão “em tudo” (1 Tessalonicenses 5:18) e mostra Jesus a notar quem voltou para agradecer (Lucas 17:15-19). Um bom começo é nomear três coisas específicas e dizer a Deus porque é que importam.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 6,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1639905517737-a994704df20c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxncmF0ZWZ1bCUyMGhhbmRzJTIwd2FybSUyMGN1cCUyMG1vcm5pbmd8ZW58MXwwfHx8MTc5MjY5MzI3NXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma pessoa a segurar uma chávena de café sobre uma cama, num momento tranquilo",
+      "credit": "Annie Spratt",
+      "creditUrl": "https://unsplash.com/@anniespratt?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "Como fazer uma oração de gratidão curta?",
+        "a": "Respira, escolhe uma coisa específica pela qual és grato e diz a Deus porquê. Por exemplo: “Senhor, obrigado pela chamada do meu amigo hoje, lembrou-me que não estou sozinho.” Uma frase sincera vale mais do que um texto longo."
+      },
+      {
+        "q": "O que diz a Bíblia sobre a gratidão?",
+        "a": "Pede gratidão em todas as circunstâncias (1 Tessalonicenses 5:18), trata o agradecimento como resposta à bondade de Deus (Salmos 107:1; 100:4), pede que não nos esqueçamos dos seus benefícios (Salmos 103:2) e mostra Jesus a notar o único leproso curado que voltou para agradecer (Lucas 17:15-19)."
+      },
+      {
+        "q": "Preciso de agradecer mesmo quando estou a passar por dificuldades?",
+        "a": "Podes agradecer pelo que ainda te sustenta, sem chamar bom ao que dói. “Em tudo dai graças” fala de gratidão dentro das circunstâncias, não de negar a dor. Se agradecer parece impossível, começa por algo mínimo e fala também da tua tristeza com Deus."
+      },
+      {
+        "q": "Qual é a diferença entre oração de gratidão e oração de louvor?",
+        "a": "Em geral, a gratidão agradece o que Deus fez ou deu (um livramento, uma pessoa, o dia), e o louvor reconhece quem Deus é (a sua bondade, o seu cuidado). Na prática, as duas costumam andar juntas, como nos salmos."
+      },
+      {
+        "q": "Quantas vezes por dia devo fazer uma oração de gratidão?",
+        "a": "Não há número fixo. Muitas pessoas agradecem ao acordar, antes das refeições ou à noite. O que ajuda é a regularidade: um minuto todos os dias costuma fazer mais efeito do que uma longa oração de vez em quando."
+      }
+    ]
+  },
+  {
+    "lang": "pt-br",
+    "slug": "oracao-quando-nao-sei-o-que-dizer",
+    "url": "https://aemori.com/pt-br/blog/oracao-quando-nao-sei-o-que-dizer/",
+    "title": "Não sei orar: o que fazer quando faltam as palavras",
+    "description": "Quando você não sabe o que dizer a Deus ou não consegue orar, a Bíblia tem resposta. Cinco formas simples de orar nesses dias, com versículos e exemplos.",
+    "tldr": "Não saber o que dizer na oração é comum e a Bíblia não trata isso como fracasso: Romanos 8:26 diz que o Espírito ajuda quem não sabe o que pedir. Nesses dias, diga a verdade em uma frase, use as palavras dos Salmos, ore o Pai Nosso devagar, escreva ou fique em silêncio. Deus não pede discursos, pede o coração.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
+    "hero": {
+      "src": "https://images.unsplash.com/photo-1683836513884-3605fd8aca6f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBzaXR0aW5nJTIwcXVpZXRseSUyMGJ5JTIwd2luZG93JTIwc2lsZW5jZXxlbnwxfDB8fHwxNzkyNjkzMjk4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoa sentada numa cama, olhando pela janela",
+      "credit": "Sam Jotham Sutharson",
+      "creditUrl": "https://unsplash.com/@jothamsutharson?utm_source=aemori&utm_medium=referral"
+    },
+    "faq": [
+      {
+        "q": "O que fazer quando não sei o que dizer a Deus?",
+        "a": "Diga a verdade em uma frase, como “Senhor, não sei o que dizer”, ou use palavras já prontas, como as dos Salmos ou do Pai Nosso. Também pode escrever ou ficar em silêncio por um ou dois minutos. Deus não pede discursos, pede sinceridade."
+      },
+      {
+        "q": "Não conseguir orar é falta de fé?",
+        "a": "Não. A própria Bíblia diz que “não sabemos o que havemos de pedir como convém” (Romanos 8:26) e que o Espírito ajuda quem está nessa fraqueza. Dias de oração difícil são comuns entre pessoas de fé, e persistir com palavras simples já é um ato de confiança."
+      },
+      {
+        "q": "Posso orar só com o pensamento ou em silêncio?",
+        "a": "Sim. Orar não exige palavras em voz alta. Estar diante de Deus em silêncio, com o coração voltado para ele, é uma forma de oração. Se ajudar, escreva ou repita uma frase curta, como “Senhor, tem misericórdia”."
+      },
+      {
+        "q": "Quais salmos posso usar quando estou sem palavras?",
+        "a": "O Salmo 23 (confiança), o Salmo 42 (sede de Deus), o Salmo 62 (descanso em Deus) e o Salmo 13 (um lamento honesto) são bons pontos de partida. Leia devagar e, se quiser, adapte as palavras ao que você está vivendo."
       },
       {
         "q": "Quando devo procurar ajuda profissional?",
-        "a": "Se o peso não passa há semanas, se você não consegue funcionar no dia a dia, ou se tem pensamentos de se machucar. Nesses casos, procure um psicólogo ou os serviços de emergência do seu país — desabafar por escrito ajuda, mas não substitui acompanhamento."
+        "a": "Se a falta de ânimo para orar vem com tristeza profunda, perda de interesse, cansaço constante ou pensamentos de se machucar por semanas, procure um médico ou psicólogo. Cuidar da saúde emocional é compatível com a fé e pode andar lado a lado com a oração."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "como-desabafar",
-    "url": "https://aemori.com/pt-pt/blog/como-desabafar/",
-    "title": "Como desabafar quando não tens com quem falar",
-    "description": "Sem ninguém para ouvir? Há formas reais de desabafar sozinho — escrever, nomear o que dói e tirar o peso de dentro. Um guia honesto para quando falar não é uma opção.",
-    "tldr": "Quando não há ninguém para ouvir, desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e não te obriga a esperar pela disponibilidade de outra pessoa. Não substitui companhia humana — mas resulta, e está disponível às três da manhã.",
-    "datePublished": "2026-08-01",
-    "readingMinutes": 8,
+    "slug": "oracao-quando-nao-sei-o-que-dizer",
+    "url": "https://aemori.com/pt-pt/blog/oracao-quando-nao-sei-o-que-dizer/",
+    "title": "Não sei orar: o que fazer quando faltam as palavras",
+    "description": "Quando não sabes o que dizer a Deus ou não consegues orar, a Bíblia tem resposta. Cinco formas simples de orar nesses dias, com versículos e exemplos.",
+    "tldr": "Não saber o que dizer na oração é comum e a Bíblia não trata isso como fracasso: Romanos 8:26 diz que o Espírito ajuda quem não sabe o que pedir. Nesses dias, diz a verdade numa frase, usa as palavras dos Salmos, ora o Pai Nosso devagar, escreve ou fica em silêncio. Deus não pede discursos, pede o coração.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1641753543685-268866ef4c6d?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBhbG9uZSUyMG5pZ2h0JTIwd2luZG93JTIwY2l0eSUyMGxvbmVseSUyMHdhcm18ZW58MXwwfHx8MTc4NTYwNjM2MXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma pessoa sentada junto à janela, com a mão no rosto",
-      "credit": "Sean Boyd",
-      "creditUrl": "https://unsplash.com/@seanfboyd?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1683836513884-3605fd8aca6f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBzaXR0aW5nJTIwcXVpZXRseSUyMGJ5JTIwd2luZG93JTIwc2lsZW5jZXxlbnwxfDB8fHwxNzkyNjkzMjk4fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoa sentada numa cama, a olhar pela janela",
+      "credit": "Sam Jotham Sutharson",
+      "creditUrl": "https://unsplash.com/@jothamsutharson?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Como desabafar quando não tenho ninguém com quem falar?",
-        "a": "Escreve. Desabafar por escrito é a alternativa mais próxima de falar com alguém: tira o peso de dentro, organiza o que está confuso e está disponível a qualquer hora. Escreve como se estivesses a falar, sem te preocupares com a forma."
+        "q": "O que fazer quando não sei o que dizer a Deus?",
+        "a": "Diz a verdade numa frase, como “Senhor, não sei o que dizer”, ou usa palavras já prontas, como as dos Salmos ou do Pai Nosso. Também podes escrever ou ficar em silêncio um ou dois minutos. Deus não pede discursos, pede sinceridade."
       },
       {
-        "q": "Desabafar por escrito resulta mesmo?",
-        "a": "Resulta. Pôr em palavras interrompe o ciclo de pensamentos repetitivos e transforma um mal-estar difuso em algo concreto que consegues olhar de fora. Muitas pessoas relatam alívio físico logo a seguir."
+        "q": "Não conseguir orar é falta de fé?",
+        "a": "Não. A própria Bíblia diz que “não sabemos o que havemos de pedir como convém” (Romanos 8:26) e que o Espírito ajuda quem está nessa fraqueza. Dias de oração difícil são comuns entre pessoas de fé, e persistir com palavras simples já é um ato de confiança."
       },
       {
-        "q": "O que escrever quando travo?",
-        "a": "Começa por “o que mais está a pesar em mim agora é…” ou “estou cansado de…”. O primeiro parágrafo é o mais difícil; depois dele, uma frase puxa a outra."
+        "q": "Posso orar só com o pensamento ou em silêncio?",
+        "a": "Sim. Orar não exige palavras em voz alta. Estar diante de Deus em silêncio, com o coração voltado para ele, é uma forma de oração. Se ajudar, escreve ou repete uma frase curta, como “Senhor, tem misericórdia”."
       },
       {
-        "q": "Desabafar com uma app é o mesmo que falar com alguém?",
-        "a": "Não é o mesmo — a companhia humana é insubstituível. Mas uma app de diário oferece algo que nem sempre está disponível: um espaço privado, imediato e sem julgamento, a qualquer hora. Funciona bem como complemento, não como substituto."
+        "q": "Que salmos posso usar quando estou sem palavras?",
+        "a": "O Salmo 23 (confiança), o Salmo 42 (sede de Deus), o Salmo 62 (descanso em Deus) e o Salmo 13 (um lamento honesto) são bons pontos de partida. Lê devagar e, se quiseres, adapta as palavras ao que estás a viver."
       },
       {
         "q": "Quando devo procurar ajuda profissional?",
-        "a": "Se o peso não passa há semanas, se não consegues funcionar no dia a dia, ou se tens pensamentos de te magoar. Nesses casos, procura um psicólogo ou os serviços de emergência do teu país — desabafar por escrito ajuda, mas não substitui acompanhamento."
+        "a": "Se a falta de ânimo para orar vem com tristeza profunda, perda de interesse, cansaço constante ou pensamentos de te magoares durante semanas, procura um médico ou um psicólogo. Cuidar da saúde emocional é compatível com a fé e pode andar lado a lado com a oração."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "como-controlar-as-emocoes",
-    "url": "https://aemori.com/pt-br/blog/como-controlar-as-emocoes/",
-    "title": "Como controlar as emoções: o que funciona (e o que só piora)",
-    "description": "Reprimir o que sente costuma piorar. Veja os 4 passos que realmente funcionam para lidar com raiva, ansiedade e tristeza no momento — e por que nomear a emoção já reduz a intensidade.",
-    "tldr": "Não dá para “controlar” as emoções no sentido de desligá-las — e tentar reprimi-las quase sempre piora. O que funciona é regulá-las: reconhecer o que você sente, dar nome, deixar a onda passar e então escolher a resposta. Só nomear a emoção já reduz a intensidade; escrever ajuda a criar a distância necessária.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1733370446176-cf060c668a28?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxoYW5kJTIwb24lMjBjaGVzdCUyMGNhbG0lMjBzZWxmJTIwY29tcGFzc2lvbiUyMHdhcm0lMjBsaWdodHxlbnwxfDB8fHwxNzg1NDM1MTQ2fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um homem com as mãos sobre o peito, num gesto calmo",
-      "credit": "tessy negrillo",
-      "creditUrl": "https://unsplash.com/@tessy_126?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Dá mesmo para controlar as emoções?",
-        "a": "Não no sentido de desligá-las — emoções são respostas automáticas. Mas dá para regulá-las: reconhecer, nomear, deixar a onda passar e escolher a resposta. Isso muda muito mais do que tentar reprimir."
-      },
-      {
-        "q": "Como controlar a raiva ou a ansiedade no momento?",
-        "a": "Comece pelo corpo: alongue a expiração, sinta os pés no chão e dê alguns segundos antes de reagir. Depois nomeie o que está sentindo (“isto é raiva”). A intensidade tende a baixar em poucos minutos se você não alimentar o pensamento."
-      },
-      {
-        "q": "Reprimir as emoções faz mal?",
-        "a": "A supressão costuma ter efeito contrário: gasta energia, não reduz o que você sente por dentro e tende a voltar com mais força depois. Regular (reconhecer e deixar passar) funciona melhor do que engolir."
-      },
-      {
-        "q": "Escrever ajuda a controlar as emoções?",
-        "a": "Ajuda a regulá-las. Escrever nomeia a emoção e cria distância dela ao mesmo tempo — os dois mecanismos centrais da regulação. Reler os registros também revela seus gatilhos ao longo do tempo."
-      },
-      {
-        "q": "Quando devo procurar um psicólogo?",
-        "a": "Se as emoções estão frequentemente fora de controle, se a tristeza não passa ou a ansiedade domina o seu dia. Isso não é fraqueza — é sinal de buscar apoio profissional. As técnicas de regulação complementam, mas não substituem, a terapia."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "como-controlar-as-emocoes",
-    "url": "https://aemori.com/pt-pt/blog/como-controlar-as-emocoes/",
-    "title": "Como controlar as emoções: o que funciona (e o que só piora)",
-    "description": "Reprimir o que sentes costuma piorar. Vê os 4 passos que realmente funcionam para lidar com raiva, ansiedade e tristeza no momento — e porque nomear a emoção já reduz a intensidade.",
-    "tldr": "Não dá para “controlar” as emoções no sentido de as desligar — e tentar reprimi-las quase sempre piora. O que funciona é regulá-las: reconhecer o que sentes, dar-lhe nome, deixar a onda passar e só então escolher a resposta. Só nomear a emoção já reduz a intensidade; escrever ajuda a criar a distância necessária.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1733370446176-cf060c668a28?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxoYW5kJTIwb24lMjBjaGVzdCUyMGNhbG0lMjBzZWxmJTIwY29tcGFzc2lvbiUyMHdhcm0lMjBsaWdodHxlbnwxfDB8fHwxNzg1NDM1MTQ2fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um homem com as mãos sobre o peito, num gesto calmo",
-      "credit": "tessy negrillo",
-      "creditUrl": "https://unsplash.com/@tessy_126?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Dá mesmo para controlar as emoções?",
-        "a": "Não no sentido de as desligar — as emoções são respostas automáticas. Mas dá para regulá-las: reconhecer, nomear, deixar a onda passar e escolher a resposta. Isso muda muito mais do que tentar reprimir."
-      },
-      {
-        "q": "Como controlar a raiva ou a ansiedade no momento?",
-        "a": "Começa pelo corpo: alonga a expiração, sente os pés no chão e dá alguns segundos antes de reagir. Depois nomeia o que sentes (“isto é raiva”). A intensidade tende a baixar em poucos minutos se não alimentares o pensamento."
-      },
-      {
-        "q": "Reprimir as emoções faz mal?",
-        "a": "A supressão costuma ter efeito contrário: gasta energia, não reduz o que sentes por dentro e tende a voltar com mais força depois. Regular (reconhecer e deixar passar) resulta melhor do que engolir."
-      },
-      {
-        "q": "Escrever ajuda a controlar as emoções?",
-        "a": "Ajuda a regulá-las. Escrever nomeia a emoção e cria distância dela ao mesmo tempo — os dois mecanismos centrais da regulação. Reler os registos também revela os teus gatilhos ao longo do tempo."
-      },
-      {
-        "q": "Quando devo procurar um psicólogo?",
-        "a": "Se as emoções estão frequentemente fora de controlo, se a tristeza não passa ou a ansiedade domina o teu dia. Isso não é fraqueza — é sinal de procurar apoio profissional. As técnicas de regulação complementam, mas não substituem, a terapia."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "afirmacoes-positivas",
-    "url": "https://aemori.com/pt-br/blog/afirmacoes-positivas/",
-    "title": "Afirmações positivas funcionam mesmo? O que a psicologia diz (e como usar)",
-    "description": "Afirmações positivas funcionam? Às vezes sim, às vezes fazem mal. Entenda quando ajudam, por que podem sair pela culatra e como escrever afirmações que o seu cérebro realmente aceita.",
-    "tldr": "Afirmações positivas são frases, ditas no presente, que você repete para reforçar uma crença sobre si. Funcionam — mas com uma condição: precisam caber dentro do que você consegue acreditar. Uma afirmação longe demais da sua realidade pode até piorar o humor. O segredo é torná-las críveis, específicas e ancoradas em ações.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1529057415459-f9fdebeae24f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBlYWNlZnVsJTIwbW9ybmluZyUyMHN1bmxpZ2h0JTIwd2luZG93JTIwaG9wZWZ1bHxlbnwxfDB8fHwxNzg1NDI1NTI1fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma mulher encostada à janela, em luz suave da manhã",
-      "credit": "From Marwool",
-      "creditUrl": "https://unsplash.com/@frommarwool?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "As afirmações positivas funcionam mesmo?",
-        "a": "Funcionam para muitas pessoas, principalmente quando a frase é crível. Para quem está com a autoestima baixa, afirmações grandiosas e distantes da realidade podem piorar o humor. O segredo é usar afirmações plausíveis, no presente e orientadas ao processo (“estou aprendendo a…”), não ao resultado (“eu sou…”)."
-      },
-      {
-        "q": "Quantas vezes por dia devo repetir uma afirmação?",
-        "a": "Não existe número mágico. Mais importante do que a quantidade é a consistência e a crença: uma afirmação plausível, repetida com atenção uma ou duas vezes por dia (e ligada a uma ação), vale mais do que dezenas de repetições automáticas."
-      },
-      {
-        "q": "Melhor de manhã ou à noite?",
-        "a": "De manhã, ajuda a definir a intenção do dia; à noite, ajuda a reconhecer as evidências do que deu certo. Muitas pessoas combinam: afirmam de manhã e, à noite, anotam uma prova real daquilo. O melhor horário é o que você mantém."
-      },
-      {
-        "q": "Afirmações positivas ajudam com ansiedade ou autoestima baixa?",
-        "a": "Podem ajudar, desde que sejam críveis e usadas junto de ações. Para autoestima baixa, prefira afirmações de processo (“estou aprendendo a confiar em mim”), que não geram o efeito bumerangue. Em casos de ansiedade intensa ou persistente, procure um psicólogo — afirmações complementam, mas não substituem, tratamento."
-      },
-      {
-        "q": "Como criar a minha própria afirmação positiva?",
-        "a": "Comece do que você quase acredita, escreva no presente, use o processo em vez do resultado e ancore numa ação. Ex.: em vez de “eu sou corajoso”, escreva “eu posso sentir medo e dar um passo mesmo assim”. Depois, registre uma prova real sempre que ela acontecer."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "afirmacoes-positivas",
-    "url": "https://aemori.com/pt-pt/blog/afirmacoes-positivas/",
-    "title": "Afirmações positivas funcionam mesmo? O que a psicologia diz (e como usar)",
-    "description": "As afirmações positivas funcionam? Às vezes sim, às vezes fazem mal. Percebe quando ajudam, por que podem sair pela culatra e como escrever afirmações que o teu cérebro aceita.",
-    "tldr": "Afirmações positivas são frases, ditas no presente, que repetes para reforçar uma crença sobre ti. Funcionam — mas com uma condição: têm de caber dentro daquilo em que consegues acreditar. Uma afirmação longe demais da tua realidade pode até piorar o humor. O segredo é torná-las credíveis, específicas e ancoradas em ações.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1529057415459-f9fdebeae24f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBlYWNlZnVsJTIwbW9ybmluZyUyMHN1bmxpZ2h0JTIwd2luZG93JTIwaG9wZWZ1bHxlbnwxfDB8fHwxNzg1NDI1NTI1fDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma mulher encostada à janela, com luz suave da manhã",
-      "credit": "From Marwool",
-      "creditUrl": "https://unsplash.com/@frommarwool?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "As afirmações positivas funcionam mesmo?",
-        "a": "Funcionam para muitas pessoas, sobretudo quando a frase é credível. Para quem está com a autoestima em baixo, afirmações grandiosas e distantes da realidade podem piorar o humor. O segredo é usar afirmações plausíveis, no presente e orientadas ao processo (“estou a aprender a…”), não ao resultado (“eu sou…”)."
-      },
-      {
-        "q": "Quantas vezes por dia devo repetir uma afirmação?",
-        "a": "Não há número mágico. Mais importante do que a quantidade é a consistência e a crença: uma afirmação plausível, repetida com atenção uma ou duas vezes por dia (e ligada a uma ação), vale mais do que dezenas de repetições automáticas."
-      },
-      {
-        "q": "Melhor de manhã ou à noite?",
-        "a": "De manhã, ajuda a definir a intenção do dia; à noite, ajuda a reconhecer as provas do que correu bem. Muita gente combina: afirma de manhã e, à noite, anota uma prova real disso. A melhor hora é a que consegues manter."
-      },
-      {
-        "q": "As afirmações positivas ajudam com a ansiedade ou a autoestima baixa?",
-        "a": "Podem ajudar, desde que sejam credíveis e usadas com ações. Para autoestima baixa, prefere afirmações de processo (“estou a aprender a confiar em mim”), que não geram o efeito bumerangue. Em casos de ansiedade intensa ou persistente, procura um psicólogo — as afirmações complementam, mas não substituem, tratamento."
-      },
-      {
-        "q": "Como criar a minha própria afirmação positiva?",
-        "a": "Começa do que quase acreditas, escreve no presente, usa o processo em vez do resultado e ancora numa ação. Ex.: em vez de “sou corajoso”, escreve “posso sentir medo e dar um passo na mesma”. Depois, regista uma prova real sempre que acontecer."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "diario-de-gratidao",
-    "url": "https://aemori.com/pt-br/blog/diario-de-gratidao/",
-    "title": "Diário de gratidão: como começar e por que ele realmente funciona",
-    "description": "O que é um diário de gratidão, como começar hoje (passo a passo), o que escrever e por que ele funciona de verdade — sem cair na positividade forçada.",
-    "tldr": "Um diário de gratidão é o hábito de anotar, com regularidade, aquilo pelo que você é grato. Funciona porque treina o cérebro a notar o que está bom — algo que a negatividade natural tende a ofuscar. Para começar, escreva três coisas específicas por dia, sempre no mesmo horário, focando no porquê de cada uma.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1528938102132-4a9276b8e320?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxncmF0aXR1ZGUlMjBqb3VybmFsJTIwd2FybSUyMG1vcm5pbmclMjBsaWdodHxlbnwxfDB8fHwxNzg1MjU0ODExfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um caderno aberto com a frase \"Today I am Grateful\" (Hoje sou grato)",
-      "credit": "Gabrielle Henderson",
-      "creditUrl": "https://unsplash.com/@gabriellefaithhenderson?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que escrever num diário de gratidão?",
-        "a": "Escreva coisas específicas pelas quais você é grato e o porquê — de grandes (uma pessoa, a saúde) a pequenas (um café quente, um momento de silêncio). O detalhe importa mais do que a grandeza: “sou grato porque um amigo me ligou” vale mais do que “sou grato pelos amigos”."
-      },
-      {
-        "q": "Com que frequência devo escrever no diário de gratidão?",
-        "a": "A maioria das pessoas se dá bem com uma vez por dia, três itens. A regularidade importa mais do que a quantidade — escrever pouco todos os dias supera sessões longas e esporádicas. Se um dia falhar, apenas evite falhar dois seguidos."
-      },
-      {
-        "q": "O diário de gratidão funciona mesmo?",
-        "a": "Como ferramenta de bem-estar, sim. A prática regular está associada a mais bem-estar, menos foco em pensamentos negativos e, para algumas pessoas, sono um pouco melhor. Não é cura nem substitui tratamento, mas é um hábito simples com boas evidências a favor."
-      },
-      {
-        "q": "É melhor escrever de manhã ou à noite?",
-        "a": "Os dois funcionam. À noite ajuda a fechar o dia notando o que foi bom; de manhã ajuda a começar com uma atenção mais positiva. O melhor horário é aquele em que você realmente vai manter o hábito."
-      },
-      {
-        "q": "Diário de gratidão ajuda com ansiedade?",
-        "a": "Pode ajudar como apoio, ao deslocar parte da atenção do que preocupa para o que sustenta. Não substitui acompanhamento profissional em casos de ansiedade intensa ou persistente — nesses casos, procure um psicólogo. A gratidão complementa o cuidado, não o substitui."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "diario-de-gratidao",
-    "url": "https://aemori.com/pt-pt/blog/diario-de-gratidao/",
-    "title": "Diário de gratidão: como começar e por que funciona mesmo",
-    "description": "O que é um diário de gratidão, como começar hoje (passo a passo), o que escrever e por que funciona de verdade — sem cair na positividade forçada.",
-    "tldr": "Um diário de gratidão é o hábito de anotar, com regularidade, aquilo por que és grato. Funciona porque treina o cérebro a notar o que está bom — algo que a negatividade natural tende a ofuscar. Para começar, escreve três coisas específicas por dia, sempre à mesma hora, focando no porquê de cada uma.",
-    "datePublished": "2026-07-28",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1528938102132-4a9276b8e320?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxncmF0aXR1ZGUlMjBqb3VybmFsJTIwd2FybSUyMG1vcm5pbmclMjBsaWdodHxlbnwxfDB8fHwxNzg1MjU0ODExfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um caderno aberto com a frase \"Today I am Grateful\" (Hoje sou grato)",
-      "credit": "Gabrielle Henderson",
-      "creditUrl": "https://unsplash.com/@gabriellefaithhenderson?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que escrever num diário de gratidão?",
-        "a": "Escreve coisas específicas por que és grato e o porquê — de grandes (uma pessoa, a saúde) a pequenas (um café quente, um momento de silêncio). O detalhe importa mais do que a grandeza: “sou grato porque um amigo me ligou” vale mais do que “sou grato pelos amigos”."
-      },
-      {
-        "q": "Com que frequência devo escrever no diário de gratidão?",
-        "a": "A maioria das pessoas dá-se bem com uma vez por dia, três itens. A regularidade importa mais do que a quantidade — escrever pouco todos os dias supera sessões longas e esporádicas. Se um dia falhares, evita apenas falhar dois seguidos."
-      },
-      {
-        "q": "O diário de gratidão funciona mesmo?",
-        "a": "Como ferramenta de bem-estar, sim. A prática regular está associada a mais bem-estar, menos foco em pensamentos negativos e, para algumas pessoas, sono um pouco melhor. Não é cura nem substitui tratamento, mas é um hábito simples com boas evidências a favor."
-      },
-      {
-        "q": "É melhor escrever de manhã ou à noite?",
-        "a": "Os dois funcionam. À noite ajuda a fechar o dia notando o que foi bom; de manhã ajuda a começar com uma atenção mais positiva. A melhor hora é aquela em que realmente vais manter o hábito."
-      },
-      {
-        "q": "O diário de gratidão ajuda com a ansiedade?",
-        "a": "Pode ajudar como apoio, ao deslocar parte da atenção do que preocupa para o que sustenta. Não substitui acompanhamento profissional em casos de ansiedade intensa ou persistente — nesses casos, procura um psicólogo. A gratidão complementa o cuidado, não o substitui."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "diario-de-humor",
-    "url": "https://aemori.com/pt-br/blog/diario-de-humor/",
-    "title": "Diário de humor: o que muda quando você nota o que sente todos os dias",
-    "description": "Um diário de humor é registrar como você se sente a cada dia para enxergar padrões que passam despercebidos. Veja o que muda nas primeiras semanas — e o retrato emocional que aparece com o tempo.",
-    "tldr": "Um diário de humor é o hábito de registrar como você se sente a cada dia — não o que aconteceu, mas o que ficou por dentro. Em poucas semanas começam a aparecer padrões que você não via: o que te derruba, o que te devolve a paz e a que horas. Notar já é metade do caminho para lidar melhor.",
-    "datePublished": "2026-07-27",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1688743477182-d8f5fdb98b76?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxxdWlldCUyMG1vcm5pbmclMjBqb3VybmFsaW5nJTIwbm90ZWJvb2t8ZW58MXwwfHx8MTc4NTE1Njc1N3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma xícara de café ao lado de um caderno aberto sobre uma mesa",
-      "credit": "M. İkbal K",
-      "creditUrl": "https://unsplash.com/@munevverikbal?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que escrever num diário de humor?",
-        "a": "Escreva como você se sentiu, não só o que aconteceu. Pode ser uma emoção (“ansioso”, “aliviado”), uma nota de 0 a 10, ou uma frase curta sobre o que pesou ou o que fez bem. O importante é a honestidade, não o tamanho."
-      },
-      {
-        "q": "Preciso registrar todos os dias?",
-        "a": "Não é obrigatório, mas a regularidade é o que faz os padrões aparecerem. Registrar dez segundos por dia vale muito mais do que sessões longas e esporádicas. Se falhar um dia, apenas evite falhar dois seguidos."
-      },
-      {
-        "q": "Diário de humor ajuda com ansiedade?",
-        "a": "Ajuda como ferramenta de apoio. Ao registrar o humor ao longo do tempo, você começa a ver quando e por que a ansiedade sobe — o que permite antecipar e cuidar. Não substitui tratamento profissional, mas complementa bem o dia a dia."
-      },
-      {
-        "q": "Qual a diferença entre diário de humor e diário comum?",
-        "a": "Um diário comum registra o que aconteceu; o diário de humor registra como você se sentiu. Um documenta o dia, o outro documenta a emoção — e é essa camada emocional que revela padrões ao longo do tempo."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "diario-de-humor",
-    "url": "https://aemori.com/pt-pt/blog/diario-de-humor/",
-    "title": "Diário de humor: o que muda quando notas o que sentes todos os dias",
-    "description": "Um diário de humor é registar como te sentes a cada dia para veres padrões que passam despercebidos. Vê o que muda nas primeiras semanas — e o retrato emocional que aparece com o tempo.",
-    "tldr": "Um diário de humor é o hábito de registar como te sentes a cada dia — não o que aconteceu, mas o que ficou por dentro. Em poucas semanas começam a aparecer padrões que não vias: o que te deita abaixo, o que te devolve a paz e a que horas. Notar já é metade do caminho para lidar melhor.",
-    "datePublished": "2026-07-27",
-    "readingMinutes": 8,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1688743477182-d8f5fdb98b76?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw4fHxxdWlldCUyMG1vcm5pbmclMjBqb3VybmFsaW5nJTIwbm90ZWJvb2t8ZW58MXwwfHx8MTc4NTE1Njc1N3ww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma chávena de café ao lado de um caderno aberto sobre uma mesa",
-      "credit": "M. İkbal K",
-      "creditUrl": "https://unsplash.com/@munevverikbal?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que escrever num diário de humor?",
-        "a": "Escreve como te sentiste, não só o que aconteceu. Pode ser uma emoção (“ansioso”, “aliviado”), uma nota de 0 a 10, ou uma frase curta sobre o que pesou ou o que fez bem. O importante é a honestidade, não o tamanho."
-      },
-      {
-        "q": "Preciso de registar todos os dias?",
-        "a": "Não é obrigatório, mas a regularidade é o que faz os padrões aparecerem. Registar dez segundos por dia vale muito mais do que sessões longas e esporádicas. Se falhares um dia, evita apenas falhar dois seguidos."
-      },
-      {
-        "q": "O diário de humor ajuda com a ansiedade?",
-        "a": "Ajuda como ferramenta de apoio. Ao registar o humor ao longo do tempo, começas a ver quando e porque é que a ansiedade sobe — o que permite antecipar e cuidar. Não substitui tratamento profissional, mas complementa bem o dia a dia."
-      },
-      {
-        "q": "Qual a diferença entre diário de humor e diário comum?",
-        "a": "Um diário comum regista o que aconteceu; o diário de humor regista como te sentiste. Um documenta o dia, o outro documenta a emoção — e é essa camada emocional que revela padrões ao longo do tempo."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "como-comecar-diario-emocional",
-    "url": "https://aemori.com/pt-br/blog/como-comecar-diario-emocional/",
-    "title": "Como começar um diário emocional (guia para iniciantes)",
-    "description": "Um guia prático para começar um diário emocional hoje: o que é, por onde começar, quanto escrever e como manter o hábito mesmo sem saber por onde ir.",
-    "tldr": "Para começar um diário emocional, escolha um lugar fixo (app ou caderno), escreva por 5 minutos sobre como você se sente agora — sem se preocupar com forma — e repita no mesmo horário todos os dias. O segredo não é escrever bonito, é escrever com frequência e honestidade.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1769794370990-614f765fa360?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxvcGVuJTIwYmxhbmslMjBub3RlYm9vayUyMHBlbiUyMHdhcm0lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNDd8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma vela acesa ao lado de um caderno aberto e um laptop",
-      "credit": "Yen Vu",
-      "creditUrl": "https://unsplash.com/@yenvu2410?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Preciso escrever todos os dias?",
-        "a": "Não é obrigatório, mas a frequência ajuda muito. Escrever poucos minutos todos os dias cria o hábito mais rápido do que sessões longas e esporádicas. Se falhar um dia, apenas evite falhar dois seguidos."
-      },
-      {
-        "q": "Existe um jeito certo de escrever no diário emocional?",
-        "a": "Não. Não precisa de gramática, ordem ou tema. O objetivo é ser honesto, não ser bonito. Frases soltas, listas ou desabafos valem tanto quanto textos organizados."
-      },
-      {
-        "q": "Diário emocional funciona mesmo?",
-        "a": "A escrita expressiva sobre emoções está associada a menos ruminação e mais clareza. Não substitui terapia, mas é uma ferramenta simples e acessível de autoconhecimento com evidências a favor."
-      },
-      {
-        "q": "Quanto tempo até sentir diferença?",
-        "a": "Muitas pessoas notam alívio já nas primeiras sessões, ao “tirar da cabeça”. Os padrões emocionais, porém, costumam aparecer depois de duas a quatro semanas de registros regulares."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "como-comecar-diario-emocional",
-    "url": "https://aemori.com/pt-pt/blog/como-comecar-diario-emocional/",
-    "title": "Como começar um diário emocional (guia para iniciantes)",
-    "description": "Um guia prático para começares um diário emocional hoje: o que é, por onde começar, quanto escrever e como manter o hábito mesmo sem saber por onde ir.",
-    "tldr": "Para começar um diário emocional, escolhe um sítio fixo (aplicação ou caderno), escreve durante 5 minutos sobre como te sentes agora — sem te preocupares com a forma — e repete à mesma hora todos os dias. O segredo não é escrever bonito, é escrever com frequência e honestidade.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1769794370990-614f765fa360?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw1fHxvcGVuJTIwYmxhbmslMjBub3RlYm9vayUyMHBlbiUyMHdhcm0lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNDd8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Uma vela acesa ao lado de um caderno aberto e um portátil",
-      "credit": "Yen Vu",
-      "creditUrl": "https://unsplash.com/@yenvu2410?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Preciso de escrever todos os dias?",
-        "a": "Não é obrigatório, mas a frequência ajuda muito. Escrever poucos minutos todos os dias cria o hábito mais depressa do que sessões longas e esporádicas. Se falhares um dia, evita apenas falhar dois seguidos."
-      },
-      {
-        "q": "Existe uma forma certa de escrever no diário emocional?",
-        "a": "Não. Não precisas de gramática, ordem ou tema. O objetivo é ser honesto, não ser bonito. Frases soltas, listas ou desabafos valem tanto como textos organizados."
-      },
-      {
-        "q": "O diário emocional funciona mesmo?",
-        "a": "A escrita expressiva sobre emoções está associada a menos ruminação e mais clareza. Não substitui terapia, mas é uma ferramenta simples e acessível de autoconhecimento com evidências a favor."
-      },
-      {
-        "q": "Quanto tempo até sentir diferença?",
-        "a": "Muitas pessoas notam alívio logo nas primeiras sessões, ao “tirar da cabeça”. Os padrões emocionais, porém, costumam aparecer após duas a quatro semanas de registos regulares."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "como-escolher-app-diario-emocional",
-    "url": "https://aemori.com/pt-br/blog/como-escolher-app-diario-emocional/",
-    "title": "Como escolher um app de diário emocional (guia 2026)",
-    "description": "Qual app de diário emocional escolher? Veja os critérios que importam de verdade — memória, padrões, privacidade e preço — para encontrar o aplicativo certo para você.",
-    "tldr": "Para escolher um app de diário emocional, avalie cinco coisas: se ele lembra do seu contexto, se te ajuda a ver padrões, como trata a sua privacidade, se é fácil de manter como hábito e o preço. A memória é o critério que mais muda a experiência: um app que lembra do que você contou torna a reflexão pessoal em vez de genérica.",
-    "datePublished": "2026-07-05",
+    "slug": "orar-pela-familia",
+    "url": "https://aemori.com/pt-br/blog/orar-pela-familia/",
+    "title": "Oração pela família: como orar por quem você ama",
+    "description": "Como orar pela família na prática: o que a Bíblia ensina, o que pedir por filhos, cônjuge e pais e como manter o hábito sem pressão nem culpa.",
+    "tldr": "Orar pela família é levar a Deus, pelo nome, cada pessoa da sua casa: as necessidades, os medos e o caminho de cada uma. A Bíblia lembra que a casa se constrói com Deus (Salmos 127:1) e que orar uns pelos outros tem valor (Tiago 5:16). Comece pequeno: uma lista de nomes, um pedido honesto por pessoa e sempre no mesmo horário.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1759296844873-e0c694c24284?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um caderno com caneta e um celular sobre uma mesa de madeira",
-      "credit": "Jakub Żerdzicki",
-      "creditUrl": "https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1791318554903-cc1ef4931528?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxmYW1pbHklMjBob2xkaW5nJTIwaGFuZHMlMjBhcm91bmQlMjBkaW5uZXIlMjB0YWJsZXxlbnwxfDB8fHwxNzkyNjkzMzMxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma família reunida em volta de uma mesa de madeira com canecas e pães",
+      "credit": "Jelly Marketing",
+      "creditUrl": "https://unsplash.com/@jellymarketing?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Qual é o melhor app de diário emocional?",
-        "a": "Não existe um único \"melhor\" — depende do que você valoriza. Mas o critério que mais diferencia é a memória: um app que lembra do seu contexto torna a reflexão pessoal em vez de genérica. Avalie também padrões, privacidade, facilidade de hábito e preço."
+        "q": "Como orar pela família?",
+        "a": "Faça uma lista com o nome de cada pessoa, ore por uma de cada vez com pedidos concretos e honestos, agradeça por algo em cada uma e entregue o que você não controla. Anotar os pedidos ajuda a manter a constância e a perceber mudanças ao longo do tempo."
       },
       {
-        "q": "Vale a pena usar um app de diário com IA?",
-        "a": "Vale, se a IA fizer boas perguntas e, principalmente, se ela lembrar do que você já contou. Uma IA sem memória recomeça do zero a cada dia e ajuda pouco. Com memória, ela conecta o que você viveu ao longo do tempo."
+        "q": "Como fazer uma oração simples pela família?",
+        "a": "Pode ser algo assim: “Senhor, entrego a ti a minha família. Cuida de cada um pelo nome. Dá-nos paz, saúde e paciência uns com os outros. Ajuda-me a fazer a minha parte e a confiar a ti o que não consigo controlar. Amém.” Use as suas próprias palavras, o que importa é a sinceridade."
       },
       {
-        "q": "Apps de diário emocional são seguros?",
-        "a": "Depende do app. Leia sempre a política de privacidade: o que é coletado, se há criptografia, se os dados são vendidos e se você pode exportar ou apagar tudo. Um diário é íntimo e merece um app que trate a privacidade como prioridade."
+        "q": "Como orar por um filho que se afastou da fé?",
+        "a": "Continue orando, amando e mantendo a porta aberta, sem pressão nem cobranças. Provérbios 22:6 é um princípio de sabedoria, não uma garantia para cada caso, então não se culpe pelas escolhas dele. Viver com coerência e paciência costuma falar mais do que discursos."
       },
       {
-        "q": "Preciso pagar por um app de diário emocional?",
-        "a": "Nem sempre. Muitos, como a Emori, são grátis para começar e usar no dia a dia, com um plano pago opcional para recursos avançados como memória estendida e uma leitura mais profunda dos padrões."
+        "q": "Posso orar por alguém da família sem que a pessoa saiba?",
+        "a": "Sim. Orar por alguém é um gesto de cuidado que não depende de a pessoa saber ou concordar. O que convém evitar é usar a oração como cobrança ou como forma de pressionar a pessoa a mudar."
+      },
+      {
+        "q": "Qual é o melhor horário para orar pela família?",
+        "a": "O horário em que você conseguir manter o hábito. Muitas pessoas gostam do início da manhã, antes de a casa acordar, ou do fim do dia, quando tudo se acalma. O importante é a constância, mesmo que sejam apenas alguns minutos."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "como-escolher-app-diario-emocional",
-    "url": "https://aemori.com/pt-pt/blog/como-escolher-app-diario-emocional/",
-    "title": "Como escolher uma aplicação de diário emocional (guia 2026)",
-    "description": "Que aplicação de diário emocional escolher? Vê os critérios que importam mesmo — memória, padrões, privacidade e preço — para encontrares a app certa para ti.",
-    "tldr": "Para escolher uma aplicação de diário emocional, avalia cinco coisas: se ela se lembra do teu contexto, se te ajuda a ver padrões, como trata a tua privacidade, se é fácil de manter como hábito e o preço. A memória é o critério que mais muda a experiência: uma app que se lembra do que contaste torna a reflexão pessoal em vez de genérica.",
-    "datePublished": "2026-07-05",
+    "slug": "orar-pela-familia",
+    "url": "https://aemori.com/pt-pt/blog/orar-pela-familia/",
+    "title": "Oração pela família: como orar por quem amas",
+    "description": "Como orar pela família na prática: o que a Bíblia ensina, o que pedir por filhos, cônjuge e pais e como manter o hábito sem pressão nem culpa.",
+    "tldr": "Orar pela família é levar a Deus, pelo nome, cada pessoa da tua casa: as necessidades, os medos e o caminho de cada uma. A Bíblia lembra que a casa se constrói com Deus (Salmos 127:1) e que orar uns pelos outros tem valor (Tiago 5:16). Começa pequeno: uma lista de nomes, um pedido honesto por pessoa e sempre à mesma hora.",
+    "datePublished": "2026-10-22",
     "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1759296844873-e0c694c24284?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um caderno com caneta e um telemóvel sobre uma mesa de madeira",
-      "credit": "Jakub Żerdzicki",
-      "creditUrl": "https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1791318554903-cc1ef4931528?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxmYW1pbHklMjBob2xkaW5nJTIwaGFuZHMlMjBhcm91bmQlMjBkaW5uZXIlMjB0YWJsZXxlbnwxfDB8fHwxNzkyNjkzMzMxfDA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Uma família reunida à volta de uma mesa de madeira com canecas e pastelaria",
+      "credit": "Jelly Marketing",
+      "creditUrl": "https://unsplash.com/@jellymarketing?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Qual é a melhor aplicação de diário emocional?",
-        "a": "Não existe uma única \"melhor\" — depende do que valorizas. Mas o critério que mais diferencia é a memória: uma app que se lembra do teu contexto torna a reflexão pessoal em vez de genérica. Avalia também padrões, privacidade, facilidade de hábito e preço."
+        "q": "Como orar pela família?",
+        "a": "Faz uma lista com o nome de cada pessoa, ora por uma de cada vez com pedidos concretos e honestos, agradece por algo em cada uma e entrega o que não controlas. Anotar os pedidos ajuda a manter a constância e a perceber mudanças ao longo do tempo."
       },
       {
-        "q": "Vale a pena usar uma aplicação de diário com IA?",
-        "a": "Vale, se a IA fizer boas perguntas e, sobretudo, se se lembrar do que já contaste. Uma IA sem memória recomeça do zero a cada dia e ajuda pouco. Com memória, liga o que viveste ao longo do tempo."
+        "q": "Como fazer uma oração simples pela família?",
+        "a": "Pode ser algo assim: “Senhor, entrego-te a minha família. Cuida de cada um pelo nome. Dá-nos paz, saúde e paciência uns com os outros. Ajuda-me a fazer a minha parte e a confiar-te o que não consigo controlar. Amém.” Usa as tuas próprias palavras: o que importa é a sinceridade."
       },
       {
-        "q": "As aplicações de diário emocional são seguras?",
-        "a": "Depende da app. Lê sempre a política de privacidade: o que é recolhido, se há cifragem, se os dados são vendidos e se podes exportar ou apagar tudo. Um diário é íntimo e merece uma app que trate a privacidade como prioridade."
+        "q": "Como orar por um filho que se afastou da fé?",
+        "a": "Continua a orar, a amar e a manter a porta aberta, sem pressão nem cobranças. Provérbios 22:6 é um princípio de sabedoria, não uma garantia para cada caso, por isso não te culpes pelas escolhas dele. Viver com coerência e paciência costuma falar mais do que discursos."
       },
       {
-        "q": "Preciso de pagar por uma aplicação de diário emocional?",
-        "a": "Nem sempre. Muitas, como a Emori, são gratuitas para começar e usar no dia a dia, com um plano pago opcional para funcionalidades avançadas como memória alargada e uma leitura mais profunda dos padrões."
+        "q": "Posso orar por alguém da família sem que a pessoa saiba?",
+        "a": "Sim. Orar por alguém é um gesto de cuidado que não depende de a pessoa saber ou concordar. O que convém evitar é usar a oração como cobrança ou como forma de pressionar a pessoa a mudar."
+      },
+      {
+        "q": "Qual é a melhor hora para orar pela família?",
+        "a": "A hora em que conseguires manter o hábito. Muitas pessoas gostam do início da manhã, antes de a casa acordar, ou do fim do dia, quando tudo acalma. O importante é a constância, mesmo que sejam apenas alguns minutos."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "o-que-escrever-no-diario",
-    "url": "https://aemori.com/pt-br/blog/o-que-escrever-no-diario/",
-    "title": "O que escrever no diário quando você não sabe o que está sentindo",
-    "description": "Quando você não sabe o que sente, escreva sobre o corpo, sobre o dia e responda perguntas simples. Um guia com prompts para destravar o diário.",
-    "tldr": "Quando você não sabe o que está sentindo, não tente nomear a emoção de cara. Comece descrevendo o corpo (“meu peito está apertado”), o que aconteceu no dia e o que você evita pensar. A emoção costuma aparecer sozinha quando você para de tentar forçá-la.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
+    "slug": "intercessao-o-que-e",
+    "url": "https://aemori.com/pt-br/blog/intercessao-o-que-e/",
+    "title": "Oração de intercessão: o que é e como fazer",
+    "description": "O que é intercessão, o que a Bíblia ensina (Êxodo 17, 1 Timóteo 2), como interceder por alguém na prática e quais erros evitar ao orar pelos outros.",
+    "tldr": "Interceder é orar por outra pessoa, levando as necessidades dela a Deus. A Bíblia pede isso de forma expressa (1 Timóteo 2:1) e mostra exemplos como Moisés sustentado por Arão e Hur (Êxodo 17) e Epafras (Colossenses 4:12). Na prática: escolha um nome, ouça o pedido, ore com regularidade e, sempre que possível, avise a pessoa.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1509029032154-54ba8b3216d4?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjB0aG91Z2h0ZnVsJTIwd2luZG93JTIwbW9ybmluZyUyMGxpZ2h0fGVufDF8MHx8fDE3ODUxNTgyNTF8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um homem de óculos olhando pela janela, pensativo",
-      "credit": "Laurenz Kleinheider",
-      "creditUrl": "https://unsplash.com/@laurlenz?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1645620549807-0aea79c18482?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHx0d28lMjBwZW9wbGUlMjBob2xkaW5nJTIwaGFuZHMlMjBwcmF5aW5nfGVufDF8MHx8fDE3OTI2OTMzMDh8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Duas pessoas de mãos dadas sobre um livro, em cima de uma mesa",
+      "credit": "Tony Lomas",
+      "creditUrl": "https://unsplash.com/@tony_lomas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "É normal não saber o que estou sentindo?",
-        "a": "Totalmente. Emoções raramente vêm nomeadas e muitas vezes são misturas. Identificar sentimentos é uma habilidade que se desenvolve com a prática — inclusive escrevendo."
+        "q": "O que significa interceder?",
+        "a": "Interceder é orar em favor de outra pessoa, levando as necessidades dela a Deus. A palavra vem do latim e significa “ir entre”, colocar-se no meio. É a oração feita pelos outros, diferente do pedido que fazemos por nós mesmos."
       },
       {
-        "q": "Como transformar “não sei” em algo escrito?",
-        "a": "Comece pelo corpo (onde há tensão, como está a respiração) e pelo dia (o que aconteceu, em ordem). Essas pistas concretas costumam revelar a emoção sem que você precise adivinhá-la."
+        "q": "Qual é a diferença entre oração de pedido e oração de intercessão?",
+        "a": "Na oração de pedido (ou súplica) você apresenta as suas próprias necessidades. Na intercessão você apresenta as necessidades de outras pessoas, como familiares, amigos, a comunidade ou as autoridades. As duas aparecem juntas em 1 Timóteo 2:1."
       },
       {
-        "q": "Prompts ajudam ou viciam?",
-        "a": "Ajudam, principalmente no início. Eles reduzem o atrito da página em branco. Com o tempo você precisa deles cada vez menos, mas não há problema em usá-los sempre que travar."
+        "q": "Preciso avisar a pessoa de que estou orando por ela?",
+        "a": "Não é obrigatório. Orar por alguém é um gesto de cuidado que não depende de a pessoa saber. Mas uma mensagem curta, como “orei por você hoje”, costuma ser um conforto e mostra que a promessa de orar foi cumprida."
       },
       {
-        "q": "Escrever “não sei o que sinto” conta como diário?",
-        "a": "Conta. Descrever a ausência ou a confusão é um registro emocional legítimo. O objetivo é honestidade, não uma emoção “interessante”."
+        "q": "Quantas pessoas devo incluir na minha lista de intercessão?",
+        "a": "Comece com poucas, de três a cinco, e aumente aos poucos. Uma lista curta orada com constância vale mais do que uma lista enorme orada de forma apressada. Anotar os nomes ajuda a não esquecer ninguém."
+      },
+      {
+        "q": "A intercessão garante que Deus vai resolver o problema?",
+        "a": "A Bíblia convida a orar pelos outros e mostra que isso tem valor, mas não apresenta a oração como fórmula que garante um resultado. A intercessão é entregar a necessidade a Deus com confiança, sem exigir como ou quando a resposta virá."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "o-que-escrever-no-diario",
-    "url": "https://aemori.com/pt-pt/blog/o-que-escrever-no-diario/",
-    "title": "O que escrever no diário quando não sabes o que estás a sentir",
-    "description": "Quando não sabes o que sentes, escreve sobre o corpo, sobre o dia e responde a perguntas simples. Um guia com sugestões para destravar o diário.",
-    "tldr": "Quando não sabes o que estás a sentir, não tentes nomear a emoção logo. Começa por descrever o corpo (“tenho o peito apertado”), o que aconteceu no dia e o que evitas pensar. A emoção costuma aparecer sozinha quando deixas de a tentar forçar.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
+    "slug": "intercessao-o-que-e",
+    "url": "https://aemori.com/pt-pt/blog/intercessao-o-que-e/",
+    "title": "Oração de intercessão: o que é e como fazer",
+    "description": "O que é intercessão, o que a Bíblia ensina (Êxodo 17, 1 Timóteo 2), como interceder por alguém na prática e que erros evitar ao orar pelos outros.",
+    "tldr": "Interceder é orar por outra pessoa, levando as necessidades dela a Deus. A Bíblia pede-o de forma expressa (1 Timóteo 2:1) e mostra exemplos como Moisés sustentado por Arão e Hur (Êxodo 17) e Epafras (Colossenses 4:12). Na prática: escolhe um nome, ouve o pedido, ora com regularidade e, sempre que possível, avisa a pessoa.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1509029032154-54ba8b3216d4?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjB0aG91Z2h0ZnVsJTIwd2luZG93JTIwbW9ybmluZyUyMGxpZ2h0fGVufDF8MHx8fDE3ODUxNTgyNTF8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um homem de óculos a olhar pela janela, pensativo",
-      "credit": "Laurenz Kleinheider",
-      "creditUrl": "https://unsplash.com/@laurlenz?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1645620549807-0aea79c18482?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwyfHx0d28lMjBwZW9wbGUlMjBob2xkaW5nJTIwaGFuZHMlMjBwcmF5aW5nfGVufDF8MHx8fDE3OTI2OTMzMDh8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Duas pessoas de mãos dadas sobre um livro, em cima de uma mesa",
+      "credit": "Tony Lomas",
+      "creditUrl": "https://unsplash.com/@tony_lomas?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "É normal não saber o que estou a sentir?",
-        "a": "Totalmente. As emoções raramente vêm nomeadas e muitas vezes são misturas. Identificar sentimentos é uma competência que se desenvolve com a prática — inclusive a escrever."
+        "q": "O que significa interceder?",
+        "a": "Interceder é orar em favor de outra pessoa, levando as necessidades dela a Deus. A palavra vem do latim e significa “ir entre”, colocar-se no meio. É a oração feita pelos outros, diferente do pedido que fazemos por nós mesmos."
       },
       {
-        "q": "Como transformar “não sei” em algo escrito?",
-        "a": "Começa pelo corpo (onde há tensão, como está a respiração) e pelo dia (o que aconteceu, por ordem). Essas pistas concretas costumam revelar a emoção sem teres de a adivinhar."
+        "q": "Qual é a diferença entre oração de pedido e oração de intercessão?",
+        "a": "Na oração de pedido (ou súplica) apresentas as tuas próprias necessidades. Na intercessão apresentas as necessidades de outras pessoas, como familiares, amigos, a comunidade ou as autoridades. As duas aparecem juntas em 1 Timóteo 2:1."
       },
       {
-        "q": "As sugestões ajudam ou viciam?",
-        "a": "Ajudam, sobretudo no início. Reduzem o atrito da página em branco. Com o tempo precisas cada vez menos delas, mas não há problema em usá-las sempre que travares."
+        "q": "Preciso de avisar a pessoa de que estou a orar por ela?",
+        "a": "Não é obrigatório. Orar por alguém é um gesto de cuidado que não depende de a pessoa saber. Mas uma mensagem curta, como “orei por ti hoje”, costuma ser um conforto e mostra que a promessa de orar foi cumprida."
       },
       {
-        "q": "Escrever “não sei o que sinto” conta como diário?",
-        "a": "Conta. Descrever a ausência ou a confusão é um registo emocional legítimo. O objetivo é a honestidade, não uma emoção “interessante”."
+        "q": "Quantas pessoas devo incluir na minha lista de intercessão?",
+        "a": "Começa com poucas, de três a cinco, e aumenta aos poucos. Uma lista curta orada com constância vale mais do que uma lista enorme orada à pressa. Anotar os nomes ajuda a não esquecer ninguém."
+      },
+      {
+        "q": "A intercessão garante que Deus vai resolver o problema?",
+        "a": "A Bíblia convida a orar pelos outros e mostra que isso tem valor, mas não apresenta a oração como uma fórmula que garante um resultado. A intercessão é entregar a necessidade a Deus com confiança, sem exigir como ou quando a resposta virá."
       }
     ]
   },
   {
     "lang": "pt-br",
-    "slug": "diario-ou-journaling-diferenca",
-    "url": "https://aemori.com/pt-br/blog/diario-ou-journaling-diferenca/",
-    "title": "Diário ou journaling: qual a diferença e qual escolher",
-    "description": "Diário e journaling não são exatamente a mesma coisa. Entenda a diferença entre registrar o dia e usar a escrita como ferramenta — e qual combina com você.",
-    "tldr": "Na prática, “diário” costuma significar registrar o que aconteceu no dia, enquanto “journaling” é usar a escrita como ferramenta intencional para pensar, sentir e crescer (com técnicas, prompts e temas). Se você quer memória, escolha o diário; se quer transformação, escolha o journaling — e nada impede juntar os dois.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 5,
+    "slug": "grupo-de-oracao-comunidade",
+    "url": "https://aemori.com/pt-br/blog/grupo-de-oracao-comunidade/",
+    "title": "Grupo de oração: como criar e orar em comunidade",
+    "description": "Como criar um grupo de oração: o que a Bíblia ensina sobre orar juntos, um roteiro de encontro de 30 minutos e as regras que evitam os erros mais comuns.",
+    "tldr": "Um grupo de oração é um pequeno grupo que se reúne com regularidade para orar uns pelos outros. A Bíblia mostra a igreja primitiva perseverando “nas orações” (Atos 2:42) e orando junta por Pedro (Atos 12:5). Para começar bastam duas ou três pessoas, um horário fixo, um roteiro simples de 30 minutos e uma regra de confidencialidade.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxoYW5kcyUyMHdyaXRpbmclMjBqb3VybmFsJTIwbm90ZWJvb2slMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgzMDR8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa escrevendo com uma caneta num caderno",
-      "credit": "Thought Catalog",
-      "creditUrl": "https://unsplash.com/@thoughtcatalog?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1768009808770-89619e312ee6?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxzbWFsbCUyMGdyb3VwJTIwcHJheWVyJTIwY2lyY2xlfGVufDF8MHx8fDE3OTI2OTMzMzR8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoas reunidas orando em volta de um piano",
+      "credit": "C.F. Photography",
+      "creditUrl": "https://unsplash.com/@fickesphotos?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Diário e journaling são a mesma coisa?",
-        "a": "Quase, mas não exatamente. “Diário” tende a significar registrar o que aconteceu; “journaling” é usar a escrita de forma intencional para refletir, processar emoções ou crescer. A diferença está na intenção."
+        "q": "Quantas pessoas são necessárias para um grupo de oração?",
+        "a": "Não há número mínimo definido. Jesus falou em “dois ou três” reunidos em seu nome (Mateus 18:20), por isso um grupo muito pequeno já é um grupo de oração. O importante é a regularidade e a confiança entre os participantes."
       },
       {
-        "q": "Journaling é melhor do que diário?",
-        "a": "Nenhum é melhor — servem a objetivos diferentes. O diário é ótimo para memória; o journaling, para transformação. O “melhor” é o que combina com o que você quer agora."
+        "q": "Quanto tempo deve durar um encontro de oração?",
+        "a": "Entre 30 e 45 minutos funciona bem para a maioria dos grupos. É melhor um encontro curto e frequente do que um longo que ninguém consegue manter. Um roteiro com tempos definidos ajuda a não alongar demais."
       },
       {
-        "q": "Posso fazer os dois ao mesmo tempo?",
-        "a": "Sim, e é comum. Você pode registrar o dia e, na mesma sessão, responder a um prompt de reflexão. Apps de diário com IA facilitam justamente essa combinação."
+        "q": "Posso fazer um grupo de oração online?",
+        "a": "Sim. Um grupo por vídeo ou por mensagens funciona, desde que haja horário combinado e as mesmas regras de confidencialidade e respeito. Para muita gente é a única forma de orar em conjunto, especialmente quem mora longe ou tem pouco tempo."
       },
       {
-        "q": "Journaling emocional é journaling ou diário?",
-        "a": "É um meio-termo: registra o que você sentiu (como um diário) usando técnicas e perguntas para aprofundar (como journaling). É a forma mais procurada por quem quer lidar melhor com as emoções."
+        "q": "O que fazer quando uma pessoa fala demais no grupo?",
+        "a": "Combine desde o início um tempo parecido para cada um e peça a quem conduz que dê a palavra por turnos. Se for preciso, converse em particular e com delicadeza. A regra de que ninguém é obrigado a falar também protege os mais tímidos."
+      },
+      {
+        "q": "Preciso de um pastor ou padre para começar um grupo de oração?",
+        "a": "Em muitas tradições, grupos de oração em casas são conduzidos por leigos. Se você faz parte de uma igreja, é boa ideia conversar com a liderança, por respeito e para dar apoio ao grupo. Fora isso, o necessário é um lugar, um horário e pessoas dispostas a orar."
       }
     ]
   },
   {
     "lang": "pt-pt",
-    "slug": "diario-ou-journaling-diferenca",
-    "url": "https://aemori.com/pt-pt/blog/diario-ou-journaling-diferenca/",
-    "title": "Diário ou journaling: qual a diferença e qual escolher",
-    "description": "Diário e journaling não são exatamente a mesma coisa. Percebe a diferença entre registar o dia e usar a escrita como ferramenta — e qual combina contigo.",
-    "tldr": "Na prática, “diário” costuma significar registar o que aconteceu no dia, enquanto “journaling” é usar a escrita como ferramenta intencional para pensar, sentir e crescer (com técnicas, sugestões e temas). Se queres memória, escolhe o diário; se queres transformação, escolhe o journaling — e nada impede juntar os dois.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 5,
+    "slug": "grupo-de-oracao-comunidade",
+    "url": "https://aemori.com/pt-pt/blog/grupo-de-oracao-comunidade/",
+    "title": "Grupo de oração: como criar e orar em comunidade",
+    "description": "Como criar um grupo de oração: o que a Bíblia ensina sobre orar em conjunto, um roteiro de encontro de 30 minutos e as regras que evitam os erros mais comuns.",
+    "tldr": "Um grupo de oração é um pequeno grupo que se reúne com regularidade para orar uns pelos outros. A Bíblia mostra a igreja primitiva a perseverar “nas orações” (Atos 2:42) e a orar em conjunto por Pedro (Atos 12:5). Para começar bastam duas ou três pessoas, uma hora fixa, um roteiro simples de 30 minutos e uma regra de confidencialidade.",
+    "datePublished": "2026-10-22",
+    "readingMinutes": 7,
     "hero": {
-      "src": "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxoYW5kcyUyMHdyaXRpbmclMjBqb3VybmFsJTIwbm90ZWJvb2slMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgzMDR8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa a escrever com uma caneta num caderno",
-      "credit": "Thought Catalog",
-      "creditUrl": "https://unsplash.com/@thoughtcatalog?utm_source=aemori&utm_medium=referral"
+      "src": "https://images.unsplash.com/photo-1768009808770-89619e312ee6?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwxfHxzbWFsbCUyMGdyb3VwJTIwcHJheWVyJTIwY2lyY2xlfGVufDF8MHx8fDE3OTI2OTMzMzR8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
+      "alt": "Pessoas reunidas a orar à volta de um piano",
+      "credit": "C.F. Photography",
+      "creditUrl": "https://unsplash.com/@fickesphotos?utm_source=aemori&utm_medium=referral"
     },
     "faq": [
       {
-        "q": "Diário e journaling são a mesma coisa?",
-        "a": "Quase, mas não exatamente. “Diário” tende a significar registar o que aconteceu; “journaling” é usar a escrita de forma intencional para refletir, processar emoções ou crescer. A diferença está na intenção."
+        "q": "Quantas pessoas são necessárias para um grupo de oração?",
+        "a": "Não há número mínimo definido. Jesus falou em “dois ou três” reunidos em seu nome (Mateus 18:20), por isso um grupo muito pequeno já é um grupo de oração. O importante é a regularidade e a confiança entre os participantes."
       },
       {
-        "q": "O journaling é melhor do que o diário?",
-        "a": "Nenhum é melhor — servem objetivos diferentes. O diário é ótimo para memória; o journaling, para transformação. O “melhor” é o que combina com o que queres agora."
+        "q": "Quanto tempo deve durar um encontro de oração?",
+        "a": "Entre 30 e 45 minutos funciona bem para a maioria dos grupos. É melhor um encontro curto e frequente do que um longo que ninguém consegue manter. Um roteiro com tempos definidos ajuda a não alongar demasiado."
       },
       {
-        "q": "Posso fazer os dois ao mesmo tempo?",
-        "a": "Sim, e é comum. Podes registar o dia e, na mesma sessão, responder a uma sugestão de reflexão. As aplicações de diário com IA facilitam precisamente essa combinação."
+        "q": "Posso fazer um grupo de oração online?",
+        "a": "Sim. Um grupo por vídeo ou por mensagens funciona, desde que haja hora combinada e as mesmas regras de confidencialidade e respeito. Para muita gente é a única forma de orar em conjunto, sobretudo quem vive longe ou tem pouco tempo."
       },
       {
-        "q": "O journaling emocional é journaling ou diário?",
-        "a": "É um meio-termo: regista o que sentiste (como um diário) usando técnicas e perguntas para aprofundar (como journaling). É a forma mais procurada por quem quer lidar melhor com as emoções."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "escrever-para-lidar-com-ansiedade",
-    "url": "https://aemori.com/pt-br/blog/escrever-para-lidar-com-ansiedade/",
-    "title": "Como a escrita ajuda a lidar com a ansiedade",
-    "description": "Escrever tira a ansiedade do loop mental e a coloca em palavras concretas. Entenda por que isso acalma e como usar o diário nos momentos de ansiedade.",
-    "tldr": "Escrever ajuda na ansiedade porque tira os pensamentos do loop mental e os transforma em palavras concretas, o que reduz a ruminação e devolve senso de controle. Nos picos, funciona um “despejo” de tudo que está na cabeça; no dia a dia, escrever regularmente ajuda a identificar gatilhos antes que eles cresçam.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1736819341395-15591452a54c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxjYWxtJTIwdGVhJTIwY3VwJTIwaGFuZHMlMjB3aW5kb3d8ZW58MXwwfHx8MTc4NTE1ODI1NXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa segurando uma xícara em frente a uma janela",
-      "credit": "Leiada Krözjhen",
-      "creditUrl": "https://unsplash.com/@leiadakrozjhen?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Escrever realmente ajuda com ansiedade?",
-        "a": "Sim, como ferramenta de apoio. Colocar pensamentos ansiosos em palavras reduz a ruminação, ajuda a nomear a emoção e devolve senso de controle. Não substitui tratamento, mas é um recurso acessível e eficaz no dia a dia."
+        "q": "O que fazer quando uma pessoa fala demais no grupo?",
+        "a": "Combina desde o início um tempo semelhante para cada um e pede a quem conduz que dê a palavra por turnos. Se for preciso, fala em particular e com delicadeza. A regra de que ninguém é obrigado a falar também protege os mais tímidos."
       },
       {
-        "q": "O que escrever durante uma crise de ansiedade?",
-        "a": "Faça um despejo mental: escreva tudo que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguir, releia para separar o que é real do que é catastrofização."
-      },
-      {
-        "q": "Preciso escrever muito para aliviar a ansiedade?",
-        "a": "Não. Nos picos, poucas frases ou um despejo desorganizado já tiram parte do peso da cabeça. A regularidade importa mais do que a extensão — escrever pouco, mas com frequência, funciona melhor."
-      },
-      {
-        "q": "Com que frequência escrever para reduzir a ansiedade?",
-        "a": "Um pouco todos os dias funciona melhor do que sessões longas e raras. A regularidade é o que revela seus gatilhos e permite agir antes que a ansiedade cresça."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "escrever-para-lidar-com-ansiedade",
-    "url": "https://aemori.com/pt-pt/blog/escrever-para-lidar-com-ansiedade/",
-    "title": "Como a escrita ajuda a lidar com a ansiedade",
-    "description": "Escrever tira a ansiedade do ciclo mental e coloca-a em palavras concretas. Percebe porque isso acalma e como usar o diário nos momentos de ansiedade.",
-    "tldr": "Escrever ajuda na ansiedade porque tira os pensamentos do ciclo mental e transforma-os em palavras concretas, o que reduz a ruminação e devolve a sensação de controlo. Nos picos, funciona um “despejo” de tudo o que está na cabeça; no dia a dia, escrever regularmente ajuda a identificar gatilhos antes que cresçam.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1736819341395-15591452a54c?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHw0fHxjYWxtJTIwdGVhJTIwY3VwJTIwaGFuZHMlMjB3aW5kb3d8ZW58MXwwfHx8MTc4NTE1ODI1NXww&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Pessoa a segurar uma chávena em frente a uma janela",
-      "credit": "Leiada Krözjhen",
-      "creditUrl": "https://unsplash.com/@leiadakrozjhen?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "Escrever ajuda mesmo com a ansiedade?",
-        "a": "Sim, como ferramenta de apoio. Colocar pensamentos ansiosos em palavras reduz a ruminação, ajuda a nomear a emoção e devolve a sensação de controlo. Não substitui tratamento, mas é um recurso acessível e eficaz no dia a dia."
-      },
-      {
-        "q": "O que escrever durante uma crise de ansiedade?",
-        "a": "Faz um despejo mental: escreve tudo o que está na cabeça, sem ordem nem filtro. O objetivo é esvaziar, não redigir. Depois, se conseguires, relê para separar o que é real do que é catastrofização."
-      },
-      {
-        "q": "Preciso de escrever muito para aliviar a ansiedade?",
-        "a": "Não. Nos picos, poucas frases ou um despejo desorganizado já tiram parte do peso da cabeça. A regularidade importa mais do que a extensão — escrever pouco, mas com frequência, funciona melhor."
-      },
-      {
-        "q": "Com que frequência escrever para reduzir a ansiedade?",
-        "a": "Um pouco todos os dias funciona melhor do que sessões longas e raras. A regularidade é o que revela os teus gatilhos e permite agir antes que a ansiedade cresça."
-      }
-    ]
-  },
-  {
-    "lang": "pt-br",
-    "slug": "journaling-com-ia",
-    "url": "https://aemori.com/pt-br/blog/journaling-com-ia/",
-    "title": "Journaling com IA: como uma app que lembra muda a experiência",
-    "description": "Journaling com IA transforma o diário numa conversa. Entenda como uma app que lembra do seu contexto muda a prática — e o que observar ao escolher uma.",
-    "tldr": "Journaling com IA é escrever num app onde uma inteligência artificial responde, faz perguntas e — no melhor caso — lembra do seu contexto. A memória é o que muda tudo: em vez de recomeçar do zero a cada dia, o app conecta o que você viveu ao longo do tempo, tornando a reflexão mais profunda e pessoal.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1774029764284-1e52eddb2e0f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um celular sobre um papel enrolado numa mesa de madeira",
-      "credit": "Jakub Żerdzicki",
-      "creditUrl": "https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que é journaling com IA?",
-        "a": "É manter um diário num app onde uma inteligência artificial responde ao que você escreve, faz perguntas e ajuda a refletir. A escrita se torna uma conversa em vez de uma página em branco."
-      },
-      {
-        "q": "Por que a memória importa num app de journaling com IA?",
-        "a": "Porque sem memória cada sessão recomeça do zero, e a reflexão fica genérica. Um app que lembra do seu contexto conecta o que você viveu ao longo do tempo, tornando as respostas pessoais e mais profundas. É o diferencial da Emori."
-      },
-      {
-        "q": "Journaling com IA substitui terapia?",
-        "a": "Não. É uma ferramenta de autoconhecimento e escrita, não um serviço de saúde. Pode complementar o cuidado entre as sessões, mas não substitui acompanhamento profissional."
-      },
-      {
-        "q": "Preciso saber escrever bem para usar?",
-        "a": "Não. Apps como a Emori fazem perguntas simples que guiam você. O foco é a honestidade e a reflexão, não a qualidade da escrita."
-      }
-    ]
-  },
-  {
-    "lang": "pt-pt",
-    "slug": "journaling-com-ia",
-    "url": "https://aemori.com/pt-pt/blog/journaling-com-ia/",
-    "title": "Journaling com IA: como uma aplicação que se lembra muda a experiência",
-    "description": "Journaling com IA transforma o diário numa conversa. Percebe como uma aplicação que se lembra do teu contexto muda a prática — e o que observar ao escolher uma.",
-    "tldr": "Journaling com IA é escrever numa aplicação onde uma inteligência artificial responde, faz perguntas e — no melhor caso — se lembra do teu contexto. A memória é o que muda tudo: em vez de recomeçar do zero a cada dia, a aplicação liga o que viveste ao longo do tempo, tornando a reflexão mais profunda e pessoal.",
-    "datePublished": "2026-07-04",
-    "readingMinutes": 6,
-    "hero": {
-      "src": "https://images.unsplash.com/photo-1774029764284-1e52eddb2e0f?ixid=M3w4MjU2NjZ8MHwxfHNlYXJjaHwzfHxzbWFydHBob25lJTIwYW5kJTIwbm90ZWJvb2slMjB3b29kZW4lMjBkZXNrfGVufDF8MHx8fDE3ODUxNTgyNTZ8MA&ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop",
-      "alt": "Um telemóvel sobre um papel enrolado numa mesa de madeira",
-      "credit": "Jakub Żerdzicki",
-      "creditUrl": "https://unsplash.com/@jakubzerdzicki?utm_source=aemori&utm_medium=referral"
-    },
-    "faq": [
-      {
-        "q": "O que é journaling com IA?",
-        "a": "É manter um diário numa aplicação onde uma inteligência artificial responde ao que escreves, faz perguntas e ajuda a refletir. A escrita torna-se uma conversa em vez de uma página em branco."
-      },
-      {
-        "q": "Porque é que a memória importa numa aplicação de journaling com IA?",
-        "a": "Porque sem memória cada sessão recomeça do zero, e a reflexão fica genérica. Uma aplicação que se lembra do teu contexto liga o que viveste ao longo do tempo, tornando as respostas pessoais e mais profundas. É o diferencial da Emori."
-      },
-      {
-        "q": "O journaling com IA substitui terapia?",
-        "a": "Não. É uma ferramenta de autoconhecimento e escrita, não um serviço de saúde. Pode complementar o cuidado entre as sessões, mas não substitui acompanhamento profissional."
-      },
-      {
-        "q": "Preciso de saber escrever bem para usar?",
-        "a": "Não. Aplicações como a Emori fazem perguntas simples que te guiam. O foco é a honestidade e a reflexão, não a qualidade da escrita."
+        "q": "Preciso de um pastor ou de um padre para começar um grupo de oração?",
+        "a": "Em muitas tradições, os grupos de oração em casas são conduzidos por leigos. Se fazes parte de uma igreja, é boa ideia falar com a liderança, por respeito e para dar apoio ao grupo. Fora isso, o necessário é um lugar, uma hora e pessoas dispostas a orar."
       }
     ]
   }

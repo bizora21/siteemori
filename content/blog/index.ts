@@ -1,91 +1,79 @@
 import type { Locale } from '@/i18n/config';
 import type { ArticleModule, LocalizedArticle } from './types';
 
-// PT-BR (fonte completa)
-import brDesisto from './pt-br/por-que-desisto-do-diario';
-import brChoro from './pt-br/choro-por-qualquer-coisa';
-import brSozinho from './pt-br/me-sinto-sozinho-mesmo-acompanhado';
-import brDizerNao from './pt-br/como-dizer-nao-sem-culpa';
-import brPensar from './pt-br/como-parar-de-pensar-demais';
-import brCansaco from './pt-br/cansaco-que-dormir-nao-resolve';
-import brAutoestima from './pt-br/como-melhorar-autoestima';
-import brInteligencia from './pt-br/inteligencia-emocional';
-import brDesabafar from './pt-br/como-desabafar';
-import brControlar from './pt-br/como-controlar-as-emocoes';
-import brAfirmacoes from './pt-br/afirmacoes-positivas';
-import brGratidao from './pt-br/diario-de-gratidao';
-import brHumor from './pt-br/diario-de-humor';
-import brComecar from './pt-br/como-comecar-diario-emocional';
-import brEscolher from './pt-br/como-escolher-app-diario-emocional';
-import brOQue from './pt-br/o-que-escrever-no-diario';
-import brDiff from './pt-br/diario-ou-journaling-diferenca';
-import brAnsiedade from './pt-br/escrever-para-lidar-com-ansiedade';
-import brIa from './pt-br/journaling-com-ia';
+// PT-BR
+import br_comoOrarIniciantes from './pt-br/como-orar-iniciantes';
+import br_versiculosSobreAnsiedade from './pt-br/versiculos-sobre-ansiedade';
+import br_salmo23Explicado from './pt-br/salmo-23-explicado';
+import br_paiNossoSignificado from './pt-br/pai-nosso-significado';
+import br_oracaoDaNoite from './pt-br/oracao-da-noite';
+import br_oracaoDaManha from './pt-br/oracao-da-manha';
+import br_oracaoDiariaHabito from './pt-br/oracao-diaria-habito';
+import br_porQueDeusNaoResponde from './pt-br/por-que-deus-nao-responde';
+import br_versiculosDeConforto from './pt-br/versiculos-de-conforto';
+import br_comoLerABibliaIniciantes from './pt-br/como-ler-a-biblia-iniciantes';
+import br_diarioDeOracao from './pt-br/diario-de-oracao';
+import br_oracaoDeGratidao from './pt-br/oracao-de-gratidao';
+import br_oracaoQuandoNaoSeiOQueDizer from './pt-br/oracao-quando-nao-sei-o-que-dizer';
+import br_orarPelaFamilia from './pt-br/orar-pela-familia';
+import br_intercessaoOQueE from './pt-br/intercessao-o-que-e';
+import br_grupoDeOracaoComunidade from './pt-br/grupo-de-oracao-comunidade';
 
 // PT-PT
-import ptDesisto from './pt-pt/por-que-desisto-do-diario';
-import ptChoro from './pt-pt/choro-por-qualquer-coisa';
-import ptSozinho from './pt-pt/me-sinto-sozinho-mesmo-acompanhado';
-import ptDizerNao from './pt-pt/como-dizer-nao-sem-culpa';
-import ptPensar from './pt-pt/como-parar-de-pensar-demais';
-import ptCansaco from './pt-pt/cansaco-que-dormir-nao-resolve';
-import ptAutoestima from './pt-pt/como-melhorar-autoestima';
-import ptInteligencia from './pt-pt/inteligencia-emocional';
-import ptDesabafar from './pt-pt/como-desabafar';
-import ptControlar from './pt-pt/como-controlar-as-emocoes';
-import ptAfirmacoes from './pt-pt/afirmacoes-positivas';
-import ptGratidao from './pt-pt/diario-de-gratidao';
-import ptHumor from './pt-pt/diario-de-humor';
-import ptComecar from './pt-pt/como-comecar-diario-emocional';
-import ptEscolher from './pt-pt/como-escolher-app-diario-emocional';
-import ptOQue from './pt-pt/o-que-escrever-no-diario';
-import ptDiff from './pt-pt/diario-ou-journaling-diferenca';
-import ptAnsiedade from './pt-pt/escrever-para-lidar-com-ansiedade';
-import ptIa from './pt-pt/journaling-com-ia';
+import pt_comoOrarIniciantes from './pt-pt/como-orar-iniciantes';
+import pt_versiculosSobreAnsiedade from './pt-pt/versiculos-sobre-ansiedade';
+import pt_salmo23Explicado from './pt-pt/salmo-23-explicado';
+import pt_paiNossoSignificado from './pt-pt/pai-nosso-significado';
+import pt_oracaoDaNoite from './pt-pt/oracao-da-noite';
+import pt_oracaoDaManha from './pt-pt/oracao-da-manha';
+import pt_oracaoDiariaHabito from './pt-pt/oracao-diaria-habito';
+import pt_porQueDeusNaoResponde from './pt-pt/por-que-deus-nao-responde';
+import pt_versiculosDeConforto from './pt-pt/versiculos-de-conforto';
+import pt_comoLerABibliaIniciantes from './pt-pt/como-ler-a-biblia-iniciantes';
+import pt_diarioDeOracao from './pt-pt/diario-de-oracao';
+import pt_oracaoDeGratidao from './pt-pt/oracao-de-gratidao';
+import pt_oracaoQuandoNaoSeiOQueDizer from './pt-pt/oracao-quando-nao-sei-o-que-dizer';
+import pt_orarPelaFamilia from './pt-pt/orar-pela-familia';
+import pt_intercessaoOQueE from './pt-pt/intercessao-o-que-e';
+import pt_grupoDeOracaoComunidade from './pt-pt/grupo-de-oracao-comunidade';
 
-// Ordem de exibição no índice do blog (mais recente/estratégico primeiro).
+// Ordem de exibição no índice do blog (mais pesquisado/estratégico primeiro).
 export const postOrder = [
-  'por-que-desisto-do-diario',
-  'choro-por-qualquer-coisa',
-  'me-sinto-sozinho-mesmo-acompanhado',
-  'como-dizer-nao-sem-culpa',
-  'como-parar-de-pensar-demais',
-  'cansaco-que-dormir-nao-resolve',
-  'como-melhorar-autoestima',
-  'inteligencia-emocional',
-  'como-desabafar',
-  'como-controlar-as-emocoes',
-  'afirmacoes-positivas',
-  'diario-de-gratidao',
-  'diario-de-humor',
-  'como-comecar-diario-emocional',
-  'como-escolher-app-diario-emocional',
-  'o-que-escrever-no-diario',
-  'diario-ou-journaling-diferenca',
-  'escrever-para-lidar-com-ansiedade',
-  'journaling-com-ia',
+  'como-orar-iniciantes',
+  'versiculos-sobre-ansiedade',
+  'salmo-23-explicado',
+  'pai-nosso-significado',
+  'oracao-da-noite',
+  'oracao-da-manha',
+  'oracao-diaria-habito',
+  'por-que-deus-nao-responde',
+  'versiculos-de-conforto',
+  'como-ler-a-biblia-iniciantes',
+  'diario-de-oracao',
+  'oracao-de-gratidao',
+  'oracao-quando-nao-sei-o-que-dizer',
+  'orar-pela-familia',
+  'intercessao-o-que-e',
+  'grupo-de-oracao-comunidade',
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
-  'por-que-desisto-do-diario': { 'pt-br': brDesisto, 'pt-pt': ptDesisto },
-  'choro-por-qualquer-coisa': { 'pt-br': brChoro, 'pt-pt': ptChoro },
-  'me-sinto-sozinho-mesmo-acompanhado': { 'pt-br': brSozinho, 'pt-pt': ptSozinho },
-  'como-dizer-nao-sem-culpa': { 'pt-br': brDizerNao, 'pt-pt': ptDizerNao },
-  'como-parar-de-pensar-demais': { 'pt-br': brPensar, 'pt-pt': ptPensar },
-  'cansaco-que-dormir-nao-resolve': { 'pt-br': brCansaco, 'pt-pt': ptCansaco },
-  'como-melhorar-autoestima': { 'pt-br': brAutoestima, 'pt-pt': ptAutoestima },
-  'inteligencia-emocional': { 'pt-br': brInteligencia, 'pt-pt': ptInteligencia },
-  'como-desabafar': { 'pt-br': brDesabafar, 'pt-pt': ptDesabafar },
-  'como-controlar-as-emocoes': { 'pt-br': brControlar, 'pt-pt': ptControlar },
-  'afirmacoes-positivas': { 'pt-br': brAfirmacoes, 'pt-pt': ptAfirmacoes },
-  'diario-de-gratidao': { 'pt-br': brGratidao, 'pt-pt': ptGratidao },
-  'diario-de-humor': { 'pt-br': brHumor, 'pt-pt': ptHumor },
-  'como-comecar-diario-emocional': { 'pt-br': brComecar, 'pt-pt': ptComecar },
-  'como-escolher-app-diario-emocional': { 'pt-br': brEscolher, 'pt-pt': ptEscolher },
-  'o-que-escrever-no-diario': { 'pt-br': brOQue, 'pt-pt': ptOQue },
-  'diario-ou-journaling-diferenca': { 'pt-br': brDiff, 'pt-pt': ptDiff },
-  'escrever-para-lidar-com-ansiedade': { 'pt-br': brAnsiedade, 'pt-pt': ptAnsiedade },
-  'journaling-com-ia': { 'pt-br': brIa, 'pt-pt': ptIa },
+  'como-orar-iniciantes': { 'pt-br': br_comoOrarIniciantes, 'pt-pt': pt_comoOrarIniciantes },
+  'versiculos-sobre-ansiedade': { 'pt-br': br_versiculosSobreAnsiedade, 'pt-pt': pt_versiculosSobreAnsiedade },
+  'salmo-23-explicado': { 'pt-br': br_salmo23Explicado, 'pt-pt': pt_salmo23Explicado },
+  'pai-nosso-significado': { 'pt-br': br_paiNossoSignificado, 'pt-pt': pt_paiNossoSignificado },
+  'oracao-da-noite': { 'pt-br': br_oracaoDaNoite, 'pt-pt': pt_oracaoDaNoite },
+  'oracao-da-manha': { 'pt-br': br_oracaoDaManha, 'pt-pt': pt_oracaoDaManha },
+  'oracao-diaria-habito': { 'pt-br': br_oracaoDiariaHabito, 'pt-pt': pt_oracaoDiariaHabito },
+  'por-que-deus-nao-responde': { 'pt-br': br_porQueDeusNaoResponde, 'pt-pt': pt_porQueDeusNaoResponde },
+  'versiculos-de-conforto': { 'pt-br': br_versiculosDeConforto, 'pt-pt': pt_versiculosDeConforto },
+  'como-ler-a-biblia-iniciantes': { 'pt-br': br_comoLerABibliaIniciantes, 'pt-pt': pt_comoLerABibliaIniciantes },
+  'diario-de-oracao': { 'pt-br': br_diarioDeOracao, 'pt-pt': pt_diarioDeOracao },
+  'oracao-de-gratidao': { 'pt-br': br_oracaoDeGratidao, 'pt-pt': pt_oracaoDeGratidao },
+  'oracao-quando-nao-sei-o-que-dizer': { 'pt-br': br_oracaoQuandoNaoSeiOQueDizer, 'pt-pt': pt_oracaoQuandoNaoSeiOQueDizer },
+  'orar-pela-familia': { 'pt-br': br_orarPelaFamilia, 'pt-pt': pt_orarPelaFamilia },
+  'intercessao-o-que-e': { 'pt-br': br_intercessaoOQueE, 'pt-pt': pt_intercessaoOQueE },
+  'grupo-de-oracao-comunidade': { 'pt-br': br_grupoDeOracaoComunidade, 'pt-pt': pt_grupoDeOracaoComunidade },
 };
 
 export function getAllSlugs(): string[] {
