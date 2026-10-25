@@ -35,6 +35,9 @@ interface PageMetaInput {
   /** 'website' (default) ou 'article' */
   type?: 'website' | 'article';
   publishedTime?: string;
+  modifiedTime?: string;
+  /** nomes dos autores (og:article:author) */
+  authors?: string[];
   noindex?: boolean;
 }
 
@@ -47,6 +50,8 @@ export function buildMetadata({
   ogImage = DEFAULT_OG_IMAGE,
   type = 'website',
   publishedTime,
+  modifiedTime,
+  authors,
   noindex,
 }: PageMetaInput): Metadata {
   const canonicalPath = localizedPath(lang, path);
@@ -57,6 +62,7 @@ export function buildMetadata({
     // absolute → não herda o template de título do layout (evita duplicar "Emori").
     title: { absolute: title },
     description,
+    ...(authors?.length ? { authors: authors.map((name) => ({ name })) } : {}),
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical,
@@ -90,6 +96,8 @@ export function buildMetadata({
         },
       ],
       ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
+      ...(authors?.length ? { authors } : {}),
     },
     twitter: {
       card: 'summary_large_image',

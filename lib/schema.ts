@@ -2,7 +2,8 @@
 // Nota: pode não afetar diretamente citações de IA, mas ajuda no Google.
 
 import { SITE_URL, ANDROID_PACKAGE, PLAY_STORE_URL, FOUNDER, SOCIAL_LINKS } from './constants';
-import { absoluteUrl } from './seo';
+import { absoluteUrl, localizedPath } from './seo';
+import { authorId, type Author } from './authors';
 import type { Locale } from '@/i18n/config';
 import { bcp47 } from '@/i18n/config';
 
@@ -109,6 +110,7 @@ export function articleSchema(input: {
   dateModified?: string;
   image?: string;
   authorName?: string;
+  author?: Author;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -122,7 +124,14 @@ export function articleSchema(input: {
     ...(input.image
       ? { image: [input.image.startsWith('http') ? input.image : absoluteUrl(input.image)] }
       : {}),
-    author: { '@type': 'Organization', name: input.authorName ?? 'Emori', url: SITE_URL },
+    author: input.author
+      ? {
+          '@type': 'Person',
+          '@id': authorId(input.author),
+          name: input.author.name,
+          url: absoluteUrl(localizedPath(input.lang, input.author.path)),
+        }
+      : { '@type': 'Organization', name: input.authorName ?? 'Emori', url: SITE_URL },
     publisher: {
       '@type': 'Organization',
       name: 'Emori',
@@ -152,6 +161,48 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
       position: i + 1,
       name: item.name,
       item: item.url,
+    })),
+  };
+}
+
+// Pessoa (autora) — liga o artigo à entidade, base do E-E-A-T.
+export function personSchema(author: Author, lang: Locale) {
+  const t = author.text[lang];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': authorId(author),
+    name: author.name,
+    jobTitle: t.jobTitle,
+    description: t.tagline,
+    image: absoluteUrl(author.image),
+    url: absoluteUrl(localizedPath(lang, author.path)),
+    knowsAbout: author.knowsAbout,
+    worksFor: { '@type': 'Organization', name: 'Emori', url: SITE_URL },
+  };
+}
+
+export function profilePageSchema(author: Author, lang: Locale, dateModified: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    inLanguage: bcp47[lang],
+    url: absoluteUrl(localizedPath(lang, author.path)),
+    dateModified,
+    mainEntity: { '@id': authorId(author) },
+  };
+}
+
+// Lista de artigos (índice do blog / página da autora).
+export function itemListSchema(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      url: it.url,
     })),
   };
 }

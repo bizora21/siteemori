@@ -8,6 +8,16 @@
   "display": "standalone",
   "background_color": "#faf5ec",
   "theme_color": "#c0532e",
+  "id": "/pt-br/",
+  "categories": ["lifestyle", "books"],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=app.emori",
+      "id": "app.emori"
+    }
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.png",

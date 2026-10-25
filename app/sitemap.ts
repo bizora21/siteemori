@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { locales, bcp47, defaultLocale, type Locale } from '@/i18n/config';
 import { SITE_URL } from '@/lib/constants';
 import { localizedPath } from '@/lib/seo';
+import { ANA } from '@/lib/authors';
 import { getAllSlugs, getArticle } from '@/content/blog';
 
 // Necessário para `output: 'export'` — sem isto o build falha a gerar sitemap.xml estático.
@@ -19,7 +20,8 @@ const staticRoutes: Record<
   produto: { priority: 0.8, changeFrequency: 'monthly' },
   pro: { priority: 0.8, changeFrequency: 'monthly' },
   sobre: { priority: 0.7, changeFrequency: 'monthly' },
-  blog: { priority: 0.6, changeFrequency: 'weekly' }, // índice do blog
+  [ANA.path]: { priority: 0.7, changeFrequency: 'monthly' }, // página da autora (E-E-A-T)
+  blog: { priority: 0.8, changeFrequency: 'weekly' }, // índice do blog
   privacidade: { priority: 0.3, changeFrequency: 'yearly' },
   termos: { priority: 0.3, changeFrequency: 'yearly' },
 };
@@ -70,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${SITE_URL}${localizedPath(l, path)}`,
         lastModified,
         changeFrequency: 'weekly',
-        priority: 0.6,
+        priority: 0.7,
         alternates: { languages: alternatesFor(path) },
       });
     }

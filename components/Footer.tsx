@@ -5,6 +5,7 @@ import type { Dictionary } from '@/i18n';
 import { localizedPath } from '@/lib/seo';
 import { CONTACT_EMAIL, SOCIAL_LINKS } from '@/lib/constants';
 import Logo from './Logo';
+import { ANA } from '@/lib/authors';
 
 const SOCIAL_ICON = {
   TikTok: Music2,
@@ -35,6 +36,7 @@ export default function Footer({ lang, dict }: Props) {
       title: dict.footer.company,
       links: [
         { href: localizedPath(lang, 'sobre'), label: dict.nav.sobre },
+        { href: localizedPath(lang, ANA.path), label: ANA.text[lang].navLabel },
         { href: localizedPath(lang, 'privacidade'), label: dict.nav.privacidade },
         { href: localizedPath(lang, 'termos'), label: dict.nav.termos },
       ],

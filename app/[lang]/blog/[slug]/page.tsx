@@ -11,6 +11,8 @@ import FAQ from '@/components/FAQ';
 import CtaButton from '@/components/CtaButton';
 import ArticleHeroImage from '@/components/ArticleHeroImage';
 import ShareButtons from '@/components/ShareButtons';
+import AuthorBox from '@/components/AuthorBox';
+import { DEFAULT_AUTHOR as author } from '@/lib/authors';
 import JsonLd from '@/components/JsonLd';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import { getAllSlugs, getArticle, getArticles } from '@/content/blog';
@@ -36,6 +38,8 @@ export function generateMetadata({
     description: article.meta.description,
     type: 'article',
     publishedTime: article.meta.datePublished,
+    modifiedTime: article.meta.dateModified,
+    authors: [author.name],
     ogImage: article.meta.hero?.src ?? article.meta.ogImage,
   });
 }
@@ -71,7 +75,11 @@ export default function ArticlePage({
           {meta.title}
         </h1>
         <p className="mt-3 text-sm text-ink-700">
-          {dict.blog.by} <span className="font-medium text-ink-800">{dict.blog.author}</span> ·{' '}
+          {author.text[lang].bylinePrefix}{' '}
+          <Link href={localizedPath(lang, author.path)} rel="author" className="font-medium text-ink-800 hover:text-clay-700">
+            {author.name}
+          </Link>{' '}
+          ·{' '}
           {dict.blog.publishedOn} {meta.datePublished} · {meta.readingMinutes}{' '}
           {dict.blog.readingTime}
         </p>
@@ -93,6 +101,8 @@ export default function ArticlePage({
             campaign={`blog_${meta.slug.replace(/-/g, '_')}`}
           />
         </div>
+
+        <AuthorBox author={author} lang={lang} />
 
         <ShareButtons
           url={url}
@@ -151,7 +161,7 @@ export default function ArticlePage({
             datePublished: meta.datePublished,
             dateModified: meta.dateModified,
             image: meta.hero?.src ?? meta.ogImage,
-            authorName: dict.blog.author,
+            author,
           }),
           breadcrumbSchema([
             { name: 'Emori', url: absoluteUrl(localizedPath(lang, '')) },

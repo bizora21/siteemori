@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n';
-import { buildMetadata, localizedPath } from '@/lib/seo';
+import { buildMetadata, localizedPath, absoluteUrl } from '@/lib/seo';
 import PageShell from '@/components/PageShell';
 import PageHeader from '@/components/PageHeader';
+import JsonLd from '@/components/JsonLd';
+import { itemListSchema, breadcrumbSchema } from '@/lib/schema';
 import { getArticles } from '@/content/blog';
 
 export function generateStaticParams() {
@@ -61,6 +63,20 @@ export default function BlogIndex({ params }: { params: { lang: Locale } }) {
           ))}
         </div>
       </div>
+      <JsonLd
+        data={[
+          itemListSchema(
+            articles.map((a) => ({
+              name: a.meta.title,
+              url: absoluteUrl(localizedPath(lang, `blog/${a.meta.slug}`)),
+            })),
+          ),
+          breadcrumbSchema([
+            { name: 'Emori', url: absoluteUrl(localizedPath(lang, '')) },
+            { name: dict.nav.blog, url: absoluteUrl(localizedPath(lang, 'blog')) },
+          ]),
+        ]}
+      />
     </PageShell>
   );
 }

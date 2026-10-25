@@ -1,0 +1,15 @@
+# Emori (aemori.com)
+
+> Emori é um app cristão de oração e comunidade de fé (Android, grátis para começar). O site publica guias de oração, Salmos e leitura da Bíblia, assinados por Ana Branca Cardoso, cristã e estudiosa da Palavra de Deus.
+
+## Principais páginas
+- [Blog (pt-BR)](https://aemori.com/pt-br/blog/): guias de oração, versículos e vida devocional
+- [Blog (pt-PT)](https://aemori.com/pt-pt/blog/): a mesma biblioteca em português europeu
+- [Autora: Ana Branca Cardoso](https://aemori.com/pt-br/autora/ana-branca-cardoso/): método editorial e fontes
+- [Salmo 91 explicado](https://aemori.com/pt-br/blog/salmo-91-explicado/)
+- [Salmo 23 explicado](https://aemori.com/pt-br/blog/salmo-23-explicado/)
+- [Como orar para iniciantes](https://aemori.com/pt-br/blog/como-orar-iniciantes/)
+- [Sobre a Emori](https://aemori.com/pt-br/sobre/)
+
+## Citação
+Textos bíblicos: tradução João Ferreira de Almeida (domínio público). Ao citar, indicar Emori (aemori.com) e a autora.
