@@ -20,6 +20,7 @@ import br_intercessaoOQueE from './pt-br/intercessao-o-que-e';
 import br_grupoDeOracaoComunidade from './pt-br/grupo-de-oracao-comunidade';
 import br_salmo91Explicado from './pt-br/salmo-91-explicado';
 import br_salmo121Explicado from './pt-br/salmo-121-explicado';
+import br_salmo46Explicado from './pt-br/salmo-46-explicado';
 
 // PT-PT
 import pt_comoOrarIniciantes from './pt-pt/como-orar-iniciantes';
@@ -40,9 +41,11 @@ import pt_intercessaoOQueE from './pt-pt/intercessao-o-que-e';
 import pt_grupoDeOracaoComunidade from './pt-pt/grupo-de-oracao-comunidade';
 import pt_salmo91Explicado from './pt-pt/salmo-91-explicado';
 import pt_salmo121Explicado from './pt-pt/salmo-121-explicado';
+import pt_salmo46Explicado from './pt-pt/salmo-46-explicado';
 
 // Ordem de exibição no índice do blog (mais pesquisado/estratégico primeiro).
 export const postOrder = [
+  'salmo-46-explicado',
   'salmo-121-explicado',
   'salmo-91-explicado',
   'como-orar-iniciantes',
@@ -64,6 +67,7 @@ export const postOrder = [
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
+  'salmo-46-explicado': { 'pt-br': br_salmo46Explicado, 'pt-pt': pt_salmo46Explicado },
   'salmo-121-explicado': { 'pt-br': br_salmo121Explicado, 'pt-pt': pt_salmo121Explicado },
   'salmo-91-explicado': { 'pt-br': br_salmo91Explicado, 'pt-pt': pt_salmo91Explicado },
   'como-orar-iniciantes': { 'pt-br': br_comoOrarIniciantes, 'pt-pt': pt_comoOrarIniciantes },
