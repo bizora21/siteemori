@@ -21,6 +21,26 @@ import br_grupoDeOracaoComunidade from './pt-br/grupo-de-oracao-comunidade';
 import br_salmo91Explicado from './pt-br/salmo-91-explicado';
 import br_salmo121Explicado from './pt-br/salmo-121-explicado';
 import br_salmo46Explicado from './pt-br/salmo-46-explicado';
+import br_feEConfiancaEmDeus from './pt-br/fe-e-confianca-em-deus';
+import br_salmo139Explicado from './pt-br/salmo-139-explicado';
+import br_proverbiosParaODiaADia from './pt-br/proverbios-para-o-dia-a-dia';
+import br_jejumNaBiblia from './pt-br/jejum-na-biblia';
+import br_oracaoPeloTrabalho from './pt-br/oracao-pelo-trabalho';
+import br_perdaoNaBiblia from './pt-br/perdao-na-biblia';
+import br_frutosDoEspiritoSanto from './pt-br/frutos-do-espirito-santo';
+import br_armaduraDeDeusEfesios6 from './pt-br/armadura-de-deus-efesios-6';
+import br_versiculosSobreAmor from './pt-br/versiculos-sobre-amor';
+import br_oracaoDeProtecao from './pt-br/oracao-de-protecao';
+import br_deusTemUmPlano from './pt-br/deus-tem-um-plano';
+import br_comoOuvirAVozDeDeus from './pt-br/como-ouvir-a-voz-de-deus';
+import br_salmo37Explicado from './pt-br/salmo-37-explicado';
+import br_bibliaSobrePaciencia from './pt-br/biblia-sobre-paciencia';
+import br_gratidaoNaBiblia from './pt-br/gratidao-na-biblia';
+import br_oracaoPorCura from './pt-br/oracao-por-cura';
+import br_versiculosSobreForca from './pt-br/versiculos-sobre-forca';
+import br_dezMandamentosExplicados from './pt-br/dez-mandamentos-explicados';
+import br_bemAventurancasSignificado from './pt-br/bem-aventurancas-significado';
+import br_oracaoParaDecisoes from './pt-br/oracao-para-decisoes';
 
 // PT-PT
 import pt_comoOrarIniciantes from './pt-pt/como-orar-iniciantes';
@@ -42,6 +62,26 @@ import pt_grupoDeOracaoComunidade from './pt-pt/grupo-de-oracao-comunidade';
 import pt_salmo91Explicado from './pt-pt/salmo-91-explicado';
 import pt_salmo121Explicado from './pt-pt/salmo-121-explicado';
 import pt_salmo46Explicado from './pt-pt/salmo-46-explicado';
+import pt_feEConfiancaEmDeus from './pt-pt/fe-e-confianca-em-deus';
+import pt_salmo139Explicado from './pt-pt/salmo-139-explicado';
+import pt_proverbiosParaODiaADia from './pt-pt/proverbios-para-o-dia-a-dia';
+import pt_jejumNaBiblia from './pt-pt/jejum-na-biblia';
+import pt_oracaoPeloTrabalho from './pt-pt/oracao-pelo-trabalho';
+import pt_perdaoNaBiblia from './pt-pt/perdao-na-biblia';
+import pt_frutosDoEspiritoSanto from './pt-pt/frutos-do-espirito-santo';
+import pt_armaduraDeDeusEfesios6 from './pt-pt/armadura-de-deus-efesios-6';
+import pt_versiculosSobreAmor from './pt-pt/versiculos-sobre-amor';
+import pt_oracaoDeProtecao from './pt-pt/oracao-de-protecao';
+import pt_deusTemUmPlano from './pt-pt/deus-tem-um-plano';
+import pt_comoOuvirAVozDeDeus from './pt-pt/como-ouvir-a-voz-de-deus';
+import pt_salmo37Explicado from './pt-pt/salmo-37-explicado';
+import pt_bibliaSobrePaciencia from './pt-pt/biblia-sobre-paciencia';
+import pt_gratidaoNaBiblia from './pt-pt/gratidao-na-biblia';
+import pt_oracaoPorCura from './pt-pt/oracao-por-cura';
+import pt_versiculosSobreForca from './pt-pt/versiculos-sobre-forca';
+import pt_dezMandamentosExplicados from './pt-pt/dez-mandamentos-explicados';
+import pt_bemAventurancasSignificado from './pt-pt/bem-aventurancas-significado';
+import pt_oracaoParaDecisoes from './pt-pt/oracao-para-decisoes';
 
 // Ordem de exibição no índice do blog (mais pesquisado/estratégico primeiro).
 export const postOrder = [
@@ -64,6 +104,26 @@ export const postOrder = [
   'orar-pela-familia',
   'intercessao-o-que-e',
   'grupo-de-oracao-comunidade',
+  'fe-e-confianca-em-deus',
+  'salmo-139-explicado',
+  'proverbios-para-o-dia-a-dia',
+  'jejum-na-biblia',
+  'oracao-pelo-trabalho',
+  'perdao-na-biblia',
+  'frutos-do-espirito-santo',
+  'armadura-de-deus-efesios-6',
+  'versiculos-sobre-amor',
+  'oracao-de-protecao',
+  'deus-tem-um-plano',
+  'como-ouvir-a-voz-de-deus',
+  'salmo-37-explicado',
+  'biblia-sobre-paciencia',
+  'gratidao-na-biblia',
+  'oracao-por-cura',
+  'versiculos-sobre-forca',
+  'dez-mandamentos-explicados',
+  'bem-aventurancas-significado',
+  'oracao-para-decisoes',
 ] as const;
 
 const registry: Record<string, LocalizedArticle> = {
@@ -86,6 +146,26 @@ const registry: Record<string, LocalizedArticle> = {
   'orar-pela-familia': { 'pt-br': br_orarPelaFamilia, 'pt-pt': pt_orarPelaFamilia },
   'intercessao-o-que-e': { 'pt-br': br_intercessaoOQueE, 'pt-pt': pt_intercessaoOQueE },
   'grupo-de-oracao-comunidade': { 'pt-br': br_grupoDeOracaoComunidade, 'pt-pt': pt_grupoDeOracaoComunidade },
+  'fe-e-confianca-em-deus': { 'pt-br': br_feEConfiancaEmDeus, 'pt-pt': pt_feEConfiancaEmDeus },
+  'salmo-139-explicado': { 'pt-br': br_salmo139Explicado, 'pt-pt': pt_salmo139Explicado },
+  'proverbios-para-o-dia-a-dia': { 'pt-br': br_proverbiosParaODiaADia, 'pt-pt': pt_proverbiosParaODiaADia },
+  'jejum-na-biblia': { 'pt-br': br_jejumNaBiblia, 'pt-pt': pt_jejumNaBiblia },
+  'oracao-pelo-trabalho': { 'pt-br': br_oracaoPeloTrabalho, 'pt-pt': pt_oracaoPeloTrabalho },
+  'perdao-na-biblia': { 'pt-br': br_perdaoNaBiblia, 'pt-pt': pt_perdaoNaBiblia },
+  'frutos-do-espirito-santo': { 'pt-br': br_frutosDoEspiritoSanto, 'pt-pt': pt_frutosDoEspiritoSanto },
+  'armadura-de-deus-efesios-6': { 'pt-br': br_armaduraDeDeusEfesios6, 'pt-pt': pt_armaduraDeDeusEfesios6 },
+  'versiculos-sobre-amor': { 'pt-br': br_versiculosSobreAmor, 'pt-pt': pt_versiculosSobreAmor },
+  'oracao-de-protecao': { 'pt-br': br_oracaoDeProtecao, 'pt-pt': pt_oracaoDeProtecao },
+  'deus-tem-um-plano': { 'pt-br': br_deusTemUmPlano, 'pt-pt': pt_deusTemUmPlano },
+  'como-ouvir-a-voz-de-deus': { 'pt-br': br_comoOuvirAVozDeDeus, 'pt-pt': pt_comoOuvirAVozDeDeus },
+  'salmo-37-explicado': { 'pt-br': br_salmo37Explicado, 'pt-pt': pt_salmo37Explicado },
+  'biblia-sobre-paciencia': { 'pt-br': br_bibliaSobrePaciencia, 'pt-pt': pt_bibliaSobrePaciencia },
+  'gratidao-na-biblia': { 'pt-br': br_gratidaoNaBiblia, 'pt-pt': pt_gratidaoNaBiblia },
+  'oracao-por-cura': { 'pt-br': br_oracaoPorCura, 'pt-pt': pt_oracaoPorCura },
+  'versiculos-sobre-forca': { 'pt-br': br_versiculosSobreForca, 'pt-pt': pt_versiculosSobreForca },
+  'dez-mandamentos-explicados': { 'pt-br': br_dezMandamentosExplicados, 'pt-pt': pt_dezMandamentosExplicados },
+  'bem-aventurancas-significado': { 'pt-br': br_bemAventurancasSignificado, 'pt-pt': pt_bemAventurancasSignificado },
+  'oracao-para-decisoes': { 'pt-br': br_oracaoParaDecisoes, 'pt-pt': pt_oracaoParaDecisoes },
 };
 
 export function getAllSlugs(): string[] {
