@@ -10,10 +10,10 @@ const meta = {
   datePublished: '2026-10-30',
   readingMinutes: 8,
   hero: {
-    src: 'https://images.unsplash.com/photo-1464746133798-9426f6e93884?ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
-    alt: 'Pessoa a escalar uma rocha íngreme sob o céu azul',
-    credit: 'Patrick Fore',
-    creditUrl: 'https://unsplash.com/@patrickian4?utm_source=aemori&utm_medium=referral',
+    src: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Pico de montanha coberto de neve contra o céu azul',
+    credit: 'Samuel Ferrara',
+    creditUrl: 'https://unsplash.com/@samferrara?utm_source=aemori&utm_medium=referral',
   },
 };
 

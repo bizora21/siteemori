@@ -10,10 +10,10 @@ const meta = {
   datePublished: '2026-10-30',
   readingMinutes: 9,
   hero: {
-    src: 'https://images.unsplash.com/photo-1490750967868-88aa4f44baae?ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
-    alt: 'Cesto de frutas frescas e coloridas numa mesa',
-    credit: 'Brooke Lark',
-    creditUrl: 'https://unsplash.com/@brookelark?utm_source=aemori&utm_medium=referral',
+    src: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.1.0&w=1600&q=80&auto=format&fit=crop',
+    alt: 'Raios de sol a atravessar galhos de árvore frondosa',
+    credit: 'Jeremy Bishop',
+    creditUrl: 'https://unsplash.com/@jeremybishop?utm_source=aemori&utm_medium=referral',
   },
 };
 
