@@ -4,6 +4,7 @@
 
 import { writeFileSync } from 'node:fs';
 import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts';
+import { spawnSync } from 'node:child_process';
 import type { Locale } from '@/i18n/config';
 
 /** Voz feminina e calma em cada variante — a Emori é sempre "ela".
@@ -31,6 +32,13 @@ export async function synthesize(
   rate = '-8%',
   attempts = 3,
 ): Promise<{ words: WordTiming[]; duration: number }> {
+  if (process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID) {
+    try {
+      return await synthesizeElevenLabs(text, outFile, rate);
+    } catch (err) {
+      console.warn(`  ⚠ ElevenLabs falhou (${err instanceof Error ? err.message : err}) — a usar Edge TTS`);
+    }
+  }
   for (let i = 1; i <= attempts; i += 1) {
     try {
       return await synthesizeOnce(text, lang, outFile, rate);
@@ -38,12 +46,94 @@ export async function synthesize(
       // 403 = a Microsoft mudou a autenticação do endpoint; repetir não resolve.
       // Falha já, para o chamador cair no Piper sem esperas inúteis.
       const msg = err instanceof Error ? err.message : String(err);
-      if (/40[13]/.test(msg) || i === attempts) throw err;
+      if (/40[13]/.test(msg) || i === attempts) {
+        // O WebSocket do Node falha em algumas redes; o Python (edge-tts) costuma passar.
+        const viaPy = synthesizePython(text, lang, outFile, rate);
+        if (viaPy) return viaPy;
+        throw err;
+      }
       console.warn(`  ⚠ TTS falhou (tentativa ${i}/${attempts}) — a repetir…`);
       await new Promise((r) => setTimeout(r, 1500 * i));
     }
   }
   throw new Error('inalcançável');
+}
+
+/** Voz clonada (ElevenLabs): devolve áudio e tempos por caractér, convertidos em palavras. */
+async function synthesizeElevenLabs(
+  text: string,
+  outFile: string,
+  rate: string,
+): Promise<{ words: WordTiming[]; duration: number }> {
+  const pct = Number.parseFloat(rate);
+  const speed = Math.min(1.2, Math.max(0.7, 1 + (Number.isFinite(pct) ? pct : 0) / 100));
+  const res = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${process.env.ELEVENLABS_VOICE_ID}/with-timestamps?output_format=mp3_44100_128`,
+    {
+      method: 'POST',
+      headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY as string, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        model_id: process.env.ELEVENLABS_MODEL ?? 'eleven_multilingual_v2',
+        voice_settings: { stability: 0.5, similarity_boost: 0.85, speed },
+      }),
+    },
+  );
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${(await res.text()).slice(0, 200)}`);
+
+  const json = (await res.json()) as {
+    audio_base64: string;
+    alignment: {
+      characters: string[];
+      character_start_times_seconds: number[];
+      character_end_times_seconds: number[];
+    };
+  };
+  writeFileSync(outFile, Buffer.from(json.audio_base64, 'base64'));
+
+  const { characters, character_start_times_seconds: starts, character_end_times_seconds: ends } = json.alignment;
+  const words: WordTiming[] = [];
+  let cur: WordTiming | null = null;
+  characters.forEach((ch, i) => {
+    if (/\s/.test(ch)) {
+      cur = null;
+      return;
+    }
+    if (!cur) {
+      cur = { text: '', start: starts[i], end: ends[i] };
+      words.push(cur);
+    }
+    cur.text += ch;
+    cur.end = ends[i];
+  });
+  console.warn('  ✓ voz clonada (ElevenLabs)');
+  return { words, duration: words.length ? words[words.length - 1].end : 0 };
+}
+
+/** Alternativa em Python: scripts/edge_tts_py.py (dependência em tools/pylib). */
+function synthesizePython(
+  text: string,
+  lang: Locale,
+  outFile: string,
+  rate: string,
+): { words: WordTiming[]; duration: number } | null {
+  const py = process.env.PYTHON_BIN ?? 'C:/Users/COSSA/AppData/Local/Programs/Python/Python312/python.exe';
+  const r = spawnSync(py, ['-I', 'scripts/edge_tts_py.py', text, VOICE[lang], outFile, rate], {
+    encoding: 'utf8',
+    maxBuffer: 20_000_000,
+    // Sem rede o edge-tts pode ficar pendurado para sempre: falha e deixa o chamador decidir.
+    timeout: 90_000,
+  });
+  if (r.status !== 0) return null;
+  try {
+    const out = JSON.parse(r.stdout.trim().split('\n').pop() ?? '{}') as { words?: WordTiming[] };
+    const words = out.words ?? [];
+    if (words.length === 0) return null;
+    console.warn('  ✓ voz via Python (edge-tts)');
+    return { words, duration: words[words.length - 1].end };
+  } catch {
+    return null;
+  }
 }
 
 async function synthesizeOnce(

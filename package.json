@@ -16,7 +16,14 @@
     "go": "tsx scripts/social-all.ts",
     "youtube:auth": "node --env-file=.env.local scripts/youtube-auth.mjs",
     "social:assets": "tsx scripts/build-social-assets.ts",
-    "social": "npm run social:manifest && npm run social:images && npm run social:assets"
+    "social": "npm run social:manifest && npm run social:images && npm run social:assets",
+    "video3d": "tsx scripts/build-3d-video.ts",
+    "video3d:rastreio": "tsx scripts/build-rastreio-video.ts",
+    "video3d:anuncio": "tsx scripts/build-anuncio-video.ts",
+    "video3d:anuncio2": "tsx scripts/build-anuncio2-video.ts",
+    "video3d:aprender": "tsx scripts/build-aprender-video.ts",
+    "video3d:aprender2": "tsx scripts/build-aprender2-video.ts",
+    "video3d:comboio": "tsx scripts/build-comboio-video.ts"
   },
   "dependencies": {
     "lucide-react": "0.417.0",

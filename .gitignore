@@ -51,3 +51,15 @@ package-lock.json
 # Capturas/gravacoes da app para os videos. Podem conter texto pessoal de
 # diario, por isso ficam fora do repo.
 /assets/app/
+
+# vídeos 3D (Remotion): dependências e saídas
+/video3d/node_modules
+/video3d/out
+/video3d/props
+/video3d/public/audio
+/video3d/public/music.mp3
+/video3d/public/lunatic-ideas.mp3
+/video3d/public/spirit.mp3
+
+# fonte proprietária (Microsoft) — não redistribuir no repo
+/video3d/public/SegoeUI-Bold.ttf

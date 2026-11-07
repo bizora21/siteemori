@@ -167,12 +167,24 @@ interface Scene {
   /** foto de fundo em base64 (data URI), usada no tema 'photo' */
   photo?: string;
   hideCaption?: boolean;
+  /** legenda mais abaixo (para não tapar o rosto numa cena com pessoa) */
+  captionLow?: boolean;
+  /** foto local usada como fundo (zoom lento); focus = "x:y" (0–1), zoom inicial, mask = "x:y:w:h" */
+  image?: string;
+  focus?: string;
+  zoom?: number;
+  mask?: string;
+  /** título grande (gancho de anúncio) */
+  big?: boolean;
 }
+
+/** Criativo de anúncio: sem rodapé com o site. */
+let NO_FOOTER = false;
 
 /** Um frame: cena + símbolo do que está a ser dito + legenda com a palavra atual. */
 function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): string {
   const C = THEME[scene.theme];
-  const titleSize = scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
+  const titleSize = scene.big ? 104 : scene.title.length > 58 ? 60 : scene.title.length > 32 ? 68 : 78;
   const titleLines = wrap(scene.title, scene.title.length > 58 ? 24 : 20).slice(0, 5);
   const lineH = titleSize + 20;
   // Zona segura do TikTok: a legenda e o nome do autor tapam ~300px em baixo e
@@ -190,7 +202,7 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   // Legenda: quebra a linha em no máximo 2 filas e realça a palavra lida.
   let capEls = '';
   if (line && !scene.hideCaption) {
-    const capTop = titleTop + titleLines.length * lineH + 170;
+    const capTop = scene.captionLow ? 1330 : titleTop + titleLines.length * lineH + 170;
     const rows: { text: string; from: number }[] = [];
     let row = '';
     let from = 0;
@@ -260,7 +272,7 @@ function frameSvg(scene: Scene, line: CaptionLine | null, activeWord: number): s
   ${noteEls}
   ${capEls}
 
-  <text x="${W / 2}" y="1560" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>
+  ${NO_FOOTER ? '' : `<text x="${W / 2}" y="1560" text-anchor="middle" font-family="PT Serif" font-weight="bold" font-size="44" fill="${C.foot}">aemori.com</text>`}
 </svg>`;
 }
 
@@ -525,6 +537,25 @@ function closingScene(isPT: boolean, theme: keyof typeof THEME): Scene {
 
 // ---- execução ----------------------------------------------------------------
 
+/**
+ * Abertura com uma pessoa: transforma uma fotografia num clip vertical com zoom lento
+ * (parece que ela está a falar para a câmara). `mask` = "x:y:w:h" na foto original, para
+ * apagar texto indesejado (ex.: um calendário na parede) com delogo.
+ */
+function makePersonClip(image: string, out: string, mask?: string, focus = '0.56:0.48', zoom = 1.1): BackgroundClip {
+  const [fx, fy] = focus.split(':');
+  const zoomChain =
+    'scale=' + W * 2 + ':' + H * 2 + ':force_original_aspect_ratio=increase,crop=' + W * 2 + ':' + H * 2 + ',' +
+    "zoompan=z='min(" + zoom + "+0.0003*on," + (zoom + 0.2) + ")':d=1:fps=30:x='iw*" + fx + "-(iw/zoom/2)':y='ih*" + fy + "-(ih/zoom/2)':s=" + W + 'x' + H + ',format=yuv420p';
+  // Máscara: desfoca a zona indicada (x:y:w:h) para esconder texto indesejado na foto.
+  const [mx, my, mw, mh] = (mask ?? '').split(':');
+  const graph = mask
+    ? '[0:v]split[a][b];[b]crop=' + mw + ':' + mh + ':' + mx + ':' + my + ',boxblur=40:5[c];[a][c]overlay=' + mx + ':' + my + ',' + zoomChain
+    : '[0:v]' + zoomChain;
+  run(ffmpeg, ['-y', '-loglevel', 'error', '-loop', '1', '-framerate', '30', '-t', '24', '-i', image, '-filter_complex', graph, '-an', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', out]);
+  return { id: 0, author: 'pessoa', url: image, duration: 24, file: out };
+}
+
 async function main() {
   const manifest: SocialManifestEntry[] = JSON.parse(readFileSync('content/blog/manifest.json', 'utf8'));
   const args: Record<string, string | boolean> = Object.fromEntries(
@@ -542,6 +573,7 @@ async function main() {
     process.exit(1);
   }
 
+  NO_FOOTER = args.nofooter === true;
   const withVoice = args['no-voice'] !== true;
   const noVideoBg = args['no-video-bg'] === true;
   // Música DESLIGADA por defeito: "livre de direitos" não chega. Uma faixa do
@@ -579,9 +611,39 @@ async function main() {
       shortIdx === null
         ? buildScenes(entry, undefined, !noVideoBg)
         : buildShortScenes(entry, shortIdx);
+    // Roteiro próprio (--script=ficheiro.json): substitui as cenas geradas a partir do artigo.
+    if (typeof args.script === 'string' && shortIdx === null) {
+      const custom = JSON.parse(readFileSync(args.script, 'utf8')) as Partial<Scene>[];
+      scenesDraft.splice(0, scenesDraft.length, ...custom.map((c2, i) => ({
+        title: '', narration: '', visual: 'mente', tint: TINTS[i % TINTS.length], theme: 'video' as keyof typeof THEME, hideCaption: false, ...c2,
+      }) as Scene));
+    }
+    // Abertura com uma pessoa a narrar (--person=imagem [--intro="texto"] [--person-mask=x:y:w:h]).
+    const personImg = typeof args.person === 'string' ? args.person : null;
+    if (personImg && shortIdx === null) {
+      const introText =
+        typeof args.intro === 'string' ? args.intro : entry.title;
+      scenesDraft.unshift({
+        title: '',
+        narration: cleanNarration(introText),
+        visual: 'mente',
+        tint: TINTS[0],
+        theme: 'video',
+        hideCaption: false,
+        captionLow: true,
+      });
+    }
     const clips: (BackgroundClip | null)[] = [];
     if (!noVideoBg) {
       for (const [si, scene] of scenesDraft.entries()) {
+        if (scene.image) {
+          clips.push(makePersonClip(scene.image, tmp + '/img-' + si + '.mp4', scene.mask, scene.focus, scene.zoom));
+          continue;
+        }
+        if (personImg && shortIdx === null && si === 0) {
+          clips.push(makePersonClip(personImg, tmp + '/person.mp4', typeof args['person-mask'] === 'string' ? (args['person-mask'] as string) : undefined));
+          continue;
+        }
         const q = visualQuery(scene.visual);
         clips.push(await fetchBackground(q, `${tmp}/bg-${si}.mp4`));
       }
