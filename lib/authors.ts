@@ -29,7 +29,6 @@ export interface AuthorText {
   boxTitle: string;
   boxCta: string;
   navLabel: string;
-  photoAlt: string;
 }
 
 export interface Author {
@@ -37,8 +36,6 @@ export interface Author {
   name: string;
   /** caminho (sem idioma) da página da autora */
   path: string;
-  image: string;
-  imageSquare: string;
   knowsAbout: string[];
   text: Record<Locale, AuthorText>;
 }
@@ -61,8 +58,6 @@ export const ANA: Author = {
   slug: 'ana-branca-cardoso',
   name: 'Ana Branca Cardoso',
   path: 'autora/ana-branca-cardoso',
-  image: '/autores/ana-branca-cardoso.jpg',
-  imageSquare: '/autores/ana-branca-cardoso-sq.jpg',
   knowsAbout: [
     'Estudo bíblico',
     'Livro dos Salmos',
@@ -105,7 +100,6 @@ export const ANA: Author = {
       boxTitle: 'Sobre a autora',
       boxCta: 'Ver perfil e método de estudo',
       navLabel: 'Autora',
-      photoAlt: 'Retrato de Ana Branca Cardoso, sorrindo, com um lenço azul na cabeça',
     },
     'pt-pt': {
       jobTitle: 'Cristã e estudiosa da Palavra de Deus',
@@ -140,7 +134,6 @@ export const ANA: Author = {
       boxTitle: 'Sobre a autora',
       boxCta: 'Ver perfil e método de estudo',
       navLabel: 'Autora',
-      photoAlt: 'Retrato de Ana Branca Cardoso, a sorrir, com um lenço azul na cabeça',
     },
   },
 };

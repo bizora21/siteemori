@@ -175,7 +175,6 @@ export function personSchema(author: Author, lang: Locale) {
     name: author.name,
     jobTitle: t.jobTitle,
     description: t.tagline,
-    image: absoluteUrl(author.image),
     url: absoluteUrl(localizedPath(lang, author.path)),
     knowsAbout: author.knowsAbout,
     worksFor: { '@type': 'Organization', name: 'Emori', url: SITE_URL },

@@ -23,7 +23,6 @@ export function generateMetadata({ params }: { params: { lang: Locale } }): Meta
     path: ANA.path,
     title: t.metaTitle,
     description: t.metaDescription,
-    ogImage: ANA.image,
   });
 }
 
@@ -40,18 +39,7 @@ export default function AutoraPage({ params }: { params: { lang: Locale } }) {
   return (
     <PageShell lang={lang} path={ANA.path}>
       <article className="mx-auto max-w-3xl">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
-          <img
-            src={ANA.image}
-            alt={t.photoAlt}
-            width={800}
-            height={727}
-            loading="eager"
-            className="h-40 w-40 shrink-0 rounded-3xl border border-clay-100 object-cover"
-          />
-          <PageHeader eyebrow={t.jobTitle} title={t.h1} />
-        </div>
+        <PageHeader eyebrow={t.jobTitle} title={t.h1} />
 
         <TldrBlock label={dict.common.tldrLabel}>{t.tldr}</TldrBlock>
 
