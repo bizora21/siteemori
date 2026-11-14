@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estúdio de vídeo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <strong>Estúdio de vídeo</strong>
+    <span class="muted">local · só neste computador</span>
+    <span id="queue" class="pill" hidden></span>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <button id="new-btn" class="primary wide">+ Novo projeto</button>
+      <div id="list" class="list"></div>
+    </aside>
+
+    <main id="main">
+      <div class="empty">
+        <h2>Escolha um projeto</h2>
+        <p class="muted">Cada vídeo é um projeto: roteiro por cenas, voz (gravada aqui ou sintética) e um template. O render usa o mesmo motor de sempre, com a mesma qualidade 3D.</p>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="new-dialog">
+    <form method="dialog" id="new-form">
+      <h3>Novo projeto</h3>
+      <label>Título<input name="title" required placeholder="Ex.: Salmo 23 explicado" /></label>
+      <label>Identificador<input name="id" required pattern="[a-z0-9][a-z0-9\-]*" placeholder="salmo-23" /></label>
+      <label>Marca<select name="brand"></select></label>
+      <label>Template<select name="template"></select></label>
+      <p class="muted" id="tpl-hint"></p>
+      <div class="row end">
+        <button value="cancel" formnovalidate>Cancelar</button>
+        <button value="ok" class="primary">Criar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="prompter">
+    <div class="prompter-body">
+      <div id="prompter-text"></div>
+      <div class="row center">
+        <button id="prompter-rec" class="primary big">● Gravar</button>
+        <button id="prompter-close" class="big">Fechar</button>
+      </div>
+      <div class="meter"><i id="prompter-meter"></i></div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

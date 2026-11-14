@@ -1,0 +1,27 @@
+{
+  "id": "salmo-121",
+  "brand": "emori",
+  "template": "verse3d",
+  "title": "Emori — SALMO 121 NÃO DORME (artigo: salmo-121-explicado)",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "-4%"
+  },
+  "cta": "Link na bio",
+  "site": "aemori.com",
+  "props": {
+    "title": [
+      "SALMO 121",
+      "NÃO DORME"
+    ],
+    "ctaArrow": true,
+    "skipIntro": false
+  },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "Três da manhã e o sono não vem? O Salmo 121 diz que o guarda de Israel não dormita nem dorme. Seis vezes, esse salmo repete a palavra guardar. Você pode descansar, porque alguém já está vigiando. O estudo completo está no link da bio."
+    }
+  ]
+}

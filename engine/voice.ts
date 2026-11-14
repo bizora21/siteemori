@@ -139,7 +139,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
 
   // ── 2/3. Voz sintética (Edge/ElevenLabs → Piper) ──────────────────────
   const rate = ctx.project.voice?.rate ?? '+0%';
-  const key = fingerprint(['synthetic', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY)]);
+  const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY)]);
   const wav = join(ctx.cacheDir, `${scene.id}-${key}.wav`);
   const meta = `${wav}.json`;
   if (existsSync(wav) && existsSync(meta)) {
@@ -159,7 +159,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
     source = 'piper';
     ({ words } = synthesizePiper(text, ctx.locale as AppLocale, mp3, ctx.cacheDir));
   }
-  toWav(mp3, wav);
+  toWav(mp3, wav, { trimTail: true });
   const dur = duration(wav);
   const out: SceneAudio = { scene: scene.id, wav, words, duration: dur, source, cached: false };
   writeFileSync(meta, JSON.stringify(out));

@@ -6,16 +6,19 @@ import { spawnSync } from 'node:child_process';
 import { extname, join } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
 import { duration, run, stageVideo } from './ffmpeg';
+import { resolveCues } from './cues';
+import { TEMPLATES } from './templates';
 import type { SceneAudio } from './voice';
 import type { Brand, Project } from './types';
 import type { Timeline } from './timeline';
 
 export const FPS = 30;
-const TAIL: Record<Project['template'], number> = { anuncio3d: 2.6, institucional: 2.2 };
 const VIDEO_DIR = 'video3d';
 
 export interface RenderPlan {
   composition: string;
+  /** Avisos do planeamento (ex.: cues que não acharam a palavra e usaram reserva). */
+  warnings: string[];
   props: Record<string, unknown>;
   lines: CaptionLine[];
 }
@@ -91,42 +94,61 @@ export function planRender(
   projectDir: string,
   audios: SceneAudio[],
 ): RenderPlan {
-  const total = tl.lead + tl.voiceSeconds + TAIL[project.template];
+  const def = TEMPLATES[project.template];
+  const tail = project.tail ?? def.tail;
+  const total = tl.lead + tl.voiceSeconds + tail;
   const base = {
     audio: audioRel,
     durationInFrames: Math.ceil(total * FPS),
     leadSeconds: tl.lead,
     voiceEndSeconds: tl.lead + tl.voiceSeconds,
-    sceneStarts: tl.sceneStarts,
+    ...(def.usesSceneStarts ? { sceneStarts: tl.sceneStarts } : {}),
     cta: project.cta ?? brand.cta,
     site: project.site ?? brand.site,
   };
+  const lines = toCaptionLines(tl.words, def.captions[0], def.captions[1]);
 
-  if (project.template === 'anuncio3d') {
-    const lines = toCaptionLines(tl.words, 4, 22);
-    return { composition: 'Anuncio3D', lines, props: { ...base, lines, music: musicFile(project) } };
+  if (project.template === 'institucional') {
+    const inst = project.institutional!;
+    const media = stageMedia(project, projectDir, tl, audios);
+    return {
+      composition: def.composition,
+      warnings: [],
+      lines,
+      props: {
+        ...base,
+        lines,
+        scenes: project.scenes.map((s, i) => ({ title: s.title ?? '', source: s.source, media: media[i] ?? undefined })),
+        entity: inst.entity,
+        department: inst.department,
+        disclaimer: inst.disclaimer,
+        colors: brand.colors,
+        logo: brand.logo,
+        aspect: project.aspect ?? '16:9',
+        music: project.music?.file,
+      },
+    };
   }
 
-  // institucional
-  const lines = toCaptionLines(tl.words, 6, 38);
-  const inst = project.institutional!;
-  const media = stageMedia(project, projectDir, tl, audios);
-  return {
-    composition: 'Institucional',
-    lines,
-    props: {
-      ...base,
-      lines,
-      scenes: project.scenes.map((s, i) => ({ title: s.title ?? '', source: s.source, media: media[i] ?? undefined })),
-      entity: inst.entity,
-      department: inst.department,
-      disclaimer: inst.disclaimer,
-      colors: brand.colors,
-      logo: brand.logo,
-      aspect: project.aspect ?? '16:9',
-      music: project.music?.file,
-    },
-  };
+  // Templates 3D: as composições existentes, com as props de sempre.
+  const cues = resolveCues(project.cues, tl.words, tl.sceneStarts);
+  const warnings = cues.fallbacks.map((p) => `cue "${p}": a palavra não apareceu na voz — usei o valor de reserva`);
+  const props = deepMerge(
+    { ...base, lines, ...(def.music ? { music: musicFile(project) } : {}) },
+    deepMerge(project.props ?? {}, cues.props),
+  );
+  return { composition: def.composition, warnings, lines, props };
+}
+
+function deepMerge(a: Record<string, unknown>, b: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...a };
+  for (const [k, v] of Object.entries(b)) {
+    const cur = out[k];
+    out[k] = v && typeof v === 'object' && !Array.isArray(v) && cur && typeof cur === 'object' && !Array.isArray(cur)
+      ? deepMerge(cur as Record<string, unknown>, v as Record<string, unknown>)
+      : v;
+  }
+  return out;
 }
 
 export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: boolean }): string {

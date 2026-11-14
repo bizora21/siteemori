@@ -1,0 +1,44 @@
+{
+  "id": "anuncio-b",
+  "brand": "movago",
+  "template": "anuncio3db",
+  "title": "MOVAGO — anúncio B (percurso e painel)",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "+2%"
+  },
+  "props": {
+    "musicStart": 30
+  },
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Neste exato momento, você sabe onde está cada carga da sua transportadora?"
+    },
+    {
+      "id": "problema",
+      "narration": "Sem controle do percurso, a carga se perde entre o armazém e o destino, e ninguém sabe em que trecho foi."
+    },
+    {
+      "id": "solucao",
+      "narration": "A Movago resolve isso. Cada encomenda ganha um código e um percurso completo, com todas as paradas."
+    },
+    {
+      "id": "painel",
+      "narration": "No painel, você vê quem está com a carga em cada trecho, e a que horas ela passou."
+    },
+    {
+      "id": "cliente-e-prova",
+      "narration": "O seu cliente acompanha sozinho, só com o código, e vê até a foto da carga na recepção. E a entrega fica provada com foto e assinatura."
+    },
+    {
+      "id": "oferta",
+      "narration": "Piloto gratuito de sete dias, para as cinco primeiras transportadoras."
+    },
+    {
+      "id": "cta",
+      "narration": "Clique em Saiba mais e peça a sua demonstração."
+    }
+  ]
+}

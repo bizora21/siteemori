@@ -1,0 +1,62 @@
+{
+  "id": "aprender-biblia",
+  "brand": "emori",
+  "template": "aprender3d",
+  "title": "Emori — Aprender a Bíblia (v1)",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "-2%"
+  },
+  "cta": "Link na bio",
+  "site": "Baixe a Emori",
+  "cues": [
+    {
+      "prop": "tapRight",
+      "word": "noe",
+      "after": {
+        "scene": 3
+      },
+      "offset": 0.15,
+      "fallback": {
+        "scene": 3,
+        "seconds": 3.25
+      }
+    },
+    {
+      "prop": "tapWrong",
+      "atScene": 4,
+      "offset": 0.45
+    }
+  ],
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Você quer entender melhor a Bíblia, mas não sabe por onde começar?"
+    },
+    {
+      "id": "app",
+      "narration": "Dentro do aplicativo Emori existe a aba Aprender a Bíblia. Pergunta a pergunta, do mais fácil ao mais profundo."
+    },
+    {
+      "id": "niveis",
+      "narration": "Você acompanha seus dias seguidos e seus pontos, e cada nível novo se abre conforme você avança."
+    },
+    {
+      "id": "pergunta",
+      "narration": "Escolha a resposta. Quem construiu a arca? Noé! E na hora aparece o versículo com a explicação."
+    },
+    {
+      "id": "erro",
+      "narration": "Errou? Tudo bem. Ninguém nasce sabendo. Leia a explicação e tente de novo, sem pressa."
+    },
+    {
+      "id": "proximo-nivel",
+      "narration": "Acertou o suficiente? O próximo nível se abre. Um pouquinho por dia já muda muito."
+    },
+    {
+      "id": "cta",
+      "narration": "Você consegue, e pode começar hoje. Baixe a Emori, um aplicativo bíblico de fé e orações. Link na bio."
+    }
+  ]
+}

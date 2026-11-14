@@ -1,0 +1,450 @@
+'use strict';
+
+// ── utilitários ───────────────────────────────────────────────────────────
+const $ = (s, r = document) => r.querySelector(s);
+const h = (tag, attrs = {}, ...kids) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === false || v == null) continue;
+    if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'class') el.className = v;
+    else if (k === 'value') el.value = v;
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid === false || kid === true || kid == null) continue; // `cond && elemento` não deve escrever "false"
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+};
+
+async function api(path, opts = {}) {
+  const r = await fetch(path, { ...opts, headers: opts.body && typeof opts.body === 'string' ? { 'Content-Type': 'application/json' } : undefined });
+  const data = r.headers.get('content-type')?.includes('json') ? await r.json() : await r.text();
+  if (!r.ok) {
+    const e = new Error(data?.error || (data?.issues && data.issues.map((i) => i.message).join('; ')) || r.statusText);
+    e.data = data;
+    throw e;
+  }
+  return data;
+}
+
+const state = { templates: [], brands: [], projects: [], id: null, data: null, dirty: false, rec: null, jobId: null };
+const tplOf = (id) => state.templates.find((t) => t.id === id);
+const words = (t) => (t.trim() ? t.trim().split(/\s+/).length : 0);
+
+// ── lista de projetos ─────────────────────────────────────────────────────
+async function loadState() {
+  const s = await api('/api/state');
+  Object.assign(state, s);
+  renderList();
+}
+
+function renderList() {
+  const list = $('#list');
+  list.replaceChildren(
+    ...state.projects.map((p) =>
+      h('button', { class: 'card item' + (p.id === state.id ? ' active' : ''), onclick: () => openProject(p.id) },
+        h('b', {}, p.title),
+        h('small', {}, `${tplOf(p.template)?.label ?? p.template} · ${p.brand}`),
+        h('div', { class: 'badges' },
+          h('span', { class: 'pill ' + (p.recorded === p.scenes ? 'ok' : p.recorded ? 'warn' : '') }, `voz humana ${p.recorded}/${p.scenes}`),
+          p.hasDraft && h('span', { class: 'pill' }, 'rascunho'),
+          p.hasFinal && h('span', { class: 'pill ok' }, 'final'),
+        ),
+      ),
+    ),
+  );
+}
+
+// ── novo projeto ──────────────────────────────────────────────────────────
+$('#new-btn').addEventListener('click', () => {
+  const f = $('#new-form');
+  f.brand.replaceChildren(...state.brands.map((b) => h('option', { value: b.id }, `${b.name} (${b.locale})`)));
+  f.template.replaceChildren(...state.templates.map((t) => h('option', { value: t.id }, t.label)));
+  const hint = () => {
+    const t = tplOf(f.template.value);
+    $('#tpl-hint').textContent = t.scenes ? `Cenas fixas (${t.scenes}): ${t.sceneRoles.join(' → ')}.` : t.kind === '2d' ? 'Qualquer número de cenas; pode ter imagem, vídeo ou apresentador por cena.' : 'Narração contínua.';
+  };
+  f.template.onchange = hint;
+  hint();
+  $('#new-dialog').showModal();
+});
+$('#new-form').addEventListener('submit', async (ev) => {
+  if (ev.submitter?.value !== 'ok') return;
+  const f = ev.target;
+  try {
+    const r = await api('/api/projects', { method: 'POST', body: JSON.stringify({ id: f.id.value, title: f.title.value, brand: f.brand.value, template: f.template.value }) });
+    await loadState();
+    openProject(r.id);
+    f.reset();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+// ── editor ────────────────────────────────────────────────────────────────
+async function openProject(id) {
+  if (state.dirty && !confirm('Há alterações por guardar. Descartar?')) return;
+  stopRec();
+  state.id = id;
+  state.dirty = false;
+  state.data = await api(`/api/projects/${id}`);
+  renderList();
+  renderEditor();
+}
+
+async function refresh() {
+  state.data = await api(`/api/projects/${state.id}`);
+  await loadState();
+  renderEditor();
+}
+
+const dirty = () => {
+  state.dirty = true;
+  const b = $('#save-btn');
+  if (b) b.textContent = 'Guardar *';
+};
+
+function field(label, value, onInput, opts = {}) {
+  const input = opts.area ? h('textarea', { rows: opts.rows ?? 3 }) : h('input', { type: 'text' });
+  input.value = value ?? '';
+  input.addEventListener('input', () => {
+    onInput(input.value);
+    dirty();
+    opts.after?.(input.value);
+  });
+  return h('label', {}, label, input);
+}
+
+function renderEditor() {
+  const { project: p, brand, issues, scenes, files } = state.data;
+  const tpl = tplOf(p.template);
+  const main = $('#main');
+  const scroll = window.scrollY;
+
+  const inst = p.template === 'institucional';
+  const head = h('section', { class: 'card stack' },
+    h('div', { class: 'row' },
+      h('h2', { style: 'margin:0;flex:1' }, p.title),
+      h('span', { class: 'pill' }, tpl?.label ?? p.template),
+      h('span', { class: 'pill' }, `marca: ${brand?.name ?? p.brand}`),
+      tpl?.kind === '3d' && h('span', { class: 'pill warn' }, '3D · render pesado'),
+    ),
+    h('div', { class: 'grid2' },
+      field('Título', p.title, (v) => (p.title = v)),
+      h('label', {}, 'Origem da voz',
+        (() => {
+          const s = h('select', { onchange: () => { (p.voice ??= {}).mode = s.value; dirty(); } },
+            h('option', { value: 'auto' }, 'Automático (gravada onde existir, senão sintética)'),
+            h('option', { value: 'human' }, 'Só voz humana (exige todas as cenas gravadas)'),
+            h('option', { value: 'synthetic' }, 'Só sintética'));
+          s.value = p.voice?.mode ?? 'auto';
+          return s;
+        })()),
+    ),
+    inst && h('div', { class: 'grid3' },
+      field('Entidade (quem assina)', p.institutional?.entity, (v) => ((p.institutional ??= {}).entity = v)),
+      field('Departamento', p.institutional?.department, (v) => ((p.institutional ??= {}).department = v)),
+      field('Aviso legal (rodapé)', p.institutional?.disclaimer, (v) => ((p.institutional ??= {}).disclaimer = v)),
+    ),
+    inst && h('div', { class: 'grid3' },
+      h('label', {}, 'Formato',
+        (() => {
+          const s = h('select', { onchange: () => { p.aspect = s.value; dirty(); } },
+            h('option', { value: '16:9' }, '16:9 (horizontal)'), h('option', { value: '9:16' }, '9:16 (vertical)'), h('option', { value: '1:1' }, '1:1 (quadrado)'));
+          s.value = p.aspect ?? '16:9';
+          return s;
+        })()),
+      field('Aprovado por', p.approval?.by, (v) => ((p.approval ??= { by: '', date: '' }).by = v)),
+      field('Data / referência', p.approval?.date, (v) => ((p.approval ??= { by: '', date: '' }).date = v)),
+    ),
+    h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
+  );
+
+  const sceneCards = p.scenes.map((s, i) => sceneCard(p, s, i, scenes[i], tpl, inst));
+
+  const adv = h('details', { class: 'card' },
+    h('summary', {}, 'Avançado: JSON do projeto (props, cues, lead, tail, música)'),
+    h('p', { class: 'muted' }, 'Aqui editas tudo o que não tem campo próprio. Cada cue liga uma prop 3D a uma palavra da voz.'),
+    (() => {
+      const ta = h('textarea', { rows: 14, style: 'font-family:ui-monospace,Consolas,monospace;font-size:12.5px' });
+      ta.value = JSON.stringify(p, null, 2);
+      return h('div', {}, ta, h('div', { class: 'row end', style: 'margin-top:8px' },
+        h('button', { onclick: () => {
+          try { state.data.project = JSON.parse(ta.value); dirty(); renderEditor(); } catch (e) { alert('JSON inválido: ' + e.message); }
+        } }, 'Aplicar JSON')));
+    })(),
+  );
+
+  const vertical = (p.aspect ?? (tpl?.aspect === '9:16' ? '9:16' : '16:9')) === '9:16';
+  const mp4s = files.filter((f) => f.endsWith('.mp4'));
+  const out = h('section', { class: 'card stack', id: 'out' },
+    h('h3', {}, 'Resultado'),
+    mp4s.length ? mp4s.map((f) => h('div', {}, h('div', { class: 'muted' }, f.includes('rascunho') ? 'Rascunho (meia resolução)' : 'Final'),
+      h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${f}?t=${Date.now()}` }))) : h('p', { class: 'muted' }, 'Ainda sem vídeo. Gere um rascunho para ver.'),
+    h('div', { id: 'pub' }),
+  );
+
+  const actions = h('div', { class: 'actions' },
+    h('button', { id: 'save-btn', onclick: save }, state.dirty ? 'Guardar *' : 'Guardar'),
+    h('button', { onclick: () => build({ noRender: true }) }, 'Só voz + props'),
+    h('button', { onclick: () => build({ draft: true }) }, 'Gerar rascunho'),
+    h('button', { class: 'primary', onclick: () => build({}) }, 'Gerar final'),
+    h('span', { class: 'muted', id: 'job-state' }, ''),
+  );
+  const consoleBox = h('section', { class: 'card stack', id: 'console-box', hidden: true },
+    h('div', { class: 'bar' }, h('i', { id: 'bar' })),
+    h('div', { class: 'muted', id: 'progress' }),
+    h('div', { class: 'console', id: 'console' }),
+  );
+
+  main.replaceChildren(h('div', { class: 'stack' }, head, ...sceneCards, adv, consoleBox, out, actions));
+  window.scrollTo(0, scroll);
+  loadPublication(files, p.id);
+}
+
+function issueItems(issues) {
+  if (!issues.length) return [h('li', { class: 'ok', style: 'color:var(--ok)' }, '✓ roteiro sem problemas')];
+  return issues.map((i) => h('li', { class: i.level }, `${i.level === 'error' ? '✗' : '⚠'} ${i.scene ? `[${i.scene}] ` : ''}${i.message}`));
+}
+
+function sceneCard(p, s, i, st, tpl, inst) {
+  const role = tpl?.sceneRoles?.[i];
+  const est = h('span', { class: 'muted' }, `${words(s.narration)} palavras · ≈ ${Math.max(1, Math.round(words(s.narration) / 2.6))} s`);
+  const status = h('span', { class: 'pill ' + (st?.recorded ? 'ok' : '') }, st?.recorded ? (st.kind === 'video' ? 'apresentador gravado' : 'voz humana gravada') : 'voz sintética');
+  const meter = h('div', { class: 'meter', hidden: true }, h('i'));
+  const preview = h('div');
+  const recBtn = h('button', { onclick: () => toggleRec(s.id, 'audio', recBtn, meter, preview) }, '● Gravar voz');
+  const vidBtn = h('button', { onclick: () => toggleRec(s.id, 'video', vidBtn, meter, preview) }, '🎥 Gravar apresentador');
+  const row = h('div', { class: 'rec-row' }, recBtn, meter,
+    h('button', { onclick: () => openPrompter(s) }, 'Teleprompter'),
+    st?.recorded && st.kind === 'audio' && h('audio', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:34px' }),
+    inst && vidBtn,
+    st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar gravação'),
+  );
+  return h('section', { class: 'card scene' },
+    h('header', {}, h('span', { class: 'no' }, String(i + 1).padStart(2, '0')), h('b', {}, s.id), role && h('span', { class: 'muted' }, `· ${role}`), status, est),
+    field('Narração', s.narration, (v) => (s.narration = v), { area: true, rows: 3, after: () => (est.textContent = `${words(s.narration)} palavras · ≈ ${Math.max(1, Math.round(words(s.narration) / 2.6))} s`) }),
+    inst && h('div', { class: 'grid2' },
+      field('Título no ecrã', s.title, (v) => (s.title = v)),
+      field('Fonte do dado (obrigatória se houver números)', s.source, (v) => (s.source = v)),
+    ),
+    inst && field('Imagem ou vídeo da cena (caminho na pasta do projeto)', s.media, (v) => (s.media = v || undefined)),
+    row,
+    preview,
+  );
+}
+
+// ── guardar e gerar ───────────────────────────────────────────────────────
+async function save() {
+  try {
+    await api(`/api/projects/${state.id}`, { method: 'PUT', body: JSON.stringify(state.data.project) });
+    state.dirty = false;
+    await refresh();
+    return true;
+  } catch (e) {
+    alert('Não foi possível guardar: ' + e.message);
+    return false;
+  }
+}
+
+async function build(opts) {
+  if (state.dirty && !(await save())) return;
+  if (state.data.issues.some((i) => i.level === 'error')) {
+    if (!confirm('O roteiro tem erros (✗) e o build vai falhar. Continuar mesmo assim?')) return;
+  }
+  if (!opts.noRender && !opts.draft && tplOf(state.data.project.template)?.kind === '3d' && !confirm('Render final 3D: demora vários minutos nesta máquina. Continuar? (O rascunho é bem mais rápido.)')) return;
+  try {
+    const r = await api(`/api/projects/${state.id}/build`, { method: 'POST', body: JSON.stringify(opts) });
+    followJob(r.job);
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+function followJob(jobId) {
+  const box = $('#console-box');
+  const cons = $('#console');
+  box.hidden = false;
+  cons.textContent = '';
+  const es = new EventSource(`/api/jobs/${jobId}/events`);
+  const stateEl = $('#job-state');
+  es.addEventListener('log', (e) => {
+    cons.textContent += JSON.parse(e.data) + '\n';
+    cons.scrollTop = cons.scrollHeight;
+  });
+  es.addEventListener('progress', (e) => {
+    const line = JSON.parse(e.data);
+    $('#progress').textContent = line;
+    const m = /(\d+)\/(\d+)/.exec(line);
+    if (m) $('#bar').style.width = `${Math.round((Number(m[1]) / Number(m[2])) * 100)}%`;
+  });
+  es.addEventListener('status', async (e) => {
+    const st = JSON.parse(e.data);
+    if (stateEl) stateEl.textContent = { queued: 'na fila…', running: 'a gerar…', done: '✓ concluído', failed: '✗ falhou — vê o registo acima' }[st] ?? st;
+    if (st === 'done' || st === 'failed') {
+      es.close();
+      await refresh();
+      $('#console-box').hidden = false;
+      $('#console').textContent = cons.textContent;
+    }
+  });
+  es.onerror = () => es.close();
+}
+
+async function loadPublication(files, id) {
+  const f = `${id}/${id}-publicacao.md`;
+  const box = $('#pub');
+  if (!box || !files.includes(f)) return;
+  const text = await api(`/media/${f}`);
+  const desc = /## Descrição\n\n([\s\S]*?)\n\n## Hashtags/.exec(text)?.[1] ?? '';
+  const tags = /## Hashtags\n\n(.*)/.exec(text)?.[1] ?? '';
+  const copy = (t, btn) => navigator.clipboard.writeText(t).then(() => { const o = btn.textContent; btn.textContent = 'Copiado ✓'; setTimeout(() => (btn.textContent = o), 1500); });
+  const b1 = h('button', {}, 'Copiar descrição');
+  const b2 = h('button', {}, 'Copiar hashtags');
+  b1.onclick = () => copy(desc, b1);
+  b2.onclick = () => copy(tags, b2);
+  box.replaceChildren(
+    h('h4', {}, 'Publicação'),
+    h('pre', { class: 'pub' }, `${desc}\n\n${tags}`),
+    h('div', { class: 'row', style: 'margin-top:8px' }, b1, b2,
+      files.filter((x) => x.endsWith('.srt') || x.endsWith('transcricao.txt')).map((x) => h('a', { href: `/media/${x}`, target: '_blank' }, x.split('/')[1])),
+    ),
+  );
+}
+
+// ── gravação no browser ───────────────────────────────────────────────────
+function pickMime(kind) {
+  const list = kind === 'video' ? ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'] : ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
+  return list.find((m) => window.MediaRecorder?.isTypeSupported(m));
+}
+
+function stopRec() {
+  if (state.rec) state.rec.stop();
+}
+
+async function toggleRec(sceneId, kind, btn, meter, preview, onDone) {
+  if (state.rec) {
+    const same = state.rec.sceneId === sceneId && state.rec.kind === kind;
+    state.rec.stop();
+    if (same) return;
+  }
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia(
+      kind === 'video'
+        ? { video: { width: 1280, height: 720 }, audio: { echoCancellation: false, noiseSuppression: false } }
+        : { audio: { echoCancellation: false, noiseSuppression: false } },
+    );
+  } catch (e) {
+    alert('Sem acesso ao microfone/câmara: ' + e.message + '\nPermita o acesso no navegador.');
+    return;
+  }
+  const mime = pickMime(kind);
+  const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+  const chunks = [];
+  mr.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+
+  const ctx = new AudioContext();
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 512;
+  ctx.createMediaStreamSource(stream).connect(analyser);
+  const buf = new Uint8Array(analyser.fftSize);
+  let raf = 0;
+  const bar = meter.querySelector('i');
+  meter.hidden = false;
+  const tick = () => {
+    analyser.getByteTimeDomainData(buf);
+    let peak = 0;
+    for (const v of buf) peak = Math.max(peak, Math.abs(v - 128));
+    bar.style.width = `${Math.min(100, (peak / 128) * 120)}%`;
+    bar.style.background = peak > 124 ? 'var(--bad)' : 'var(--ok)';
+    raf = requestAnimationFrame(tick);
+  };
+  tick();
+
+  if (kind === 'video' && preview) {
+    const v = h('video', { class: 'preview-cam', muted: true, autoplay: true, playsinline: true });
+    v.srcObject = stream;
+    preview.replaceChildren(v);
+  }
+
+  const orig = btn.textContent;
+  btn.textContent = '■ Parar';
+  btn.classList.add('rec');
+  const t0 = Date.now();
+  const timer = setInterval(() => (btn.textContent = `■ Parar (${Math.round((Date.now() - t0) / 1000)} s)`), 500);
+
+  state.rec = {
+    sceneId,
+    kind,
+    stop: () => mr.state !== 'inactive' && mr.stop(),
+  };
+  mr.onstop = async () => {
+    clearInterval(timer);
+    cancelAnimationFrame(raf);
+    ctx.close();
+    stream.getTracks().forEach((t) => t.stop());
+    state.rec = null;
+    btn.classList.remove('rec');
+    btn.textContent = 'A guardar…';
+    meter.hidden = true;
+    try {
+      const blob = new Blob(chunks, { type: mr.mimeType });
+      await api(`/api/projects/${state.id}/${kind === 'video' ? 'presenter' : 'voice'}/${sceneId}`, { method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' } });
+      if (onDone) onDone();
+      else await refresh();
+    } catch (e) {
+      alert('Falhou ao guardar a gravação: ' + e.message);
+      btn.textContent = orig;
+    }
+  };
+  mr.start(1000);
+}
+
+async function delRec(sceneId) {
+  if (!confirm('Apagar a gravação desta cena?')) return;
+  await api(`/api/projects/${state.id}/voice/${sceneId}`, { method: 'DELETE' });
+  await refresh();
+}
+
+// ── teleprompter ──────────────────────────────────────────────────────────
+function openPrompter(scene) {
+  const dlg = $('#prompter');
+  $('#prompter-text').textContent = scene.narration;
+  const btn = $('#prompter-rec');
+  btn.textContent = '● Gravar';
+  btn.onclick = () => toggleRec(scene.id, 'audio', btn, $('.meter', dlg), null, async () => {
+    dlg.close();
+    await refresh();
+  });
+  $('#prompter-close').onclick = () => {
+    stopRec();
+    dlg.close();
+  };
+  dlg.showModal();
+}
+
+// ── fila ──────────────────────────────────────────────────────────────────
+async function pollQueue() {
+  try {
+    const jobs = await api('/api/jobs');
+    const active = jobs.filter((j) => j.status === 'running' || j.status === 'queued');
+    const pill = $('#queue');
+    pill.hidden = !active.length;
+    if (active.length) pill.textContent = `${active.length} trabalho(s) · ${active[0].project} (${active[0].label})`;
+  } catch {
+    /* servidor parado */
+  }
+}
+
+window.addEventListener('beforeunload', (e) => {
+  if (state.dirty) e.preventDefault();
+});
+
+loadState().then(() => {
+  const id = new URLSearchParams(location.search).get('p');
+  if (id) openProject(id);
+});
+setInterval(pollQueue, 3000);

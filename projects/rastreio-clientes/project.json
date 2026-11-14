@@ -1,0 +1,43 @@
+{
+  "id": "rastreio-clientes",
+  "brand": "movago",
+  "template": "rastreio3d",
+  "title": "MOVAGO — rastreio para clientes finais",
+  "locale": "pt-pt",
+  "voice": {
+    "mode": "auto",
+    "rate": "+0%"
+  },
+  "cta": "Rastreie agora",
+  "site": "rastreio.movagomz.com",
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Está à espera de uma encomenda e não sabe onde ela anda?"
+    },
+    {
+      "id": "codigo",
+      "narration": "Com o código de rastreio do talão, fica a saber tudo, a qualquer hora. Sem criar conta e sem instalar nada."
+    },
+    {
+      "id": "site",
+      "narration": "Abra o site no telemóvel, escreva o código, e pronto. Vê logo o estado da encomenda, de onde saiu e para onde vai."
+    },
+    {
+      "id": "foto-do-volume",
+      "narration": "Vê até a fotografia do seu volume, tal como foi entregue na estação, e o nome de quem o enviou. Assim reconhece a sua encomenda de imediato."
+    },
+    {
+      "id": "etapas",
+      "narration": "Acompanhe cada passo do caminho: registada, a caminho, chegou ao destino e entregue. Com o local e a hora de cada etapa."
+    },
+    {
+      "id": "privacidade",
+      "narration": "E os seus dados ficam protegidos. Os telefones nunca aparecem, e o seu nome surge abreviado."
+    },
+    {
+      "id": "cta",
+      "narration": "Rastreie a sua encomenda agora. Escreva o código, e saiba onde ela está."
+    }
+  ]
+}

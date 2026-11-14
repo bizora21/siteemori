@@ -19,10 +19,10 @@ import { writePublishPack } from './publish-pack';
 import { planRender, renderVideo } from './render';
 import { buildTimeline } from './timeline';
 import { findHumanFile, voiceScene, type SceneAudio } from './voice';
+import { TEMPLATES } from './templates';
 import { validateBrand, validateProject, type Brand, type Issue, type Project, type VoiceMode } from './types';
 
 const ROOT = 'projects';
-const LEAD = 0.4;
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -126,7 +126,8 @@ async function build(id: string): Promise<void> {
 
   const mode = (opt('voice') as VoiceMode | undefined) ?? project.voice?.mode ?? 'auto';
   const cacheDir = join('.engine-cache', project.id);
-  const ctx = { project, projectDir: dir, cacheDir, locale: brand.locale, mode };
+  const def = TEMPLATES[project.template];
+  const ctx = { project, projectDir: dir, cacheDir, locale: project.locale ?? brand.locale, mode };
 
   const audios: SceneAudio[] = [];
   for (const scene of project.scenes) {
@@ -138,13 +139,14 @@ async function build(id: string): Promise<void> {
   const audioRel = `audio/${project.id}.mp3`;
   mkdirSync('video3d/public/audio', { recursive: true });
   const tl = buildTimeline(audios, {
-    lead: LEAD,
+    lead: project.lead ?? def.lead,
     pause: project.voice?.pauseSeconds ?? 0.3,
     cacheDir,
     outMp3: join('video3d/public', audioRel),
   });
 
   const plan = planRender(project, brand, tl, audioRel, dir, audios);
+  for (const w of plan.warnings) console.log(`  ⚠ ${w}`);
   const pack = writePublishPack(join('video3d/out', project.id), project, brand, plan.lines, tl.sceneStarts);
   console.log(`  ✓ ${tl.voiceSeconds.toFixed(1)}s de voz, ${tl.words.length} palavras, ${plan.lines.length} legendas`);
   console.log(`  ✓ pacote de publicação: video3d/out/${project.id}/ (${pack.join(', ')})`);

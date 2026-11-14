@@ -2,6 +2,7 @@
 // Duas portas: expressões proibidas da marca (bloqueiam) e, em vídeos
 // institucionais, dados numéricos sem fonte (bloqueiam).
 
+import { TEMPLATES } from './templates';
 import type { Brand, Issue, Project } from './types';
 
 const HAS_NUMBER = /\d/;
@@ -38,8 +39,8 @@ export function lintProject(project: Project, brand: Brand): Issue[] {
     }
   }
 
-  if (project.template === 'anuncio3d' && !project.music) {
-    issues.push({ level: 'warn', message: 'sem música: o anúncio sai só com voz (recomendado até haver faixa com licença documentada)' });
+  if (TEMPLATES[project.template].music && !project.music) {
+    issues.push({ level: 'warn', message: 'sem música: o vídeo sai só com voz (recomendado até haver faixa com licença documentada)' });
   }
   return issues;
 }

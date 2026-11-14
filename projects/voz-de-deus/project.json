@@ -1,0 +1,28 @@
+{
+  "id": "voz-de-deus",
+  "brand": "emori",
+  "template": "verse3d",
+  "title": "Emori — NEM NO VENTO NEM NO FOGO (artigo: como-ouvir-a-voz-de-deus)",
+  "locale": "pt-br",
+  "lead": 0.1,
+  "voice": {
+    "mode": "auto",
+    "rate": "-4%"
+  },
+  "cta": "Baixe na Play Store",
+  "site": "Emori · aplicativo bíblico",
+  "props": {
+    "title": [
+      "NEM NO VENTO",
+      "NEM NO FOGO"
+    ],
+    "ctaArrow": false,
+    "skipIntro": true
+  },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "Deus não estava no vento. Nem no terremoto. Nem no fogo. Então onde ele estava? O profeta Elias descobriu numa caverna: Deus estava numa voz mansa e delicada. Muitas vezes ele fala no sutil, não no espetacular. Para ouvir, você precisa parar e prestar atenção. Na Emori você guarda o que Deus fala com você. Baixe na Play Store."
+    }
+  ]
+}

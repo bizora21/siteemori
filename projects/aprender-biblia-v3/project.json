@@ -1,0 +1,123 @@
+{
+  "id": "aprender-biblia-v3",
+  "brand": "emori",
+  "template": "aprender3d",
+  "title": "Emori — Aprender a Bíblia (v3, gancho-desafio)",
+  "locale": "pt-br",
+  "lead": 0.1,
+  "voice": {
+    "mode": "auto",
+    "rate": "-2%"
+  },
+  "cta": "Link na bio",
+  "site": "Baixe a Emori",
+  "props": {
+    "version": 2,
+    "tapWrong": 0
+  },
+  "cues": [
+    {
+      "prop": "tapHint",
+      "word": "dica",
+      "after": {
+        "scene": 3
+      },
+      "offset": 0.1,
+      "fallback": {
+        "scene": 3,
+        "seconds": 3
+      }
+    },
+    {
+      "prop": "tapRight",
+      "word": "escolheu",
+      "after": {
+        "cue": "tapHint"
+      },
+      "offset": 0.15,
+      "fallback": {
+        "cue": "tapHint",
+        "seconds": 3
+      }
+    },
+    {
+      "prop": "badgesAt",
+      "word": "conquistas",
+      "after": {
+        "scene": 5
+      },
+      "offset": -0.4,
+      "fallback": {
+        "scene": 5,
+        "seconds": 7
+      }
+    },
+    {
+      "prop": "remindAt",
+      "word": "lembretes",
+      "after": {
+        "cue": "badgesAt"
+      },
+      "offset": -0.2,
+      "fallback": {
+        "cue": "badgesAt",
+        "seconds": 3
+      }
+    },
+    {
+      "prop": "hook.countFrom",
+      "word": "oracoes",
+      "before": {
+        "scene": 1
+      },
+      "pick": "last",
+      "edge": "end",
+      "offset": 0.05,
+      "fallback": {
+        "abs": 5
+      }
+    },
+    {
+      "prop": "hook.reveal",
+      "word": "salmos",
+      "after": {
+        "cue": "hook.countFrom"
+      },
+      "offset": -0.05,
+      "fallback": {
+        "cue": "hook.countFrom",
+        "seconds": 2
+      }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Você acerta esta? Que livro da Bíblia reúne cento e cinquenta cânticos e orações? Pense rápido. É Salmos!"
+    },
+    {
+      "id": "app",
+      "narration": "Na Emori, a aba Aprender a Bíblia leva você por quinze níveis, do mais fácil ao mais profundo."
+    },
+    {
+      "id": "niveis",
+      "narration": "São cinco etapas, de Fundamentos até a Maestria, e cada nível rende até três estrelas."
+    },
+    {
+      "id": "pergunta",
+      "narration": "Cada rodada tem dez perguntas. Ficou em dúvida? Peça uma dica e duas respostas erradas somem. Escolheu? Na hora aparece o versículo com a explicação."
+    },
+    {
+      "id": "erro",
+      "narration": "Errou? Sem problema. A Emori guarda a pergunta para você rever depois."
+    },
+    {
+      "id": "proximo-nivel",
+      "narration": "Cumpriu a meta do dia? Você ganha pontos, mantém sua sequência, desbloqueia conquistas e ainda recebe lembretes suaves."
+    },
+    {
+      "id": "cta",
+      "narration": "Você consegue, e pode começar hoje. Baixe a Emori, um aplicativo bíblico de fé e orações. Link na bio."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "rastreio-comboio-toaca",
+  "brand": "toaca",
+  "template": "comboio3d",
+  "title": "TOACA Express — rastreio da encomenda por comboio",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "+0%"
+  },
+  "cta": "Rastreie agora",
+  "site": "rastreio.movagomz.com",
+  "props": {
+    "musicStart": 20
+  },
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Vai enviar uma encomenda, ou já enviou, e não sabe onde ela está?"
+    },
+    {
+      "id": "servico",
+      "narration": "A Toaca Express cuida de tudo para você, desde o recebimento da encomenda, até o destino final. Você recebe um código, no talão."
+    },
+    {
+      "id": "site",
+      "narration": "Para acompanhar, abra o site no celular, escreva o código, e pronto. Sem criar conta e sem instalar nada. Assim que a estação registra, você vê onde a encomenda está."
+    },
+    {
+      "id": "foto",
+      "narration": "Você vê até a foto da sua encomenda, tirada quando ela foi recebida, e o nome de quem enviou."
+    },
+    {
+      "id": "viagem",
+      "narration": "Acompanhe a viagem de comboio, da Beira até Moatize, passando por Dondo, Cheringoma, Caia e Mutarara. Recebida, a caminho, chegou ao destino, e entregue."
+    },
+    {
+      "id": "privacidade",
+      "narration": "E os seus dados ficam protegidos. O seu telefone nunca aparece, e o seu nome surge abreviado."
+    },
+    {
+      "id": "cta",
+      "narration": "Toaca Express. Do recebimento até a entrega, a sua encomenda em boas mãos. Acompanhe agora."
+    }
+  ]
+}

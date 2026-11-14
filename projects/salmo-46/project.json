@@ -1,0 +1,27 @@
+{
+  "id": "salmo-46",
+  "brand": "emori",
+  "template": "verse3d",
+  "title": "Emori — SALMO 46 LIDO ERRADO (artigo: salmo-46-explicado)",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "-4%"
+  },
+  "cta": "Link na bio",
+  "site": "aemori.com",
+  "props": {
+    "title": [
+      "SALMO 46",
+      "LIDO ERRADO"
+    ],
+    "ctaArrow": true,
+    "skipIntro": false
+  },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "Você lê o Salmo 46 errado. Aquietai-vos e sabei que eu sou Deus não é só um convite à calma. Deus diz isso às nações em guerra: parem de lutar. Solte o que você não controla, porque ele é socorro bem presente na angústia. A explicação completa está no link da bio."
+    }
+  ]
+}

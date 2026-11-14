@@ -1,0 +1,21 @@
+{
+  "id": "toaca",
+  "name": "TOACA Express",
+  "locale": "pt-br",
+  "site": "rastreio.movagomz.com",
+  "cta": "Rastreie agora",
+  "colors": { "bg": "#0A0F1E", "accent": "#FFB347", "text": "#FFFFFF" },
+  "hashtags": ["#toacaexpress", "#rastreio", "#encomendas", "#comboio", "#mocambique"],
+  "claims": {
+    "approved": [
+      "Cuidado da encomenda desde o recebimento até ao destino final",
+      "Código no talão para acompanhar, sem criar conta e sem instalar nada",
+      "Foto da encomenda tirada no recebimento e nome de quem enviou",
+      "Viagem de comboio da Beira a Moatize, por Dondo, Cheringoma, Caia e Mutarara",
+      "Telefone nunca aparece e o nome surge abreviado"
+    ],
+    "forbidden": [
+      { "pattern": "garant|100\\s?%", "reason": "sem promessas absolutas que o serviço não confirma" }
+    ]
+  }
+}

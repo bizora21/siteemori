@@ -4,7 +4,8 @@
 
 export type Locale = 'pt-br' | 'pt-pt';
 export type Aspect = '9:16' | '16:9' | '1:1';
-export type TemplateId = 'anuncio3d' | 'institucional';
+import { TEMPLATES, TEMPLATE_IDS, type TemplateId } from './templates';
+export type { TemplateId };
 
 /** Regras de conteúdo da marca: o que se pode e o que nunca se pode afirmar. */
 export interface Claims {
@@ -79,11 +80,44 @@ export interface Approval {
   reference?: string;
 }
 
+/**
+ * Instante-chave ancorado a uma palavra da voz (ver cues.ts). Dá valor a uma prop
+ * da composição (aceita caminhos com ponto, ex.: "hook.reveal").
+ */
+export interface Cue {
+  prop: string;
+  /** Palavra falada a procurar (sem distinguir acentos/maiúsculas). */
+  word?: string;
+  /** Alternativa à palavra: o início de uma cena (índice, a partir de 0). */
+  atScene?: number;
+  /** Procurar só depois do início de uma cena ou do valor de um cue anterior. */
+  after?: { scene?: number; cue?: string };
+  /** Procurar só antes do início de uma cena. */
+  before?: { scene?: number };
+  /** Se há várias ocorrências: a primeira (por defeito) ou a última. */
+  pick?: 'first' | 'last';
+  /** Início (por defeito) ou fim da palavra. */
+  edge?: 'start' | 'end';
+  /** Segundos somados ao instante encontrado. */
+  offset?: number;
+  /** Valor de reserva se a palavra não aparecer: absoluto, ou base (cena/cue) + segundos. */
+  fallback?: { abs?: number; scene?: number; cue?: string; seconds?: number };
+}
+
 export interface Project {
   id: string;
   brand: string;
   template: TemplateId;
   title: string;
+  /** Sobrepõe o idioma da marca (ex.: marca pt-br com um vídeo em pt-pt). */
+  locale?: Locale;
+  /** Sobrepõem os valores do template (segundos antes da 1ª palavra e depois da última). */
+  lead?: number;
+  tail?: number;
+  /** Props fixas da composição (música, título 3D, versão…). Tudo o que não depende da voz. */
+  props?: Record<string, unknown>;
+  /** Props que dependem do que a voz diz (ver Cue). */
+  cues?: Cue[];
   voice?: { mode?: VoiceMode; rate?: string; pauseSeconds?: number };
   scenes: Scene[];
   cta?: string;
@@ -102,7 +136,6 @@ export interface Issue {
 }
 
 const LOCALES = ['pt-br', 'pt-pt'];
-const TEMPLATES = ['anuncio3d', 'institucional'];
 const ASPECTS = ['9:16', '16:9', '1:1'];
 
 const isStr = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0;
@@ -141,8 +174,8 @@ export function validateProject(p: unknown): Issue[] {
   if (isStr(x.id) && !/^[a-z0-9][a-z0-9-]*$/.test(x.id)) {
     out.push({ level: 'error', message: 'projeto: id só pode ter minúsculas, números e hífens' });
   }
-  if (!x.template || !TEMPLATES.includes(x.template)) {
-    out.push({ level: 'error', message: `projeto: template deve ser um de ${TEMPLATES.join(', ')}` });
+  if (!x.template || !TEMPLATE_IDS.includes(x.template)) {
+    out.push({ level: 'error', message: `projeto: template deve ser um de ${TEMPLATE_IDS.join(', ')}` });
   }
   if (x.aspect && !ASPECTS.includes(x.aspect)) out.push({ level: 'error', message: 'projeto: aspect inválido' });
   if (!Array.isArray(x.scenes) || x.scenes.length === 0) {
@@ -156,8 +189,9 @@ export function validateProject(p: unknown): Issue[] {
     else ids.add(s.id);
     if (!isStr(s?.narration)) out.push({ level: 'error', scene: s?.id, message: 'cena sem narração' });
   }
-  if (x.template === 'anuncio3d' && x.scenes.length !== 6) {
-    out.push({ level: 'error', message: 'anuncio3d precisa de exatamente 6 cenas (gancho, problema, solução, funcionalidades, oferta, CTA)' });
+  const def = x.template ? TEMPLATES[x.template] : undefined;
+  if (def?.scenes && x.scenes.length !== def.scenes) {
+    out.push({ level: 'error', message: `${def.id} precisa de exatamente ${def.scenes} cenas (${def.sceneRoles?.join(', ')})` });
   }
   if (x.template !== 'institucional') {
     for (const s of x.scenes) {

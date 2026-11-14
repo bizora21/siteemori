@@ -60,9 +60,15 @@ export function stageVideo(input: string, out: string): void {
   run(['-i', input, '-an', '-vf', "scale='min(1280,iw)':-2", '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-r', '30', out]);
 }
 
-/** Converte qualquer áudio (ex.: o mp3 do TTS) para WAV mono 44,1 kHz, sem alterar o volume. */
-export function toWav(input: string, outWav: string): void {
-  run(['-i', input, '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', outWav]);
+/**
+ * Converte qualquer áudio (ex.: o mp3 do TTS) para WAV mono 44,1 kHz.
+ * trimTail corta o silêncio FINAL (o TTS deixa ~0,3 s) mantendo 0,1 s de respiração;
+ * só o fim, para não deslocar os tempos por palavra que o TTS devolveu.
+ */
+export function toWav(input: string, outWav: string, opts: { trimTail?: boolean } = {}): void {
+  const tail = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.1:detection=peak';
+  const af = opts.trimTail ? ['-af', `areverse,${tail},areverse`] : [];
+  run(['-i', input, ...af, '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', outWav]);
 }
 
 /** Silêncio de N segundos em WAV (pausa entre cenas). */

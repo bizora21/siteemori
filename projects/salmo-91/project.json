@@ -1,0 +1,27 @@
+{
+  "id": "salmo-91",
+  "brand": "emori",
+  "template": "verse3d",
+  "title": "Emori — SALMO 91 A VERDADE (artigo: salmo-91-explicado)",
+  "locale": "pt-br",
+  "voice": {
+    "mode": "auto",
+    "rate": "-4%"
+  },
+  "cta": "Link na bio",
+  "site": "aemori.com",
+  "props": {
+    "title": [
+      "SALMO 91",
+      "A VERDADE"
+    ],
+    "ctaArrow": true,
+    "skipIntro": false
+  },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "O Salmo 91 não promete que nada de mau vai acontecer. Até Satanás o citou para tentar Jesus, e Jesus recusou essa leitura. A promessa é outra: estarei com ele na angústia. Descubra o que o salmo realmente diz, no link da bio."
+    }
+  ]
+}
