@@ -410,19 +410,67 @@ async function delRec(sceneId) {
 }
 
 // ── teleprompter ──────────────────────────────────────────────────────────
+// Guião completo com a cena atual em destaque. Gravar → parar guarda e passa à
+// cena seguinte, para se poder ler o vídeo todo de seguida (ou regravar uma cena).
+const pt = { idx: 0, size: 40, scroll: 0 };
+
 function openPrompter(scene) {
   const dlg = $('#prompter');
-  $('#prompter-text').textContent = scene.narration;
+  const scenes = () => state.data.project.scenes;
+  pt.idx = Math.max(0, scenes().findIndex((s) => s.id === scene.id));
   const btn = $('#prompter-rec');
-  btn.textContent = '● Gravar';
-  btn.onclick = () => toggleRec(scene.id, 'audio', btn, $('.meter', dlg), null, async () => {
-    dlg.close();
-    await refresh();
-  });
-  $('#prompter-close').onclick = () => {
+  const box = $('#prompter-text');
+
+  const draw = (scrollTo = true) => {
+    const list = scenes();
+    const recorded = new Set(state.data.scenes.filter((x) => x.recorded).map((x) => x.id));
+    box.replaceChildren(
+      ...list.map((s, i) =>
+        h('p', { class: (i === pt.idx ? 'cur ' : '') + (recorded.has(s.id) && i !== pt.idx ? 'done' : ''), onclick: () => { if (!state.rec) { pt.idx = i; draw(); } } },
+          h('small', {}, `Cena ${i + 1}/${list.length} · ${s.id}`), s.narration),
+      ),
+    );
+    $('#prompter-pos').textContent = `Cena ${pt.idx + 1}/${list.length}`;
+    box.style.setProperty('--pt-size', pt.size + 'px');
+    btn.textContent = '● Gravar esta cena';
+    if (scrollTo) box.querySelector('p.cur')?.scrollIntoView({ block: 'center' });
+  };
+
+  const go = (d) => {
+    if (state.rec) return;
+    pt.idx = Math.min(scenes().length - 1, Math.max(0, pt.idx + d));
+    draw();
+  };
+
+  btn.onclick = () => {
+    const s = scenes()[pt.idx];
+    toggleRec(s.id, 'audio', btn, $('#prompter-meter').parentElement, null, async () => {
+      // guardada: atualiza o estado e passa à cena seguinte
+      state.data = await api(`/api/projects/${state.id}`);
+      loadState();
+      if (pt.idx < scenes().length - 1) pt.idx += 1;
+      draw();
+    });
+  };
+  $('#pt-prev').onclick = () => go(-1);
+  $('#pt-next').onclick = () => go(1);
+  $('#pt-smaller').onclick = () => { pt.size = Math.max(20, pt.size - 4); draw(false); };
+  $('#pt-bigger').onclick = () => { pt.size = Math.min(96, pt.size + 4); draw(false); };
+  $('#pt-speed').oninput = (e) => (pt.scroll = Number(e.target.value));
+  $('#prompter-close').onclick = async () => {
     stopRec();
     dlg.close();
+    await refresh();
   };
+
+  // Rolagem suave dentro da cena atual enquanto grava (px/s definido pelo controlo).
+  clearInterval(pt.timer);
+  pt.timer = setInterval(() => {
+    if (state.rec && pt.scroll > 0) box.scrollTop += pt.scroll / 20;
+  }, 50);
+  dlg.addEventListener('close', () => clearInterval(pt.timer), { once: true });
+
+  draw();
   dlg.showModal();
 }
 
@@ -444,7 +492,9 @@ window.addEventListener('beforeunload', (e) => {
 });
 
 loadState().then(() => {
-  const id = new URLSearchParams(location.search).get('p');
-  if (id) openProject(id);
+  const q = new URLSearchParams(location.search);
+  const id = q.get('p');
+  // ?p=<projeto>&pt=1 abre direto no teleprompter (link para quem vai gravar)
+  if (id) openProject(id).then(() => q.get('pt') && openPrompter(state.data.project.scenes[0]));
 });
 setInterval(pollQueue, 3000);

@@ -44,12 +44,24 @@
 
   <dialog id="prompter">
     <div class="prompter-body">
+      <div class="row prompter-bar">
+        <b id="prompter-pos"></b>
+        <span class="muted">Tamanho</span>
+        <button id="pt-smaller" title="Letra menor">A−</button>
+        <button id="pt-bigger" title="Letra maior">A+</button>
+        <span class="muted">Rolagem</span>
+        <input id="pt-speed" type="range" min="0" max="120" value="0" style="width:120px" title="0 = parada; a rolagem só corre enquanto grava" />
+        <span style="flex:1"></span>
+        <button id="pt-prev">← Cena anterior</button>
+        <button id="pt-next">Cena seguinte →</button>
+        <button id="prompter-close">Fechar</button>
+      </div>
       <div id="prompter-text"></div>
       <div class="row center">
-        <button id="prompter-rec" class="primary big">● Gravar</button>
-        <button id="prompter-close" class="big">Fechar</button>
+        <button id="prompter-rec" class="primary big">● Gravar esta cena</button>
+        <div class="meter"><i id="prompter-meter"></i></div>
       </div>
-      <div class="meter"><i id="prompter-meter"></i></div>
+      <p class="muted center-text">Ao parar, a gravação é guardada e passa sozinho à cena seguinte. Pode regravar qualquer cena voltando a ela.</p>
     </div>
   </dialog>
 
