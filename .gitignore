@@ -63,3 +63,9 @@ package-lock.json
 
 # fonte proprietária (Microsoft) — não redistribuir no repo
 /video3d/public/SegoeUI-Bold.ttf
+
+# Motor de vídeo (engine/): cache por cena e gravações de voz (dados pessoais: vozes de pessoas)
+/.engine-cache/
+/projects/*/voice/
+/video3d/public/silence.mp3
+/video3d/public/media/

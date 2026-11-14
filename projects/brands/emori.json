@@ -1,0 +1,22 @@
+{
+  "id": "emori",
+  "name": "Emori",
+  "locale": "pt-br",
+  "site": "aemori.com",
+  "cta": "Baixe a Emori",
+  "colors": { "bg": "#14110F", "accent": "#E8B86D", "text": "#FFF8EE" },
+  "logo": "emori-icon.png",
+  "hashtags": ["#emori", "#oracao", "#fe", "#biblia", "#cristao"],
+  "claims": {
+    "approved": [
+      "Memória e contexto persistentes entre conversas",
+      "IA que conversa e faz perguntas",
+      "Reconhecimento de padrões emocionais",
+      "Disponível na Google Play; iOS em breve; freemium com plano Emori Pro"
+    ],
+    "forbidden": [
+      { "pattern": "\\bvoz\\b|[áa]udio|por voz|fale com", "reason": "a Emori NÃO tem entrada por voz/áudio" },
+      { "pattern": "\\bcura(r|s)?\\b|tratamento|substitui\\w* (a |o )?(terapia|psic[óo]log|m[ée]dic)", "reason": "nicho YMYL: sem promessas de saúde nem de substituir profissionais" }
+    ]
+  }
+}

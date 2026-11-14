@@ -1,0 +1,18 @@
+{
+  "id": "modelo-institucional",
+  "brand": "exemplo-institucional",
+  "template": "institucional",
+  "title": "Modelo de vídeo institucional (preencher)",
+  "aspect": "16:9",
+  "voice": { "mode": "auto", "rate": "-5%", "pauseSeconds": 0.5 },
+  "institutional": {
+    "entity": "Nome da Entidade",
+    "department": "Direção de Comunicação",
+    "disclaimer": "Informação de carácter geral. Consulte sempre os canais oficiais."
+  },
+  "scenes": [
+    { "id": "abertura", "title": "Quem somos", "narration": "Apresentamos o serviço e o seu objetivo, em linguagem simples e direta." },
+    { "id": "como-funciona", "title": "Como funciona", "narration": "Explicamos o passo a passo para o cidadão, sem termos técnicos." },
+    { "id": "contacto", "title": "Onde obter mais informação", "narration": "Consulte o nosso portal oficial para mais informação." }
+  ]
+}

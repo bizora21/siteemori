@@ -23,7 +23,8 @@
     "video3d:anuncio2": "tsx scripts/build-anuncio2-video.ts",
     "video3d:aprender": "tsx scripts/build-aprender-video.ts",
     "video3d:aprender2": "tsx scripts/build-aprender2-video.ts",
-    "video3d:comboio": "tsx scripts/build-comboio-video.ts"
+    "video3d:comboio": "tsx scripts/build-comboio-video.ts",
+    "engine": "tsx engine/cli.ts"
   },
   "dependencies": {
     "lucide-react": "0.417.0",

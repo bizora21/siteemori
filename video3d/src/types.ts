@@ -84,3 +84,41 @@ export interface AprenderProps {
   /** Gancho-desafio (pergunta + contagem 3-2-1 + resposta) logo no primeiro quadro. */
   hook?: { countFrom: number; reveal: number };
 }
+
+/**
+ * Vídeo institucional "Institucional" — entidades públicas e organizações.
+ * Sóbrio por desenho: sem 3D, sem efeitos de anúncio, com entidade, fonte do
+ * dado e aviso legal sempre visíveis. Gerado pelo motor (engine/).
+ */
+/** Imagem, vídeo ou apresentador de uma cena (preparado pelo motor em public/media/). */
+export interface SceneMediaProps {
+  src: string;
+  type: 'image' | 'video' | 'presenter';
+  /** Segundo do vídeo em que entra e quanto tempo fica. */
+  from: number;
+  duration: number;
+  /** Duração do clip (vídeos curtos repetem-se). */
+  clipSeconds?: number;
+}
+
+export interface InstitucionalProps {
+  audio: string;
+  lines: CaptionLine[];
+  durationInFrames: number;
+  leadSeconds: number;
+  voiceEndSeconds: number;
+  /** Início de cada cena (s), exato (vem dos áudios por cena). */
+  sceneStarts: number[];
+  scenes: { title: string; source?: string; media?: SceneMediaProps }[];
+  entity: string;
+  department?: string;
+  disclaimer?: string;
+  site: string;
+  cta: string;
+  colors: { bg: string; accent: string; text: string };
+  /** Ficheiro em public/ (opcional). */
+  logo?: string;
+  aspect: '9:16' | '16:9' | '1:1';
+  /** Música em public/ (só se tiver licença documentada no projeto). */
+  music?: string;
+}

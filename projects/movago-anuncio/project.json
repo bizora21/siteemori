@@ -1,0 +1,15 @@
+{
+  "id": "movago-anuncio",
+  "brand": "movago",
+  "template": "anuncio3d",
+  "title": "MOVAGO — rastreio para transportadoras (anúncio)",
+  "voice": { "mode": "auto", "rate": "+0%", "pauseSeconds": 0.3 },
+  "scenes": [
+    { "id": "gancho", "title": "Gancho", "narration": "Seu cliente liga toda hora perguntando onde está a encomenda?" },
+    { "id": "problema", "title": "Problema", "narration": "E quando a carga chega danificada ou atrasa, quem prova o que aconteceu? Sem prova, quem paga é você." },
+    { "id": "solucao", "title": "Solução", "narration": "Conheça a Movago, o sistema de rastreio para transportadoras. Cada encomenda ganha um código, e seu cliente acompanha sozinho, sem criar conta." },
+    { "id": "funcionalidades", "title": "Funcionalidades", "narration": "Você vê o percurso inteiro, com o responsável de cada trecho. A entrega fica provada com foto e assinatura. E funciona até sem internet." },
+    { "id": "oferta", "title": "Oferta", "narration": "E agora tem piloto gratuito de sete dias, para as cinco primeiras transportadoras." },
+    { "id": "cta", "title": "Chamada para ação", "narration": "Clique em Saiba mais e peça a sua demonstração." }
+  ]
+}

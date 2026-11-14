@@ -5,7 +5,8 @@ import { RastreioComboio3D } from './comboio/RastreioComboio3D';
 import { Anuncio3D } from './Anuncio3D';
 import { Anuncio3DB } from './Anuncio3DB';
 import { Aprender3D } from './Aprender3D';
-import type { AnuncioProps, AprenderProps, RastreioProps, VerseProps } from './types';
+import { Institucional } from './Institucional';
+import type { AnuncioProps, AprenderProps, InstitucionalProps, RastreioProps, VerseProps } from './types';
 
 export const FPS = 30;
 
@@ -55,6 +56,21 @@ const aprenderDefaults: AprenderProps = {
   tapWrong: 25.6,
   cta: 'Link na bio',
   site: 'Baixe a Emori',
+};
+
+const institucionalDefaults: InstitucionalProps = {
+  audio: 'audio/exemplo.mp3',
+  lines: [],
+  durationInFrames: 30 * 30,
+  leadSeconds: 0.4,
+  voiceEndSeconds: 28,
+  sceneStarts: [0, 10, 20],
+  scenes: [{ title: 'Título da cena 1' }, { title: 'Título da cena 2' }, { title: 'Título da cena 3' }],
+  entity: 'Nome da Entidade',
+  site: 'exemplo.org',
+  cta: 'Saiba mais',
+  colors: { bg: '#0B2545', accent: '#F2B134', text: '#FFFFFF' },
+  aspect: '16:9',
 };
 
 export const Root = () => (
@@ -119,6 +135,21 @@ export const Root = () => (
     durationInFrames={30 * 55}
     defaultProps={{ ...rastreioDefaults, audio: 'audio/rastreio-comboio.mp3', music: 'lunatic-ideas.mp3', musicStart: 20, sceneStarts: [0, 4.5, 12, 20, 29, 40, 48] }}
     calculateMetadata={({ props }) => ({ durationInFrames: props.durationInFrames })}
+  />
+  <Composition
+    id="Institucional"
+    component={Institucional}
+    width={1920}
+    height={1080}
+    fps={FPS}
+    durationInFrames={30 * 30}
+    defaultProps={institucionalDefaults}
+    // Duração e formato vêm das props (voz real + aspect escolhido no projeto).
+    calculateMetadata={({ props }) => ({
+      durationInFrames: props.durationInFrames,
+      width: props.aspect === '9:16' ? 1080 : props.aspect === '1:1' ? 1080 : 1920,
+      height: props.aspect === '9:16' ? 1920 : props.aspect === '1:1' ? 1080 : 1080,
+    })}
   />
   </>
 );

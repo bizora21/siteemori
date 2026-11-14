@@ -1,0 +1,15 @@
+{
+  "id": "exemplo-institucional",
+  "name": "Marca de exemplo (institucional)",
+  "locale": "pt-pt",
+  "site": "exemplo.org",
+  "cta": "Saiba mais",
+  "colors": { "bg": "#0B2545", "accent": "#F2B134", "text": "#FFFFFF" },
+  "hashtags": [],
+  "claims": {
+    "approved": [],
+    "forbidden": [
+      { "pattern": "garant|100\\s?%", "reason": "comunicação institucional não pode prometer resultados absolutos" }
+    ]
+  }
+}

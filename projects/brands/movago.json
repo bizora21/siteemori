@@ -1,0 +1,24 @@
+{
+  "id": "movago",
+  "name": "MOVAGO Logística",
+  "locale": "pt-br",
+  "site": "movagomz.com/logistica",
+  "cta": "Saiba mais",
+  "colors": { "bg": "#0A0F1E", "accent": "#FFB347", "text": "#FFFFFF" },
+  "hashtags": ["#logistica", "#transportadoras", "#rastreio", "#movago", "#mocambique"],
+  "claims": {
+    "approved": [
+      "Cada encomenda ganha um código único; o cliente acompanha sem criar conta",
+      "Percurso completo com o responsável de cada trecho",
+      "Entrega provada com foto e assinatura",
+      "Funciona sem internet (app Android)",
+      "Piloto gratuito de 7 dias para as 5 primeiras transportadoras"
+    ],
+    "forbidden": [
+      { "pattern": "garant", "reason": "não prometemos garantias que a página movagomz.com/logistica não faz" },
+      { "pattern": "100\\s?%", "reason": "percentagens absolutas não verificadas" },
+      { "pattern": "\\bo melhor\\b|\\bnº ?1\\b|n[úu]mero um", "reason": "superlativos de mercado não comprovados" },
+      { "pattern": "\\biOS\\b|iPhone", "reason": "a app é só Android por agora" }
+    ]
+  }
+}
