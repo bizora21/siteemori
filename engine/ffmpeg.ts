@@ -3,7 +3,7 @@
 
 import ffmpegPath from 'ffmpeg-static';
 import { spawnSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 export const FFMPEG = ffmpegPath as unknown as string;
@@ -92,19 +92,60 @@ export interface Interval {
  * Trechos com fala (o complemento dos silêncios) num WAV. Os silêncios reais da
  * gravação (fim de frase, respirações) são as âncoras do alinhamento das palavras.
  */
-export function speechIntervals(wav: string, opts: { noiseDb?: number; minSilence?: number } = {}): Interval[] {
+export function speechIntervals(wav: string, opts: { minSilence?: number } = {}): Interval[] {
   const total = duration(wav);
-  const r = spawnSync(FFMPEG, ['-i', wav, '-af', `silencedetect=n=${opts.noiseDb ?? -35}dB:d=${opts.minSilence ?? 0.22}`, '-f', 'null', '-'], { encoding: 'utf8' });
-  const err = r.stderr ?? '';
-  const starts = [...err.matchAll(/silence_start:\s*(-?[\d.]+)/g)].map((m) => Math.max(0, Number(m[1])));
-  const ends = [...err.matchAll(/silence_end:\s*([\d.]+)/g)].map((m) => Number(m[1]));
-  const silences: Interval[] = starts.map((s, i) => ({ start: s, end: ends[i] ?? total }));
+  const frame = 0.05;
+  const levels = frameLevels(wav, frame);
+  if (levels.length < 10) return [{ start: 0, end: total }];
+
+  // O limiar adapta-se à gravação: com ruído de fundo constante, os "silêncios" nunca ficam
+  // abaixo de um valor fixo (ex.: -35 dB). Mede-se o nível do ruído (os 10% mais baixos) e o da
+  // fala (os 90% mais altos) e põe-se o limiar a meio, mais perto do ruído.
+  const sorted = [...levels].sort((a, b) => a - b);
+  const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
+  const floor = q(0.1);
+  const peak = q(0.9);
+  if (peak - floor < 10) return [{ start: 0, end: total }]; // sem contraste entre fala e pausa: não há âncoras
+  const threshold = floor + 0.38 * (peak - floor);
+
+  const minSil = Math.round((opts.minSilence ?? 0.22) / frame);
+  const quiet = levels.map((l) => l < threshold);
   const out: Interval[] = [];
-  let cursor = 0;
-  for (const s of silences) {
-    if (s.start - cursor > 0.05) out.push({ start: cursor, end: s.start });
-    cursor = Math.max(cursor, s.end);
+  let speechStart = 0;
+  let i = 0;
+  while (i < quiet.length) {
+    if (!quiet[i]) { i++; continue; }
+    let j = i;
+    while (j < quiet.length && quiet[j]) j++;
+    // pausa válida: bastante longa, ou nas pontas (corta o silêncio inicial/final)
+    if (j - i >= minSil || i === 0 || j === quiet.length) {
+      if (i * frame - speechStart > 0.08) out.push({ start: speechStart, end: i * frame });
+      speechStart = j * frame;
+    }
+    i = j;
   }
-  if (total - cursor > 0.05) out.push({ start: cursor, end: total });
+  if (total - speechStart > 0.08) out.push({ start: speechStart, end: total });
+  return out.length ? out : [{ start: 0, end: total }];
+}
+
+/** Nível (dB RMS) de cada janela de `frame` segundos, medido pelo ffmpeg. */
+function frameLevels(wav: string, frame: number): number[] {
+  const n = Math.round(44100 * frame);
+  const r = spawnSync(
+    FFMPEG,
+    ['-hide_banner', '-i', wav, '-ar', '44100', '-af', `asetnsamples=n=${n}:p=0,astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level:file=-`, '-f', 'null', '-'],
+    { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 },
+  );
+  const out: number[] = [];
+  for (const m of (r.stdout ?? '').matchAll(/lavfi\.astats\.Overall\.RMS_level=(-?[\d.]+|-inf)/g)) {
+    out.push(m[1] === '-inf' ? -90 : Math.max(-90, Number(m[1])));
+  }
   return out;
+}
+
+/** Corta um WAV entre dois instantes (segundos), por cima do ficheiro original. */
+export function trimWav(wav: string, start: number, end: number): void {
+  const tmp = wav.replace(/\.wav$/, '.trim.wav');
+  run(['-i', wav, '-ss', start.toFixed(3), '-to', end.toFixed(3), '-c:a', 'pcm_s16le', tmp]);
+  renameSync(tmp, wav);
 }

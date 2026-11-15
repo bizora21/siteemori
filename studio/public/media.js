@@ -197,10 +197,11 @@ function musicBlock(p) {
 }
 
 // ── telemóvel ─────────────────────────────────────────────────────────────
-async function openPhone() {
+async function openPhone(pid) {
   const dlg = $('#phone');
   const body = $('#phone-body');
-  const info = await api('/api/info');
+  // com um projeto, o QR abre o telemóvel logo nesse vídeo
+  const info = await api('/api/info' + (typeof pid === 'string' && pid ? `?p=${encodeURIComponent(pid)}` : ''));
   if (!info.lan) {
     body.replaceChildren(
       h('p', {}, 'O modo telemóvel está desligado (por segurança, o estúdio só fala com este computador).'),

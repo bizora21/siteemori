@@ -136,3 +136,21 @@ cena →" guarda o que estiver escrito e avança. Dentro do gravador, "‹ Anter
 enviar fica no gravador na cena seguinte por gravar (modo contínuo). Tudo o que se envia fica no PC, em
 `projects/<id>/presenter/` (vídeo), `voice/` (áudio) e `media/` (imagens do local); `project.json` guarda os textos, locais e notas.
 No estúdio do PC, o cartão "Passo a passo" mostra o que falta: texto, gravações, imagens do local, música e gerar o vídeo.
+
+## Vídeo personalizado (o tipo recomendado)
+
+Template `reportagem`, na interface chamado "Vídeo personalizado". Em cada cena: **① o que diz** (texto), **② gravar** (opcional: no
+telemóvel com o texto no ecrã, ou carregar vídeo/áudio; sem gravação usa voz sintética), **③ cenários** (imagens ou vídeos que se vêem:
+carregar ou procurar no Pexels, p. ex. paisagens e animais). Regras simples:
+- Vários cenários numa cena dividem-na em **partes iguais**, pela ordem (tempos à mão só no JSON avançado: `at`/`duration`).
+- Com cenário, o **rosto passa a uma bolha** por cima (esconde o fundo de onde gravou, sem recortar a pessoa); sem cenário o rosto
+  ocupa o ecrã; sem rosto, a voz fala sobre os cenários.
+- Um vídeo 3D pode virar personalizado com "✨ Criar versão personalizada" (copia texto, vozes e música).
+
+**Ouvir, ver e aprovar:** "🔊 Ouvir a voz" (segundos) → "🎬 Ver rascunho" → "✅ Aprovar e gerar o vídeo final". O final só se
+gera a partir de um rascunho **atual** (gerado depois da última alteração); se mudar algo, o rascunho fica "desatualizado".
+
+**Legendas de voz humana:** os tempos das palavras ancoram-se nas pausas reais da gravação (limiar adaptável ao ruído de fundo),
+cada pausa ligada a uma pontuação do texto; o ar morto do início e do fim é cortado. Medido contra tempos verdadeiros numa
+narração de 41 s: erro médio por palavra 0,50 s → 0,12 s. Limite: as legendas mostram o texto ESCRITO; se disser palavras
+diferentes, edite o texto para coincidir (transcrever o que foi dito exigiria um modelo de reconhecimento de voz).

@@ -139,7 +139,10 @@ export interface ReportagemProps {
     title: string;
     /** Etiqueta do local desta cena (só locais verdadeiros). */
     location?: string;
+    /** Cenário de fundo da cena (imagem ou vídeo). */
     media?: SceneMediaProps;
+    /** O rosto: vídeo do apresentador. Ecrã inteiro sem cenário; bolha com cenário. */
+    face?: SceneMediaProps;
     cutaways?: SceneMediaProps[];
   }[];
   host?: { name: string; role?: string };

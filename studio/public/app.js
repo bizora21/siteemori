@@ -61,10 +61,11 @@ function renderList() {
 $('#new-btn').addEventListener('click', () => {
   const f = $('#new-form');
   f.brand.replaceChildren(...state.brands.map((b) => h('option', { value: b.id }, `${b.name} (${b.locale})`)));
-  f.template.replaceChildren(...state.templates.map((t) => h('option', { value: t.id }, t.label)));
+  const order = [...state.templates].sort((a, b) => (b.id === 'reportagem') - (a.id === 'reportagem'));
+  f.template.replaceChildren(...order.map((t) => h('option', { value: t.id }, t.id === 'reportagem' ? 'Vídeo personalizado (recomendado): você, voz e cenários à sua escolha' : t.label)));
   const hint = () => {
     const t = tplOf(f.template.value);
-    $('#tpl-hint').textContent = t.scenes ? `Cenas fixas (${t.scenes}): ${t.sceneRoles.join(' → ')}.` : t.kind === '2d' ? 'Qualquer número de cenas; pode ter imagem, vídeo ou apresentador por cena.' : 'Narração contínua.';
+    $('#tpl-hint').textContent = t.id === 'reportagem' ? 'Qualquer número de cenas. Escolhe os cenários de cada cena (paisagens, animais, locais); o rosto, se gravar, aparece numa bolha.' : t.scenes ? `Cenas fixas (${t.scenes}): ${t.sceneRoles.join(' → ')}.` : t.kind === '2d' ? 'Qualquer número de cenas; pode ter imagem, vídeo ou apresentador por cena.' : 'Narração contínua.';
   };
   f.template.onchange = hint;
   hint();
@@ -119,6 +120,7 @@ function field(label, value, onInput, opts = {}) {
 
 function renderEditor() {
   const { project: p, brand, issues, scenes, files } = state.data;
+  if (p.template === 'reportagem') return renderSimple();
   const tpl = tplOf(p.template);
   const main = $('#main');
   const scroll = window.scrollY;
@@ -207,29 +209,7 @@ function renderEditor() {
     })(),
   );
 
-  const vertical = (p.aspect ?? (tpl?.aspect === '9:16' ? '9:16' : '16:9')) === '9:16';
-  const mp4s = files.filter((f) => f.endsWith('.mp4'));
-  const out = h('section', { class: 'card stack', id: 'out' },
-    h('h3', {}, 'Resultado'),
-    mp4s.length ? mp4s.map((f) => h('div', {}, h('div', { class: 'muted' }, f.includes('rascunho') ? 'Rascunho (meia resolução)' : 'Final'),
-      h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${f}?t=${Date.now()}` }))) : h('p', { class: 'muted' }, 'Ainda sem vídeo. Gere um rascunho para ver.'),
-    h('div', { id: 'pub' }),
-  );
-
-  const actions = h('div', { class: 'actions' },
-    h('button', { id: 'save-btn', onclick: save }, state.dirty ? 'Guardar *' : 'Guardar'),
-    h('button', { onclick: () => build({ noRender: true }) }, 'Só voz + props'),
-    h('button', { onclick: () => build({ draft: true }) }, 'Gerar rascunho'),
-    h('button', { class: 'primary', onclick: () => build({}) }, 'Gerar final'),
-    h('span', { class: 'muted', id: 'job-state' }, ''),
-  );
-  const consoleBox = h('section', { class: 'card stack', id: 'console-box', hidden: true },
-    h('div', { class: 'bar' }, h('i', { id: 'bar' })),
-    h('div', { class: 'muted', id: 'progress' }),
-    h('div', { class: 'console', id: 'console' }),
-  );
-
-  main.replaceChildren(h('div', { class: 'stack' }, head, stepsCard, ...sceneCards, musicBlock(p), adv, consoleBox, out, actions));
+  main.replaceChildren(h('div', { class: 'stack' }, head, tpl?.kind === '3d' && personalizeBanner(p), stepsCard, ...sceneCards, musicBlock(p), adv, approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
   loadPublication(files, p.id);
 }
@@ -295,6 +275,7 @@ async function build(opts) {
   if (state.data.issues.some((i) => i.level === 'error')) {
     if (!confirm('O roteiro tem erros (✗) e o build vai falhar. Continuar mesmo assim?')) return;
   }
+  if (!opts.noRender && !opts.draft && !state.data.status.draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho"): o vídeo final só se gera a partir de um rascunho atual.');
   if (!opts.noRender && !opts.draft && tplOf(state.data.project.template)?.kind === '3d' && !confirm('Render final 3D: demora vários minutos nesta máquina. Continuar? (O rascunho é bem mais rápido.)')) return;
   try {
     const r = await api(`/api/projects/${state.id}/build`, { method: 'POST', body: JSON.stringify(opts) });

@@ -82,7 +82,6 @@ const reportagemDefaults: ReportagemProps = {
   voiceEndSeconds: 28,
   sceneStarts: [0, 10, 20],
   scenes: [{ title: 'Cena 1' }, { title: 'Cena 2' }, { title: 'Cena 3' }],
-  host: { name: 'Nome', role: 'Função' },
   brandName: 'Marca',
   colors: { bg: '#0E1116', accent: '#FFB347', text: '#FFFFFF' },
   cta: 'Saiba mais',

@@ -65,10 +65,13 @@ export interface SceneMedia {
   clipSeconds?: number;
 }
 
-const IMAGE_EXT = /.(png|jpe?g|webp|gif)$/i;
+const IMAGE_EXT = /\.(png|jpe?g|webp|gif)$/i;
 
 interface StagedScene {
+  /** Institucional: apresentador OU imagem. Reportagem: o cenário de fundo da cena. */
   main: SceneMedia | null;
+  /** Reportagem: o rosto (vídeo do apresentador), à parte do fundo. */
+  face: SceneMedia | null;
   cutaways: SceneMedia[];
 }
 
@@ -96,29 +99,49 @@ function stageFile(project: Project, projectDir: string, sceneId: string, rel: s
  * pior que nada. Os cortes (cutaways) cobrem o ecrã enquanto a voz continua.
  */
 function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[]): StagedScene[] {
+  const reportagem = project.template === 'reportagem';
   return project.scenes.map((scene, i) => {
     const wantPresenter = Boolean(scene.presenter) && audios[i].source === 'human';
-    const rel = wantPresenter ? scene.presenter : scene.media;
     const end = tl.sceneStarts[i + 1] ?? tl.lead + tl.voiceSeconds + 2;
+    const asMedia = (f: { src: string; image: boolean; clip: number }): SceneMedia =>
+      f.image
+        ? { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i] }
+        : { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip };
+    const asFace = (f: { src: string; clip: number }): SceneMedia => ({ src: f.src, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(f.clip, tl.durations[i]), clipSeconds: f.clip });
+
     let main: SceneMedia | null = null;
-    if (rel) {
-      const f = stageFile(project, projectDir, scene.id, rel, scene.id);
-      if (wantPresenter && !f.image) {
-        main = { src: f.src, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(f.clip, tl.durations[i]), clipSeconds: f.clip };
-      } else if (f.image) {
-        main = { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i] };
-      } else {
-        main = { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip };
+    let face: SceneMedia | null = null;
+    if (reportagem) {
+      // O rosto e o cenário são camadas separadas: com cenário, o rosto passa a bolha.
+      if (wantPresenter) {
+        const f = stageFile(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
+        if (!f.image) face = asFace(f);
+      }
+      if (scene.media) main = asMedia(stageFile(project, projectDir, scene.id, scene.media, scene.id));
+    } else {
+      // Institucional: ou o apresentador ou a imagem da cena.
+      const rel = wantPresenter ? scene.presenter : scene.media;
+      if (rel) {
+        const f = stageFile(project, projectDir, scene.id, rel, scene.id);
+        main = wantPresenter && !f.image ? asFace(f) : asMedia(f);
       }
     }
-    const cutaways = (scene.cutaways ?? []).map((c, k): SceneMedia => {
+
+    // Cenários em sequência durante a fala. Sem tempos indicados, repartem a cena em partes iguais
+    // (o utilizador só escolhe as imagens; ajustar os tempos é opcional).
+    const list = scene.cutaways ?? [];
+    const auto = list.length > 0 && list.every((c) => c.at === undefined);
+    const cutaways = list.map((c, k): SceneMedia => {
       const f = stageFile(project, projectDir, scene.id, c.media, `${scene.id}-c${k + 1}`);
-      const from = tl.audioStarts[i] + c.at;
+      const part = tl.durations[i] / list.length;
+      const at = auto ? k * part : (c.at ?? 0);
+      const wanted = auto ? part : (c.duration ?? 2);
+      const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
-      const dur = Math.max(0.5, Math.min(c.duration, tl.audioStarts[i] + tl.durations[i] - from));
+      const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
       return { src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip };
     });
-    return { main, cutaways };
+    return { main, face, cutaways };
   });
 }
 
@@ -179,9 +202,10 @@ export function planRender(
           title: s.title ?? '',
           location: s.location,
           media: media[i].main ?? undefined,
+          face: media[i].face ?? undefined,
           cutaways: media[i].cutaways,
         })),
-        host: project.host,
+        host: project.host?.name?.trim() ? project.host : undefined,
         brandName: brand.name,
         colors: brand.colors,
         logo: brand.logo,

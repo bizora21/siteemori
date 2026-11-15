@@ -47,6 +47,43 @@ const FullMedia = ({ m, fadeFrames = 7 }: { m: SceneMediaProps; fadeFrames?: num
   return <AbsoluteFill style={{ opacity: fade, background: '#000' }}>{body}</AbsoluteFill>;
 };
 
+/** O rosto num círculo (sem recorte da pessoa: o fundo da gravação fica escondido pela forma). */
+const FaceBubble = ({ m, size, left, bottom, accent }: { m: SceneMediaProps; size: number; left: number; bottom: number; accent: string }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const total = Math.max(2, Math.round(m.duration * fps));
+  const pop = interpolate(frame, [0, 9], [0.7, 1], clamp);
+  const fade = interpolate(frame, [0, 6, total - 6, total], [0, 1, 1, 0], clamp);
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left,
+        bottom,
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        overflow: 'hidden',
+        border: `${Math.max(4, size * 0.02)}px solid ${accent}`,
+        boxShadow: '0 12px 44px rgba(0,0,0,.6)',
+        background: '#000',
+        opacity: fade,
+        transform: `scale(${pop})`,
+        transformOrigin: 'left bottom',
+      }}
+    >
+      {/* O rosto costuma estar no terço superior do quadro: o corte favorece-o */}
+      <OffthreadVideo src={staticFile(m.src)} muted style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 28%' }} />
+    </div>
+  );
+};
+
+/** A cena tem cenário (fundo ou cortes)? Então o rosto passa a bolha. */
+const hasScenery = (s: ReportagemProps['scenes'][number]) => Boolean(s.media) || (s.cutaways?.length ?? 0) > 0;
+
+const BUBBLE = 380; // diâmetro da bolha (unidades u)
+const BUBBLE_BOTTOM = 560;
+
 const Pin = ({ color, size }: { color: string; size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
     <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
@@ -82,6 +119,7 @@ export const Reportagem = (props: ReportagemProps) => {
   const scene = props.scenes[sceneIdx];
   const sceneStart = props.sceneStarts[sceneIdx] ?? 0;
   const isLast = sceneIdx === props.scenes.length - 1;
+  const bubbleNow = Boolean(scene?.face) && hasScenery(scene);
   const sceneT = t - sceneStart;
 
   // Legenda atual (karaoke discreto: a palavra em voz leva a cor da marca).
@@ -105,7 +143,7 @@ export const Reportagem = (props: ReportagemProps) => {
 
   return (
     <AbsoluteFill style={{ background: `linear-gradient(160deg, ${bg} 0%, #000 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
-      {/* Mídia de cada cena (apresentador, vídeo ou imagem do local) */}
+      {/* Cenário de cada cena (imagem ou vídeo de fundo) */}
       {props.scenes.map((s, i) =>
         s.media ? (
           <Sequence key={`m${i}`} from={Math.round(s.media.from * fps)} durationInFrames={Math.max(2, Math.round(s.media.duration * fps))} layout="none">
@@ -114,8 +152,17 @@ export const Reportagem = (props: ReportagemProps) => {
         ) : null,
       )}
 
-      {/* Cena sem mídia: cartão de título */}
-      {!scene?.media && scene?.title && (
+      {/* Rosto em ecrã inteiro: só nas cenas SEM cenário (com cenário passa a bolha) */}
+      {props.scenes.map((s, i) =>
+        s.face && !hasScenery(s) ? (
+          <Sequence key={`f${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
+            <FullMedia m={s.face} fadeFrames={4} />
+          </Sequence>
+        ) : null,
+      )}
+
+      {/* Cena sem nada para mostrar: cartão de título */}
+      {!scene?.media && !scene?.face && !(scene?.cutaways?.length) && scene?.title && (
         <div style={{ position: 'absolute', left: pad, right: pad, top: '34%', fontFamily: SERIF, fontWeight: 700, fontSize: (portrait ? 96 : 84) * u, lineHeight: 1.1, opacity: interpolate(sceneT, [0.1, 0.6], [0, 1], clamp) }}>
           {scene.title}
           <div style={{ width: 150 * u, height: 8 * u, background: accent, marginTop: 28 * u }} />
@@ -129,6 +176,15 @@ export const Reportagem = (props: ReportagemProps) => {
             <FullMedia m={c} fadeFrames={7} />
           </Sequence>
         )),
+      )}
+
+      {/* O rosto em bolha, por cima do cenário e dos cortes */}
+      {props.scenes.map((s, i) =>
+        s.face && hasScenery(s) ? (
+          <Sequence key={`b${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
+            <FaceBubble m={s.face} size={BUBBLE * u} left={pad} bottom={BUBBLE_BOTTOM * u} accent={accent} />
+          </Sequence>
+        ) : null,
       )}
 
       {/* Sombras para o texto ler-se sobre qualquer imagem */}
@@ -166,12 +222,13 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* Etiqueta de nome (início do vídeo) */}
-      {props.host && nameVis > 0 && (
+      {props.host?.name && nameVis > 0 && (
         <div
           style={{
             position: 'absolute',
-            left: pad,
-            bottom: (portrait ? 560 : 250) * u,
+            // com o rosto em bolha, o nome fica ao lado dela
+            left: bubbleNow ? pad + (BUBBLE + 28) * u : pad,
+            bottom: bubbleNow ? (BUBBLE_BOTTOM + BUBBLE / 2 - 50) * u : (portrait ? 560 : 250) * u,
             opacity: nameVis,
             transform: `translateX(${(1 - nameVis) * -60}px)`,
             borderLeft: `${8 * u}px solid ${accent}`,

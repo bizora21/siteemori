@@ -16,7 +16,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createServer as createSecureServer } from 'node:https';
 import type { TLSSocket } from 'node:tls';
 import { spawn, spawnSync } from 'node:child_process';
-import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createHash, randomBytes } from 'node:crypto';
 import { networkInterfaces } from 'node:os';
 import { basename, extname, join, normalize, relative, resolve, sep } from 'node:path';
@@ -232,7 +232,61 @@ function detail(id: string) {
   const packDir = join(OUT, id);
   if (existsSync(packDir)) files.push(...readdirSync(packDir).map((f) => `${id}/${f}`));
   for (const n of [`${id}.mp4`, `${id}-rascunho.mp4`]) if (existsSync(join(OUT, n))) files.push(n);
-  return { project, brand, issues, scenes, files };
+  return { project, brand, issues, scenes, files, status: outputStatus(id) };
+}
+
+/** O mais recente de tudo o que entra no vídeo (texto, gravações, cenários, música). */
+function newestInput(id: string): number {
+  const dir = projectDir(id);
+  let t = existsSync(projectFile(id)) ? statSync(projectFile(id)).mtimeMs : 0;
+  for (const sub of ['voice', 'presenter', 'media', 'music']) {
+    const d = join(dir, sub);
+    if (!existsSync(d)) continue;
+    for (const f of readdirSync(d)) t = Math.max(t, statSync(join(d, f)).mtimeMs);
+  }
+  return t;
+}
+
+/**
+ * O que já foi gerado e se continua válido. "fresh" = gerado depois da última alteração:
+ * o vídeo final só se aprova a partir de um rascunho fresco (foi esse que a pessoa viu e ouviu).
+ */
+function outputStatus(id: string) {
+  const newest = newestInput(id);
+  const info = (file: string) => {
+    if (!existsSync(file)) return { exists: false, fresh: false };
+    return { exists: true, fresh: statSync(file).mtimeMs >= newest };
+  };
+  return {
+    audio: info(resolve('video3d/public/audio', `${id}.mp3`)),
+    draft: info(join(OUT, `${id}-rascunho.mp4`)),
+    final: info(join(OUT, `${id}.mp4`)),
+  };
+}
+
+/** Cria a versão personalizada (cenários + rosto) de um projeto 3D, com o mesmo texto e as gravações. */
+function personalize(id: string): string {
+  const src = loadProject(id);
+  let nid = `${id}-pessoal`;
+  for (let n = 2; existsSync(projectFile(nid)); n++) nid = `${id}-pessoal-${n}`;
+  const p: Project = {
+    id: nid,
+    brand: src.brand,
+    template: 'reportagem',
+    title: `${src.title.replace(/\s*\(3D[^)]*\)\s*/i, ' ').trim()} (personalizado)`,
+    locale: src.locale,
+    aspect: '9:16',
+    voice: { mode: src.voice?.mode ?? 'auto', rate: src.voice?.rate, pauseSeconds: src.voice?.pauseSeconds ?? 0.3 },
+    cta: src.cta,
+    site: src.site,
+    ...(src.music ? { music: src.music } : {}),
+    scenes: src.scenes.map((s) => ({ id: s.id, narration: s.narration, title: s.title, shot: s.shot, location: s.location, presenter: s.presenter })),
+  };
+  mkdirSync(projectDir(nid), { recursive: true });
+  // As gravações (voz, rosto) e a música vêm juntas: não é preciso gravar outra vez.
+  for (const sub of ['voice', 'presenter', 'music']) if (existsSync(join(projectDir(id), sub))) cpSync(join(projectDir(id), sub), join(projectDir(nid), sub), { recursive: true });
+  writeFileSync(projectFile(nid), JSON.stringify(p, null, 2) + '\n');
+  return nid;
 }
 
 // ── gravações ────────────────────────────────────────────────────────────
@@ -507,7 +561,9 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
 
   if (parts[0] === 'api' && parts[1] === 'info') {
     // O código só é entregue a quem está no próprio computador.
-    const urls = local && LAN ? lanIps().map((ip) => (TLS ? `https://${ip}:${HTTPS_PORT}` : `http://${ip}:${PORT}`) + `/m.html?t=${TOKEN}`) : [];
+    const want = url.searchParams.get('p');
+    const open = want && ID_RE.test(want) && existsSync(projectFile(want)) ? `&p=${want}` : '';
+    const urls = local && LAN ? lanIps().map((ip) => (TLS ? `https://${ip}:${HTTPS_PORT}` : `http://${ip}:${PORT}`) + `/m.html?t=${TOKEN}${open}`) : [];
     // O QR é gerado aqui, neste computador: o link (com o código) nunca sai da sua rede.
     return json(res, { lan: LAN, secure: Boolean(TLS), urls, qr: urls.map((u) => qrSvg(u, 300)), pexels: Boolean(pexelsKey()) });
   }
@@ -570,7 +626,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       voice: { mode: 'auto' },
       scenes: roles.map((r) => ({ id: r.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().replace(/^-|-$/g, ''), narration: 'Escreva aqui a narração desta cena.', title: def.id === 'institucional' ? r : undefined })),
       ...(def.id === 'institucional' ? { institutional: { entity: 'Nome da Entidade', disclaimer: '' }, aspect: '16:9' as const } : {}),
-      ...(def.id === 'reportagem' ? { host: { name: 'Seu nome', role: '' }, aspect: '9:16' as const } : {}),
+      ...(def.id === 'reportagem' ? { aspect: '9:16' as const } : {}),
       ...(def.id === 'verse3d' ? { props: { title: ['LINHA 1', 'LINHA 2'] } } : {}),
     };
     mkdirSync(projectDir(id), { recursive: true });
@@ -599,6 +655,15 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       if (jobs.some((j) => j.project === id && (j.status === 'queued' || j.status === 'running'))) throw new HttpError(409, 'este projeto já tem um trabalho na fila');
       const job = enqueue(id, b);
       return json(res, { job: job.id }, 202);
+    }
+
+    // GET /api/projects/:id/audio — a voz montada (para ouvir antes de gerar o vídeo)
+    if (sub === 'audio' && method === 'GET') return sendFile(req, res, resolve('video3d/public/audio', `${id}.mp3`));
+
+    // POST /api/projects/:id/personalize — versão personalizada (cenários + rosto) de um projeto 3D
+    if (sub === 'personalize' && method === 'POST') {
+      if (!TEMPLATES[loadProject(id).template] || TEMPLATES[loadProject(id).template].kind !== '3d') throw new HttpError(400, 'só se personaliza um vídeo 3D');
+      return json(res, { id: personalize(id) }, 201);
     }
 
     // GET /api/projects/:id/file?p=media/x.jpg — pré-visualização (só estas subpastas)

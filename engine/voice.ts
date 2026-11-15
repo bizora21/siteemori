@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import { cleanNarration, synthesize, type WordTiming } from '../lib/social/tts';
 import { piperAvailable, synthesizePiper } from '../lib/social/piper';
 import type { Locale as AppLocale } from '../i18n/config';
-import { cleanVoice, duration, speechBounds, speechIntervals, toWav, type Interval } from './ffmpeg';
+import { cleanVoice, duration, speechBounds, speechIntervals, toWav, trimWav, type Interval } from './ffmpeg';
 import type { Locale, Project, Scene, VoiceMode } from './types';
 
 export type VoiceSource = 'human' | 'edge' | 'elevenlabs' | 'piper';
@@ -222,9 +222,23 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
     // Apresentador: NÃO se corta silêncio (a duração tem de igualar a do vídeo, para
     // a boca e o som ficarem em sincronia); as palavras alinham-se só à parte falada.
     cleanVoice(human, wav, { trim: !isPresenter });
-    const dur = duration(wav);
+    let dur = duration(wav);
     // Palavras ancoradas nas pausas reais da gravação (sem pausas detetáveis, cai no método proporcional).
-    const speech = speechIntervals(wav);
+    let speech = speechIntervals(wav);
+    // Corta o "ar morto" do início e do fim. O corte de silêncio por limiar fixo falha quando há
+    // ruído de fundo; este usa o limiar adaptável. Com o apresentador não se corta (vídeo e som têm
+    // de manter a mesma duração).
+    if (!isPresenter && speech.length >= 1 && !(speech.length === 1 && speech[0].start === 0 && speech[0].end >= dur - 0.01)) {
+      const t0 = Math.max(0, speech[0].start - 0.15);
+      const t1 = Math.min(dur, speech[speech.length - 1].end + 0.3);
+      if (t0 > 0.2 || dur - t1 > 0.3) {
+        trimWav(wav, t0, t1);
+        dur = duration(wav);
+        speech = speech
+          .map((s) => ({ start: Math.max(0, s.start - t0), end: Math.min(dur, s.end - t0) }))
+          .filter((s) => s.end - s.start > 0.05);
+      }
+    }
     let words: WordTiming[];
     if (isPresenter) {
       const b = speechBounds(wav);

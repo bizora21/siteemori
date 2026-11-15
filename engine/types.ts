@@ -59,9 +59,12 @@ export interface Scene {
 export interface Cutaway {
   /** Ficheiro na pasta do projeto. */
   media: string;
-  /** Segundos desde o início da fala da cena em que entra, e quanto dura. */
-  at: number;
-  duration: number;
+  /**
+   * Segundos desde o início da fala da cena em que entra, e quanto dura. Opcionais: se NENHUM
+   * cenário da cena tiver `at`, o motor reparte a cena em partes iguais (o mais simples).
+   */
+  at?: number;
+  duration?: number;
 }
 
 /**
@@ -223,13 +226,10 @@ export function validateProject(p: unknown): Issue[] {
       out.push({ level: 'error', scene: s.id, message: '"cutaways" e "location" só existem no template reportagem' });
     }
     for (const c of s.cutaways ?? []) {
-      if (!isStr(c.media) || !(c.at >= 0) || !(c.duration > 0)) {
-        out.push({ level: 'error', scene: s.id, message: 'cutaway precisa de media, at (>=0) e duration (>0)' });
+      if (!isStr(c.media) || (c.at !== undefined && !(c.at >= 0)) || (c.duration !== undefined && !(c.duration > 0))) {
+        out.push({ level: 'error', scene: s.id, message: 'cenário precisa de ficheiro; se indicar "at" deve ser >= 0 e "duration" > 0' });
       }
     }
-  }
-  if (x.template === 'reportagem' && !(x.host && isStr(x.host.name))) {
-    out.push({ level: 'error', message: 'reportagem: falta host.name (quem aparece no vídeo)' });
   }
   if (x.template === 'institucional') {
     if (!x.institutional || !isStr(x.institutional.entity)) {
