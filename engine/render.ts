@@ -315,5 +315,7 @@ export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: b
 export function planRender(project: Project, brand: Brand, tl: Timeline, audioRel: string, projectDir: string, audios: SceneAudio[]): RenderPlan {
   stageWarnings.length = 0;
   const plan = planRenderInner(project, brand, tl, audioRel, projectDir, audios);
-  return { ...plan, warnings: [...plan.warnings, ...stageWarnings] };
+  // Legendas desligadas: o vídeo sai sem elas, mas plan.lines (e por isso o .srt) mantém-se.
+  const props = project.captions === false ? { ...plan.props, lines: [] } : plan.props;
+  return { ...plan, props, warnings: [...plan.warnings, ...stageWarnings] };
 }

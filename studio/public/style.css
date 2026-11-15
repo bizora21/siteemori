@@ -131,3 +131,5 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .job-banner.bad { border-color: var(--bad); color: var(--bad); }
 .job-banner.bad .muted { color: var(--muted); }
 .job-banner.warn { border-color: var(--warn); color: var(--warn); }
+
+.ver-sel input[type=checkbox] { width: auto; margin: 0; }

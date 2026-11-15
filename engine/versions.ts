@@ -15,6 +15,7 @@ export const PRESET_VERSIONS: Record<string, Omit<VersionInfo, 'id'>> = {
   rosto: { label: 'Rosto em vídeo', hint: 'O rosto gravado (bolha sobre os cenários, ou ecrã inteiro).', faceMode: 'video' },
   foto: { label: 'Foto animada pela voz', hint: 'A sua foto numa bolha que pulsa com a voz. Só precisa de gravar a voz.', faceMode: 'photo' },
   voz: { label: 'Só a voz sobre os cenários', hint: 'Sem rosto nem foto: a voz e as legendas sobre os cenários.', faceMode: 'none' },
+  semlegendas: { label: 'Sem legendas', hint: 'O mesmo vídeo sem legendas (o ficheiro .srt continua disponível).', captions: false },
   horizontal: { label: 'Horizontal 16:9 (YouTube)', hint: 'O mesmo vídeo em formato horizontal.', aspect: '16:9' },
 };
 

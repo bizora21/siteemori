@@ -177,6 +177,8 @@ export interface Project {
    * sem fingir lábios) ou "none" (só a voz sobre os cenários). Por defeito "video".
    */
   faceMode?: 'video' | 'photo' | 'none';
+  /** Legendas no vídeo: ligadas por defeito; false desliga-as (o ficheiro .srt continua a ser gerado). */
+  captions?: boolean;
   /** A foto da pessoa (ficheiro na pasta do projeto), para faceMode "photo". */
   avatar?: string;
   /** Enquadramento da foto na bolha: y = posição vertical (0 = topo, 100 = fundo; por defeito 25) e zoom (1 = normal, até 3). */
@@ -205,6 +207,7 @@ const FACE_MODES = ['video', 'photo', 'none'];
 export interface VersionOverrides {
   label?: string;
   faceMode?: 'video' | 'photo' | 'none';
+  captions?: boolean;
   aspect?: Aspect;
   cta?: string;
   site?: string;

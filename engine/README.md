@@ -202,3 +202,9 @@ Regra de ouro: **o rascunho nunca é bloqueado**; serve para rever. O motor avis
   se for mesmo isso que quer). `auto` e `synthetic` como antes.
 - Uma falha aparece **na página**, em vermelho, com o motivo e o que fazer; um trabalho que gerou com avisos mostra-os a amarelo.
 - "Aprovar" fica bloqueado enquanto houver ✗ por corrigir (e sem um rascunho atual).
+
+## Legendas: ligar e desligar
+
+O interruptor **"Legendas"** (ao lado de Guardar, no estúdio) liga/desliga as legendas no vídeo (`"captions": false` no projeto). O
+ficheiro `.srt` e a transcrição continuam a ser gerados, para as plataformas. A versão predefinida **"Sem legendas"** gera o mesmo
+vídeo sem elas, à parte (`--version=semlegendas`), para comparar. Vale para todos os tipos de vídeo, incluindo os 3D.

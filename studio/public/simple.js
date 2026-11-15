@@ -31,8 +31,11 @@ function actionsBar() {
       s.value = state.version;
       return s;
     })());
+  const cap = h('label', { class: 'ver-sel', title: 'Liga ou desliga as legendas no vídeo. O ficheiro .srt continua a ser gerado.' },
+    h('input', { type: 'checkbox', checked: p.captions !== false, onchange: (e) => { p.captions = e.target.checked ? undefined : false; dirty(); renderEditor(); } }), 'Legendas');
   return h('div', { class: 'actions' },
     h('button', { id: 'save-btn', onclick: save }, state.dirty ? 'Guardar *' : 'Guardar'),
+    cap,
     select,
     h('button', { onclick: () => build({ noRender: true }) }, '🔊 Ouvir a voz'),
     h('button', { onclick: () => build({ draft: true }) }, '🎬 Ver rascunho'),
