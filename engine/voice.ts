@@ -205,9 +205,11 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   const text = cleanNarration(scene.narration);
   const human = ctx.mode === 'synthetic' ? null : findHumanFile(ctx.projectDir, scene);
 
-  if (ctx.mode === 'human' && !human) {
-    throw new Error(`falta a gravação da cena "${scene.id}" (modo human). Esperado: voice/${scene.id}.wav`);
+  if (ctx.mode === 'human-only' && !human) {
+    throw new Error(`falta a gravação da cena "${scene.id}" (modo só voz humana). Grave-a, ou mude a origem da voz para "Automático".`);
   }
+  // Modo "human": a voz humana é a preferida, mas uma cena sem gravação não bloqueia nada.
+  if (ctx.mode === 'human' && !human) console.warn(`  ⚠ cena "${scene.id}" sem gravação: usei voz sintética (grave-a quando quiser; não bloqueia).`);
 
   // ── 1. Gravação humana ────────────────────────────────────────────────
   if (human) {

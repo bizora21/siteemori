@@ -190,3 +190,15 @@ Para promover um evento (marcha, campanha, formação) com cartazes seus e o ros
 - Estrutura sugerida: ① rosto em ecrã inteiro (convite, 5–8 s) → ② cartazes com o rosto em bolha (porquê / vantagens) → ③ rosto + cartão do evento.
 - Limite: o arranjo "cartaz + bolha" está afinado para vertical; em horizontal o cartaz aparece inteiro mas a bolha não se reposiciona.
 - Conteúdo sensível (violência, saúde, política): nada de números sem fonte, e uma pessoa responsável da organização deve aprovar o rascunho antes do final.
+
+## Flexibilidade: o que bloqueia e o que só avisa
+
+Regra de ouro: **o rascunho nunca é bloqueado**; serve para rever. O motor avisa e segue.
+- **Só bloqueiam o vídeo FINAL** (num rascunho viram avisos): afirmações proibidas da marca, texto de exemplo por preencher
+  ("Escreva aqui…", etiqueta "Local 1", entidade de exemplo), dados sem fonte em institucionais.
+- **Nunca bloqueiam, só avisam:** cena sem gravação (usa voz sintética), nome de exemplo ("Seu nome", é ignorado), cenário, foto, rosto ou
+  música cujo ficheiro foi apagado ou mudou de sítio (o vídeo sai sem eles).
+- **Voz:** `human` = preferir gravações (as cenas sem gravação usam sintética); `human-only` = exigir gravações em todas as cenas (só
+  se for mesmo isso que quer). `auto` e `synthetic` como antes.
+- Uma falha aparece **na página**, em vermelho, com o motivo e o que fazer; um trabalho que gerou com avisos mostra-os a amarelo.
+- "Aprovar" fica bloqueado enquanto houver ✗ por corrigir (e sem um rascunho atual).

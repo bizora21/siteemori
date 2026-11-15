@@ -141,7 +141,8 @@ function renderEditor() {
         (() => {
           const s = h('select', { onchange: () => { (p.voice ??= {}).mode = s.value; dirty(); } },
             h('option', { value: 'auto' }, 'Automático (gravada onde existir, senão sintética)'),
-            h('option', { value: 'human' }, 'Só voz humana (exige todas as cenas gravadas)'),
+            h('option', { value: 'human' }, 'Preferir voz humana (cenas sem gravação usam sintética)'),
+            h('option', { value: 'human-only' }, 'Só voz humana (exige todas as cenas gravadas)'),
             h('option', { value: 'synthetic' }, 'Só sintética'));
           s.value = p.voice?.mode ?? 'auto';
           return s;
@@ -217,7 +218,7 @@ function renderEditor() {
 
 function issueItems(issues) {
   if (!issues.length) return [h('li', { class: 'ok', style: 'color:var(--ok)' }, '✓ roteiro sem problemas')];
-  return issues.map((i) => h('li', { class: i.level }, `${i.level === 'error' ? '✗' : '⚠'} ${i.scene ? `[${i.scene}] ` : ''}${i.message}`));
+  return issues.map((i) => h('li', { class: i.level }, `${i.level === 'error' ? '✗' : '⚠'} ${i.scene ? `[${i.scene}] ` : ''}${i.message}${i.finalOnly ? ' — só bloqueia o vídeo final (o rascunho gera-se na mesma)' : ''}`));
 }
 
 function sceneCard(p, s, i, st, tpl, inst, rep) {
@@ -273,7 +274,9 @@ async function save() {
 
 async function build(opts) {
   if (state.dirty && !(await save())) return;
-  if (state.data.issues.some((i) => i.level === 'error')) {
+  // Um rascunho nunca é bloqueado pelas regras de conteúdo; só o final.
+  const finalRun = !opts.noRender && !opts.draft;
+  if (state.data.issues.some((i) => i.level === 'error' && (!i.finalOnly || finalRun))) {
     if (!confirm('O roteiro tem erros (✗) e o build vai falhar. Continuar mesmo assim?')) return;
   }
   if (!opts.noRender && !opts.draft && !curStatus().draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho"): o vídeo final só se gera a partir de um rascunho atual.');

@@ -114,7 +114,7 @@ const POSTER_BUBBLE_BOTTOM = POSTER_BOX_BOTTOM - POSTER_BUBBLE;
  * A foto da pessoa que "fala" ao ritmo da voz: pulsa e brilha com o volume. Não anima a boca nem
  * finge que a pessoa está a falar: é uma foto que reage ao som (como o ícone de uma chamada).
  */
-const PhotoBubble = ({ src, size, left, bottom, accent, level }: { src: string; size: number; left: number; bottom: number; accent: string; level: number }) => {
+const PhotoBubble = ({ src, size, left, bottom, accent, level, y = 12, zoom = 1 }: { src: string; size: number; left: number; bottom: number; accent: string; level: number; y?: number; zoom?: number }) => {
   const frame = useCurrentFrame();
   const breathe = 0.006 * Math.sin(frame / 14);
   return (
@@ -133,7 +133,7 @@ const PhotoBubble = ({ src, size, left, bottom, accent, level }: { src: string; 
           transform: `scale(${1 + 0.035 * level + breathe})`,
         }}
       >
-        <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 25%' }} />
+        <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `50% ${y}%`, transform: `scale(${zoom})`, transformOrigin: `50% ${y}%` }} />
       </div>
     </div>
   );
@@ -274,6 +274,8 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.avatar && (
         <PhotoBubble
           src={props.avatar.src}
+          y={props.avatar.y}
+          zoom={props.avatar.zoom}
           size={avatarSize}
           left={avatarCorner ? pad : (width - avatarSize) / 2}
           bottom={(avatarCorner ? bubbleBottom : portrait ? 800 : 300) * u}

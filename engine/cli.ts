@@ -8,7 +8,7 @@
 // Opções do build:
 //   --draft              render a meia resolução, 1 processo (máquinas fracas)
 //   --no-render          só voz + props + pacote de publicação
-//   --voice=auto|human|synthetic   sobrepõe o modo de voz do projeto
+//   --voice=auto|human|human-only|synthetic   sobrepõe o modo de voz (human: prefere gravação; human-only: exige)
 //   --version=<nome>     gera uma versão (rosto, foto, voz, horizontal, ou as do projeto): ficheiros <id>--<nome>
 //
 // <projeto> é o id de projects/<id>/project.json ou um caminho para o JSON.
@@ -127,8 +127,12 @@ async function build(id: string): Promise<void> {
   const draft = flag('draft');
   console.log(`\n▶ build ${project.id} — ${project.template}${version ? ` (versão ${version})` : ''}${draft ? ' (rascunho)' : ''}`);
 
-  const issues = lintProject(project, brand);
-  if (show(issues)) throw new Error('o roteiro viola as regras da marca — corrija antes de gerar');
+  // Um rascunho nunca é bloqueado por regras de conteúdo: só avisa. O vídeo final é que bloqueia.
+  const finalRun = !draft && !flag('no-render');
+  const issues = lintProject(project, brand).map((i) =>
+    i.level === 'error' && i.finalOnly && !finalRun ? { ...i, level: 'warn' as const, message: `${i.message} — só bloqueia o vídeo FINAL` } : i,
+  );
+  if (show(issues)) throw new Error('o roteiro viola as regras da marca — corrija antes de gerar o vídeo final');
   if (project.template === 'institucional' && !project.approval && !draft && !flag('no-render')) {
     throw new Error('vídeo institucional sem "approval": preencha quem autorizou o conteúdo (ou use --draft / --no-render)');
   }

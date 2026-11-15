@@ -20,7 +20,9 @@ function actionsBar() {
   const p = state.data.project;
   const versions = state.data.versions ?? [];
   const showVersions = p.template === 'reportagem' && versions.length > 0;
-  const approve = h('button', { class: 'primary', disabled: !st.draft.fresh, title: st.draft.fresh ? '' : 'Veja primeiro o rascunho', onclick: approveFinal }, '✅ Aprovar e gerar o vídeo final');
+  const blockers = state.data.issues.filter((i) => i.level === 'error');
+  const why = !st.draft.fresh ? 'Veja primeiro o rascunho' : blockers.length ? 'Corrija os avisos a vermelho (✗) no topo da página' : '';
+  const approve = h('button', { class: 'primary', disabled: Boolean(why), title: why, onclick: approveFinal }, '✅ Aprovar e gerar o vídeo final');
   const select = showVersions && h('label', { class: 'ver-sel' }, 'Versão:',
     (() => {
       const s = h('select', { onchange: () => { state.version = s.value; renderEditor(); } },
@@ -72,8 +74,20 @@ function approvalSection(p) {
         })))
     : null;
 
+  // Resultado do último trabalho: uma falha mostra-se aqui, com o motivo, e não só no registo
+  const lj = state.data.lastJob;
+  const banner = !lj ? null
+    : lj.status === 'failed'
+      ? h('div', { class: 'job-banner bad' }, h('b', {}, '✗ O último trabalho falhou (' + lj.label + ')'), h('div', {}, lj.error.replace(/^✗s*/, '')), h('div', { class: 'muted' }, 'Corrija o que a mensagem diz e carregue de novo no botão. Os rascunhos nunca são bloqueados por regras de conteúdo; se isto parece um erro do estúdio, diga-me a mensagem.'))
+      : (lj.status === 'running' || lj.status === 'queued')
+        ? h('div', { class: 'job-banner' }, '⏳ A gerar (' + lj.label + ')… pode demorar vários minutos nos vídeos 3D.')
+        : lj.warnings.length
+          ? h('div', { class: 'job-banner warn' }, h('b', {}, '✓ Gerou, com avisos (' + lj.label + '):'), ...lj.warnings.map((w) => h('div', {}, w.replace(/^s*⚠s*/, '⚠ '))))
+          : null;
+
   return h('section', { class: 'card stack', id: 'approve' },
     h('h3', { style: 'margin:0' }, 'Ouvir, ver e aprovar' + (ver ? ` — ${ver.label}` : '')),
+    banner,
     chips,
     ver && h('p', { class: 'muted', style: 'margin:0' }, ver.hint),
     ver?.faceMode === 'photo' && !p.avatar && h('p', { style: 'color:var(--warn);margin:0' }, '⚠ Esta versão precisa da sua foto: "Mais opções do vídeo" → "Carregar a minha foto".'),
@@ -128,13 +142,27 @@ function renderSimple() {
         h('b', {}, 'A minha foto (para a versão "Foto animada pela voz")'),
         h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Uma foto sua, de frente, com o rosto bem visível. A foto não é enviada para lado nenhum: fica só neste computador e não é guardada no Git.'),
         h('div', { class: 'rec-row' },
-          p.avatar && h('img', { src: `/api/projects/${p.id}/file?p=${encodeURIComponent(p.avatar)}&t=${Date.now()}`, style: 'height:80px;width:80px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)' }),
+          p.avatar && h('img', { id: 'avatar-prev', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(p.avatar)}&t=${Date.now()}`, style: `height:110px;width:110px;border-radius:50%;object-fit:cover;object-position:50% ${p.avatarFocus?.y ?? 12}%;transform:scale(1);border:2px solid var(--accent)` }),
           h('button', { onclick: async () => {
             const f = await pickFile('image/jpeg,image/png,image/webp');
             if (!f) return;
             if (!(await flushBeforeUpload())) return;
             try { await uploadTo('avatar', undefined, f, 'Foto'); await refresh(); } catch (e) { toast('Erro: ' + e.message, 6000); }
-          } }, p.avatar ? 'Trocar a minha foto' : 'Carregar a minha foto'))),
+          } }, p.avatar ? 'Trocar a minha foto' : 'Carregar a minha foto')),
+        // Enquadramento: a cara tem de ficar dentro do círculo
+        p.avatar && h('div', { class: 'grid2', style: 'margin-top:10px' },
+          h('label', {}, 'Posição da foto (topo ↔ fundo): a cara tem de ficar no círculo',
+            h('input', { type: 'range', min: 0, max: 100, value: p.avatarFocus?.y ?? 12, oninput: (e) => {
+              (p.avatarFocus ??= {}).y = Number(e.target.value);
+              const img = $('#avatar-prev'); if (img) img.style.objectPosition = `50% ${e.target.value}%`;
+              dirty();
+            } })),
+          h('label', {}, 'Aproximar',
+            h('input', { type: 'range', min: 100, max: 300, value: Math.round((p.avatarFocus?.zoom ?? 1) * 100), oninput: (e) => {
+              (p.avatarFocus ??= {}).zoom = Number(e.target.value) / 100;
+              const img = $('#avatar-prev'); if (img) { img.style.transformOrigin = `50% ${p.avatarFocus.y ?? 25}%`; img.style.transform = `scale(${Number(e.target.value) / 100})`; }
+              dirty();
+            } })))),
       h('div', { class: 'zone', style: 'margin-top:10px' },
         h('b', {}, 'Evento a promover (opcional)'),
         h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Marcha, campanha, formação… No fim do vídeo aparece um cartão com estes dados. Escreva só o que é certo (data, hora e local confirmados).'),
@@ -145,6 +173,17 @@ function renderSimple() {
           field('Local', p.event?.place, (v) => ((p.event ??= { title: '' }).place = v || undefined)),
           field('Contacto', p.event?.contact, (v) => ((p.event ??= { title: '' }).contact = v || undefined)),
           field('Nota (ex.: Entrada livre)', p.event?.note, (v) => ((p.event ??= { title: '' }).note = v || undefined)))),
+      h('div', { class: 'grid2', style: 'margin-top:10px' },
+        h('label', {}, 'Origem da voz',
+          (() => {
+            const s = h('select', { onchange: () => { (p.voice ??= {}).mode = s.value; dirty(); } },
+              h('option', { value: 'auto' }, 'Automático (gravada onde existir, senão sintética)'),
+              h('option', { value: 'human' }, 'Preferir voz humana (cenas sem gravação usam sintética)'),
+              h('option', { value: 'human-only' }, 'Só voz humana (exige todas as cenas gravadas)'),
+              h('option', { value: 'synthetic' }, 'Só sintética'));
+            s.value = p.voice?.mode ?? 'auto';
+            return s;
+          })())),
       h('div', { class: 'grid3', style: 'margin-top:10px' },
         field('Nome de quem aparece (opcional)', p.host?.name, (v) => ((p.host ??= { name: '' }).name = v)),
         field('Função (opcional)', p.host?.role, (v) => ((p.host ??= { name: '' }).role = v)),

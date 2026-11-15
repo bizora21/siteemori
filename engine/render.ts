@@ -42,7 +42,8 @@ function stageMusic(project: Project, projectDir: string): string | undefined {
     return `music/${project.id}/${name}`;
   }
   if (existsSync(join(VIDEO_DIR, 'public', rel))) return rel;
-  throw new Error(`música "${rel}" não encontrada (nem em projects/${project.id}/ nem em ${VIDEO_DIR}/public/)`);
+  stageWarnings.push(`música "${rel}" não encontrada: o vídeo sai sem música.`);
+  return undefined;
 }
 
 /** Os 3D exigem uma faixa: usa a do projeto ou 60 s de silêncio. */
@@ -80,9 +81,25 @@ interface StagedScene {
 }
 
 /** Copia/transcodifica um ficheiro para video3d/public/media/<projeto>/ (o Remotion só lê dali). */
+/** Ficheiro de apoio em falta: o vídeo gera-se sem ele, com um aviso. */
+class MissingFile extends Error {}
+const stageWarnings: string[] = [];
+/** Prepara um ficheiro; se faltar, regista um aviso e devolve null em vez de falhar. */
+function tryStage(project: Project, projectDir: string, sceneId: string, rel: string, name: string): { src: string; image: boolean; clip: number } | null {
+  try {
+    return stageFile(project, projectDir, sceneId, rel, name);
+  } catch (e) {
+    if (e instanceof MissingFile) {
+      stageWarnings.push(e.message);
+      return null;
+    }
+    throw e;
+  }
+}
+
 function stageFile(project: Project, projectDir: string, sceneId: string, rel: string, name: string): { src: string; image: boolean; clip: number } {
   const src = join(projectDir, rel);
-  if (!existsSync(src)) throw new Error(`cena "${sceneId}": ficheiro não encontrado: ${rel}`);
+  if (!existsSync(src)) throw new MissingFile(`cena "${sceneId}": o ficheiro "${rel}" não existe (foi apagado ou mudou de sítio): ignorei-o`);
   const outDir = join(VIDEO_DIR, 'public', 'media', project.id);
   mkdirSync(outDir, { recursive: true });
   if (IMAGE_EXT.test(rel)) {
@@ -119,16 +136,19 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       // O rosto e o cenário são camadas separadas: com cenário, o rosto passa a bolha.
       // Nas versões "foto" e "só voz" o vídeo do rosto não aparece (o áudio dele continua a ser a voz da cena).
       if (wantPresenter && showFaceVideo) {
-        const f = stageFile(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
-        if (!f.image) face = asFace(f);
+        const f = tryStage(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
+        if (f && !f.image) face = asFace(f);
       }
-      if (scene.media) main = asMedia(stageFile(project, projectDir, scene.id, scene.media, scene.id), scene.mediaFit);
+      if (scene.media) {
+        const f = tryStage(project, projectDir, scene.id, scene.media, scene.id);
+        if (f) main = asMedia(f, scene.mediaFit);
+      }
     } else {
       // Institucional: ou o apresentador ou a imagem da cena.
       const rel = wantPresenter ? scene.presenter : scene.media;
       if (rel) {
-        const f = stageFile(project, projectDir, scene.id, rel, scene.id);
-        main = wantPresenter && !f.image ? asFace(f) : asMedia(f);
+        const f = tryStage(project, projectDir, scene.id, rel, scene.id);
+        if (f) main = wantPresenter && !f.image ? asFace(f) : asMedia(f);
       }
     }
 
@@ -136,21 +156,22 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
     // (o utilizador só escolhe as imagens; ajustar os tempos é opcional).
     const list = scene.cutaways ?? [];
     const auto = list.length > 0 && list.every((c) => c.at === undefined);
-    const cutaways = list.map((c, k): SceneMedia => {
-      const f = stageFile(project, projectDir, scene.id, c.media, `${scene.id}-c${k + 1}`);
+    const cutaways = list.flatMap((c, k): SceneMedia[] => {
+      const f = tryStage(project, projectDir, scene.id, c.media, `${scene.id}-c${k + 1}`);
+      if (!f) return [];
       const part = tl.durations[i] / list.length;
       const at = auto ? k * part : (c.at ?? 0);
       const wanted = auto ? part : (c.duration ?? 2);
       const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
       const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
-      return { src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit };
+      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit }];
     });
     return { main, face, cutaways };
   });
 }
 
-export function planRender(
+function planRenderInner(
   project: Project,
   brand: Brand,
   tl: Timeline,
@@ -206,9 +227,11 @@ export function planRender(
       if (!project.avatar) {
         warnings.push('versão "foto animada": falta a sua foto (Mais opções do vídeo → Carregar a minha foto). Sai sem foto.');
       } else {
-        const f = stageFile(project, projectDir, 'avatar', project.avatar, 'avatar');
-        if (f.image) {
-          avatar = { src: f.src };
+        const f = tryStage(project, projectDir, 'avatar', project.avatar, 'avatar');
+        if (!f) {
+          warnings.push('a foto da pessoa não foi encontrada: o vídeo sai sem ela.');
+        } else if (f.image) {
+          avatar = { src: f.src, ...(project.avatarFocus ?? {}) };
           levels = voiceLevels(tl.mp3, LEVEL_STEP);
         } else {
           warnings.push('a foto da pessoa tem de ser uma imagem (jpg, png ou webp).');
@@ -237,7 +260,7 @@ export function planRender(
           face: media[i].face ?? undefined,
           cutaways: media[i].cutaways,
         })),
-        host: project.host?.name?.trim() ? project.host : undefined,
+        host: project.host?.name?.trim() && !/^(seu nome|nome)$/i.test(project.host.name.trim()) ? project.host : undefined,
         brandName: brand.name,
         colors: brand.colors,
         logo: brand.logo,
@@ -286,4 +309,11 @@ export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: b
   });
   if (r.status !== 0) throw new Error('render falhou');
   return join(VIDEO_DIR, out);
+}
+
+/** Planeia o render. Ficheiros de apoio em falta (cenários, foto, música) ficam em avisos e não impedem o vídeo. */
+export function planRender(project: Project, brand: Brand, tl: Timeline, audioRel: string, projectDir: string, audios: SceneAudio[]): RenderPlan {
+  stageWarnings.length = 0;
+  const plan = planRenderInner(project, brand, tl, audioRel, projectDir, audios);
+  return { ...plan, warnings: [...plan.warnings, ...stageWarnings] };
 }

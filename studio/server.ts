@@ -241,7 +241,18 @@ function detail(id: string) {
     if (existsSync(vdir)) files.push(...readdirSync(vdir).map((f) => `${vid}/${f}`));
     for (const n of [`${vid}.mp4`, `${vid}-rascunho.mp4`]) if (existsSync(join(OUT, n))) files.push(n);
   }
-  return { project, brand, issues, scenes, files, versions, status: outputStatus(id, versions.map((v) => v.id)) };
+  // O que aconteceu no último trabalho deste vídeo (para a página mostrar o motivo de uma falha)
+  const last = jobs.filter((j) => j.project === id).at(-1);
+  const lastJob = last
+    ? {
+        id: last.id,
+        label: last.label,
+        status: last.status,
+        error: last.status === 'failed' ? (last.log.filter((l) => l.startsWith('✗')).pop() ?? last.log.at(-1) ?? 'falhou sem mensagem') : '',
+        warnings: last.log.filter((l) => l.includes('⚠')).slice(-6),
+      }
+    : null;
+  return { project, brand, issues, scenes, files, versions, lastJob, status: outputStatus(id, versions.map((v) => v.id)) };
 }
 
 /** O mais recente de tudo o que entra no vídeo (texto, gravações, cenários, música). */
@@ -287,7 +298,7 @@ function personalize(id: string): string {
     title: `${src.title.replace(/\s*\(3D[^)]*\)\s*/i, ' ').trim()} (personalizado)`,
     locale: src.locale,
     aspect: '9:16',
-    voice: { mode: src.voice?.mode ?? 'auto', rate: src.voice?.rate, pauseSeconds: src.voice?.pauseSeconds ?? 0.3 },
+    voice: { mode: src.voice?.mode === 'human-only' ? 'human' : (src.voice?.mode ?? 'auto'), rate: src.voice?.rate, pauseSeconds: src.voice?.pauseSeconds ?? 0.3 },
     cta: src.cta,
     site: src.site,
     ...(src.music ? { music: src.music } : {}),
@@ -550,7 +561,7 @@ function enqueue(project: string, opts: { draft?: boolean; noRender?: boolean; v
   if (opts.version && /^[a-z0-9]+$/.test(opts.version)) args.push(`--version=${opts.version}`);
   if (opts.draft) args.push('--draft');
   if (opts.noRender) args.push('--no-render');
-  if (opts.voice && ['auto', 'human', 'synthetic'].includes(opts.voice)) args.push(`--voice=${opts.voice}`);
+  if (opts.voice && ['auto', 'human', 'human-only', 'synthetic'].includes(opts.voice)) args.push(`--voice=${opts.voice}`);
   const label = `${opts.noRender ? 'voz + props' : opts.draft ? 'rascunho' : 'final'}${opts.version ? ' · ' + opts.version : ''}`;
   const job: Job = { id: jobs.length + 1, project, args, label, status: 'queued', log: [], progress: '', listeners: new Set() };
   jobs.push(job);

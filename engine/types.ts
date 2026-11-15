@@ -88,10 +88,12 @@ export interface EventInfo {
 /**
  * Origem da voz.
  *  - auto:      usa a gravação humana de cada cena se existir; senão sintetiza.
- *  - human:     exige gravação humana em TODAS as cenas (erro se faltar alguma).
- *  - synthetic: ignora gravações e sintetiza (Edge TTS → Piper).
+ *  - auto:       usa a gravação humana de cada cena se existir; senão sintetiza.
+ *  - human:      prefere a voz humana; cenas sem gravação usam voz sintética, com um aviso (não bloqueia).
+ *  - human-only: exige gravação humana em TODAS as cenas (erro se faltar alguma). Só para quem quer mesmo isso.
+ *  - synthetic:  ignora gravações e sintetiza (Edge TTS → Piper).
  */
-export type VoiceMode = 'auto' | 'human' | 'synthetic';
+export type VoiceMode = 'auto' | 'human' | 'human-only' | 'synthetic';
 
 export interface Music {
   /** Ficheiro em projects/<id>/music/ (ou, em alternativa, em video3d/public/). */
@@ -177,6 +179,8 @@ export interface Project {
   faceMode?: 'video' | 'photo' | 'none';
   /** A foto da pessoa (ficheiro na pasta do projeto), para faceMode "photo". */
   avatar?: string;
+  /** Enquadramento da foto na bolha: y = posição vertical (0 = topo, 100 = fundo; por defeito 25) e zoom (1 = normal, até 3). */
+  avatarFocus?: { y?: number; zoom?: number };
   /** Versões extra deste vídeo: alterações sobre o projeto base (além das predefinidas em versions.ts). */
   versions?: Record<string, VersionOverrides>;
   publish?: { description?: string; hashtags?: string[] };
@@ -186,6 +190,11 @@ export interface Issue {
   level: 'error' | 'warn';
   scene?: string;
   message: string;
+  /**
+   * Erro que só bloqueia o vídeo FINAL: num rascunho vira aviso. Rascunho serve para rever, por isso
+   * nunca é bloqueado por texto de exemplo, afirmações a corrigir, etc.
+   */
+  finalOnly?: boolean;
 }
 
 const LOCALES = ['pt-br', 'pt-pt'];
