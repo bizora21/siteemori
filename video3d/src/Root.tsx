@@ -6,7 +6,8 @@ import { Anuncio3D } from './Anuncio3D';
 import { Anuncio3DB } from './Anuncio3DB';
 import { Aprender3D } from './Aprender3D';
 import { Institucional } from './Institucional';
-import type { AnuncioProps, AprenderProps, InstitucionalProps, RastreioProps, VerseProps } from './types';
+import { Reportagem } from './Reportagem';
+import type { AnuncioProps, AprenderProps, InstitucionalProps, ReportagemProps, RastreioProps, VerseProps } from './types';
 
 export const FPS = 30;
 
@@ -71,6 +72,22 @@ const institucionalDefaults: InstitucionalProps = {
   cta: 'Saiba mais',
   colors: { bg: '#0B2545', accent: '#F2B134', text: '#FFFFFF' },
   aspect: '16:9',
+};
+
+const reportagemDefaults: ReportagemProps = {
+  audio: 'audio/exemplo.mp3',
+  lines: [],
+  durationInFrames: 30 * 30,
+  leadSeconds: 0.4,
+  voiceEndSeconds: 28,
+  sceneStarts: [0, 10, 20],
+  scenes: [{ title: 'Cena 1' }, { title: 'Cena 2' }, { title: 'Cena 3' }],
+  host: { name: 'Nome', role: 'Função' },
+  brandName: 'Marca',
+  colors: { bg: '#0E1116', accent: '#FFB347', text: '#FFFFFF' },
+  cta: 'Saiba mais',
+  site: 'exemplo.org',
+  aspect: '9:16',
 };
 
 export const Root = () => (
@@ -149,6 +166,20 @@ export const Root = () => (
       durationInFrames: props.durationInFrames,
       width: props.aspect === '9:16' ? 1080 : props.aspect === '1:1' ? 1080 : 1920,
       height: props.aspect === '9:16' ? 1920 : props.aspect === '1:1' ? 1080 : 1080,
+    })}
+  />
+  <Composition
+    id="Reportagem"
+    component={Reportagem}
+    width={1080}
+    height={1920}
+    fps={FPS}
+    durationInFrames={30 * 30}
+    defaultProps={reportagemDefaults}
+    calculateMetadata={({ props }) => ({
+      durationInFrames: props.durationInFrames,
+      width: props.aspect === '16:9' ? 1920 : 1080,
+      height: props.aspect === '16:9' ? 1080 : props.aspect === '1:1' ? 1080 : 1920,
     })}
   />
   </>

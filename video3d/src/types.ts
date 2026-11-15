@@ -122,3 +122,32 @@ export interface InstitucionalProps {
   /** Música em public/ (só se tiver licença documentada no projeto). */
   music?: string;
 }
+
+/**
+ * "Reportagem" — vídeo pessoal em locais diferentes. A pessoa aparece em ecrã
+ * inteiro (apresentador) ou em voz off sobre imagens do local; as imagens do
+ * local também podem cortar o ecrã enquanto a voz continua (cutaways).
+ */
+export interface ReportagemProps {
+  audio: string;
+  lines: CaptionLine[];
+  durationInFrames: number;
+  leadSeconds: number;
+  voiceEndSeconds: number;
+  sceneStarts: number[];
+  scenes: {
+    title: string;
+    /** Etiqueta do local desta cena (só locais verdadeiros). */
+    location?: string;
+    media?: SceneMediaProps;
+    cutaways?: SceneMediaProps[];
+  }[];
+  host?: { name: string; role?: string };
+  brandName: string;
+  colors: { bg: string; accent: string; text: string };
+  logo?: string;
+  cta: string;
+  site: string;
+  aspect: '9:16' | '16:9' | '1:1';
+  music?: string;
+}

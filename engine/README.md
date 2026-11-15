@@ -30,6 +30,7 @@ As composições 3D **não foram alteradas**.
 | `aprender3d` | Aprender3D | 7 | produto "Aprender a Bíblia" (Emori) |
 | `verse3d` | Verse3D | livre | versículo 3D, narração contínua |
 | `institucional` | Institucional | livre | entidades públicas e organizações; 16:9, 9:16 ou 1:1 |
+| `reportagem` | Reportagem | livre | vídeo pessoal em locais diferentes (ver abaixo); 9:16 por defeito |
 
 Para um template novo: compor no Remotion, registar em `templates.ts`. O resto do motor não muda.
 
@@ -67,6 +68,20 @@ As gravações ficam fora do Git (`projects/*/voice/`): são voz de pessoas.
   Se a cena ficar com voz sintética (`--voice=synthetic` ou ficheiro em falta), o apresentador NÃO é mostrado.
 - `"media": "media/foto.jpg"`: imagem (movimento lento) ou vídeo curto (repete-se), sem áudio próprio.
 - Os ficheiros ficam na pasta do projeto; o motor prepara-os em `video3d/public/media/` (fora do Git).
+
+## Reportagem pessoal (você em locais diferentes)
+
+Para vídeos personalizados sem depender de lençol nem de recorte: grava-se nos locais verdadeiros, ou em voz off
+sobre imagens do local. O template junta tudo com acabamento fixo:
+
+- Cena com `"presenter"`: você em ecrã inteiro (a voz é a do vídeo, com sincronia labial).
+- Cena com `"media"` (imagem ou vídeo do local) e voz off humana ou sintética.
+- `"location"`: etiqueta do local na cena (só locais verdadeiros; ao apresentar um local falso engana quem vê).
+- `"cutaways": [{ "media": "media/porto.jpg", "at": 1.2, "duration": 1.6 }]`: corta para imagens do local enquanto
+  a voz continua (`at` = segundos desde o início da fala da cena).
+- `"host": { "name", "role" }`: etiqueta de nome nos primeiros segundos. Legendas karaoke dentro da zona segura,
+  barra de progresso, logótipo da marca e cartão final com a chamada para ação.
+- Modelo em `projects/modelo-reportagem/` (o build é bloqueado enquanto tiver o nome ou os locais de exemplo).
 
 ## Dashboard (`studio/`)
 

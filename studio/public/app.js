@@ -124,6 +124,7 @@ function renderEditor() {
   const scroll = window.scrollY;
 
   const inst = p.template === 'institucional';
+  const rep = p.template === 'reportagem';
   const head = h('section', { class: 'card stack' },
     h('div', { class: 'row' },
       h('h2', { style: 'margin:0;flex:1' }, p.title),
@@ -148,6 +149,17 @@ function renderEditor() {
       field('Departamento', p.institutional?.department, (v) => ((p.institutional ??= {}).department = v)),
       field('Aviso legal (rodapé)', p.institutional?.disclaimer, (v) => ((p.institutional ??= {}).disclaimer = v)),
     ),
+    rep && h('div', { class: 'grid3' },
+      field('Quem aparece (nome)', p.host?.name, (v) => ((p.host ??= { name: '' }).name = v)),
+      field('Função / descrição', p.host?.role, (v) => ((p.host ??= { name: '' }).role = v)),
+      h('label', {}, 'Formato',
+        (() => {
+          const s = h('select', { onchange: () => { p.aspect = s.value; dirty(); } },
+            h('option', { value: '9:16' }, '9:16 (vertical)'), h('option', { value: '16:9' }, '16:9 (horizontal)'), h('option', { value: '1:1' }, '1:1 (quadrado)'));
+          s.value = p.aspect ?? '9:16';
+          return s;
+        })()),
+    ),
     inst && h('div', { class: 'grid3' },
       h('label', {}, 'Formato',
         (() => {
@@ -162,7 +174,7 @@ function renderEditor() {
     h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
   );
 
-  const sceneCards = p.scenes.map((s, i) => sceneCard(p, s, i, scenes[i], tpl, inst));
+  const sceneCards = p.scenes.map((s, i) => sceneCard(p, s, i, scenes[i], tpl, inst, rep));
 
   const adv = h('details', { class: 'card' },
     h('summary', {}, 'Avançado: JSON do projeto (props, cues, lead, tail, música)'),
@@ -209,7 +221,8 @@ function issueItems(issues) {
   return issues.map((i) => h('li', { class: i.level }, `${i.level === 'error' ? '✗' : '⚠'} ${i.scene ? `[${i.scene}] ` : ''}${i.message}`));
 }
 
-function sceneCard(p, s, i, st, tpl, inst) {
+function sceneCard(p, s, i, st, tpl, inst, rep) {
+  const rich = inst || rep;
   const role = tpl?.sceneRoles?.[i];
   const est = h('span', { class: 'muted' }, `${words(s.narration)} palavras · ≈ ${Math.max(1, Math.round(words(s.narration) / 2.6))} s`);
   const status = h('span', { class: 'pill ' + (st?.recorded ? 'ok' : '') }, st?.recorded ? (st.kind === 'video' ? 'apresentador gravado' : 'voz humana gravada') : 'voz sintética');
@@ -220,7 +233,7 @@ function sceneCard(p, s, i, st, tpl, inst) {
   const row = h('div', { class: 'rec-row' }, recBtn, meter,
     h('button', { onclick: () => openPrompter(s) }, 'Teleprompter'),
     st?.recorded && st.kind === 'audio' && h('audio', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:34px' }),
-    inst && vidBtn,
+    rich && vidBtn,
     st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar gravação'),
   );
   return h('section', { class: 'card scene' },
@@ -230,7 +243,12 @@ function sceneCard(p, s, i, st, tpl, inst) {
       field('Título no ecrã', s.title, (v) => (s.title = v)),
       field('Fonte do dado (obrigatória se houver números)', s.source, (v) => (s.source = v)),
     ),
-    inst && field('Imagem ou vídeo da cena (caminho na pasta do projeto)', s.media, (v) => (s.media = v || undefined)),
+    rep && h('div', { class: 'grid2' },
+      field('Local mostrado (só locais verdadeiros)', s.location, (v) => (s.location = v || undefined)),
+      field('Título (só se a cena não tiver imagem/vídeo)', s.title, (v) => (s.title = v)),
+    ),
+    rich && field('Imagem ou vídeo da cena (caminho na pasta do projeto)', s.media, (v) => (s.media = v || undefined)),
+    rep && h('p', { class: 'muted', style: 'margin:0' }, 'Cortes para imagens do local enquanto fala: use o JSON avançado (cutaways: [{ media, at, duration }]).'),
     row,
     preview,
   );

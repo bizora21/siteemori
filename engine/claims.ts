@@ -39,6 +39,18 @@ export function lintProject(project: Project, brand: Brand): Issue[] {
     }
   }
 
+  if (project.template === 'reportagem') {
+    const n = project.host?.name?.trim() ?? '';
+    if (/^(seu nome|nome)$/i.test(n)) {
+      issues.push({ level: 'error', message: 'host.name ainda é o texto de exemplo — preencha com quem aparece no vídeo' });
+    }
+    for (const s of project.scenes) {
+      if (/^local \d+$/i.test(s.location?.trim() ?? '')) {
+        issues.push({ level: 'error', scene: s.id, message: 'a etiqueta de local ainda é o texto de exemplo — indique o local verdadeiro ou apague o campo' });
+      }
+    }
+  }
+
   if (TEMPLATES[project.template].music && !project.music) {
     issues.push({ level: 'warn', message: 'sem música: o vídeo sai só com voz (recomendado até haver faixa com licença documentada)' });
   }

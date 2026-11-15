@@ -293,7 +293,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     const def = b.template ? TEMPLATES[b.template] : undefined;
     if (!def) throw new HttpError(400, 'template inválido');
     if (!loadBrands().some((x) => x.id === b.brand)) throw new HttpError(400, 'marca inválida');
-    const roles = def.sceneRoles ?? (def.id === 'verse3d' ? ['narracao'] : ['abertura', 'desenvolvimento', 'fecho']);
+    const roles = def.sceneRoles ?? (def.id === 'verse3d' ? ['narracao'] : def.id === 'reportagem' ? ['abertura', 'local-1', 'local-2', 'fecho'] : ['abertura', 'desenvolvimento', 'fecho']);
     const project: Project = {
       id,
       brand: b.brand!,
@@ -302,6 +302,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       voice: { mode: 'auto' },
       scenes: roles.map((r) => ({ id: r.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().replace(/^-|-$/g, ''), narration: 'Escreva aqui a narração desta cena.', title: def.id === 'institucional' ? r : undefined })),
       ...(def.id === 'institucional' ? { institutional: { entity: 'Nome da Entidade', disclaimer: '' }, aspect: '16:9' as const } : {}),
+      ...(def.id === 'reportagem' ? { host: { name: 'Seu nome', role: '' }, aspect: '9:16' as const } : {}),
       ...(def.id === 'verse3d' ? { props: { title: ['LINHA 1', 'LINHA 2'] } } : {}),
     };
     mkdirSync(projectDir(id), { recursive: true });

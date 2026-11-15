@@ -2,7 +2,7 @@
 // EXISTENTE (os 3D não são tocados: a qualidade visual é a mesma de sempre) e
 // declara o que o motor precisa de saber: quantas cenas, margens e legendas.
 
-export type TemplateId = 'anuncio3d' | 'anuncio3db' | 'rastreio3d' | 'comboio3d' | 'aprender3d' | 'verse3d' | 'institucional';
+export type TemplateId = 'anuncio3d' | 'anuncio3db' | 'rastreio3d' | 'comboio3d' | 'aprender3d' | 'verse3d' | 'institucional' | 'reportagem';
 
 export interface TemplateDef {
   id: TemplateId;
@@ -121,6 +121,19 @@ export const TEMPLATES: Record<TemplateId, TemplateDef> = {
     music: false,
     usesSceneStarts: true,
   },
+  reportagem: {
+    id: 'reportagem',
+    composition: 'Reportagem',
+    label: 'Reportagem pessoal (você em locais diferentes)',
+    kind: '2d',
+    aspect: 'multi',
+    lead: 0.4,
+    tail: 1.8,
+    captions: [4, 22],
+    music: false,
+    usesSceneStarts: true,
+  },
 };
+
 
 export const TEMPLATE_IDS = Object.keys(TEMPLATES) as TemplateId[];

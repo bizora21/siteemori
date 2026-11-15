@@ -48,6 +48,18 @@ export interface Scene {
   presenter?: string;
   /** Imagem ou vídeo ilustrativo da cena (relativo à pasta do projeto). Só no institucional. */
   media?: string;
+  /** Reportagem: local mostrado na etiqueta desta cena (ex.: "Maputo · Baixa"). Só afirme locais verdadeiros. */
+  location?: string;
+  /** Reportagem: imagens/vídeos do local que cobrem o ecrã enquanto a voz continua. */
+  cutaways?: Cutaway[];
+}
+
+export interface Cutaway {
+  /** Ficheiro na pasta do projeto. */
+  media: string;
+  /** Segundos desde o início da fala da cena em que entra, e quanto dura. */
+  at: number;
+  duration: number;
 }
 
 /**
@@ -124,6 +136,8 @@ export interface Project {
   site?: string;
   music?: Music;
   institutional?: Institutional;
+  /** Reportagem: quem aparece (etiqueta de nome no início). */
+  host?: { name: string; role?: string };
   approval?: Approval;
   aspect?: Aspect;
   publish?: { description?: string; hashtags?: string[] };
@@ -193,12 +207,22 @@ export function validateProject(p: unknown): Issue[] {
   if (def?.scenes && x.scenes.length !== def.scenes) {
     out.push({ level: 'error', message: `${def.id} precisa de exatamente ${def.scenes} cenas (${def.sceneRoles?.join(', ')})` });
   }
-  if (x.template !== 'institucional') {
-    for (const s of x.scenes) {
-      if (s.presenter || s.media) {
-        out.push({ level: 'error', scene: s.id, message: '"presenter" e "media" só existem no template institucional' });
+  const rich = x.template === 'institucional' || x.template === 'reportagem';
+  for (const s of x.scenes) {
+    if (!rich && (s.presenter || s.media)) {
+      out.push({ level: 'error', scene: s.id, message: '"presenter" e "media" só existem nos templates institucional e reportagem' });
+    }
+    if (x.template !== 'reportagem' && (s.cutaways?.length || s.location)) {
+      out.push({ level: 'error', scene: s.id, message: '"cutaways" e "location" só existem no template reportagem' });
+    }
+    for (const c of s.cutaways ?? []) {
+      if (!isStr(c.media) || !(c.at >= 0) || !(c.duration > 0)) {
+        out.push({ level: 'error', scene: s.id, message: 'cutaway precisa de media, at (>=0) e duration (>0)' });
       }
     }
+  }
+  if (x.template === 'reportagem' && !(x.host && isStr(x.host.name))) {
+    out.push({ level: 'error', message: 'reportagem: falta host.name (quem aparece no vídeo)' });
   }
   if (x.template === 'institucional') {
     if (!x.institutional || !isStr(x.institutional.entity)) {

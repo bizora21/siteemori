@@ -50,39 +50,60 @@ export interface SceneMedia {
   clipSeconds?: number;
 }
 
-const IMAGE_EXT = /\.(png|jpe?g|webp|gif)$/i;
+const IMAGE_EXT = /.(png|jpe?g|webp|gif)$/i;
+
+interface StagedScene {
+  main: SceneMedia | null;
+  cutaways: SceneMedia[];
+}
+
+/** Copia/transcodifica um ficheiro para video3d/public/media/<projeto>/ (o Remotion só lê dali). */
+function stageFile(project: Project, projectDir: string, sceneId: string, rel: string, name: string): { src: string; image: boolean; clip: number } {
+  const src = join(projectDir, rel);
+  if (!existsSync(src)) throw new Error(`cena "${sceneId}": ficheiro não encontrado: ${rel}`);
+  const outDir = join(VIDEO_DIR, 'public', 'media', project.id);
+  mkdirSync(outDir, { recursive: true });
+  if (IMAGE_EXT.test(rel)) {
+    const file = `${name}${extname(rel).toLowerCase()}`;
+    copyFileSync(src, join(outDir, file));
+    return { src: `media/${project.id}/${file}`, image: true, clip: 0 };
+  }
+  const file = `${name}.mp4`;
+  const dst = join(outDir, file);
+  if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) stageVideo(src, dst);
+  return { src: `media/${project.id}/${file}`, image: false, clip: duration(dst) };
+}
 
 /**
- * Prepara a mídia das cenas em video3d/public/media/<projeto>/ (o Remotion só lê
- * dali). Vídeos perdem o áudio — a voz vem sempre da faixa única do motor.
- * O apresentador só aparece se a voz da cena for mesmo a dele (humana); com voz
- * sintética mostrar-lhe a boca a mexer fora de sincronia seria pior que nada.
+ * Prepara a mídia das cenas. Vídeos perdem o áudio — a voz vem sempre da faixa
+ * única do motor. O apresentador só aparece se a voz da cena for mesmo a dele
+ * (humana); com voz sintética mostrar-lhe a boca a mexer fora de sincronia seria
+ * pior que nada. Os cortes (cutaways) cobrem o ecrã enquanto a voz continua.
  */
-function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[]): (SceneMedia | null)[] {
-  const outDir = join(VIDEO_DIR, 'public', 'media', project.id);
+function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[]): StagedScene[] {
   return project.scenes.map((scene, i) => {
     const wantPresenter = Boolean(scene.presenter) && audios[i].source === 'human';
     const rel = wantPresenter ? scene.presenter : scene.media;
-    if (!rel) return null;
-    const src = join(projectDir, rel);
-    if (!existsSync(src)) throw new Error(`cena "${scene.id}": ficheiro não encontrado: ${rel}`);
-    mkdirSync(outDir, { recursive: true });
-
-    const next = tl.sceneStarts[i + 1];
-    const end = next ?? tl.lead + tl.voiceSeconds + 2;
-    if (IMAGE_EXT.test(rel) && !wantPresenter) {
-      const name = `${scene.id}${extname(rel).toLowerCase()}`;
-      copyFileSync(src, join(outDir, name));
-      return { src: `media/${project.id}/${name}`, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i] };
+    const end = tl.sceneStarts[i + 1] ?? tl.lead + tl.voiceSeconds + 2;
+    let main: SceneMedia | null = null;
+    if (rel) {
+      const f = stageFile(project, projectDir, scene.id, rel, scene.id);
+      if (wantPresenter && !f.image) {
+        main = { src: f.src, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(f.clip, tl.durations[i]), clipSeconds: f.clip };
+      } else if (f.image) {
+        main = { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i] };
+      } else {
+        main = { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip };
+      }
     }
-    const name = `${scene.id}.mp4`;
-    const dst = join(outDir, name);
-    if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) stageVideo(src, dst);
-    const clip = duration(dst);
-    if (wantPresenter) {
-      return { src: `media/${project.id}/${name}`, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(clip, tl.durations[i]), clipSeconds: clip };
-    }
-    return { src: `media/${project.id}/${name}`, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: clip };
+    const cutaways = (scene.cutaways ?? []).map((c, k): SceneMedia => {
+      const f = stageFile(project, projectDir, scene.id, c.media, `${scene.id}-c${k + 1}`);
+      const from = tl.audioStarts[i] + c.at;
+      // Nunca passa do fim da fala da cena.
+      const dur = Math.max(0.5, Math.min(c.duration, tl.audioStarts[i] + tl.durations[i] - from));
+      return { src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip };
+    });
+    return { main, cutaways };
   });
 }
 
@@ -118,13 +139,38 @@ export function planRender(
       props: {
         ...base,
         lines,
-        scenes: project.scenes.map((s, i) => ({ title: s.title ?? '', source: s.source, media: media[i] ?? undefined })),
+        scenes: project.scenes.map((s, i) => ({ title: s.title ?? '', source: s.source, media: media[i].main ?? undefined })),
         entity: inst.entity,
         department: inst.department,
         disclaimer: inst.disclaimer,
         colors: brand.colors,
         logo: brand.logo,
         aspect: project.aspect ?? '16:9',
+        music: project.music?.file,
+      },
+    };
+  }
+
+  if (project.template === 'reportagem') {
+    const media = stageMedia(project, projectDir, tl, audios);
+    return {
+      composition: def.composition,
+      warnings: [],
+      lines,
+      props: {
+        ...base,
+        lines,
+        scenes: project.scenes.map((s, i) => ({
+          title: s.title ?? '',
+          location: s.location,
+          media: media[i].main ?? undefined,
+          cutaways: media[i].cutaways,
+        })),
+        host: project.host,
+        brandName: brand.name,
+        colors: brand.colors,
+        logo: brand.logo,
+        aspect: project.aspect ?? '9:16',
         music: project.music?.file,
       },
     };
