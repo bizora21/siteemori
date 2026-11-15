@@ -19,6 +19,7 @@ import { randomBytes } from 'node:crypto';
 import { networkInterfaces } from 'node:os';
 import { basename, extname, join, normalize, resolve, sep } from 'node:path';
 import { lintProject } from '../engine/claims';
+import { qrSvg } from './qr';
 import { FFMPEG } from '../engine/ffmpeg';
 import { TEMPLATES } from '../engine/templates';
 import { validateBrand, validateProject, type Brand, type Issue, type Project } from '../engine/types';
@@ -464,7 +465,9 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
 
   if (parts[0] === 'api' && parts[1] === 'info') {
     // O código só é entregue a quem está no próprio computador.
-    return json(res, { lan: LAN, urls: local && LAN ? lanIps().map((ip) => `http://${ip}:${PORT}/m.html?t=${TOKEN}`) : [], pexels: Boolean(pexelsKey()) });
+    const urls = local && LAN ? lanIps().map((ip) => `http://${ip}:${PORT}/m.html?t=${TOKEN}`) : [];
+    // O QR é gerado aqui, neste computador: o link (com o código) nunca sai da sua rede.
+    return json(res, { lan: LAN, urls, qr: urls.map((u) => qrSvg(u, 300)), pexels: Boolean(pexelsKey()) });
   }
 
   if (parts[0] === 'api' && parts[1] === 'pexels' && parts[2] === 'search' && method === 'GET') {

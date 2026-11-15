@@ -210,11 +210,18 @@ async function openPhone() {
     );
   } else {
     body.replaceChildren(
-      h('p', {}, 'No telemóvel (mesmo Wi-Fi), abra este link:'),
-      ...info.urls.map((u) => h('pre', { class: 'pub', style: 'user-select:all;word-break:break-all' }, u)),
+      h('p', {}, 'Aponte a câmara do telemóvel (ligado ao mesmo Wi-Fi) para este código:'),
+      ...info.urls.map((u, i) => {
+        const box = h('div', { style: 'display:flex;justify-content:center;margin:8px 0' });
+        box.innerHTML = info.qr[i]; // SVG gerado pelo nosso servidor a partir do link
+        return h('div', {}, box, h('details', {}, h('summary', {}, 'Prefiro copiar o link'), h('pre', { class: 'pub', style: 'user-select:all;word-break:break-all' }, u)));
+      }),
       h('p', { class: 'muted' }, 'O código muda sempre que reinicia o estúdio. É HTTP simples: use só no Wi-Fi da sua casa. Lá poderá ver o texto de cada cena, definir o local e a nota de gravação, gravar com a câmara do telemóvel e enviar.'),
     );
   }
   dlg.showModal();
 }
 $('#phone-btn')?.addEventListener('click', openPhone);
+
+// ?phone=1 abre já a janela do telemóvel (usado pelo iniciar-estudio.bat)
+if (new URLSearchParams(location.search).get('phone')) openPhone();

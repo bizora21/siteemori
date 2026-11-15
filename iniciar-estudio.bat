@@ -6,6 +6,6 @@ title Estudio de video
 echo.
 echo  A iniciar o estudio... (feche esta janela para o desligar)
 echo.
-start "" "http://127.0.0.1:4173"
+start "" "http://127.0.0.1:4173/?phone=1"
 call npm run studio -- --lan
 pause
