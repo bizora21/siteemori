@@ -255,12 +255,19 @@ function recorder(i) {
   let scrollTimer = null;
   let clock = null;
   let wake = null;
-  const R = { size: 30, speed: 0 };
+  const R = { size: 30, speed: 0, clean: true };
 
   const preview = h('video', { id: 'rec-v', playsinline: true, muted: true, autoplay: true });
   const text = h('div', { id: 'rec-text' }, s.narration);
   const timerEl = h('span', { class: 'muted', style: 'color:#ccc' }, '');
   const recBtn = h('button', { class: 'rec' }, '● Gravar');
+  const cleanBtn = h('button', { onclick: async () => {
+    if (mr && mr.state === 'recording') return toast('Pare a gravação antes de mudar.');
+    R.clean = !R.clean;
+    cleanBtn.textContent = R.clean ? '🔇 Reduzir ruído: LIGADO' : '🔈 Reduzir ruído: desligado';
+    stream?.getTracks().forEach((t) => t.stop());
+    await open();
+  } }, '🔇 Reduzir ruído: LIGADO');
   const speed = h('input', { type: 'range', min: 0, max: 120, value: 0, style: 'width:120px' });
   const overlay = h('div', { id: 'rec' },
     video && preview,
@@ -272,6 +279,7 @@ function recorder(i) {
         h('button', { onclick: () => { R.size = Math.max(18, R.size - 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A−'),
         h('button', { onclick: () => { R.size = Math.min(64, R.size + 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A+'),
         h('span', { style: 'color:#ccc;font-size:14px' }, 'Rolagem'), speed),
+      h('div', { class: 'r' }, cleanBtn),
       h('div', { class: 'r' },
         h('button', { onclick: cancel }, '✕ Sair'),
         recBtn,
@@ -285,7 +293,8 @@ function recorder(i) {
     try {
       stream = await navigator.mediaDevices.getUserMedia({
         video: video ? { facingMode: facing, width: { ideal: 1080 }, height: { ideal: 1920 } } : false,
-        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+        // O telemóvel limpa o som (ruído, eco, volume) melhor do que o motor consegue depois.
+        audio: { echoCancellation: R.clean, noiseSuppression: R.clean, autoGainControl: R.clean, channelCount: 1 },
       });
     } catch (e) {
       try {
@@ -313,7 +322,7 @@ function recorder(i) {
   function start() {
     chunks = [];
     const mime = pickMime(video);
-    mr = new MediaRecorder(stream, mime ? { mimeType: mime, ...(video ? { videoBitsPerSecond: 6_000_000 } : {}) } : undefined);
+    mr = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 128000, ...(video ? { videoBitsPerSecond: 6_000_000 } : {}) } : undefined);
     mr.ondataavailable = (e) => e.data.size && chunks.push(e.data);
     mr.onstop = review;
     mr.start(1000);
