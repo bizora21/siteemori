@@ -99,8 +99,8 @@ function sheet(id: string): void {
     lines.push(
       `## ${String(i + 1).padStart(2, '0')} · ${s.id} ${have ? '✅ gravada' : '⬜ por gravar'}`,
       '',
-      s.presenter
-        ? `Grave em VÍDEO (pessoa a falar para a câmara, plano fixo, boa luz): \`${s.presenter}\`${s.voice ? ` · apresentador: ${s.voice}` : ''} · ≈ ${Math.max(1, Math.round(words / wps))} s`
+      s.presenter || project.template === 'reportagem'
+        ?`Grave em VÍDEO (pessoa a falar para a câmara, plano fixo, boa luz) e carregue no estúdio em "Carregar vídeo"${s.presenter ? `: \`${s.presenter}\`` : ''}${s.voice ? ` · apresentador: ${s.voice}` : ''} · ≈ ${Math.max(1, Math.round(words / wps))} s`
         : `Ficheiro: \`voice/${s.id}.wav\`${s.voice ? ` · voz: ${s.voice}` : ''} · ≈ ${Math.max(1, Math.round(words / wps))} s`,
       '',
       ...(s.location ? [`Local: **${s.location}**`] : []),

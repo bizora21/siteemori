@@ -1,0 +1,43 @@
+{
+  "id": "biblia-por-onde-comecar",
+  "brand": "emori",
+  "template": "reportagem",
+  "title": "Bíblia: por onde começar a ler",
+  "aspect": "9:16",
+  "host": { "name": "Seu nome", "role": "" },
+  "voice": { "mode": "auto", "rate": "-3%", "pauseSeconds": 0.3 },
+  "cta": "Baixe a Emori",
+  "site": "aemori.com",
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Você quer ler a Bíblia, mas não sabe por onde começar? Muita gente trava logo no primeiro passo.",
+      "shot": "Plano médio, olhando para a câmara, com a Bíblia na mão. Energia alta: é o gancho, tem de prender nos primeiros dois segundos."
+    },
+    {
+      "id": "biblioteca",
+      "narration": "A Bíblia não é um livro para ler de uma ponta à outra. É uma biblioteca. Você não precisa começar pela primeira página.",
+      "shot": "Num sítio com estantes ou livros (biblioteca, escritório, sala). Pode mostrar a Bíblia aberta."
+    },
+    {
+      "id": "joao",
+      "narration": "Comece pelo Evangelho de João. É curto, e mostra quem foi Jesus.",
+      "shot": "Sentado(a) à mesa, Bíblia aberta no Evangelho de João. Mostre a página."
+    },
+    {
+      "id": "salmos",
+      "narration": "Depois, leia os Salmos. São orações e cânticos, e ajudam você a conversar com Deus com as suas próprias palavras.",
+      "shot": "Num sítio calmo (jardim, varanda, igreja vazia). Tom mais tranquilo."
+    },
+    {
+      "id": "constancia",
+      "narration": "Leia pouco, todo dia. Um capítulo já basta. O segredo é a constância, não a pressa.",
+      "shot": "Num momento do dia a dia (café da manhã, antes de dormir). Mostre a rotina."
+    },
+    {
+      "id": "fecho",
+      "narration": "Na Emori, você aprende a Bíblia pergunta a pergunta, no seu ritmo. Baixe o aplicativo e comece hoje.",
+      "shot": "Segure o telemóvel mostrando a app Emori (grave o ecrã da app à parte e use como corte). Termine sorrindo."
+    }
+  ]
+}
