@@ -211,7 +211,7 @@ function renderEditor() {
     h('div', { class: 'console', id: 'console' }),
   );
 
-  main.replaceChildren(h('div', { class: 'stack' }, head, ...sceneCards, adv, consoleBox, out, actions));
+  main.replaceChildren(h('div', { class: 'stack' }, head, ...sceneCards, musicBlock(p), adv, consoleBox, out, actions));
   window.scrollTo(0, scroll);
   loadPublication(files, p.id);
 }
@@ -229,11 +229,14 @@ function sceneCard(p, s, i, st, tpl, inst, rep) {
   const meter = h('div', { class: 'meter', hidden: true }, h('i'));
   const preview = h('div');
   const recBtn = h('button', { onclick: () => toggleRec(s.id, 'audio', recBtn, meter, preview) }, '● Gravar voz');
-  const vidBtn = h('button', { onclick: () => toggleRec(s.id, 'video', vidBtn, meter, preview) }, '🎥 Gravar apresentador');
+  const vidBtn = h('button', { onclick: () => toggleRec(s.id, 'video', vidBtn, meter, preview) }, '🎥 Gravar com a câmara do computador');
   const row = h('div', { class: 'rec-row' }, recBtn, meter,
     h('button', { onclick: () => openPrompter(s) }, 'Teleprompter'),
-    st?.recorded && st.kind === 'audio' && h('audio', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:34px' }),
+    h('button', { onclick: () => uploadScene('voice', s.id, 'audio/*,.m4a,.wav,.mp3,.aac,.ogg,.flac', 'Áudio') }, 'Carregar áudio'),
     rich && vidBtn,
+    rich && h('button', { onclick: () => uploadScene('presenter', s.id, 'video/*', 'Vídeo') }, 'Carregar vídeo (telemóvel)'),
+    st?.recorded && st.kind === 'audio' && h('audio', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:34px' }),
+    st?.recorded && st.kind === 'video' && h('video', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:90px;border-radius:8px' }),
     st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar gravação'),
   );
   return h('section', { class: 'card scene' },
@@ -247,8 +250,9 @@ function sceneCard(p, s, i, st, tpl, inst, rep) {
       field('Local mostrado (só locais verdadeiros)', s.location, (v) => (s.location = v || undefined)),
       field('Título (só se a cena não tiver imagem/vídeo)', s.title, (v) => (s.title = v)),
     ),
-    rich && field('Imagem ou vídeo da cena (caminho na pasta do projeto)', s.media, (v) => (s.media = v || undefined)),
-    rep && h('p', { class: 'muted', style: 'margin:0' }, 'Cortes para imagens do local enquanto fala: use o JSON avançado (cutaways: [{ media, at, duration }]).'),
+    field('Nota de gravação: onde estar, que plano, o que mostrar nesta cena', s.shot, (v) => (s.shot = v || undefined), { area: true, rows: 2 }),
+    rich && mediaBlock(p, s),
+    rep && cutawaysBlock(p, s),
     row,
     preview,
   );
@@ -445,7 +449,9 @@ function openPrompter(scene) {
     box.replaceChildren(
       ...list.map((s, i) =>
         h('p', { class: (i === pt.idx ? 'cur ' : '') + (recorded.has(s.id) && i !== pt.idx ? 'done' : ''), onclick: () => { if (!state.rec) { pt.idx = i; draw(); } } },
-          h('small', {}, `Cena ${i + 1}/${list.length} · ${s.id}`), s.narration),
+          h('small', {}, `Cena ${i + 1}/${list.length} · ${s.id}${s.location ? ' · local: ' + s.location : ''}`),
+          s.shot && h('small', { class: 'shot' }, `Nota: ${s.shot}`),
+          s.narration),
       ),
     );
     $('#prompter-pos').textContent = `Cena ${pt.idx + 1}/${list.length}`;

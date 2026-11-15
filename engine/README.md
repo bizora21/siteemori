@@ -109,3 +109,21 @@ sobre imagens do local. O template junta tudo com acabamento fixo:
 - O motor social (`scripts/build-social-video.ts`, vídeos 2D com filmagem do Pexels) ainda não passa pelo motor.
   Os scripts `scripts/build-*-video.ts` de 3D ficam como histórico; os projetos equivalentes estão em `projects/`.
 - Edição de marcas no dashboard ainda não existe (são JSON em `projects/brands/`).
+
+## Telemóvel, imagens do local e música
+
+**Gravar com o telemóvel** (`npm run studio -- --lan`): o terminal mostra um link com um código secreto; abre-se no
+telemóvel (mesmo Wi-Fi). Aí vê-se o texto de cada cena (teleprompter em ecrã inteiro), define-se o **local** e a **nota de
+gravação** de cada cena, grava-se com a câmara nativa (melhor qualidade que gravar no browser) e envia-se. Também envia
+fotos/vídeos do local, que entram como cortes na cena. Segurança: só IPs privados + código gerado a cada arranque; HTTP simples,
+usar só em Wi-Fi de confiança. O navegador do telemóvel não consegue gravar direto na página (exige HTTPS), por isso usa a câmara nativa.
+No computador, o botão "Carregar vídeo (telemóvel)" faz o mesmo por ficheiro.
+
+**Imagens do local:** carregar ficheiros próprios ou procurar no Pexels (usa `PEXELS_API_KEY` de `.env.local`; a chave nunca vai
+para o navegador). O crédito fica em `credits` e entra na descrição de publicação. O Pexels NÃO tem música. Uma foto de arquivo
+não é o seu local: não a use sob uma etiqueta de local como se fosse real.
+
+**Música:** só com licença que permita uso comercial. `music: { file, license, source, attribution }`; sem `license` e `source`
+o motor recusa. O ficheiro vai em `projects/<id>/music/` (fora do Git: algumas licenças proíbem redistribuir as faixas).
+`attribution` entra sozinha na descrição. FiftySounds (lido em 15/11/2026): uso pessoal e comercial, **atribuição obrigatória**
+com link para o site, proibido revender/redistribuir; não refere TikTok/Instagram nem vídeos de governo — confirmar caso a caso.

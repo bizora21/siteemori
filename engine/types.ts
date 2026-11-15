@@ -50,6 +50,8 @@ export interface Scene {
   media?: string;
   /** Reportagem: local mostrado na etiqueta desta cena (ex.: "Maputo · Baixa"). Só afirme locais verdadeiros. */
   location?: string;
+  /** Nota de gravação: onde, que plano, o que mostrar. Aparece na folha de gravação, no teleprompter e no telemóvel. */
+  shot?: string;
   /** Reportagem: imagens/vídeos do local que cobrem o ecrã enquanto a voz continua. */
   cutaways?: Cutaway[];
 }
@@ -71,7 +73,10 @@ export interface Cutaway {
 export type VoiceMode = 'auto' | 'human' | 'synthetic';
 
 export interface Music {
+  /** Ficheiro em projects/<id>/music/ (ou, em alternativa, em video3d/public/). */
   file: string;
+  /** Crédito obrigatório da faixa (ex.: "Música: FiftySounds — www.fiftysounds.com/pt/"). Entra sozinho na descrição. */
+  attribution?: string;
   /** Sem licença documentada o motor recusa a faixa (já houve bloqueio por Content ID). */
   license: string;
   source: string;
@@ -138,6 +143,8 @@ export interface Project {
   institutional?: Institutional;
   /** Reportagem: quem aparece (etiqueta de nome no início). */
   host?: { name: string; role?: string };
+  /** Créditos de imagens/vídeos de terceiros (ex.: Pexels). Entram na descrição de publicação. */
+  credits?: string[];
   approval?: Approval;
   aspect?: Aspect;
   publish?: { description?: string; hashtags?: string[] };

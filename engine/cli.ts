@@ -103,6 +103,9 @@ function sheet(id: string): void {
         ? `Grave em VÍDEO (pessoa a falar para a câmara, plano fixo, boa luz): \`${s.presenter}\`${s.voice ? ` · apresentador: ${s.voice}` : ''} · ≈ ${Math.max(1, Math.round(words / wps))} s`
         : `Ficheiro: \`voice/${s.id}.wav\`${s.voice ? ` · voz: ${s.voice}` : ''} · ≈ ${Math.max(1, Math.round(words / wps))} s`,
       '',
+      ...(s.location ? [`Local: **${s.location}**`] : []),
+      ...(s.shot ? [`Nota de gravação: ${s.shot}`] : []),
+      '',
       `> ${s.narration.trim()}`,
       '',
     );

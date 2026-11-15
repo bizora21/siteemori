@@ -3,7 +3,7 @@
 
 import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { extname, join } from 'node:path';
+import { basename, extname, join } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
 import { duration, run, stageVideo } from './ffmpeg';
 import { resolveCues } from './cues';
@@ -23,18 +23,33 @@ export interface RenderPlan {
   lines: CaptionLine[];
 }
 
-/** Garante que existe uma faixa de música válida (silêncio, se o projeto não tiver). */
-function musicFile(project: Project): string {
-  if (project.music) {
-    if (!existsSync(join(VIDEO_DIR, 'public', project.music.file))) {
-      throw new Error(`música "${project.music.file}" não existe em ${VIDEO_DIR}/public/`);
-    }
-    return project.music.file;
+/**
+ * Prepara a música do projeto em video3d/public/music/<id>/ (o Remotion só lê de
+ * public/). Procura primeiro em projects/<id>/ e depois em video3d/public/.
+ * Devolve o caminho relativo a public/, ou undefined se o projeto não tem música.
+ */
+function stageMusic(project: Project, projectDir: string): string | undefined {
+  if (!project.music) return undefined;
+  const rel = project.music.file;
+  const local = join(projectDir, rel);
+  if (existsSync(local)) {
+    const outDir = join(VIDEO_DIR, 'public', 'music', project.id);
+    mkdirSync(outDir, { recursive: true });
+    const name = basename(rel);
+    copyFileSync(local, join(outDir, name));
+    return `music/${project.id}/${name}`;
   }
+  if (existsSync(join(VIDEO_DIR, 'public', rel))) return rel;
+  throw new Error(`música "${rel}" não encontrada (nem em projects/${project.id}/ nem em ${VIDEO_DIR}/public/)`);
+}
+
+/** Os 3D exigem uma faixa: usa a do projeto ou 60 s de silêncio. */
+function musicFile(project: Project, projectDir: string): string {
+  const staged = stageMusic(project, projectDir);
+  if (staged) return staged;
   const f = join(VIDEO_DIR, 'public', 'silence.mp3');
   if (!existsSync(f)) {
     mkdirSync(join(VIDEO_DIR, 'public'), { recursive: true });
-    // 60 s de silêncio: a composição exige uma faixa, o projeto não.
     run(['-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=mono', '-t', '60', '-c:a', 'libmp3lame', '-b:a', '32k', f]);
   }
   return 'silence.mp3';
@@ -146,7 +161,7 @@ export function planRender(
         colors: brand.colors,
         logo: brand.logo,
         aspect: project.aspect ?? '16:9',
-        music: project.music?.file,
+        music: stageMusic(project, projectDir),
       },
     };
   }
@@ -171,7 +186,7 @@ export function planRender(
         colors: brand.colors,
         logo: brand.logo,
         aspect: project.aspect ?? '9:16',
-        music: project.music?.file,
+        music: stageMusic(project, projectDir),
       },
     };
   }
@@ -180,7 +195,7 @@ export function planRender(
   const cues = resolveCues(project.cues, tl.words, tl.sceneStarts);
   const warnings = cues.fallbacks.map((p) => `cue "${p}": a palavra não apareceu na voz — usei o valor de reserva`);
   const props = deepMerge(
-    { ...base, lines, ...(def.music ? { music: musicFile(project) } : {}) },
+    { ...base, lines, ...(def.music ? { music: musicFile(project, projectDir) } : {}) },
     deepMerge(project.props ?? {}, cues.props),
   );
   return { composition: def.composition, warnings, lines, props };

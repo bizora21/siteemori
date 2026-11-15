@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gravar no telemóvel</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { padding-bottom: 90px; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 14px; }
+    button, .btn { min-height: 48px; font-size: 16px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; }
+    .btn input { display: none; }
+    .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+    .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .big-text { font-size: 17px; line-height: 1.5; margin: 6px 0 0; }
+    #pt { position: fixed; inset: 0; background: #000; color: #fff; z-index: 60; display: flex; flex-direction: column; }
+    #pt[hidden] { display: none; }
+    #pt-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 10px; background: #111; }
+    #pt-bar button { background: #222; color: #fff; border-color: #444; }
+    #pt-text { flex: 1; overflow: auto; padding: 18px 18px 40vh; font-weight: 700; line-height: 1.35; }
+    #pt-text .meta { font-size: 15px; font-weight: 500; color: #ffd27a; margin-bottom: 10px; }
+    #pt-text p { margin: 0 0 1em; }
+    .note { background: var(--bg); border: 1px dashed var(--line); border-radius: 8px; padding: 8px 10px; margin-top: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+
+  <div id="pt" hidden>
+    <div id="pt-bar">
+      <button id="pt-close">Fechar</button>
+      <button id="pt-small">A−</button>
+      <button id="pt-big">A+</button>
+      <button id="pt-play">▶ Rolar</button>
+      <input id="pt-speed" type="range" min="10" max="140" value="45" style="width:110px" />
+      <button id="pt-prev">←</button>
+      <button id="pt-next">→</button>
+    </div>
+    <div id="pt-text"></div>
+  </div>
+
+  <script src="m.js"></script>
+</body>
+</html>

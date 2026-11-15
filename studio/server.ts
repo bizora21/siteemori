@@ -4,14 +4,20 @@
 // feito pela MESMA CLI de sempre num processo filho — o dashboard não tem um
 // caminho de render paralelo, por isso o 3D sai com a qualidade de sempre.
 //
-// Segurança: só escuta em 127.0.0.1 (guarda chaves de API e voz de pessoas),
-// valida o cabeçalho Host (contra DNS rebinding) e a Origin nos pedidos que
-// alteram dados. Ids só aceitam [a-z0-9-] (sem path traversal).
+// Segurança: por defeito só escuta em 127.0.0.1 (guarda chaves de API e voz de
+// pessoas), valida o cabeçalho Host (contra DNS rebinding) e a Origin nos pedidos
+// que alteram dados. Ids só aceitam [a-z0-9-] (sem path traversal).
+//
+// Modo telemóvel (npm run studio -- --lan): escuta também na rede local, mas só
+// aceita pedidos de IPs privados E com um código secreto gerado a cada arranque
+// (vai no link/QR). É HTTP simples: usar só em Wi-Fi de confiança (a sua casa).
 
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { spawn, spawnSync } from 'node:child_process';
-import { createReadStream, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
-import { extname, join, normalize, resolve, sep } from 'node:path';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { networkInterfaces } from 'node:os';
+import { basename, extname, join, normalize, resolve, sep } from 'node:path';
 import { lintProject } from '../engine/claims';
 import { FFMPEG } from '../engine/ffmpeg';
 import { TEMPLATES } from '../engine/templates';
@@ -19,12 +25,46 @@ import { validateBrand, validateProject, type Brand, type Issue, type Project } 
 import { findHumanFile } from '../engine/voice';
 
 const PORT = Number(process.env.STUDIO_PORT ?? 4173);
+const LAN = process.argv.includes('--lan') || process.env.STUDIO_LAN === '1';
 const HOST = '127.0.0.1';
+const BIND = LAN ? '0.0.0.0' : HOST;
+const TOKEN = randomBytes(16).toString('hex');
 const ROOT = resolve('projects');
 const OUT = resolve('video3d/out');
 const PUBLIC = resolve('studio/public');
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const MAX_UPLOAD = 300 * 1024 * 1024;
+const MAX_FILE = 2 * 1024 * 1024 * 1024;
+
+const VIDEO_EXT = ['.mp4', '.mov', '.m4v', '.webm', '.mkv', '.avi', '.3gp'];
+const AUDIO_EXT = ['.wav', '.m4a', '.mp3', '.aac', '.ogg', '.opus', '.flac', '.amr', '.webm'];
+const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.heic'];
+
+/** Endereços IPv4 desta máquina na rede local (para o link do telemóvel). */
+function lanIps(): string[] {
+  return Object.values(networkInterfaces())
+    .flat()
+    .filter((n): n is NonNullable<typeof n> => Boolean(n) && n!.family === 'IPv4' && !n!.internal)
+    .map((n) => n.address);
+}
+const HOSTS = new Set([`${HOST}:${PORT}`, `localhost:${PORT}`, ...(LAN ? lanIps().map((ip) => `${ip}:${PORT}`) : [])]);
+
+const isLoopback = (a: string) => a === '127.0.0.1' || a === '::1' || a === '::ffff:127.0.0.1';
+const isPrivate = (a: string) => {
+  const ip = a.replace(/^::ffff:/, '');
+  return /^10\./.test(ip) || /^192\.168\./.test(ip) || /^172\.(1[6-9]|2\d|3[01])\./.test(ip) || /^169\.254\./.test(ip);
+};
+
+/** Só a chave do Pexels é lida do .env.local (as outras chaves não são do estúdio). */
+function pexelsKey(): string | undefined {
+  if (process.env.PEXELS_API_KEY) return process.env.PEXELS_API_KEY;
+  try {
+    const m = /^\s*PEXELS_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?\s*$/m.exec(readFileSync('.env.local', 'utf8'));
+    return m?.[1].trim();
+  } catch {
+    return undefined;
+  }
+}
 
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -32,6 +72,18 @@ const MIME: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.mp4': 'video/mp4',
+  '.mov': 'video/quicktime',
+  '.m4v': 'video/mp4',
+  '.webm': 'video/webm',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.m4a': 'audio/mp4',
+  '.aac': 'audio/aac',
+  '.ogg': 'audio/ogg',
+  '.flac': 'audio/flac',
   '.wav': 'audio/wav',
   '.mp3': 'audio/mpeg',
   '.srt': 'text/plain; charset=utf-8',
@@ -132,7 +184,7 @@ function detail(id: string) {
   else issues.push({ level: 'error', message: `marca "${project.brand}" não existe em projects/brands/` });
   const scenes = project.scenes.map((s) => {
     const f = findHumanFile(dir, s);
-    return { id: s.id, recorded: Boolean(f), kind: f ? (extname(f).toLowerCase() === '.mp4' ? 'video' : 'audio') : null };
+    return { id: s.id, recorded: Boolean(f), kind: f ? (s.presenter || VIDEO_EXT.includes(extname(f).toLowerCase()) ? 'video' : 'audio') : null };
   });
   const files: string[] = [];
   const packDir = join(OUT, id);
@@ -172,6 +224,155 @@ async function saveRecording(req: IncomingMessage, id: string, sceneId: string, 
   } finally {
     rmSync(tmp, { force: true });
   }
+}
+
+// ── envio de ficheiros (vídeos de telemóvel têm centenas de MB: vai direto para o disco) ──
+function streamToFile(req: IncomingMessage, dest: string, limit = MAX_FILE): Promise<number> {
+  return new Promise((ok, fail) => {
+    const out = createWriteStream(dest);
+    let size = 0;
+    let dead = false;
+    const abort = (e: Error) => {
+      if (dead) return;
+      dead = true;
+      out.destroy();
+      rmSync(dest, { force: true });
+      req.destroy();
+      fail(e);
+    };
+    req.on('data', (c: Buffer) => {
+      size += c.length;
+      if (size > limit) abort(new HttpError(413, 'ficheiro demasiado grande'));
+    });
+    req.on('error', abort);
+    out.on('error', abort);
+    out.on('finish', () => !dead && ok(size));
+    req.pipe(out);
+  });
+}
+
+const safeName = (n: string) => basename(n).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9._-]+/g, '-').slice(-80) || 'ficheiro';
+
+async function uploadFile(req: IncomingMessage, id: string, kind: string, sceneId: string | undefined, name: string): Promise<Record<string, unknown>> {
+  const dir = projectDir(id);
+  const ext = extname(name).toLowerCase();
+  const project = loadProject(id);
+  const scene = sceneId ? project.scenes.find((s) => s.id === sceneId) : undefined;
+  if (sceneId && !scene) throw new HttpError(404, 'cena não encontrada');
+
+  if (kind === 'presenter') {
+    if (!scene) throw new HttpError(400, 'falta a cena');
+    if (!VIDEO_EXT.includes(ext)) throw new HttpError(415, `formato de vídeo não suportado (${ext || 'sem extensão'})`);
+    mkdirSync(join(dir, 'presenter'), { recursive: true });
+    for (const e of VIDEO_EXT) rmSync(join(dir, 'presenter', `${scene.id}${e}`), { force: true });
+    const tmp = join(dir, `.upload-${Date.now()}${ext}`);
+    await streamToFile(req, tmp);
+    renameSync(tmp, join(dir, 'presenter', `${scene.id}${ext}`));
+    scene.presenter = `presenter/${scene.id}${ext}`;
+    writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+    return { path: scene.presenter };
+  }
+
+  if (kind === 'voice') {
+    if (!scene) throw new HttpError(400, 'falta a cena');
+    if (!AUDIO_EXT.includes(ext)) throw new HttpError(415, `formato de áudio não suportado (${ext || 'sem extensão'})`);
+    mkdirSync(join(dir, 'voice'), { recursive: true });
+    const tmp = join(dir, `.upload-${Date.now()}${ext}`);
+    try {
+      await streamToFile(req, tmp);
+      for (const e of EXTS) rmSync(join(dir, 'voice', `${scene.id}.${e}`), { force: true });
+      ffmpegConvert(tmp, ['-vn', '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le'], join(dir, 'voice', `${scene.id}.wav`));
+    } finally {
+      rmSync(tmp, { force: true });
+    }
+    return { path: `voice/${scene.id}.wav` };
+  }
+
+  if (kind === 'media' || kind === 'cutaway' || kind === 'scenemedia') {
+    if (![...IMAGE_EXT, ...VIDEO_EXT].includes(ext)) throw new HttpError(415, `formato de imagem/vídeo não suportado (${ext || 'sem extensão'})`);
+    mkdirSync(join(dir, 'media'), { recursive: true });
+    const file = `${scene ? scene.id + '-' : ''}${Date.now()}${ext}`;
+    await streamToFile(req, join(dir, 'media', file));
+    const path = `media/${file}`;
+    // O telemóvel liga o ficheiro à cena diretamente (o computador escolhe onde pô-lo na interface).
+    if (kind === 'cutaway' && scene) {
+      (scene.cutaways ??= []).push({ media: path, at: 1, duration: 2 });
+      writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+    } else if (kind === 'scenemedia' && scene) {
+      scene.media = path;
+      writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+    }
+    return { path };
+  }
+
+  if (kind === 'music') {
+    if (!AUDIO_EXT.includes(ext) || ext === '.webm') throw new HttpError(415, 'a música deve ser mp3, wav, m4a, ogg ou flac');
+    mkdirSync(join(dir, 'music'), { recursive: true });
+    const file = safeName(name);
+    await streamToFile(req, join(dir, 'music', file));
+    return { path: `music/${file}` };
+  }
+  throw new HttpError(400, 'tipo de envio desconhecido');
+}
+
+// ── Pexels (imagens e vídeos de apoio; NÃO tem música) ─────────────────────
+interface PexelsHit {
+  type: 'photos' | 'videos';
+  id: number;
+  thumb: string;
+  link: string;
+  author: string;
+  url: string;
+  duration?: number;
+  width: number;
+  height: number;
+}
+
+async function pexelsSearch(q: string, type: string, orientation: string): Promise<PexelsHit[]> {
+  const key = pexelsKey();
+  if (!key) throw new HttpError(503, 'PEXELS_API_KEY não está configurada em .env.local');
+  const o = ['portrait', 'landscape', 'square'].includes(orientation) ? orientation : 'portrait';
+  if (type === 'videos') {
+    const r = await fetch(`https://api.pexels.com/videos/search?query=${encodeURIComponent(q)}&orientation=${o}&size=medium&per_page=12`, { headers: { Authorization: key } });
+    if (!r.ok) throw new HttpError(502, `Pexels respondeu ${r.status}`);
+    const d = (await r.json()) as { videos?: { id: number; image: string; duration: number; url: string; user: { name: string }; video_files: { link: string; width: number; height: number; file_type: string }[] }[] };
+    return (d.videos ?? []).flatMap((v) => {
+      // O mais pequeno com pelo menos 720 px de largura (a CDN do Pexels é lenta).
+      const f = v.video_files.filter((x) => x.file_type === 'video/mp4' && x.width >= 720).sort((a, b) => a.width - b.width)[0];
+      return f ? [{ type: 'videos' as const, id: v.id, thumb: v.image, link: f.link, author: v.user.name, url: v.url, duration: v.duration, width: f.width, height: f.height }] : [];
+    });
+  }
+  const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&orientation=${o}&per_page=12`, { headers: { Authorization: key } });
+  if (!r.ok) throw new HttpError(502, `Pexels respondeu ${r.status}`);
+  const d = (await r.json()) as { photos?: { id: number; url: string; photographer: string; width: number; height: number; src: { large2x: string; medium: string } }[] };
+  return (d.photos ?? []).map((p) => ({ type: 'photos' as const, id: p.id, thumb: p.src.medium, link: p.src.large2x, author: p.photographer, url: p.url, width: p.width, height: p.height }));
+}
+
+/** Descarrega para a pasta do projeto (curl: a CDN do Pexels corta ligações longas e o fetch não recupera). */
+async function pexelsDownload(id: string, sceneId: string | undefined, hit: { type: string; link: string; author: string; url: string }): Promise<{ path: string }> {
+  let u: URL;
+  try {
+    u = new URL(hit.link);
+  } catch {
+    throw new HttpError(400, 'ligação inválida');
+  }
+  // Só descarrega do Pexels (nada de pedidos a endereços arbitrários).
+  if (u.protocol !== 'https:' || !(u.hostname === 'pexels.com' || u.hostname.endsWith('.pexels.com'))) throw new HttpError(400, 'só se descarrega do Pexels');
+  const project = loadProject(id);
+  const ext = hit.type === 'videos' ? '.mp4' : '.jpg';
+  const dir = join(projectDir(id), 'media');
+  mkdirSync(dir, { recursive: true });
+  const file = `${sceneId ? sceneId + '-' : ''}pexels-${Date.now()}${ext}`;
+  const dest = join(dir, file);
+  await new Promise<void>((ok, fail) => {
+    const c = spawn('curl', ['-sL', '--retry', '3', '--retry-all-errors', '--speed-limit', '2000', '--speed-time', '60', '--max-time', '900', '--max-filesize', String(150 * 1024 * 1024), '-o', dest, hit.link]);
+    c.on('close', (code) => (code === 0 && existsSync(dest) && statSync(dest).size > 5000 ? ok() : (rmSync(dest, { force: true }), fail(new HttpError(502, 'falhou o descarregamento do Pexels')))));
+  });
+  // A licença do Pexels dispensa crédito, mas guardamos a origem (prova e boa prática).
+  const credit = `${hit.type === 'videos' ? 'Vídeo' : 'Foto'}: ${hit.author} (Pexels) ${hit.url}`;
+  project.credits = [...new Set([...(project.credits ?? []), credit])];
+  writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+  return { path: `media/${file}` };
 }
 
 // ── fila de trabalhos (um de cada vez: a máquina é fraca) ─────────────────
@@ -247,8 +448,30 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
 
   // Defesa contra DNS rebinding e pedidos de outros sites.
   const host = req.headers.host ?? '';
-  if (host !== `${HOST}:${PORT}` && host !== `localhost:${PORT}`) throw new HttpError(403, 'host não permitido');
+  if (!HOSTS.has(host)) throw new HttpError(403, 'host não permitido');
   if (method !== 'GET' && req.headers.origin && req.headers.origin !== `http://${host}`) throw new HttpError(403, 'origem não permitida');
+
+  // Fora deste computador: só em modo --lan, só IPs privados e só com o código secreto.
+  const remote = req.socket.remoteAddress ?? '';
+  const local = isLoopback(remote);
+  if (!local) {
+    if (!LAN || !isPrivate(remote)) throw new HttpError(403, 'acesso só neste computador');
+    const cookie = /(?:^|;\s*)st=([a-f0-9]+)/.exec(req.headers.cookie ?? '')?.[1];
+    const given = url.searchParams.get('t');
+    if (given === TOKEN) res.setHeader('Set-Cookie', `st=${TOKEN}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200`);
+    else if (cookie !== TOKEN) throw new HttpError(401, 'precisa do link com o código (veja o terminal do computador)');
+  }
+
+  if (parts[0] === 'api' && parts[1] === 'info') {
+    // O código só é entregue a quem está no próprio computador.
+    return json(res, { lan: LAN, urls: local && LAN ? lanIps().map((ip) => `http://${ip}:${PORT}/m.html?t=${TOKEN}`) : [], pexels: Boolean(pexelsKey()) });
+  }
+
+  if (parts[0] === 'api' && parts[1] === 'pexels' && parts[2] === 'search' && method === 'GET') {
+    const q = url.searchParams.get('q')?.trim();
+    if (!q || q.length > 80) throw new HttpError(400, 'pesquisa inválida');
+    return json(res, await pexelsSearch(q, url.searchParams.get('type') ?? 'photos', url.searchParams.get('orientation') ?? 'portrait'));
+  }
 
   if (parts[0] !== 'api' && parts[0] !== 'media') {
     const rel = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
@@ -333,6 +556,45 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       return json(res, { job: job.id }, 202);
     }
 
+    // GET /api/projects/:id/file?p=media/x.jpg — pré-visualização (só estas subpastas)
+    if (sub === 'file' && method === 'GET') {
+      const p = url.searchParams.get('p') ?? '';
+      if (!/^(media|presenter|music|voice)\//.test(p)) throw new HttpError(400, 'caminho inválido');
+      return sendFile(req, res, inside(projectDir(id), ...p.split('/')));
+    }
+
+    // POST /api/projects/:id/upload?kind=presenter|voice|media|music&scene=<id>&name=<ficheiro>
+    if (sub === 'upload' && method === 'POST') {
+      const kind = url.searchParams.get('kind') ?? '';
+      const scene = url.searchParams.get('scene');
+      const out = await uploadFile(req, id, kind, scene ? needId(scene) : undefined, url.searchParams.get('name') ?? '');
+      return json(res, { ok: true, ...out });
+    }
+
+    // POST /api/projects/:id/pexels  { type, link, author, url, scene }
+    if (sub === 'pexels' && method === 'POST') {
+      const b = JSON.parse((await readBody(req)).toString() || '{}') as { type?: string; link?: string; author?: string; url?: string; scene?: string };
+      if (!b.link || !b.author || !b.url) throw new HttpError(400, 'faltam dados da imagem');
+      return json(res, { ok: true, ...(await pexelsDownload(id, b.scene ? needId(b.scene) : undefined, { type: b.type ?? 'photos', link: b.link, author: b.author, url: b.url })) });
+    }
+
+    // PATCH /api/projects/:id/scene/:scene  { location?, shot?, narration? } — o telemóvel edita só isto
+    if (sub === 'scene' && parts[4] && method === 'PATCH') {
+      const project = loadProject(id);
+      const s = project.scenes.find((x) => x.id === needId(parts[4]));
+      if (!s) throw new HttpError(404, 'cena não encontrada');
+      const b = JSON.parse((await readBody(req)).toString() || '{}') as { location?: string; shot?: string; narration?: string };
+      for (const k of ['location', 'shot', 'narration'] as const) {
+        if (typeof b[k] === 'string') {
+          const v = b[k]!.trim().slice(0, 2000);
+          if (k === 'narration' && !v) throw new HttpError(400, 'a narração não pode ficar vazia');
+          (s as unknown as Record<string, unknown>)[k] = v || undefined;
+        }
+      }
+      writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+      return json(res, { ok: true });
+    }
+
     if ((sub === 'voice' || sub === 'presenter') && parts[4]) {
       const scene = needId(parts[4]);
       if (method === 'POST') {
@@ -369,8 +631,15 @@ createServer((req, res) => {
     if (res.headersSent) return void res.end();
     json(res, { error: e instanceof Error ? e.message : String(e) }, status);
   });
-}).listen(PORT, HOST, () => {
-  console.log(`\n  Estúdio do motor de vídeo: http://${HOST}:${PORT}\n  (só acessível a partir deste computador; Ctrl+C para sair)\n`);
+}).listen(PORT, BIND, () => {
+  console.log(`\n  Estúdio do motor de vídeo: http://${HOST}:${PORT}`);
+  if (LAN) {
+    console.log('\n  MODO TELEMÓVEL ligado. No telemóvel (mesmo Wi-Fi), abra um destes links:');
+    for (const ip of lanIps()) console.log(`    http://${ip}:${PORT}/m.html?t=${TOKEN}`);
+    console.log('  O código vale só até fechar este programa. HTTP simples: use só no Wi-Fi da sua casa.\n');
+  } else {
+    console.log('  (só acessível a partir deste computador; para usar o telemóvel: npm run studio -- --lan)\n');
+  }
 });
 
 // Para o `tsc` ver este ficheiro como módulo mesmo sem exports.

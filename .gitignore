@@ -69,3 +69,10 @@ package-lock.json
 /projects/*/voice/
 /video3d/public/silence.mp3
 /video3d/public/media/
+
+# Vídeos de pessoas, imagens e música dos projetos: dados pessoais e licenças que proíbem redistribuir
+# (ex.: FiftySounds). O repositório é público. Fica só o project.json.
+/projects/*/presenter/
+/projects/*/media/
+/projects/*/music/
+/video3d/public/music/

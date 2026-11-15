@@ -39,12 +39,14 @@ export function writePublishPack(
   const description =
     project.publish?.description ??
     `${project.title}\n\n${project.scenes[0].narration.trim()}\n\n${cta}: ${site}`;
+  const credits = [project.music?.attribution, ...(project.credits ?? [])].filter((c): c is string => Boolean(c && c.trim()));
+  const creditBlock = credits.length ? `\n\n${credits.join('\n')}` : '';
   const chapters = project.scenes
     .map((s, i) => `${srtTime(sceneStarts[i] ?? 0).slice(3, 8)} ${s.title ?? s.id}`)
     .join('\n');
   writeFileSync(
     join(outDir, `${project.id}-publicacao.md`),
-    `# ${project.title}\n\n## Descrição\n\n${description}\n\n## Hashtags\n\n${tags.join(' ')}\n\n## Capítulos\n\n${chapters}\n`,
+    `# ${project.title}\n\n## Descrição\n\n${description}${creditBlock}\n\n## Hashtags\n\n${tags.join(' ')}\n\n## Capítulos\n\n${chapters}\n`,
   );
   files.push(`${project.id}-publicacao.md`);
   return files;
