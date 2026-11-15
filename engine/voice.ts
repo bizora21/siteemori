@@ -14,10 +14,10 @@ import { join } from 'node:path';
 import { cleanNarration, synthesize, type WordTiming } from '../lib/social/tts';
 import { piperAvailable, synthesizePiper } from '../lib/social/piper';
 import type { Locale as AppLocale } from '../i18n/config';
-import { cleanVoice, duration, speechBounds, speechIntervals, toWav, trimWav, type Interval } from './ffmpeg';
+import { cleanVoice, duration, hasAudioStream, normalizeAudio, silence, speechBounds, speechIntervals, toWav, trimWav, type Interval } from './ffmpeg';
 import type { Locale, Project, Scene, VoiceMode } from './types';
 
-export type VoiceSource = 'human' | 'edge' | 'elevenlabs' | 'piper';
+export type VoiceSource = 'human' | 'edge' | 'elevenlabs' | 'piper' | 'clip';
 
 export interface SceneAudio {
   scene: string;
@@ -200,8 +200,34 @@ export interface VoiceContext {
   mode: VoiceMode;
 }
 
+/** Cena real (kind "clip"): o áudio é o som original do vídeo; sem pista de áudio, fica em silêncio. */
+function clipScene(ctx: VoiceContext, scene: Scene): SceneAudio {
+  mkdirSync(ctx.cacheDir, { recursive: true });
+  const file = scene.presenter ? join(ctx.projectDir, scene.presenter) : null;
+  if (!file || !existsSync(file)) {
+    const wav = join(ctx.cacheDir, `${scene.id}-clip-vazio.wav`);
+    silence(1.5, wav);
+    console.warn(`  ⚠ cena real "${scene.id}" ainda sem vídeo: ficou 1,5 s em silêncio (carregue o vídeo da cena)`);
+    return { scene: scene.id, wav, words: [], duration: 1.5, source: 'clip', cached: false };
+  }
+  const st = statSync(file);
+  const wav = join(ctx.cacheDir, `${scene.id}-clip-${fingerprint(['clip-v1', st.size, Math.round(st.mtimeMs)])}.wav`);
+  if (!existsSync(wav)) {
+    const seconds = duration(file);
+    if (hasAudioStream(file)) normalizeAudio(file, wav, seconds);
+    else {
+      silence(seconds, wav);
+      console.warn(`  ⚠ cena real "${scene.id}": o vídeo não tem som (fica em silêncio)`);
+    }
+  }
+  return { scene: scene.id, wav, words: [], duration: duration(wav), source: 'clip', cached: true };
+}
+
 export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<SceneAudio> {
   mkdirSync(ctx.cacheDir, { recursive: true });
+  // Cena real: o som é o do próprio vídeo. Não há texto, voz sintética nem legendas.
+  if (scene.kind === 'clip') return clipScene(ctx, scene);
+
   const text = cleanNarration(scene.narration);
   const human = ctx.mode === 'synthetic' ? null : findHumanFile(ctx.projectDir, scene);
 

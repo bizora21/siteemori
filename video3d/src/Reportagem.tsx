@@ -273,7 +273,7 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* A foto animada pela voz (versão "foto"): canto com cenário, centro sem cenário */}
-      {props.avatar && (
+      {props.avatar && !scene?.clip && (
         <PhotoBubble
           src={props.avatar.src}
           y={props.avatar.y}

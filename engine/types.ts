@@ -38,6 +38,11 @@ export interface Scene {
   source?: string;
   /** Gravação humana desta cena (caminho relativo à pasta do projeto). */
   audio?: string;
+  /**
+   * "clip" = CENA REAL: o vídeo (em `presenter`) entra com o SEU PRÓPRIO som, sem narração nem legendas (ex.: imagens
+   * de uma marcha, uma entrevista). Por defeito a cena é narrada: texto + voz (gravada ou sintética).
+   */
+  kind?: 'clip';
   /** Nome da pessoa que grava (informativo: aparece na folha de gravação). */
   voice?: string;
   /**
@@ -275,7 +280,8 @@ export function validateProject(p: unknown): Issue[] {
     if (!isStr(s?.id) || !/^[a-z0-9][a-z0-9-]*$/.test(s.id)) out.push({ level: 'error', message: 'cena sem id válido (minúsculas, números, hífens)' });
     else if (ids.has(s.id)) out.push({ level: 'error', scene: s.id, message: 'id de cena repetido' });
     else ids.add(s.id);
-    if (!isStr(s?.narration)) out.push({ level: 'error', scene: s?.id, message: 'cena sem narração' });
+    if (s?.kind !== 'clip' && !isStr(s?.narration)) out.push({ level: 'error', scene: s?.id, message: 'cena sem narração (ou escolha o tipo "cena real")' });
+    if (s?.kind === 'clip' && x.template !== 'reportagem') out.push({ level: 'error', scene: s?.id, message: '"cena real" só existe no vídeo personalizado' });
   }
   const def = x.template ? TEMPLATES[x.template] : undefined;
   if (def?.scenes && x.scenes.length !== def.scenes) {

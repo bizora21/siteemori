@@ -277,14 +277,48 @@ function simpleScene(p, s, i, st) {
       h('button', { onclick: () => openPexels(s.id, (path) => { (curScene(s.id).cutaways ??= []).push({ media: path }); dirty(); renderEditor(); }) }, '+ Procurar no Pexels (paisagens, animais…)')),
   );
 
+  // Tipo de cena: narrada (texto + voz + cenários) ou cena real (o vídeo com o som dele)
+  const isClip = s.kind === 'clip';
+  const setType = (clip) => {
+    if (isClip === clip) return;
+    if (clip) {
+      const loses = (s.narration.trim() && !/Escreva aqui/.test(s.narration)) || list.length;
+      if (loses && !confirm('Passar a "cena real" tira o texto e os cenários desta cena (o vídeo traz o seu próprio som). Continuar?')) return;
+      s.kind = 'clip';
+      s.narration = '';
+      s.cutaways = [];
+      s.media = undefined;
+    } else {
+      s.kind = undefined;
+      if (!s.narration) s.narration = 'Escreva aqui o que diz nesta cena.';
+    }
+    dirty();
+    renderEditor();
+  };
+  const typeBar = h('div', { class: 'row', style: 'gap:6px;margin:2px 0' },
+    h('span', { class: 'muted' }, 'Tipo de cena:'),
+    h('button', { class: 'chip' + (!isClip ? ' on' : ''), title: 'Escreve o texto e eu narro (a minha voz gravada, ou a sintética), com cenários por baixo', onclick: () => setType(false) }, '🎙 Narrada'),
+    h('button', { class: 'chip' + (isClip ? ' on' : ''), title: 'Um vídeo real, com o som original dele (multidão, ambiente, uma entrevista). Sem narração nem legendas', onclick: () => setType(true) }, '🎬 Cena real (som original)'));
+  const clipCard = h('div', { class: 'zone' },
+    h('b', {}, '🎬 Cena real (com o som dela)'),
+    h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'O vídeo entra no vídeo final com o seu som original (multidão, ambiente, alguém a falar). Não leva narração nem legendas; só se acerta o volume.'),
+    h('div', { class: 'rec-row' },
+      h('button', { class: 'primary', onclick: () => uploadScene('presenter', s.id, 'video/*', 'Vídeo') }, st?.recorded ? 'Trocar o vídeo' : 'Carregar o vídeo da cena real'),
+      st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar o vídeo')),
+    st?.recorded
+      ? h('div', { style: 'margin-top:8px' }, h('video', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:190px;border-radius:8px' }), h('div', { class: 'muted', style: 'font-size:13px' }, `guardado no PC: ${st.file}`))
+      : h('p', { style: 'color:var(--warn);margin:8px 0 0' }, '⚠ Falta o vídeo: sem ele esta cena fica 1,5 s em silêncio.'),
+  );
+
   return h('section', { class: 'card scene' },
     h('header', {},
       h('span', { class: 'no' }, String(i + 1).padStart(2, '0')),
-      h('b', {}, s.id), status, est,
+      h('b', {}, s.id), isClip ? h('span', { class: 'pill ok' }, '🎬 cena real') : status, !isClip && est,
       p.scenes.length > 1 && h('button', { class: 'danger', style: 'margin-left:auto;padding:2px 10px', onclick: () => { if (!confirm(`Remover a cena "${s.id}"?`)) return; p.scenes.splice(i, 1); dirty(); renderEditor(); } }, 'Remover cena')),
-    field('① O que diz (texto)', s.narration, (v) => (s.narration = v), { area: true, rows: 3, after: () => (est.textContent = `${words(s.narration)} palavras · ≈ ${Math.max(1, Math.round(words(s.narration) / 2.6))} s`) }),
-    rec,
-    scenery,
+    typeBar,
+    isClip ? clipCard : field('① O que diz (texto)', s.narration, (v) => (s.narration = v), { area: true, rows: 3, after: () => (est.textContent = `${words(s.narration)} palavras · ≈ ${Math.max(1, Math.round(words(s.narration) / 2.6))} s`) }),
+    !isClip && rec,
+    !isClip && scenery,
     h('details', {},
       h('summary', {}, 'Mais opções desta cena (local, nota)'),
       h('div', { class: 'grid2', style: 'margin-top:10px' },

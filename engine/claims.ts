@@ -11,7 +11,8 @@ export function lintProject(project: Project, brand: Brand): Issue[] {
   const issues: Issue[] = [];
 
   for (const scene of project.scenes) {
-    const text = `${scene.title ?? ''} ${scene.narration}`;
+    if (scene.kind === 'clip') continue; // cena real: sem texto para verificar
+    const text = `${scene.title ?? ''} ${scene.narration ?? ''}`;
     for (const rule of brand.claims.forbidden) {
       if (new RegExp(rule.pattern, 'iu').test(text)) {
         issues.push({ level: 'error', finalOnly: true, scene: scene.id, message: `proibido pela marca (${rule.pattern}): ${rule.reason}` });

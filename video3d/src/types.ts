@@ -147,6 +147,8 @@ export interface ReportagemProps {
     media?: SceneMediaProps;
     /** O rosto: vídeo do apresentador. Ecrã inteiro sem cenário; bolha com cenário. */
     face?: SceneMediaProps;
+    /** Cena real: o vídeo ocupa o ecrã com o seu próprio som (sem foto animada por cima). */
+    clip?: boolean;
     cutaways?: SceneMediaProps[];
   }[];
   host?: { name: string; role?: string };

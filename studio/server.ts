@@ -167,7 +167,9 @@ const projectFile = (id: string) => join(projectDir(id), 'project.json');
 
 function loadProject(id: string): Project {
   if (!existsSync(projectFile(id))) throw new HttpError(404, 'projeto não encontrado');
-  return JSON.parse(readFileSync(projectFile(id), 'utf8')) as Project;
+  const p = JSON.parse(readFileSync(projectFile(id), 'utf8')) as Project;
+  for (const s of p.scenes ?? []) if (s && typeof s.narration !== 'string') s.narration = '';
+  return p;
 }
 
 function loadBrands(): Brand[] {

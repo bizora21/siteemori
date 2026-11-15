@@ -52,6 +52,8 @@ function show(issues: Issue[]): boolean {
 function open(idOrPath: string): { project: Project; brand: Brand; dir: string } {
   const { file, dir } = locate(idOrPath);
   const project = load<Project>(file);
+  // Uma cena real não tem texto: garante que a narração é sempre uma string (vazia), para nada rebentar.
+  for (const s of project.scenes ?? []) if (s && typeof s.narration !== 'string') s.narration = '';
   const pIssues = validateProject(project);
   if (show(pIssues)) throw new Error('projeto inválido');
   const brandFile = join(ROOT, 'brands', `${project.brand}.json`);

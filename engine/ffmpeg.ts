@@ -13,6 +13,20 @@ export function run(args: string[]): void {
   if (r.status !== 0) throw new Error(`ffmpeg falhou: ${(r.stderr ?? '').slice(-800)}`);
 }
 
+/** O ficheiro tem pista de áudio? */
+export function hasAudioStream(file: string): boolean {
+  const r = spawnSync(FFMPEG, ['-hide_banner', '-i', file], { encoding: 'utf8' });
+  return /Stream #\d+:\d+.*: Audio:/.test(r.stderr ?? '');
+}
+
+/**
+ * Prepara o som ORIGINAL de uma cena real: só normaliza o volume (-16 LUFS) e iguala a duração à do
+ * vídeo. Não se limpa ruído nem se cortam silêncios: o ambiente (multidão, vento) faz parte da cena.
+ */
+export function normalizeAudio(input: string, outWav: string, seconds: number): void {
+  run(['-i', input, '-vn', '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11,apad', '-t', seconds.toFixed(3), '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', outWav]);
+}
+
 /** Duração real do ficheiro, em segundos (o ffmpeg escreve-a no stderr). */
 export function duration(file: string): number {
   const r = spawnSync(FFMPEG, ['-i', file, '-f', 'null', '-'], { encoding: 'utf8' });

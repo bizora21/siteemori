@@ -224,3 +224,17 @@ vídeo sem elas, à parte (`--version=semlegendas`), para comparar. Vale para to
 - **Render:** usa uma pasta `public` mínima em `.engine-cache/render-public/<id>/` (fontes, logótipos e só os ficheiros do vídeo) e um limite de
   3 min para abrir o navegador. Antes, o Remotion copiava dezenas de MB de todos os vídeos e falhava com "Timed out after 30000 while setting
   up the headless browser". Nada se apaga de `video3d/public`.
+
+## Tipos de cena (como o motor percebe cada cena)
+
+O tipo escolhe-se no cartão da cena ("Tipo de cena") e determina de onde vem o som e o que aparece:
+
+| tipo | o que é | som | texto e legendas |
+|---|---|---|---|
+| 🎙 **Narrada** (por defeito) | texto + voz + cenários por baixo | a sua gravação (②), ou a voz **sintética** se não houver gravação | sim |
+| 🎬 **Cena real** (`"kind": "clip"`) | um vídeo seu, em ecrã inteiro | o **som original do vídeo** (só se acerta o volume a −16 LUFS; sem limpar ruído) | não |
+
+- Num vídeo carregado em **③ Cenários** o som é sempre retirado (serve de imagem por baixo da voz). Para manter o som, use "Cena real".
+- Numa cena real sem vídeo, a cena fica 1,5 s em silêncio e há um aviso; um vídeo sem pista de áudio fica em silêncio, com aviso.
+- Em "Cena real" não entram a foto animada nem o rosto em bolha: o vídeo ocupa o ecrã.
+- Em `project.json`: `{ "id": "marcha", "kind": "clip", "presenter": "presenter/marcha.mp4" }` (a narração é opcional e ignorada).

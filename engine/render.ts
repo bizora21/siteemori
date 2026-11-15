@@ -124,7 +124,8 @@ function stageFile(project: Project, projectDir: string, sceneId: string, rel: s
 function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[], showFaceVideo = true): StagedScene[] {
   const reportagem = project.template === 'reportagem';
   return project.scenes.map((scene, i) => {
-    const wantPresenter = Boolean(scene.presenter) && audios[i].source === 'human';
+    const isClip = scene.kind === 'clip';
+    const wantPresenter = Boolean(scene.presenter) && (audios[i].source === 'human' || audios[i].source === 'clip');
     const end = tl.sceneStarts[i + 1] ?? tl.lead + tl.voiceSeconds + 2;
     const asMedia = (f: { src: string; image: boolean; clip: number }, fit?: 'cover' | 'contain'): SceneMedia =>
       f.image
@@ -137,11 +138,11 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
     if (reportagem) {
       // O rosto e o cenário são camadas separadas: com cenário, o rosto passa a bolha.
       // Nas versões "foto" e "só voz" o vídeo do rosto não aparece (o áudio dele continua a ser a voz da cena).
-      if (wantPresenter && showFaceVideo) {
+      if (wantPresenter && (showFaceVideo || isClip)) {
         const f = tryStage(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
         if (f && !f.image) face = asFace(f);
       }
-      if (scene.media) {
+      if (scene.media && !isClip) {
         const f = tryStage(project, projectDir, scene.id, scene.media, scene.id);
         if (f) main = asMedia(f, scene.mediaFit);
       }
@@ -156,7 +157,7 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
 
     // Cenários em sequência durante a fala. Sem tempos indicados, repartem a cena em partes iguais
     // (o utilizador só escolhe as imagens; ajustar os tempos é opcional).
-    const list = scene.cutaways ?? [];
+    const list = isClip ? [] : (scene.cutaways ?? []);
     const anchored = list.some((c) => c.atWord !== undefined);
     const auto = !anchored && list.length > 0 && list.every((c) => c.at === undefined);
 
@@ -277,6 +278,7 @@ function planRenderInner(
           location: s.location,
           media: media[i].main ?? undefined,
           face: media[i].face ?? undefined,
+          clip: s.kind === 'clip' ? true : undefined,
           cutaways: media[i].cutaways,
         })),
         host: project.host?.name?.trim() && !/^(seu nome|nome)$/i.test(project.host.name.trim()) ? project.host : undefined,
