@@ -1,0 +1,17 @@
+{
+  "id": "biblia-por-onde-comecar-3d",
+  "brand": "emori",
+  "template": "verse3d",
+  "title": "Bíblia: por onde começar a ler (3D, sem câmara)",
+  "locale": "pt-br",
+  "voice": { "mode": "auto", "rate": "-4%" },
+  "cta": "Baixe na Play Store",
+  "site": "Emori · aplicativo bíblico",
+  "props": { "title": ["POR ONDE", "COMEÇAR?"], "ctaArrow": false, "skipIntro": false },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "Quer ler a Bíblia, mas não sabe por onde começar? Comece pelo Evangelho de João. É curto, e mostra quem foi Jesus. Depois, leia os Salmos. E leia pouco, todo dia: um capítulo já basta. Na Emori, você aprende a Bíblia pergunta a pergunta. Baixe na Play Store e comece hoje."
+    }
+  ]
+}
