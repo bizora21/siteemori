@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import { cleanNarration, synthesize, type WordTiming } from '../lib/social/tts';
 import { piperAvailable, synthesizePiper } from '../lib/social/piper';
 import type { Locale as AppLocale } from '../i18n/config';
-import { cleanVoice, duration, speechBounds, toWav } from './ffmpeg';
+import { cleanVoice, duration, speechBounds, speechIntervals, toWav, type Interval } from './ffmpeg';
 import type { Locale, Project, Scene, VoiceMode } from './types';
 
 export type VoiceSource = 'human' | 'edge' | 'elevenlabs' | 'piper';
@@ -77,6 +77,104 @@ export function alignProportional(text: string, totalSeconds: number): WordTimin
   return words;
 }
 
+/**
+ * Tempos por palavra ancorados nas PAUSAS reais da gravação. Reparte as palavras só
+ * pelo tempo de fala (sem as pausas) e devolve-as ao tempo real, por isso as pausas de
+ * fim de frase deixam de acumular desvio. Sem pausas detetáveis, cai no método proporcional.
+ */
+export function alignWithPauses(text: string, speech: Interval[], totalSeconds: number): WordTiming[] {
+  const spoken = speech.reduce((a, s) => a + (s.end - s.start), 0);
+  // Ruído de fundo constante ou fala sem pausas: não há âncoras fiáveis.
+  if (speech.length < 2 || spoken < 0.3 * totalSeconds) return alignProportional(text, totalSeconds);
+  const tokens = text.split(/\s+/).filter(Boolean);
+  const weight = (t: string) => Math.max(2, t.replace(/[^\p{L}\p{N}]/gu, '').length);
+  const cum: number[] = [0]; // peso acumulado antes de cada palavra
+  tokens.forEach((t) => cum.push(cum[cum.length - 1] + weight(t)));
+  const total = cum[cum.length - 1] || 1;
+
+  /** Trechos de fala recortados a uma janela de tempo real. */
+  const clip = (a: number, b: number): Interval[] =>
+    speech.map((s) => ({ start: Math.max(s.start, a), end: Math.min(s.end, b) })).filter((s) => s.end - s.start > 1e-6);
+  /** Posição na linha do tempo só-de-fala de `iv` → tempo real. atEnd: no limite de um trecho, fica no fim dele. */
+  const toReal = (iv: Interval[], sp: number, atEnd: boolean): number => {
+    let rest = sp;
+    for (const s of iv) {
+      const len = s.end - s.start;
+      if (rest < len || (atEnd && rest <= len + 1e-9)) return s.start + Math.min(rest, len);
+      rest -= len;
+    }
+    return iv[iv.length - 1].end;
+  };
+
+  // 1) Previsão (só pelo tamanho das palavras) de onde cada pausa deveria cair. É refeita a partir
+  //    de cada âncora: assim, uma pausa longa antes não desloca a previsão das seguintes.
+  const lastFala = speech[speech.length - 1].end;
+  let baseK = -1; // última palavra já ancorada
+  let baseT = speech[0].start; // onde começa a fala seguinte a essa âncora
+  const predictEnd = (k: number) => {
+    const iv = clip(baseT, lastFala);
+    const sp = iv.reduce((s, x) => s + (x.end - x.start), 0);
+    const w = total - cum[baseK + 1] || 1;
+    return iv.length ? toReal(iv, ((cum[k + 1] - cum[baseK + 1]) / w) * sp, true) : lastFala;
+  };
+
+  // 2) Cada pausa só vira âncora se coincidir com uma pontuação do texto (fim de frase ou vírgula),
+  //    senão é uma hesitação a meio de uma frase e fica de fora.
+  const boundaries = tokens.map((t, k) => ({ k, strong: /[.!?]$/.test(t), weak: /[,;:—]$/.test(t) })).filter((b) => b.strong || b.weak);
+  const anchors: { after: number; t0: number; t1: number }[] = []; // tokens [0..after] antes da pausa
+  let lastK = -1;
+  for (let i = 0; i + 1 < speech.length; i++) {
+    const gapStart = speech[i].end;
+    const gapEnd = speech[i + 1].start;
+    const gap = gapEnd - gapStart;
+    let best: { k: number; err: number } | null = null;
+    for (const b of boundaries) {
+      if (b.k <= lastK || b.k >= tokens.length - 1) continue;
+      if (!b.strong && gap < 0.4) continue; // vírgula: só com pausa nítida
+      if (!b.strong && gap >= 0.6) continue; // pausa longa = fim de frase, não vírgula
+      const err = Math.abs(predictEnd(b.k) - gapStart);
+      if (err < 1.6 && (!best || err < best.err)) best = { k: b.k, err };
+    }
+    if (best) {
+      anchors.push({ after: best.k, t0: gapStart, t1: gapEnd });
+      lastK = best.k;
+      baseK = best.k;
+      baseT = gapEnd;
+    }
+  }
+
+  // 3) Entre âncoras, reparte as palavras pelo tempo de fala dessa janela.
+  const words: WordTiming[] = [];
+  const spans = [{ from: 0, to: tokens.length, a: speech[0].start, b: speech[speech.length - 1].end }];
+  if (anchors.length) {
+    spans.length = 0;
+    let from = 0;
+    let a = speech[0].start;
+    for (const an of anchors) {
+      spans.push({ from, to: an.after + 1, a, b: an.t0 });
+      from = an.after + 1;
+      a = an.t1;
+    }
+    spans.push({ from, to: tokens.length, a, b: speech[speech.length - 1].end });
+  }
+  for (const sp of spans) {
+    const iv = clip(sp.a, sp.b);
+    if (!iv.length || sp.to <= sp.from) continue;
+    const spokenHere = iv.reduce((s, x) => s + (x.end - x.start), 0);
+    const base = cum[sp.from];
+    const w = cum[sp.to] - base || 1;
+    for (let k = sp.from; k < sp.to; k++) {
+      words.push({
+        text: tokens[k],
+        start: toReal(iv, ((cum[k] - base) / w) * spokenHere, false),
+        end: toReal(iv, ((cum[k + 1] - base) / w) * spokenHere, true),
+      });
+    }
+  }
+  // Rede de segurança: se algo correu mal na contagem, volta ao método simples.
+  return words.length === tokens.length ? words : alignProportional(text, totalSeconds);
+}
+
 /** O Edge devolve palavras sem pontuação; repõe-na a partir do texto original. */
 function restorePunctuation(words: WordTiming[], text: string): void {
   const tokens = text.split(/\s+/).filter(Boolean);
@@ -115,7 +213,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   if (human) {
     const st = statSync(human);
     const isPresenter = Boolean(scene.presenter);
-    const key = fingerprint(['human', text, st.size, Math.round(st.mtimeMs), isPresenter]);
+    const key = fingerprint(['human-v2', text, st.size, Math.round(st.mtimeMs), isPresenter]);
     const wav = join(ctx.cacheDir, `${scene.id}-${key}.wav`);
     const meta = `${wav}.json`;
     if (existsSync(wav) && existsSync(meta)) {
@@ -125,12 +223,14 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
     // a boca e o som ficarem em sincronia); as palavras alinham-se só à parte falada.
     cleanVoice(human, wav, { trim: !isPresenter });
     const dur = duration(wav);
+    // Palavras ancoradas nas pausas reais da gravação (sem pausas detetáveis, cai no método proporcional).
+    const speech = speechIntervals(wav);
     let words: WordTiming[];
     if (isPresenter) {
       const b = speechBounds(wav);
-      words = alignProportional(text, b.end - b.start).map((w) => ({ ...w, start: w.start + b.start, end: w.end + b.start }));
+      words = alignWithPauses(text, speech.filter((s) => s.end > b.start && s.start < b.end), b.end - b.start);
     } else {
-      words = alignProportional(text, dur);
+      words = alignWithPauses(text, speech, dur);
     }
     const out: SceneAudio = { scene: scene.id, wav, words, duration: dur, source: 'human', cached: false };
     writeFileSync(meta, JSON.stringify(out));

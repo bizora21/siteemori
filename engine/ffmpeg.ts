@@ -82,3 +82,29 @@ export function concatToMp3(wavs: string[], listFile: string, outMp3: string): v
   writeFileSync(listFile, wavs.map((w) => `file '${resolve(w).replace(/\\/g, '/').replace(/'/g, "'\\''")}'`).join('\n'));
   run(['-f', 'concat', '-safe', '0', '-i', listFile, '-c:a', 'libmp3lame', '-b:a', '128k', outMp3]);
 }
+
+export interface Interval {
+  start: number;
+  end: number;
+}
+
+/**
+ * Trechos com fala (o complemento dos silêncios) num WAV. Os silêncios reais da
+ * gravação (fim de frase, respirações) são as âncoras do alinhamento das palavras.
+ */
+export function speechIntervals(wav: string, opts: { noiseDb?: number; minSilence?: number } = {}): Interval[] {
+  const total = duration(wav);
+  const r = spawnSync(FFMPEG, ['-i', wav, '-af', `silencedetect=n=${opts.noiseDb ?? -35}dB:d=${opts.minSilence ?? 0.22}`, '-f', 'null', '-'], { encoding: 'utf8' });
+  const err = r.stderr ?? '';
+  const starts = [...err.matchAll(/silence_start:\s*(-?[\d.]+)/g)].map((m) => Math.max(0, Number(m[1])));
+  const ends = [...err.matchAll(/silence_end:\s*([\d.]+)/g)].map((m) => Number(m[1]));
+  const silences: Interval[] = starts.map((s, i) => ({ start: s, end: ends[i] ?? total }));
+  const out: Interval[] = [];
+  let cursor = 0;
+  for (const s of silences) {
+    if (s.start - cursor > 0.05) out.push({ start: cursor, end: s.start });
+    cursor = Math.max(cursor, s.end);
+  }
+  if (total - cursor > 0.05) out.push({ start: cursor, end: total });
+  return out;
+}
