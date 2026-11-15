@@ -84,6 +84,37 @@ const hasScenery = (s: ReportagemProps['scenes'][number]) => Boolean(s.media) ||
 const BUBBLE = 380; // diâmetro da bolha (unidades u)
 const BUBBLE_BOTTOM = 560;
 
+/**
+ * A foto da pessoa que "fala" ao ritmo da voz: pulsa e brilha com o volume. Não anima a boca nem
+ * finge que a pessoa está a falar: é uma foto que reage ao som (como o ícone de uma chamada).
+ */
+const PhotoBubble = ({ src, size, left, bottom, accent, level }: { src: string; size: number; left: number; bottom: number; accent: string; level: number }) => {
+  const frame = useCurrentFrame();
+  const breathe = 0.006 * Math.sin(frame / 14);
+  return (
+    <div style={{ position: 'absolute', left, bottom, width: size, height: size }}>
+      <div style={{ position: 'absolute', inset: -size * 0.13, borderRadius: '50%', border: `${Math.max(2, size * 0.008)}px solid ${accent}`, opacity: 0.1 + 0.4 * level, transform: `scale(${1 + 0.16 * level})` }} />
+      <div style={{ position: 'absolute', inset: -size * 0.06, borderRadius: '50%', border: `${Math.max(3, size * 0.012)}px solid ${accent}`, opacity: 0.25 + 0.6 * level, transform: `scale(${1 + 0.09 * level})` }} />
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          border: `${Math.max(4, size * 0.02)}px solid ${accent}`,
+          boxShadow: `0 12px 44px rgba(0,0,0,.6), 0 0 ${20 + 60 * level}px ${accent}${level > 0.4 ? '88' : '33'}`,
+          background: '#000',
+          transform: `scale(${1 + 0.035 * level + breathe})`,
+        }}
+      >
+        <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 25%' }} />
+      </div>
+    </div>
+  );
+};
+
+const AVATAR_BIG = 560; // a foto sozinha, sem cenário (unidades u)
+
 const Pin = ({ color, size }: { color: string; size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
     <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
@@ -119,7 +150,19 @@ export const Reportagem = (props: ReportagemProps) => {
   const scene = props.scenes[sceneIdx];
   const sceneStart = props.sceneStarts[sceneIdx] ?? 0;
   const isLast = sceneIdx === props.scenes.length - 1;
-  const bubbleNow = Boolean(scene?.face) && hasScenery(scene);
+  const bubbleNow = (Boolean(scene?.face) || Boolean(props.avatar)) && hasScenery(scene);
+
+  // Volume da voz neste instante (média de 4 amostras: suaviza o movimento)
+  const step = props.levelStep ?? 0.05;
+  const lv = props.voiceLevels;
+  const levelAt = (tt: number) => {
+    if (!lv?.length) return 0;
+    const k = Math.floor((tt - props.leadSeconds) / step);
+    return lv[Math.min(lv.length - 1, Math.max(0, k))] ?? 0;
+  };
+  const level = props.avatar ? (levelAt(t - 0.1) + levelAt(t - 0.05) + levelAt(t) + levelAt(t + 0.05)) / 4 : 0;
+  const avatarCorner = hasScenery(scene);
+  const avatarSize = (avatarCorner ? BUBBLE : AVATAR_BIG) * u;
   const sceneT = t - sceneStart;
 
   // Legenda atual (karaoke discreto: a palavra em voz leva a cor da marca).
@@ -139,7 +182,12 @@ export const Reportagem = (props: ReportagemProps) => {
   const nameVis = Math.min(nameIn, nameOut);
 
   const locIn = interpolate(sceneT, [0.15, 0.6], [0, 1], clamp);
-  const ctaIn = interpolate(sceneT, [0.4, 0.9], [0, 1], clamp);
+  // A chamada para a ação só aparece no fim: nos últimos ~5 s da voz (ou no início da última cena,
+  // se esta for mais longa). Com uma só cena, sem isto ela aparecia logo no primeiro segundo.
+  const ctaStart = Math.max(sceneStart, props.voiceEndSeconds - 5);
+  const ctaIn = interpolate(t - ctaStart, [0.2, 0.7], [0, 1], clamp);
+  const hasBubble = hasScenery(scene) && (Boolean(scene?.face) || Boolean(props.avatar));
+  const ctaBottom = props.avatar && !hasScenery(scene) ? 800 + AVATAR_BIG + 40 : hasBubble ? BUBBLE_BOTTOM + BUBBLE + 40 : portrait ? 560 : 250;
 
   return (
     <AbsoluteFill style={{ background: `linear-gradient(160deg, ${bg} 0%, #000 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
@@ -162,7 +210,7 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* Cena sem nada para mostrar: cartão de título */}
-      {!scene?.media && !scene?.face && !(scene?.cutaways?.length) && scene?.title && (
+      {!scene?.media && !scene?.face && !props.avatar && !(scene?.cutaways?.length) && scene?.title && (
         <div style={{ position: 'absolute', left: pad, right: pad, top: '34%', fontFamily: SERIF, fontWeight: 700, fontSize: (portrait ? 96 : 84) * u, lineHeight: 1.1, opacity: interpolate(sceneT, [0.1, 0.6], [0, 1], clamp) }}>
           {scene.title}
           <div style={{ width: 150 * u, height: 8 * u, background: accent, marginTop: 28 * u }} />
@@ -185,6 +233,18 @@ export const Reportagem = (props: ReportagemProps) => {
             <FaceBubble m={s.face} size={BUBBLE * u} left={pad} bottom={BUBBLE_BOTTOM * u} accent={accent} />
           </Sequence>
         ) : null,
+      )}
+
+      {/* A foto animada pela voz (versão "foto"): canto com cenário, centro sem cenário */}
+      {props.avatar && (
+        <PhotoBubble
+          src={props.avatar.src}
+          size={avatarSize}
+          left={avatarCorner ? pad : (width - avatarSize) / 2}
+          bottom={(avatarCorner ? BUBBLE_BOTTOM : portrait ? 800 : 300) * u}
+          accent={accent}
+          level={level}
+        />
       )}
 
       {/* Sombras para o texto ler-se sobre qualquer imagem */}
@@ -242,13 +302,14 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* Última cena: chamada para a ação */}
-      {isLast && (
+      {isLast && t >= ctaStart && (
         <div
           style={{
             position: 'absolute',
             left: pad,
             right: pad,
-            bottom: (portrait ? 560 : 250) * u,
+            // acima da bolha/da foto, para não ficar por cima delas
+            bottom: ctaBottom * u,
             display: 'flex',
             justifyContent: 'center',
             opacity: ctaIn,

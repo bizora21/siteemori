@@ -9,6 +9,7 @@
 //   --draft              render a meia resolução, 1 processo (máquinas fracas)
 //   --no-render          só voz + props + pacote de publicação
 //   --voice=auto|human|synthetic   sobrepõe o modo de voz do projeto
+//   --version=<nome>     gera uma versão (rosto, foto, voz, horizontal, ou as do projeto): ficheiros <id>--<nome>
 //
 // <projeto> é o id de projects/<id>/project.json ou um caminho para o JSON.
 
@@ -20,6 +21,7 @@ import { planRender, renderVideo } from './render';
 import { buildTimeline } from './timeline';
 import { findHumanFile, voiceScene, type SceneAudio } from './voice';
 import { TEMPLATES } from './templates';
+import { applyVersion, listVersions } from './versions';
 import { validateBrand, validateProject, type Brand, type Issue, type Project, type VoiceMode } from './types';
 
 const ROOT = 'projects';
@@ -117,9 +119,13 @@ function sheet(id: string): void {
 }
 
 async function build(id: string): Promise<void> {
-  const { project, brand, dir } = open(id);
+  const { project: base, brand, dir } = open(id);
+  // Uma versão é o mesmo projeto com alterações (ver versions.ts); o id ganha o sufixo "--<versão>"
+  // e por isso as props, o áudio e os ficheiros de saída ficam separados. A cache da voz é partilhada.
+  const version = opt('version');
+  const project = applyVersion(base, version);
   const draft = flag('draft');
-  console.log(`\n▶ build ${project.id} — ${project.template}${draft ? ' (rascunho)' : ''}`);
+  console.log(`\n▶ build ${project.id} — ${project.template}${version ? ` (versão ${version})` : ''}${draft ? ' (rascunho)' : ''}`);
 
   const issues = lintProject(project, brand);
   if (show(issues)) throw new Error('o roteiro viola as regras da marca — corrija antes de gerar');
@@ -128,7 +134,7 @@ async function build(id: string): Promise<void> {
   }
 
   const mode = (opt('voice') as VoiceMode | undefined) ?? project.voice?.mode ?? 'auto';
-  const cacheDir = join('.engine-cache', project.id);
+  const cacheDir = join('.engine-cache', base.id);
   const def = TEMPLATES[project.template];
   const ctx = { project, projectDir: dir, cacheDir, locale: project.locale ?? brand.locale, mode };
 

@@ -24,6 +24,7 @@ import { lintProject } from '../engine/claims';
 import { qrSvg } from './qr';
 import { FFMPEG } from '../engine/ffmpeg';
 import { TEMPLATES } from '../engine/templates';
+import { listVersions } from '../engine/versions';
 import { validateBrand, validateProject, type Brand, type Issue, type Project } from '../engine/types';
 import { findHumanFile } from '../engine/voice';
 
@@ -232,7 +233,15 @@ function detail(id: string) {
   const packDir = join(OUT, id);
   if (existsSync(packDir)) files.push(...readdirSync(packDir).map((f) => `${id}/${f}`));
   for (const n of [`${id}.mp4`, `${id}-rascunho.mp4`]) if (existsSync(join(OUT, n))) files.push(n);
-  return { project, brand, issues, scenes, files, status: outputStatus(id) };
+  const versions = listVersions(project);
+  // pacotes de publicação e vídeos de cada versão
+  for (const v of versions) {
+    const vid = `${id}--${v.id}`;
+    const vdir = join(OUT, vid);
+    if (existsSync(vdir)) files.push(...readdirSync(vdir).map((f) => `${vid}/${f}`));
+    for (const n of [`${vid}.mp4`, `${vid}-rascunho.mp4`]) if (existsSync(join(OUT, n))) files.push(n);
+  }
+  return { project, brand, issues, scenes, files, versions, status: outputStatus(id, versions.map((v) => v.id)) };
 }
 
 /** O mais recente de tudo o que entra no vídeo (texto, gravações, cenários, música). */
@@ -251,17 +260,19 @@ function newestInput(id: string): number {
  * O que já foi gerado e se continua válido. "fresh" = gerado depois da última alteração:
  * o vídeo final só se aprova a partir de um rascunho fresco (foi esse que a pessoa viu e ouviu).
  */
-function outputStatus(id: string) {
+function outputStatus(id: string, versionIds: string[] = []) {
   const newest = newestInput(id);
   const info = (file: string) => {
     if (!existsSync(file)) return { exists: false, fresh: false };
     return { exists: true, fresh: statSync(file).mtimeMs >= newest };
   };
-  return {
-    audio: info(resolve('video3d/public/audio', `${id}.mp3`)),
-    draft: info(join(OUT, `${id}-rascunho.mp4`)),
-    final: info(join(OUT, `${id}.mp4`)),
-  };
+  const of = (oid: string) => ({
+    audio: info(resolve('video3d/public/audio', `${oid}.mp3`)),
+    draft: info(join(OUT, `${oid}-rascunho.mp4`)),
+    final: info(join(OUT, `${oid}.mp4`)),
+  });
+  // Cada versão (id--versão) tem o seu áudio, rascunho e final, e é aprovada à parte.
+  return { ...of(id), versions: Object.fromEntries(versionIds.map((v) => [v, of(`${id}--${v}`)])) };
 }
 
 /** Cria a versão personalizada (cenários + rosto) de um projeto 3D, com o mesmo texto e as gravações. */
@@ -401,6 +412,15 @@ async function uploadFile(req: IncomingMessage, id: string, kind: string, sceneI
     return { path };
   }
 
+  if (kind === 'avatar') {
+    if (!IMAGE_EXT.includes(ext) || ext === '.gif' || ext === '.heic') throw new HttpError(415, 'a foto deve ser jpg, png ou webp');
+    for (const e of IMAGE_EXT) rmSync(join(dir, `avatar${e}`), { force: true });
+    await streamToFile(req, join(dir, `avatar${ext}`));
+    project.avatar = `avatar${ext}`;
+    writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+    return { path: project.avatar };
+  }
+
   if (kind === 'music') {
     if (!AUDIO_EXT.includes(ext) || ext === '.webm') throw new HttpError(415, 'a música deve ser mp3, wav, m4a, ogg ou flac');
     mkdirSync(join(dir, 'music'), { recursive: true });
@@ -524,12 +544,14 @@ function pump() {
   });
 }
 
-function enqueue(project: string, opts: { draft?: boolean; noRender?: boolean; voice?: string }): Job {
+function enqueue(project: string, opts: { draft?: boolean; noRender?: boolean; voice?: string; version?: string }): Job {
   const args: string[] = [];
+  // O nome da versão só entra na linha de comandos depois de validado ([a-z0-9]).
+  if (opts.version && /^[a-z0-9]+$/.test(opts.version)) args.push(`--version=${opts.version}`);
   if (opts.draft) args.push('--draft');
   if (opts.noRender) args.push('--no-render');
   if (opts.voice && ['auto', 'human', 'synthetic'].includes(opts.voice)) args.push(`--voice=${opts.voice}`);
-  const label = opts.noRender ? 'voz + props' : opts.draft ? 'rascunho' : 'final';
+  const label = `${opts.noRender ? 'voz + props' : opts.draft ? 'rascunho' : 'final'}${opts.version ? ' · ' + opts.version : ''}`;
   const job: Job = { id: jobs.length + 1, project, args, label, status: 'queued', log: [], progress: '', listeners: new Set() };
   jobs.push(job);
   pump();
@@ -650,7 +672,8 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     }
 
     if (sub === 'build' && method === 'POST') {
-      const b = JSON.parse((await readBody(req)).toString() || '{}') as { draft?: boolean; noRender?: boolean; voice?: string };
+      const b = JSON.parse((await readBody(req)).toString() || '{}') as { draft?: boolean; noRender?: boolean; voice?: string; version?: string };
+      if (b.version && !listVersions(loadProject(id)).some((v) => v.id === b.version)) throw new HttpError(400, 'versão desconhecida');
       loadProject(id);
       if (jobs.some((j) => j.project === id && (j.status === 'queued' || j.status === 'running'))) throw new HttpError(409, 'este projeto já tem um trabalho na fila');
       const job = enqueue(id, b);
@@ -658,7 +681,11 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     }
 
     // GET /api/projects/:id/audio — a voz montada (para ouvir antes de gerar o vídeo)
-    if (sub === 'audio' && method === 'GET') return sendFile(req, res, resolve('video3d/public/audio', `${id}.mp3`));
+    if (sub === 'audio' && method === 'GET') {
+      const v = url.searchParams.get('version');
+      const oid = v && /^[a-z0-9]+$/.test(v) ? `${id}--${v}` : id;
+      return sendFile(req, res, resolve('video3d/public/audio', `${oid}.mp3`));
+    }
 
     // POST /api/projects/:id/personalize — versão personalizada (cenários + rosto) de um projeto 3D
     if (sub === 'personalize' && method === 'POST') {
@@ -669,7 +696,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     // GET /api/projects/:id/file?p=media/x.jpg — pré-visualização (só estas subpastas)
     if (sub === 'file' && method === 'GET') {
       const p = url.searchParams.get('p') ?? '';
-      if (!/^(media|presenter|music|voice)\//.test(p)) throw new HttpError(400, 'caminho inválido');
+      if (!/^(media|presenter|music|voice)\/|^avatar\.(jpg|jpeg|png|webp)$/.test(p)) throw new HttpError(400, 'caminho inválido');
       return sendFile(req, res, inside(projectDir(id), ...p.split('/')));
     }
 

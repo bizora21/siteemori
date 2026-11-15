@@ -149,3 +149,19 @@ export function trimWav(wav: string, start: number, end: number): void {
   run(['-i', wav, '-ss', start.toFixed(3), '-to', end.toFixed(3), '-c:a', 'pcm_s16le', tmp]);
   renameSync(tmp, wav);
 }
+
+/**
+ * Volume da voz ao longo do tempo, normalizado 0–1, uma amostra por `step` segundos (a partir
+ * do início do ficheiro). Serve para animar a foto ao ritmo da fala. O 0 é o nível do ruído de
+ * fundo desta gravação e o 1 o da fala forte, por isso funciona com gravações mais ou menos altas.
+ */
+export function voiceLevels(wav: string, step = 0.05): number[] {
+  const levels = frameLevels(wav, step);
+  if (levels.length < 4) return [];
+  const sorted = [...levels].sort((a, b) => a - b);
+  const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];
+  const floor = q(0.1);
+  const peak = q(0.95);
+  if (peak - floor < 6) return levels.map(() => 0);
+  return levels.map((l) => Math.round(Math.min(1, Math.max(0, (l - floor) / (peak - floor))) * 100) / 100);
+}

@@ -76,3 +76,6 @@ package-lock.json
 /projects/*/media/
 /projects/*/music/
 /video3d/public/music/
+
+# Foto da pessoa (dado pessoal; o repositório é público)
+/projects/*/avatar.*

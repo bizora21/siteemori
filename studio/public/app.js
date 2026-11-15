@@ -89,6 +89,7 @@ async function openProject(id) {
   if (state.dirty && !confirm('Há alterações por guardar. Descartar?')) return;
   stopRec();
   state.id = id;
+  state.version = '';
   state.dirty = false;
   state.data = await api(`/api/projects/${id}`);
   renderList();
@@ -275,10 +276,10 @@ async function build(opts) {
   if (state.data.issues.some((i) => i.level === 'error')) {
     if (!confirm('O roteiro tem erros (✗) e o build vai falhar. Continuar mesmo assim?')) return;
   }
-  if (!opts.noRender && !opts.draft && !state.data.status.draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho"): o vídeo final só se gera a partir de um rascunho atual.');
+  if (!opts.noRender && !opts.draft && !curStatus().draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho"): o vídeo final só se gera a partir de um rascunho atual.');
   if (!opts.noRender && !opts.draft && tplOf(state.data.project.template)?.kind === '3d' && !confirm('Render final 3D: demora vários minutos nesta máquina. Continuar? (O rascunho é bem mais rápido.)')) return;
   try {
-    const r = await api(`/api/projects/${state.id}/build`, { method: 'POST', body: JSON.stringify(opts) });
+    const r = await api(`/api/projects/${state.id}/build`, { method: 'POST', body: JSON.stringify({ ...opts, version: state.version || undefined }) });
     followJob(r.job);
   } catch (e) {
     alert(e.message);

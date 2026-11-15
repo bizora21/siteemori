@@ -146,6 +146,11 @@ export interface ReportagemProps {
     cutaways?: SceneMediaProps[];
   }[];
   host?: { name: string; role?: string };
+  /** Foto da pessoa (versão "foto animada"): numa bolha que pulsa com a voz. */
+  avatar?: { src: string };
+  /** Volume da voz (0–1), uma amostra por levelStep segundos desde o início da faixa de voz. */
+  voiceLevels?: number[];
+  levelStep?: number;
   brandName: string;
   colors: { bg: string; accent: string; text: string };
   logo?: string;

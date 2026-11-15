@@ -4,12 +4,34 @@
 // followJob, loadPublication, issueItems, musicBlock, openPexels, openPrompter, openPhone, delRec,
 // pickFile, uploadTo, flushBeforeUpload, thumb, curScene, toast.
 
+// ── versões: o mesmo vídeo de várias maneiras (rosto, foto animada, só voz, horizontal) ──
+state.version = state.version ?? '';
+/** O estado (áudio, rascunho, final) da versão escolhida; '' = o projeto como está. */
+function curStatus() {
+  const st = state.data.status;
+  return state.version && st.versions?.[state.version] ? st.versions[state.version] : st;
+}
+/** O identificador dos ficheiros gerados: <id> ou <id>--<versão>. */
+const outIdOf = (p) => (state.version ? `${p.id}--${state.version}` : p.id);
+
 // ── botões fixos em baixo: ouvir → ver → aprovar ──────────────────────────
 function actionsBar() {
-  const st = state.data.status;
+  const st = curStatus();
+  const p = state.data.project;
+  const versions = state.data.versions ?? [];
+  const showVersions = p.template === 'reportagem' && versions.length > 0;
   const approve = h('button', { class: 'primary', disabled: !st.draft.fresh, title: st.draft.fresh ? '' : 'Veja primeiro o rascunho', onclick: approveFinal }, '✅ Aprovar e gerar o vídeo final');
+  const select = showVersions && h('label', { class: 'ver-sel' }, 'Versão:',
+    (() => {
+      const s = h('select', { onchange: () => { state.version = s.value; renderEditor(); } },
+        h('option', { value: '' }, 'Original (como está)'),
+        ...versions.map((v) => h('option', { value: v.id }, v.label)));
+      s.value = state.version;
+      return s;
+    })());
   return h('div', { class: 'actions' },
     h('button', { id: 'save-btn', onclick: save }, state.dirty ? 'Guardar *' : 'Guardar'),
+    select,
     h('button', { onclick: () => build({ noRender: true }) }, '🔊 Ouvir a voz'),
     h('button', { onclick: () => build({ draft: true }) }, '🎬 Ver rascunho'),
     approve,
@@ -18,31 +40,49 @@ function actionsBar() {
 }
 
 async function approveFinal() {
-  if (!state.data.status.draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho").');
+  if (!curStatus().draft.fresh) return alert('Veja primeiro o rascunho (botão "Ver rascunho").');
   if (!confirm('Já ouviu a voz e viu o rascunho, e está tudo certo?\n\nVai gerar o vídeo FINAL em qualidade total.')) return;
   build({});
 }
 
 // ── secção: ouvir, ver e aprovar ──────────────────────────────────────────
 function approvalSection(p) {
-  const st = state.data.status;
-  const id = p.id;
+  const st = curStatus();
+  const oid = outIdOf(p);
   const tpl = tplOf(p.template);
-  const vertical = (p.aspect ?? (tpl?.aspect === '9:16' ? '9:16' : '16:9')) === '9:16';
+  const ver = (state.data.versions ?? []).find((v) => v.id === state.version);
+  const aspect = ver?.aspect ?? p.aspect ?? (tpl?.aspect === '9:16' ? '9:16' : '16:9');
+  const vertical = aspect === '9:16';
   const stale = (x) => x.exists && !x.fresh && h('p', { style: 'color:var(--warn);margin:4px 0;font-size:14px' }, '⚠ Desatualizado: mudou algo depois de gerar. Gere de novo.');
   const row = (n, title, hint, body) =>
     h('div', { class: 'step-row' },
       h('b', { class: 'n' }, n),
       h('div', { style: 'flex:1;min-width:0' }, h('b', {}, title), h('div', { class: 'muted', style: 'margin:2px 0 8px' }, hint), body));
   const none = (t) => h('span', { class: 'muted' }, t);
+
+  // Resumo das versões: o que já foi gerado e aprovado de cada uma (clicar escolhe a versão)
+  const chips = (state.data.versions ?? []).length && p.template === 'reportagem'
+    ? h('div', { class: 'stack', style: 'gap:6px' },
+      h('div', { class: 'muted' }, 'Versões deste vídeo (cada uma tem o seu rascunho e a sua aprovação):'),
+      h('div', { class: 'row', style: 'gap:6px' },
+        ...[{ id: '', label: 'Original' }, ...state.data.versions].map((v) => {
+          const s = v.id ? state.data.status.versions?.[v.id] : state.data.status;
+          const mark = s?.final.exists ? '✅' : s?.draft.exists ? '🎬' : '·';
+          return h('button', { class: 'chip' + (v.id === state.version ? ' on' : ''), title: v.hint ?? '', onclick: () => { state.version = v.id; renderEditor(); } }, `${mark} ${v.label}`);
+        })))
+    : null;
+
   return h('section', { class: 'card stack', id: 'approve' },
-    h('h3', { style: 'margin:0' }, 'Ouvir, ver e aprovar'),
+    h('h3', { style: 'margin:0' }, 'Ouvir, ver e aprovar' + (ver ? ` — ${ver.label}` : '')),
+    chips,
+    ver && h('p', { class: 'muted', style: 'margin:0' }, ver.hint),
+    ver?.faceMode === 'photo' && !p.avatar && h('p', { style: 'color:var(--warn);margin:0' }, '⚠ Esta versão precisa da sua foto: "Mais opções do vídeo" → "Carregar a minha foto".'),
     row(1, 'Ouvir a voz', 'Carregue em "🔊 Ouvir a voz" (leva segundos). Confirme a ordem das cenas, as pausas e se o que disse é o que está escrito.',
-      st.audio.exists ? [stale(st.audio), h('audio', { controls: true, src: `/api/projects/${id}/audio?t=${Date.now()}`, style: 'width:100%' })] : none('Ainda não gerado.')),
+      st.audio.exists ? [stale(st.audio), h('audio', { controls: true, src: `/api/projects/${p.id}/audio?version=${state.version}&t=${Date.now()}`, style: 'width:100%' })] : none('Ainda não gerado.')),
     row(2, 'Ver o rascunho', 'Carregue em "🎬 Ver rascunho": o vídeo completo em baixa resolução, com cenários, legendas e música.',
-      st.draft.exists ? [stale(st.draft), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${id}-rascunho.mp4?t=${Date.now()}` })] : none('Ainda não gerado.')),
+      st.draft.exists ? [stale(st.draft), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${oid}-rascunho.mp4?t=${Date.now()}` })] : none('Ainda não gerado.')),
     row(3, 'Aprovar', 'O botão "✅ Aprovar e gerar o vídeo final" só fica ativo depois de ver um rascunho atual. Gera o vídeo em qualidade total.',
-      st.final.exists ? [stale(st.final), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${id}.mp4?t=${Date.now()}` })] : none('Ainda não gerado.')),
+      st.final.exists ? [stale(st.final), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${oid}.mp4?t=${Date.now()}` })] : none('Ainda não gerado.')),
     h('section', { class: 'stack', id: 'console-box', hidden: true },
       h('div', { class: 'bar' }, h('i', { id: 'bar' })),
       h('div', { class: 'muted', id: 'progress' }),
@@ -83,7 +123,18 @@ function renderSimple() {
     h('p', { class: 'muted', style: 'margin:0' }, 'Em cada cena: ① escreva o que diz, ② grave (opcional), ③ escolha os cenários que aparecem. No fim, ouça, veja o rascunho e aprove.'),
     h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
     h('details', {},
-      h('summary', {}, 'Mais opções do vídeo (nome de quem aparece, formato)'),
+      h('summary', {}, 'Mais opções do vídeo (a minha foto, nome de quem aparece, formato)'),
+      h('div', { class: 'zone', style: 'margin-top:10px' },
+        h('b', {}, 'A minha foto (para a versão "Foto animada pela voz")'),
+        h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Uma foto sua, de frente, com o rosto bem visível. A foto não é enviada para lado nenhum: fica só neste computador e não é guardada no Git.'),
+        h('div', { class: 'rec-row' },
+          p.avatar && h('img', { src: `/api/projects/${p.id}/file?p=${encodeURIComponent(p.avatar)}&t=${Date.now()}`, style: 'height:80px;width:80px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)' }),
+          h('button', { onclick: async () => {
+            const f = await pickFile('image/jpeg,image/png,image/webp');
+            if (!f) return;
+            if (!(await flushBeforeUpload())) return;
+            try { await uploadTo('avatar', undefined, f, 'Foto'); await refresh(); } catch (e) { toast('Erro: ' + e.message, 6000); }
+          } }, p.avatar ? 'Trocar a minha foto' : 'Carregar a minha foto'))),
       h('div', { class: 'grid3', style: 'margin-top:10px' },
         field('Nome de quem aparece (opcional)', p.host?.name, (v) => ((p.host ??= { name: '' }).name = v)),
         field('Função (opcional)', p.host?.role, (v) => ((p.host ??= { name: '' }).role = v)),
@@ -107,7 +158,7 @@ function renderSimple() {
 
   main.replaceChildren(h('div', { class: 'stack' }, head, ...cards, add, musicBlock(p), approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
-  loadPublication(files, p.id);
+  loadPublication(files, outIdOf(p));
 }
 
 function simpleScene(p, s, i, st) {

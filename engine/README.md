@@ -154,3 +154,27 @@ gera a partir de um rascunho **atual** (gerado depois da última alteração); s
 cada pausa ligada a uma pontuação do texto; o ar morto do início e do fim é cortado. Medido contra tempos verdadeiros numa
 narração de 41 s: erro médio por palavra 0,50 s → 0,12 s. Limite: as legendas mostram o texto ESCRITO; se disser palavras
 diferentes, edite o texto para coincidir (transcrever o que foi dito exigiria um modelo de reconhecimento de voz).
+
+## Versões do mesmo vídeo
+
+Um projeto pode ser gerado de várias maneiras, cada uma com o seu rascunho, a sua aprovação e o seu ficheiro final
+(`video3d/out/<id>--<versão>.mp4`). O texto, as gravações e os cenários são partilhados (a voz não é processada outra vez).
+
+```
+npm run engine -- build meu-video --version=foto --draft      # rascunho da versão "foto"
+npm run engine -- build meu-video --version=voz --no-render   # só voz + props da versão "voz"
+```
+
+| versão | o que muda |
+|---|---|
+| `rosto` | o rosto gravado (bolha sobre os cenários, ou ecrã inteiro) |
+| `foto` | a sua **foto numa bolha que pulsa com a voz** (só precisa de gravar a voz) |
+| `voz` | sem rosto nem foto: voz e legendas sobre os cenários |
+| `horizontal` | formato 16:9 |
+
+Em `project.json` pode acrescentar ou alterar versões: `"versions": { "curto": { "label": "…", "faceMode": "none", "aspect": "1:1" } }`.
+No estúdio, o seletor "Versão" fica ao lado dos botões Ouvir / Rascunho / Aprovar, e cada versão é aprovada à parte.
+
+**Foto animada pela voz** (`faceMode: "photo"` + `avatar`): a foto reage ao volume da voz com anéis e um pequeno movimento. Não anima
+a boca nem finge que a pessoa fala (não é um avatar de IA). A foto fica em `projects/<id>/avatar.*`, fora do Git. O volume da voz
+segue a fala (medido: 0,54 nas palavras contra 0,08 nas pausas numa gravação real).

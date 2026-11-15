@@ -150,6 +150,15 @@ export interface Project {
   credits?: string[];
   approval?: Approval;
   aspect?: Aspect;
+  /**
+   * Como mostrar a pessoa (reportagem): "video" (o rosto gravado), "photo" (a foto, animada pela voz,
+   * sem fingir lábios) ou "none" (só a voz sobre os cenários). Por defeito "video".
+   */
+  faceMode?: 'video' | 'photo' | 'none';
+  /** A foto da pessoa (ficheiro na pasta do projeto), para faceMode "photo". */
+  avatar?: string;
+  /** Versões extra deste vídeo: alterações sobre o projeto base (além das predefinidas em versions.ts). */
+  versions?: Record<string, VersionOverrides>;
   publish?: { description?: string; hashtags?: string[] };
 }
 
@@ -161,6 +170,16 @@ export interface Issue {
 
 const LOCALES = ['pt-br', 'pt-pt'];
 const ASPECTS = ['9:16', '16:9', '1:1'];
+const FACE_MODES = ['video', 'photo', 'none'];
+
+/** O que uma versão pode mudar em relação ao projeto base. */
+export interface VersionOverrides {
+  label?: string;
+  faceMode?: 'video' | 'photo' | 'none';
+  aspect?: Aspect;
+  cta?: string;
+  site?: string;
+}
 
 const isStr = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0;
 
@@ -202,6 +221,12 @@ export function validateProject(p: unknown): Issue[] {
     out.push({ level: 'error', message: `projeto: template deve ser um de ${TEMPLATE_IDS.join(', ')}` });
   }
   if (x.aspect && !ASPECTS.includes(x.aspect)) out.push({ level: 'error', message: 'projeto: aspect inválido' });
+  if (x.faceMode && !FACE_MODES.includes(x.faceMode)) out.push({ level: 'error', message: 'projeto: faceMode deve ser video, photo ou none' });
+  for (const [k, v] of Object.entries(x.versions ?? {})) {
+    if (!/^[a-z0-9]+$/.test(k)) out.push({ level: 'error', message: `versão "${k}": o nome só pode ter minúsculas e números` });
+    if (v.faceMode && !FACE_MODES.includes(v.faceMode)) out.push({ level: 'error', message: `versão "${k}": faceMode inválido` });
+    if (v.aspect && !ASPECTS.includes(v.aspect)) out.push({ level: 'error', message: `versão "${k}": aspect inválido` });
+  }
   if (!Array.isArray(x.scenes) || x.scenes.length === 0) {
     out.push({ level: 'error', message: 'projeto: precisa de pelo menos uma cena' });
     return out;

@@ -5,7 +5,7 @@ import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from 'no
 import { spawnSync } from 'node:child_process';
 import { basename, extname, join } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
-import { duration, run, stageVideo } from './ffmpeg';
+import { duration, run, stageVideo, voiceLevels } from './ffmpeg';
 import { resolveCues } from './cues';
 import { TEMPLATES } from './templates';
 import type { SceneAudio } from './voice';
@@ -13,6 +13,8 @@ import type { Brand, Project } from './types';
 import type { Timeline } from './timeline';
 
 export const FPS = 30;
+/** Resolução do volume da voz para animar a foto (segundos por amostra). */
+const LEVEL_STEP = 0.05;
 const VIDEO_DIR = 'video3d';
 
 export interface RenderPlan {
@@ -98,7 +100,7 @@ function stageFile(project: Project, projectDir: string, sceneId: string, rel: s
  * (humana); com voz sintética mostrar-lhe a boca a mexer fora de sincronia seria
  * pior que nada. Os cortes (cutaways) cobrem o ecrã enquanto a voz continua.
  */
-function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[]): StagedScene[] {
+function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: SceneAudio[], showFaceVideo = true): StagedScene[] {
   const reportagem = project.template === 'reportagem';
   return project.scenes.map((scene, i) => {
     const wantPresenter = Boolean(scene.presenter) && audios[i].source === 'human';
@@ -113,7 +115,8 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
     let face: SceneMedia | null = null;
     if (reportagem) {
       // O rosto e o cenário são camadas separadas: com cenário, o rosto passa a bolha.
-      if (wantPresenter) {
+      // Nas versões "foto" e "só voz" o vídeo do rosto não aparece (o áudio dele continua a ser a voz da cena).
+      if (wantPresenter && showFaceVideo) {
         const f = stageFile(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
         if (!f.image) face = asFace(f);
       }
@@ -190,10 +193,30 @@ export function planRender(
   }
 
   if (project.template === 'reportagem') {
-    const media = stageMedia(project, projectDir, tl, audios);
+    const mode = project.faceMode ?? 'video';
+    const warnings: string[] = [];
+    const media = stageMedia(project, projectDir, tl, audios, mode === 'video');
+
+    // Foto animada pela voz: a foto da pessoa + o volume da voz ao longo do tempo.
+    let avatar: { src: string } | undefined;
+    let levels: number[] | undefined;
+    if (mode === 'photo') {
+      if (!project.avatar) {
+        warnings.push('versão "foto animada": falta a sua foto (Mais opções do vídeo → Carregar a minha foto). Sai sem foto.');
+      } else {
+        const f = stageFile(project, projectDir, 'avatar', project.avatar, 'avatar');
+        if (f.image) {
+          avatar = { src: f.src };
+          levels = voiceLevels(tl.mp3, LEVEL_STEP);
+        } else {
+          warnings.push('a foto da pessoa tem de ser uma imagem (jpg, png ou webp).');
+        }
+      }
+    }
+
     return {
       composition: def.composition,
-      warnings: [],
+      warnings,
       lines,
       props: {
         ...base,
@@ -211,6 +234,7 @@ export function planRender(
         logo: brand.logo,
         aspect: project.aspect ?? '9:16',
         music: stageMusic(project, projectDir),
+        ...(avatar ? { avatar, voiceLevels: levels, levelStep: LEVEL_STEP } : {}),
       },
     };
   }
