@@ -127,12 +127,21 @@ function sceneScreen(i) {
   const video = withVideo(p);
   const inPage = canRecordInPage();
   const local = p.template === 'reportagem';
+  const locInput = local ? h('input', { type: 'text', value: s.location ?? '', placeholder: 'ex.: Beira · Porto', onchange: (e) => patchScene(s.id, { location: e.target.value }) }) : null;
+  const shotInput = h('textarea', { rows: 2, onchange: (e) => patchScene(s.id, { shot: e.target.value }) }, s.shot ?? '');
+  // Guarda o que estiver escrito mesmo que o campo ainda não tenha perdido o foco.
+  const saveFields = async () => {
+    const body = {};
+    if (locInput && locInput.value !== (s.location ?? '')) body.location = locInput.value;
+    if (shotInput.value !== (s.shot ?? '')) body.shot = shotInput.value;
+    if (Object.keys(body).length) await patchScene(s.id, body);
+  };
+  const mb = st.kb >= 1024 ? (st.kb / 1024).toFixed(1) + ' MB' : st.kb + ' KB';
 
   app.replaceChildren(
     h('div', { class: 'row', style: 'justify-content:space-between' },
-      h('button', { onclick: projectScreen }, '← Guião'),
-      h('b', {}, `Cena ${i + 1} de ${n}`),
-      h('span', {}, h('button', { disabled: i === 0, onclick: () => sceneScreen(i - 1) }, '‹'), ' ', h('button', { disabled: i === n - 1, onclick: () => sceneScreen(i + 1) }, '›'))),
+      h('button', { onclick: async () => { await saveFields(); projectScreen(); } }, '← Guião'),
+      h('b', {}, `Cena ${i + 1} de ${n}`)),
 
     h('section', { class: 'card', style: 'margin-top:12px' },
       h('div', { class: 'row' }, h('b', {}, s.id), h('span', { class: 'pill ' + (st.recorded ? 'ok' : '') }, st.recorded ? '✅ enviada' : 'por gravar')),
@@ -145,14 +154,13 @@ function sceneScreen(i) {
 
     h('section', { class: 'card', style: 'margin-top:12px' },
       h('h3', { style: 'margin:0 0 6px' }, 'Personalizar esta cena'),
-      local && h('label', {}, 'Local (onde vai estar — só locais verdadeiros)',
-        h('input', { type: 'text', value: s.location ?? '', placeholder: 'ex.: Beira · Porto', onchange: (e) => patchScene(s.id, { location: e.target.value }) })),
-      h('label', {}, 'Nota para si (plano, o que mostrar)',
-        h('textarea', { rows: 2, onchange: (e) => patchScene(s.id, { shot: e.target.value }) }, s.shot ?? '')),
+      local && h('label', {}, 'Local (onde vai estar — só locais verdadeiros)', locInput),
+      h('label', {}, 'Nota para si (plano, o que mostrar)', shotInput),
     ),
 
     h('section', { class: 'card', style: 'margin-top:12px' },
       h('h3', { style: 'margin:0 0 8px' }, video ? 'Gravar vídeo' : 'Gravar voz'),
+      st.recorded && h('div', { class: 'note', style: 'margin-bottom:10px' }, `✅ Enviada e guardada no PC: ${st.file} (${mb}). Pode gravar de novo para substituir.`),
       inPage
         ? h('button', { class: 'primary block', onclick: () => recorder(i) }, video ? '🎥 Gravar (o texto fica no ecrã)' : '🎙 Gravar (o texto fica no ecrã)')
         : h('div', { class: 'note' }, 'Esta ligação não permite gravar dentro da página. Abra o estúdio com iniciar-estudio.bat (liga HTTPS) e use o QR novo. Por agora, leia o texto acima e grave com a câmara normal:'),
@@ -173,6 +181,9 @@ function sceneScreen(i) {
       fileBtn('📁 Escolher da galeria', 'image/*,video/*', null, (f) => upload('cutaway', s.id, f, 'Imagem do local')),
     ),
     h('div', { id: 'upbar', class: 'note', style: 'margin-top:12px', hidden: true }),
+    h('div', { class: 'navbar' },
+      h('button', { disabled: i === 0, onclick: async () => { await saveFields(); sceneScreen(i - 1); } }, '‹ Anterior'),
+      h('button', { class: 'primary', style: 'flex:1', onclick: async () => { await saveFields(); toast('Guardado no PC ✓', 1500); i < n - 1 ? sceneScreen(i + 1) : projectScreen(); } }, i < n - 1 ? 'Guardar e próxima cena →' : 'Guardar e ver o guião ✓')),
   );
   window.scrollTo(0, 0);
 }
@@ -230,7 +241,7 @@ async function afterUpload() {
   const cur = Number(S.cur ?? 0);
   await reload();
   const next = S.data.scenes.findIndex((x, k) => !x.recorded && k > cur);
-  toast('Enviado ✓');
+  toast('Enviado ✓ — já está guardado no PC');
   if (next >= 0) sceneScreen(next);
   else projectScreen();
 }
@@ -244,10 +255,11 @@ function pickMime(video) {
 }
 
 function recorder(i) {
+  let idx = i;
   S.cur = i;
-  const p = S.data.project;
-  const s = p.scenes[i];
-  const video = withVideo(p);
+  const video = withVideo(S.data.project);
+  const cur = () => S.data.project.scenes[idx];
+  const total = () => S.data.project.scenes.length;
   let facing = 'user';
   let stream = null;
   let mr = null;
@@ -258,35 +270,52 @@ function recorder(i) {
   const R = { size: 30, speed: 0, clean: true };
 
   const preview = h('video', { id: 'rec-v', playsinline: true, muted: true, autoplay: true });
-  const text = h('div', { id: 'rec-text' }, s.narration);
+  const text = h('div', { id: 'rec-text' }, cur().narration);
+  const meta = h('div', { class: 'meta' }, '');
+  const prevBtn = h('button', { onclick: () => go(-1) }, '‹ Anterior');
+  const nextBtn = h('button', { onclick: () => go(1) }, 'Seguinte ›');
+  function setScene(k) {
+    idx = k;
+    S.cur = k;
+    const s = cur();
+    meta.textContent = `Cena ${k + 1}/${total()}${s.location ? ' · 📍 ' + s.location : ''}${s.shot ? ' · ' + s.shot : ''}`;
+    text.textContent = s.narration;
+    text.scrollTop = 0;
+    prevBtn.disabled = k === 0;
+    nextBtn.disabled = k === total() - 1;
+  }
+  function go(d) {
+    if (mr && mr.state === 'recording') return toast('Pare a gravação antes de mudar de cena.');
+    setScene(Math.min(total() - 1, Math.max(0, idx + d)));
+  }
   const timerEl = h('span', { class: 'muted', style: 'color:#ccc' }, '');
   const recBtn = h('button', { class: 'rec' }, '● Gravar');
   const cleanBtn = h('button', { onclick: async () => {
     if (mr && mr.state === 'recording') return toast('Pare a gravação antes de mudar.');
     R.clean = !R.clean;
-    cleanBtn.textContent = R.clean ? '🔇 Reduzir ruído: LIGADO' : '🔈 Reduzir ruído: desligado';
+    cleanBtn.textContent = R.clean ? '🔇 Ruído: LIGADO' : '🔈 Ruído: desligado';
     stream?.getTracks().forEach((t) => t.stop());
     await open();
-  } }, '🔇 Reduzir ruído: LIGADO');
+  } }, '🔇 Ruído: LIGADO');
   const speed = h('input', { type: 'range', min: 0, max: 120, value: 0, style: 'width:120px' });
   const overlay = h('div', { id: 'rec' },
     video && preview,
     h('div', { id: 'rec-pt' },
-      h('div', { class: 'meta' }, `Cena ${i + 1}/${p.scenes.length}${s.location ? ' · 📍 ' + s.location : ''}${s.shot ? ' · ' + s.shot : ''}`),
+      meta,
       text),
     h('div', { id: 'rec-ctl' },
       h('div', { class: 'r' },
         h('button', { onclick: () => { R.size = Math.max(18, R.size - 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A−'),
         h('button', { onclick: () => { R.size = Math.min(64, R.size + 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A+'),
         h('span', { style: 'color:#ccc;font-size:14px' }, 'Rolagem'), speed),
-      h('div', { class: 'r' }, cleanBtn),
+      h('div', { class: 'r' }, prevBtn, recBtn, nextBtn),
       h('div', { class: 'r' },
         h('button', { onclick: cancel }, '✕ Sair'),
-        recBtn,
-        video && h('button', { onclick: flip }, '⟲ Virar')),
-      h('div', { class: 'r' }, timerEl)),
+        video && h('button', { onclick: flip }, '⟲ Virar'),
+        cleanBtn)),
   );
   text.style.setProperty('--rs', R.size + 'px');
+  setScene(idx);
   document.body.append(overlay);
 
   async function open() {
@@ -329,7 +358,8 @@ function recorder(i) {
     const t0 = Date.now();
     recBtn.textContent = '■ Parar';
     recBtn.classList.add('rec');
-    clock = setInterval(() => (timerEl.textContent = `● a gravar ${Math.round((Date.now() - t0) / 1000)} s`), 500);
+    recBtn.textContent = '■ Parar · 0 s';
+    clock = setInterval(() => (recBtn.textContent = `■ Parar · ${Math.round((Date.now() - t0) / 1000)} s`), 500);
     text.scrollTop = 0;
     scrollTimer = setInterval(() => (text.scrollTop += Number(speed.value) / 20), 50);
   }
@@ -364,9 +394,23 @@ function recorder(i) {
       send.disabled = true;
       try {
         up.hidden = false;
-        await uploadBlob(video ? 'presenter' : 'voice', s.id, blob, `rec.${ext}`, up);
-        cleanup();
-        await afterUpload();
+        await uploadBlob(video ? 'presenter' : 'voice', cur().id, blob, `rec.${ext}`, up);
+        await reload();
+        // Modo contínuo: fica no gravador e passa à próxima cena por gravar.
+        const next = S.data.scenes.findIndex((x, k) => !x.recorded && k > idx);
+        if (next >= 0) {
+          overlay.querySelector('#rec-review')?.remove();
+          recBtn.textContent = '● Gravar';
+          timerEl.textContent = '';
+          chunks = [];
+          setScene(next);
+          toast(`Enviado ✓ guardado no PC. Agora a cena ${next + 1}.`, 3500);
+          await open();
+        } else {
+          cleanup();
+          toast('Enviado ✓ — todas as cenas estão guardadas no PC.', 4000);
+          projectScreen();
+        }
       } catch (e) {
         send.disabled = false;
         up.textContent = 'Erro: ' + e.message;

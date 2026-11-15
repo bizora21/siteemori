@@ -176,6 +176,24 @@ function renderEditor() {
 
   const sceneCards = p.scenes.map((s, i) => sceneCard(p, s, i, scenes[i], tpl, inst, rep));
 
+  // Passo a passo: o que já está feito e onde fazer o resto
+  const nRec = scenes.filter((x) => x.recorded).length;
+  const nImg = p.scenes.filter((s) => s.media || s.cutaways?.length).length;
+  const musicOk = Boolean(p.music?.license?.trim() && p.music?.source?.trim());
+  const textOk = p.scenes.every((s) => s.narration && !/Escreva aqui/.test(s.narration));
+  const mk = (ok, optional) => (ok ? '✅' : optional ? '➖' : '⬜');
+  const li = (ok, title, hint, optional) => h('li', {}, h('b', {}, mk(ok, optional) + ' ' + title), h('div', { class: 'muted', style: 'margin:2px 0 8px 26px' }, hint));
+  const stepsCard = h('section', { class: 'card' },
+    h('h3', { style: 'margin:0 0 8px' }, 'Passo a passo'),
+    h('ul', { style: 'list-style:none;margin:0;padding:0' },
+      li(textOk, 'Texto das cenas', 'Edite o campo "Narração" de cada cena (também no telemóvel: ✎ Editar texto).'),
+      li(nRec === p.scenes.length, `Gravar as cenas — ${nRec} de ${p.scenes.length}`, 'No telemóvel: botão 📱 Telemóvel (QR) → gravar → Enviar; chega sozinho aqui. No PC: "Carregar vídeo/áudio" em cada cena. Sem gravação, a cena usa voz sintética.'),
+      (inst || rep) && li(nImg > 0, `Imagens do local — ${nImg} cena(s) com imagem`, 'Em cada cena: "Imagem ou vídeo desta cena" e, na reportagem, "Cortes" (carregar ficheiro ou Pexels). O telemóvel também envia fotos do local.', true),
+      li(musicOk, 'Música (opcional)', 'Bloco "Música" mais abaixo: carregar o ficheiro e preencher licença e fonte. Sem música, o vídeo sai só com voz.', true),
+      li(false, 'Gerar rascunho → ver → Gerar final', 'Botões no fundo da página. O rascunho é rápido e serve para rever; o final é o vídeo para publicar.'),
+    ),
+  );
+
   const adv = h('details', { class: 'card' },
     h('summary', {}, 'Avançado: JSON do projeto (props, cues, lead, tail, música)'),
     h('p', { class: 'muted' }, 'Aqui editas tudo o que não tem campo próprio. Cada cue liga uma prop 3D a uma palavra da voz.'),
@@ -211,7 +229,7 @@ function renderEditor() {
     h('div', { class: 'console', id: 'console' }),
   );
 
-  main.replaceChildren(h('div', { class: 'stack' }, head, ...sceneCards, musicBlock(p), adv, consoleBox, out, actions));
+  main.replaceChildren(h('div', { class: 'stack' }, head, stepsCard, ...sceneCards, musicBlock(p), adv, consoleBox, out, actions));
   window.scrollTo(0, scroll);
   loadPublication(files, p.id);
 }
@@ -237,6 +255,7 @@ function sceneCard(p, s, i, st, tpl, inst, rep) {
     rich && h('button', { onclick: () => uploadScene('presenter', s.id, 'video/*', 'Vídeo') }, 'Carregar vídeo (telemóvel)'),
     st?.recorded && st.kind === 'audio' && h('audio', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:34px' }),
     st?.recorded && st.kind === 'video' && h('video', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:90px;border-radius:8px' }),
+    st?.recorded && h('span', { class: 'muted', style: 'font-size:13px' }, `guardado no PC: ${st.file}`),
     st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar gravação'),
   );
   return h('section', { class: 'card scene' },

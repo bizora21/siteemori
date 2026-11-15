@@ -19,7 +19,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createHash, randomBytes } from 'node:crypto';
 import { networkInterfaces } from 'node:os';
-import { basename, extname, join, normalize, resolve, sep } from 'node:path';
+import { basename, extname, join, normalize, relative, resolve, sep } from 'node:path';
 import { lintProject } from '../engine/claims';
 import { qrSvg } from './qr';
 import { FFMPEG } from '../engine/ffmpeg';
@@ -219,7 +219,14 @@ function detail(id: string) {
   else issues.push({ level: 'error', message: `marca "${project.brand}" não existe em projects/brands/` });
   const scenes = project.scenes.map((s) => {
     const f = findHumanFile(dir, s);
-    return { id: s.id, recorded: Boolean(f), kind: f ? (s.presenter || VIDEO_EXT.includes(extname(f).toLowerCase()) ? 'video' : 'audio') : null };
+    return {
+      id: s.id,
+      recorded: Boolean(f),
+      kind: f ? (s.presenter || VIDEO_EXT.includes(extname(f).toLowerCase()) ? 'video' : 'audio') : null,
+      // onde ficou guardado no PC (para o telemóvel mostrar "guardado")
+      file: f ? relative(dir, f).replace(/\\/g, '/') : null,
+      kb: f ? Math.round(statSync(f).size / 1024) : 0,
+    };
   });
   const files: string[] = [];
   const packDir = join(OUT, id);

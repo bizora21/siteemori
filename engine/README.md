@@ -130,3 +130,9 @@ não é o seu local: não a use sob uma etiqueta de local como se fosse real.
 o motor recusa. O ficheiro vai em `projects/<id>/music/` (fora do Git: algumas licenças proíbem redistribuir as faixas).
 `attribution` entra sozinha na descrição. FiftySounds (lido em 15/11/2026): uso pessoal e comercial, **atribuição obrigatória**
 com link para o site, proibido revender/redistribuir; não refere TikTok/Instagram nem vídeos de governo — confirmar caso a caso.
+
+**Fluxo no telemóvel:** vídeo → guião (progresso, quem aparece, cenas) → cena (texto, local, nota) → gravar. "Guardar e próxima
+cena →" guarda o que estiver escrito e avança. Dentro do gravador, "‹ Anterior / Seguinte ›" muda de cena sem sair, e depois de
+enviar fica no gravador na cena seguinte por gravar (modo contínuo). Tudo o que se envia fica no PC, em
+`projects/<id>/presenter/` (vídeo), `voice/` (áudio) e `media/` (imagens do local); `project.json` guarda os textos, locais e notas.
+No estúdio do PC, o cartão "Passo a passo" mostra o que falta: texto, gravações, imagens do local, música e gerar o vídeo.

@@ -6,7 +6,7 @@
   <title>Gravar no telemóvel</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body { padding-bottom: 40px; -webkit-text-size-adjust: 100%; }
+    body { padding-bottom: 96px; -webkit-text-size-adjust: 100%; }
     .wrap { max-width: 640px; margin: 0 auto; padding: 14px; }
     button, .btn { min-height: 52px; font-size: 17px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; text-align: center; }
@@ -22,7 +22,9 @@
     .bar { height: 10px; background: var(--line); border-radius: 6px; overflow: hidden; }
     .bar i { display: block; height: 100%; background: var(--ok); }
     .note { background: var(--bg); border: 1px dashed var(--line); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
-    .toast { position: fixed; left: 12px; right: 12px; bottom: 16px; transform: none; border-radius: 12px; text-align: center; }
+    .toast { position: fixed; left: 12px; right: 12px; top: max(12px, env(safe-area-inset-top)); bottom: auto; transform: none; border-radius: 12px; text-align: center; z-index: 90; }
+    .navbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; gap: 10px; padding: 10px 12px; padding-bottom: max(10px, env(safe-area-inset-bottom)); background: var(--panel); border-top: 1px solid var(--line); }
+    .navbar button { min-height: 54px; }
     /* gravador em ecrã inteiro */
     #rec { position: fixed; inset: 0; background: #000; color: #fff; z-index: 70; display: flex; flex-direction: column; }
     #rec video#rec-v { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -32,8 +34,8 @@
     #rec-text { max-height: 38vh; overflow: auto; font-size: var(--rs, 30px); line-height: 1.35; font-weight: 700; text-shadow: 0 2px 8px #000; scroll-behavior: auto; }
     #rec-ctl { position: relative; z-index: 2; margin-top: auto; background: linear-gradient(0deg, rgba(0,0,0,.85), rgba(0,0,0,.55) 75%, rgba(0,0,0,0)); padding: 16px 14px; padding-bottom: max(16px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; }
     #rec-ctl .r { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    #rec-ctl button { background: rgba(255,255,255,.14); color: #fff; border-color: rgba(255,255,255,.3); }
-    #rec-ctl button.rec { background: #e5322a; border-color: #e5322a; font-weight: 700; min-width: 170px; }
+    #rec-ctl button { background: rgba(255,255,255,.14); color: #fff; border-color: rgba(255,255,255,.3); min-height: 46px; font-size: 15px; padding: 6px 12px; }
+    #rec-ctl button.rec { background: #e5322a; border-color: #e5322a; font-weight: 700; min-width: 140px; min-height: 52px; font-size: 16px; }
     #rec-review { position: absolute; inset: 0; z-index: 3; background: #000; display: flex; flex-direction: column; gap: 12px; padding: 14px; }
     #rec-review video, #rec-review audio { width: 100%; max-height: 62vh; background: #111; border-radius: 10px; }
   </style>
