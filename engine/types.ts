@@ -48,6 +48,8 @@ export interface Scene {
   presenter?: string;
   /** Imagem ou vídeo ilustrativo da cena (relativo à pasta do projeto). Só no institucional. */
   media?: string;
+  /** Como mostrar o cenário de fundo da cena (ver Cutaway.fit). */
+  mediaFit?: 'cover' | 'contain';
   /** Reportagem: local mostrado na etiqueta desta cena (ex.: "Maputo · Baixa"). Só afirme locais verdadeiros. */
   location?: string;
   /** Nota de gravação: onde, que plano, o que mostrar. Aparece na folha de gravação, no teleprompter e no telemóvel. */
@@ -65,6 +67,22 @@ export interface Cutaway {
    */
   at?: number;
   duration?: number;
+  /**
+   * "cover" (por defeito) enche o ecrã e corta as margens; "contain" mostra a imagem INTEIRA (para
+   * cartazes e imagens com texto), sem zoom, e arruma o rosto e as legendas fora dela.
+   */
+  fit?: 'cover' | 'contain';
+}
+
+/** Dados de um evento (marcha, campanha…): aparecem num cartão no fim do vídeo. */
+export interface EventInfo {
+  title: string;
+  date?: string;
+  time?: string;
+  place?: string;
+  contact?: string;
+  /** Uma linha extra (ex.: "Entrada livre"). */
+  note?: string;
 }
 
 /**
@@ -148,6 +166,8 @@ export interface Project {
   host?: { name: string; role?: string };
   /** Créditos de imagens/vídeos de terceiros (ex.: Pexels). Entram na descrição de publicação. */
   credits?: string[];
+  /** Evento a promover: o fim do vídeo mostra um cartão com título, data, hora, local e contacto. */
+  event?: EventInfo;
   approval?: Approval;
   aspect?: Aspect;
   /**

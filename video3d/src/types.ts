@@ -99,6 +99,8 @@ export interface SceneMediaProps {
   duration: number;
   /** Duração do clip (vídeos curtos repetem-se). */
   clipSeconds?: number;
+  /** "contain": mostrar inteira (cartaz com texto), sem cortar nem fazer zoom. */
+  fit?: 'cover' | 'contain';
 }
 
 export interface InstitucionalProps {
@@ -158,4 +160,6 @@ export interface ReportagemProps {
   site: string;
   aspect: '9:16' | '16:9' | '1:1';
   music?: string;
+  /** Evento a promover: cartão final com os dados. */
+  event?: { title: string; date?: string; time?: string; place?: string; contact?: string; note?: string };
 }

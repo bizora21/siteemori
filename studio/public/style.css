@@ -123,3 +123,6 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .ver-sel select { width: auto; max-width: 230px; padding: 6px 8px; }
 .chip { padding: 4px 12px; border-radius: 99px; font-size: 13px; }
 .chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+
+.fit-opt { display: flex; align-items: center; gap: 4px; font-size: 12px; margin: 4px 0 0; color: var(--ink); cursor: pointer; }
+.fit-opt input { width: auto; margin: 0; }

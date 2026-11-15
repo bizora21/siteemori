@@ -123,7 +123,7 @@ function renderSimple() {
     h('p', { class: 'muted', style: 'margin:0' }, 'Em cada cena: ① escreva o que diz, ② grave (opcional), ③ escolha os cenários que aparecem. No fim, ouça, veja o rascunho e aprove.'),
     h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
     h('details', {},
-      h('summary', {}, 'Mais opções do vídeo (a minha foto, nome de quem aparece, formato)'),
+      h('summary', {}, 'Mais opções do vídeo (a minha foto, evento a promover, nome, formato)'),
       h('div', { class: 'zone', style: 'margin-top:10px' },
         h('b', {}, 'A minha foto (para a versão "Foto animada pela voz")'),
         h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Uma foto sua, de frente, com o rosto bem visível. A foto não é enviada para lado nenhum: fica só neste computador e não é guardada no Git.'),
@@ -135,6 +135,16 @@ function renderSimple() {
             if (!(await flushBeforeUpload())) return;
             try { await uploadTo('avatar', undefined, f, 'Foto'); await refresh(); } catch (e) { toast('Erro: ' + e.message, 6000); }
           } }, p.avatar ? 'Trocar a minha foto' : 'Carregar a minha foto'))),
+      h('div', { class: 'zone', style: 'margin-top:10px' },
+        h('b', {}, 'Evento a promover (opcional)'),
+        h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Marcha, campanha, formação… No fim do vídeo aparece um cartão com estes dados. Escreva só o que é certo (data, hora e local confirmados).'),
+        h('div', { class: 'grid3' },
+          field('Título do evento', p.event?.title, (v) => ((p.event ??= { title: '' }).title = v)),
+          field('Data', p.event?.date, (v) => ((p.event ??= { title: '' }).date = v || undefined)),
+          field('Hora', p.event?.time, (v) => ((p.event ??= { title: '' }).time = v || undefined)),
+          field('Local', p.event?.place, (v) => ((p.event ??= { title: '' }).place = v || undefined)),
+          field('Contacto', p.event?.contact, (v) => ((p.event ??= { title: '' }).contact = v || undefined)),
+          field('Nota (ex.: Entrada livre)', p.event?.note, (v) => ((p.event ??= { title: '' }).note = v || undefined)))),
       h('div', { class: 'grid3', style: 'margin-top:10px' },
         field('Nome de quem aparece (opcional)', p.host?.name, (v) => ((p.host ??= { name: '' }).name = v)),
         field('Função (opcional)', p.host?.role, (v) => ((p.host ??= { name: '' }).role = v)),
@@ -199,12 +209,14 @@ function simpleScene(p, s, i, st) {
   const customTimes = list.some((c) => c.at !== undefined);
   const hint = list.length === 0
     ? (hasFace ? 'Sem cenário, o seu rosto ocupa o ecrã (com o fundo de onde gravou). Junte cenários para mudar o fundo: o rosto passa a uma bolha.' : 'Sem cenário, a cena fica só com o texto. Junte imagens ou vídeos.')
-    : `${list.length} cenário(s). ${customTimes ? 'Com tempos definidos à mão (JSON avançado).' : 'A cena é dividida em partes iguais, pela ordem em que estão.'} ${hasFace ? 'O seu rosto aparece numa bolha por cima.' : ''}`;
+    : `${list.length} cenário(s). ${customTimes ? 'Com tempos definidos à mão (JSON avançado).' : 'A cena é dividida em partes iguais, pela ordem em que estão.'} ${list.some((c) => c.fit === 'contain') ? 'Os cartazes aparecem inteiros e o rosto desce para não os tapar. ' : 'Imagens com texto (cartazes)? Marque "Cartaz (inteira)" para não serem cortadas. '}${hasFace ? 'O seu rosto aparece numa bolha por cima.' : ''}`;
   const scenery = h('div', { class: 'zone' },
     h('b', {}, '③ Cenários (o que se vê)'),
     h('p', { class: 'muted', style: 'margin:2px 0 8px' }, hint),
     list.length > 0 && h('div', { class: 'gallery' }, ...list.map((c, k) =>
       h('div', { class: 'cen' }, thumb(c.media, 96),
+        h('label', { class: 'fit-opt', title: 'Mostra a imagem INTEIRA, sem cortar nem fazer zoom. Use em cartazes e imagens com texto.' },
+          h('input', { type: 'checkbox', checked: c.fit === 'contain', onchange: (e) => { c.fit = e.target.checked ? 'contain' : undefined; dirty(); } }), ' Cartaz (inteira)'),
         h('div', { class: 'row', style: 'gap:4px;margin-top:4px' },
           h('button', { disabled: k === 0, onclick: () => move(k, -1), title: 'Para a frente' }, '◀'),
           h('button', { disabled: k === list.length - 1, onclick: () => move(k, 1), title: 'Para trás' }, '▶'),

@@ -65,6 +65,8 @@ export interface SceneMedia {
   duration: number;
   /** Duração do clip (para repetir vídeos curtos). */
   clipSeconds?: number;
+  /** "contain": mostrar inteira (cartaz com texto). */
+  fit?: 'cover' | 'contain';
 }
 
 const IMAGE_EXT = /\.(png|jpe?g|webp|gif)$/i;
@@ -105,10 +107,10 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
   return project.scenes.map((scene, i) => {
     const wantPresenter = Boolean(scene.presenter) && audios[i].source === 'human';
     const end = tl.sceneStarts[i + 1] ?? tl.lead + tl.voiceSeconds + 2;
-    const asMedia = (f: { src: string; image: boolean; clip: number }): SceneMedia =>
+    const asMedia = (f: { src: string; image: boolean; clip: number }, fit?: 'cover' | 'contain'): SceneMedia =>
       f.image
-        ? { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i] }
-        : { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip };
+        ? { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], fit }
+        : { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip, fit };
     const asFace = (f: { src: string; clip: number }): SceneMedia => ({ src: f.src, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(f.clip, tl.durations[i]), clipSeconds: f.clip });
 
     let main: SceneMedia | null = null;
@@ -120,7 +122,7 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
         const f = stageFile(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
         if (!f.image) face = asFace(f);
       }
-      if (scene.media) main = asMedia(stageFile(project, projectDir, scene.id, scene.media, scene.id));
+      if (scene.media) main = asMedia(stageFile(project, projectDir, scene.id, scene.media, scene.id), scene.mediaFit);
     } else {
       // Institucional: ou o apresentador ou a imagem da cena.
       const rel = wantPresenter ? scene.presenter : scene.media;
@@ -142,7 +144,7 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
       const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
-      return { src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip };
+      return { src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit };
     });
     return { main, face, cutaways };
   });
@@ -214,6 +216,13 @@ export function planRender(
       }
     }
 
+    // Um cartaz com texto precisa de tempo para ser lido (≈ 3 s, no mínimo).
+    media.forEach((m, i) => {
+      for (const c of [m.main, ...m.cutaways]) {
+        if (c?.fit === 'contain' && c.duration < 3) warnings.push(`cena "${project.scenes[i].id}": um cartaz aparece só ${c.duration.toFixed(1)} s — pouco para ler o texto (use menos cenários nesta cena ou uma voz mais longa).`);
+      }
+    });
+
     return {
       composition: def.composition,
       warnings,
@@ -235,6 +244,7 @@ export function planRender(
         aspect: project.aspect ?? '9:16',
         music: stageMusic(project, projectDir),
         ...(avatar ? { avatar, voiceLevels: levels, levelStep: LEVEL_STEP } : {}),
+        ...(project.event?.title?.trim() ? { event: project.event } : {}),
       },
     };
   }

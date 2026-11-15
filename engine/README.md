@@ -178,3 +178,15 @@ No estúdio, o seletor "Versão" fica ao lado dos botões Ouvir / Rascunho / Apr
 **Foto animada pela voz** (`faceMode: "photo"` + `avatar`): a foto reage ao volume da voz com anéis e um pequeno movimento. Não anima
 a boca nem finge que a pessoa fala (não é um avatar de IA). A foto fica em `projects/<id>/avatar.*`, fora do Git. O volume da voz
 segue a fala (medido: 0,54 nas palavras contra 0,08 nas pausas numa gravação real).
+
+## Vídeo institucional ou de campanha (cartazes + rosto + dados do evento)
+
+Para promover um evento (marcha, campanha, formação) com cartazes seus e o rosto de quem convida:
+- **Cartazes e imagens com texto:** em cada imagem marque "Cartaz (inteira)" (`"fit": "contain"` num cenário, ou `mediaFit` no fundo da
+  cena). A imagem aparece INTEIRA, sem corte nem zoom, numa zona própria; enquanto está no ecrã, o rosto encolhe e desce para não a tapar
+  (vertical 9:16). Cada cartaz precisa de ≈ 3 s para ser lido (o motor avisa se aparecer menos). Desenhe-os em 4:5 (1080×1350) ou 9:16.
+- **Cartão do evento:** `"event": { "title", "date", "time", "place", "contact", "note" }` mostra, nos últimos ~5 s, um cartão com
+  título, data e hora, local, contacto e a chamada para a ação. Escreva só o que está confirmado.
+- Estrutura sugerida: ① rosto em ecrã inteiro (convite, 5–8 s) → ② cartazes com o rosto em bolha (porquê / vantagens) → ③ rosto + cartão do evento.
+- Limite: o arranjo "cartaz + bolha" está afinado para vertical; em horizontal o cartaz aparece inteiro mas a bolha não se reposiciona.
+- Conteúdo sensível (violência, saúde, política): nada de números sem fonte, e uma pessoa responsável da organização deve aprovar o rascunho antes do final.

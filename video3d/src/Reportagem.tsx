@@ -21,14 +21,35 @@ const SANS = "Roboto, 'Helvetica Neue', Arial, sans-serif";
 const clamp = { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' } as const;
 
 /** Mídia em ecrã inteiro: apresentador, vídeo (em ciclo) ou imagem com movimento lento. */
-const FullMedia = ({ m, fadeFrames = 7 }: { m: SceneMediaProps; fadeFrames?: number }) => {
+const FullMedia = ({ m, fadeFrames = 7, box }: { m: SceneMediaProps; fadeFrames?: number; box?: { top: number; bottom: number } }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const total = Math.max(2, Math.round(m.duration * fps));
   const fade = interpolate(frame, [0, fadeFrames, total - fadeFrames, total], [0, 1, 1, 0], clamp);
   const fill = { width: '100%', height: '100%', objectFit: 'cover' } as const;
   let body;
-  if (m.type === 'image') {
+  if (m.fit === 'contain' && m.type !== 'presenter') {
+    // Cartaz / imagem com texto: mostra-se INTEIRA, sem cortar nem fazer zoom, numa zona própria
+    // (o rosto e as legendas ficam fora dela). Atrás, a mesma imagem desfocada preenche o ecrã.
+    const clip = Math.max(1, Math.round((m.clipSeconds ?? m.duration) * fps));
+    const media = (style: React.CSSProperties) =>
+      m.type === 'image' ? (
+        <Img src={staticFile(m.src)} style={style} />
+      ) : (
+        <Loop durationInFrames={clip}>
+          <OffthreadVideo src={staticFile(m.src)} muted style={style} />
+        </Loop>
+      );
+    const hold = interpolate(frame, [0, total], [1, 1.012], clamp); // quase parada: o texto tem de se ler
+    body = (
+      <>
+        {media({ ...fill, filter: 'blur(38px) brightness(.42)', transform: 'scale(1.25)' })}
+        <div style={{ position: 'absolute', left: 0, right: 0, top: box?.top ?? 0, bottom: box?.bottom ?? 0 }}>
+          {media({ width: '100%', height: '100%', objectFit: 'contain', transform: `scale(${hold})`, filter: 'drop-shadow(0 10px 34px rgba(0,0,0,.55))' })}
+        </div>
+      </>
+    );
+  } else if (m.type === 'image') {
     // Movimento lento (Ken Burns): a imagem parada ganha vida sem distrair.
     const zoom = interpolate(frame, [0, total], [1.02, 1.1], clamp);
     const drift = interpolate(frame, [0, total], [0, -18], clamp);
@@ -83,6 +104,11 @@ const hasScenery = (s: ReportagemProps['scenes'][number]) => Boolean(s.media) ||
 
 const BUBBLE = 380; // diâmetro da bolha (unidades u)
 const BUBBLE_BOTTOM = 560;
+// Com um cartaz no ecrã (vertical), o cartaz ocupa a parte de cima e o rosto desce, encostado por baixo dele.
+const POSTER_BOX_TOP = 130;
+const POSTER_BOX_BOTTOM = 820;
+const POSTER_BUBBLE = 300; // com um cartaz no ecrã a bolha encolhe, para o cartaz ficar maior
+const POSTER_BUBBLE_BOTTOM = POSTER_BOX_BOTTOM - POSTER_BUBBLE;
 
 /**
  * A foto da pessoa que "fala" ao ritmo da voz: pulsa e brilha com o volume. Não anima a boca nem
@@ -162,7 +188,6 @@ export const Reportagem = (props: ReportagemProps) => {
   };
   const level = props.avatar ? (levelAt(t - 0.1) + levelAt(t - 0.05) + levelAt(t) + levelAt(t + 0.05)) / 4 : 0;
   const avatarCorner = hasScenery(scene);
-  const avatarSize = (avatarCorner ? BUBBLE : AVATAR_BIG) * u;
   const sceneT = t - sceneStart;
 
   // Legenda atual (karaoke discreto: a palavra em voz leva a cor da marca).
@@ -187,7 +212,17 @@ export const Reportagem = (props: ReportagemProps) => {
   const ctaStart = Math.max(sceneStart, props.voiceEndSeconds - 5);
   const ctaIn = interpolate(t - ctaStart, [0.2, 0.7], [0, 1], clamp);
   const hasBubble = hasScenery(scene) && (Boolean(scene?.face) || Boolean(props.avatar));
-  const ctaBottom = props.avatar && !hasScenery(scene) ? 800 + AVATAR_BIG + 40 : hasBubble ? BUBBLE_BOTTOM + BUBBLE + 40 : portrait ? 560 : 250;
+  // Há um cartaz (imagem inteira) no ecrã agora? Então o rosto desce para não o tapar.
+  const posterNow = props.scenes.some(
+    (s) =>
+      (s.media?.fit === 'contain' && t >= s.media.from && t < s.media.from + s.media.duration) ||
+      (s.cutaways ?? []).some((c) => c.fit === 'contain' && t >= c.from && t < c.from + c.duration),
+  );
+  const bubbleBottom = posterNow && portrait ? POSTER_BUBBLE_BOTTOM : BUBBLE_BOTTOM;
+  const bubbleSize = posterNow && portrait ? POSTER_BUBBLE : BUBBLE;
+  const avatarSize = (avatarCorner ? bubbleSize : AVATAR_BIG) * u;
+  const posterBox = portrait ? { top: POSTER_BOX_TOP * u, bottom: POSTER_BOX_BOTTOM * u } : { top: 90 * u, bottom: 90 * u };
+  const ctaBottom = props.avatar && !hasScenery(scene) ? 800 + AVATAR_BIG + 40 : hasBubble ? bubbleBottom + bubbleSize + 40 : portrait ? 560 : 250;
 
   return (
     <AbsoluteFill style={{ background: `linear-gradient(160deg, ${bg} 0%, #000 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
@@ -195,7 +230,7 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.scenes.map((s, i) =>
         s.media ? (
           <Sequence key={`m${i}`} from={Math.round(s.media.from * fps)} durationInFrames={Math.max(2, Math.round(s.media.duration * fps))} layout="none">
-            <FullMedia m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} />
+            <FullMedia m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} box={posterBox} />
           </Sequence>
         ) : null,
       )}
@@ -221,7 +256,7 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.scenes.flatMap((s, i) =>
         (s.cutaways ?? []).map((c, k) => (
           <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps)} durationInFrames={Math.max(2, Math.round(c.duration * fps))} layout="none">
-            <FullMedia m={c} fadeFrames={7} />
+            <FullMedia m={c} fadeFrames={7} box={posterBox} />
           </Sequence>
         )),
       )}
@@ -230,7 +265,7 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.scenes.map((s, i) =>
         s.face && hasScenery(s) ? (
           <Sequence key={`b${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
-            <FaceBubble m={s.face} size={BUBBLE * u} left={pad} bottom={BUBBLE_BOTTOM * u} accent={accent} />
+            <FaceBubble m={s.face} size={bubbleSize * u} left={pad} bottom={bubbleBottom * u} accent={accent} />
           </Sequence>
         ) : null,
       )}
@@ -241,7 +276,7 @@ export const Reportagem = (props: ReportagemProps) => {
           src={props.avatar.src}
           size={avatarSize}
           left={avatarCorner ? pad : (width - avatarSize) / 2}
-          bottom={(avatarCorner ? BUBBLE_BOTTOM : portrait ? 800 : 300) * u}
+          bottom={(avatarCorner ? bubbleBottom : portrait ? 800 : 300) * u}
           accent={accent}
           level={level}
         />
@@ -287,8 +322,8 @@ export const Reportagem = (props: ReportagemProps) => {
           style={{
             position: 'absolute',
             // com o rosto em bolha, o nome fica ao lado dela
-            left: bubbleNow ? pad + (BUBBLE + 28) * u : pad,
-            bottom: bubbleNow ? (BUBBLE_BOTTOM + BUBBLE / 2 - 50) * u : (portrait ? 560 : 250) * u,
+            left: bubbleNow ? pad + (bubbleSize + 28) * u : pad,
+            bottom: bubbleNow ? (bubbleBottom + bubbleSize / 2 - 50) * u : (portrait ? 560 : 250) * u,
             opacity: nameVis,
             transform: `translateX(${(1 - nameVis) * -60}px)`,
             borderLeft: `${8 * u}px solid ${accent}`,
@@ -302,7 +337,7 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* Última cena: chamada para a ação */}
-      {isLast && t >= ctaStart && (
+      {isLast && t >= ctaStart && !props.event && (
         <div
           style={{
             position: 'absolute',
@@ -320,6 +355,40 @@ export const Reportagem = (props: ReportagemProps) => {
             {props.cta}
             <div style={{ fontSize: 34 * u, fontWeight: 700, marginTop: 6 * u, opacity: 0.85 }}>{props.site}</div>
           </div>
+        </div>
+      )}
+
+      {/* Cartão do evento (marcha, campanha…): data, hora, local e contacto, no fim do vídeo */}
+      {isLast && t >= ctaStart && props.event && (
+        <div
+          style={{
+            position: 'absolute',
+            left: pad,
+            right: pad,
+            top: (portrait ? 230 : 110) * u,
+            background: `${bg}F2`,
+            border: `${5 * u}px solid ${accent}`,
+            borderRadius: 26 * u,
+            padding: `${34 * u}px ${40 * u}px`,
+            textAlign: 'center',
+            opacity: ctaIn,
+            transform: `translateY(${(1 - ctaIn) * 40}px)`,
+            boxShadow: '0 20px 70px rgba(0,0,0,.6)',
+          }}
+        >
+          <div style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 60 * u, lineHeight: 1.1, color: accent }}>{props.event.title}</div>
+          {(props.event.date || props.event.time) && (
+            <div style={{ fontSize: 54 * u, fontWeight: 800, marginTop: 22 * u, lineHeight: 1.15 }}>{[props.event.date, props.event.time].filter(Boolean).join(' · ')}</div>
+          )}
+          {props.event.place && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 * u, fontSize: 42 * u, fontWeight: 600, marginTop: 14 * u }}>
+              <Pin color={accent} size={44 * u} />
+              {props.event.place}
+            </div>
+          )}
+          {props.event.note && <div style={{ fontSize: 36 * u, marginTop: 16 * u, fontStyle: 'italic', opacity: 0.92 }}>{props.event.note}</div>}
+          {props.event.contact && <div style={{ fontSize: 34 * u, marginTop: 18 * u, opacity: 0.85 }}>{props.event.contact}</div>}
+          <div style={{ display: 'inline-block', marginTop: 26 * u, background: accent, color: bg, fontWeight: 800, fontSize: 40 * u, padding: `${12 * u}px ${34 * u}px`, borderRadius: 14 * u }}>{props.cta}</div>
         </div>
       )}
 
