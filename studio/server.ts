@@ -13,9 +13,11 @@
 // (vai no link/QR). É HTTP simples: usar só em Wi-Fi de confiança (a sua casa).
 
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { createServer as createSecureServer } from 'node:https';
+import type { TLSSocket } from 'node:tls';
 import { spawn, spawnSync } from 'node:child_process';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import { networkInterfaces } from 'node:os';
 import { basename, extname, join, normalize, resolve, sep } from 'node:path';
 import { lintProject } from '../engine/claims';
@@ -28,7 +30,7 @@ import { findHumanFile } from '../engine/voice';
 const PORT = Number(process.env.STUDIO_PORT ?? 4173);
 const LAN = process.argv.includes('--lan') || process.env.STUDIO_LAN === '1';
 const HOST = '127.0.0.1';
-const BIND = LAN ? '0.0.0.0' : HOST;
+const HTTPS_PORT = PORT + 1;
 const TOKEN = randomBytes(16).toString('hex');
 const ROOT = resolve('projects');
 const OUT = resolve('video3d/out');
@@ -48,7 +50,39 @@ function lanIps(): string[] {
     .filter((n): n is NonNullable<typeof n> => Boolean(n) && n!.family === 'IPv4' && !n!.internal)
     .map((n) => n.address);
 }
-const HOSTS = new Set([`${HOST}:${PORT}`, `localhost:${PORT}`, ...(LAN ? lanIps().map((ip) => `${ip}:${PORT}`) : [])]);
+/**
+ * Certificado autoassinado para o telemóvel gravar COM o texto no ecrã: a câmara e o
+ * microfone só funcionam dentro da página em HTTPS. O telemóvel avisa "ligação não privada"
+ * na primeira vez (é o seu próprio PC): Avançado → Continuar. Precisa do openssl (vem com o Git).
+ */
+function findOpenssl(): string | null {
+  const cands = [process.env.OPENSSL, 'openssl', 'C:\\Program Files\\Git\\usr\\bin\\openssl.exe', 'C:\\Program Files\\Git\\mingw64\\bin\\openssl.exe'].filter((x): x is string => Boolean(x));
+  return cands.find((c) => spawnSync(c, ['version'], { encoding: 'utf8' }).status === 0) ?? null;
+}
+
+function tlsCredentials(ips: string[]): { key: string; cert: string } | null {
+  const openssl = findOpenssl();
+  if (!openssl) return null;
+  const dir = resolve('.engine-cache/tls');
+  mkdirSync(dir, { recursive: true });
+  const name = createHash('sha1').update(ips.join(',')).digest('hex').slice(0, 10);
+  const key = join(dir, `${name}.key`);
+  const crt = join(dir, `${name}.crt`);
+  if (!existsSync(key) || !existsSync(crt)) {
+    const san = ['DNS:localhost', 'IP:127.0.0.1', ...ips.map((ip) => `IP:${ip}`)].join(',');
+    const r = spawnSync(openssl, ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', key, '-out', crt, '-days', '90', '-subj', '/CN=Estudio de video', '-addext', `subjectAltName=${san}`], { encoding: 'utf8' });
+    if (r.status !== 0) return null;
+  }
+  return { key: readFileSync(key, 'utf8'), cert: readFileSync(crt, 'utf8') };
+}
+
+const TLS = LAN ? tlsCredentials(lanIps()) : null;
+const HOSTS = new Set([
+  `${HOST}:${PORT}`,
+  `localhost:${PORT}`,
+  ...(TLS ? [`${HOST}:${HTTPS_PORT}`, `localhost:${HTTPS_PORT}`] : []),
+  ...(LAN ? lanIps().map((ip) => (TLS ? `${ip}:${HTTPS_PORT}` : `${ip}:${PORT}`)) : []),
+]);
 
 const isLoopback = (a: string) => a === '127.0.0.1' || a === '::1' || a === '::ffff:127.0.0.1';
 const isPrivate = (a: string) => {
@@ -450,7 +484,8 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
   // Defesa contra DNS rebinding e pedidos de outros sites.
   const host = req.headers.host ?? '';
   if (!HOSTS.has(host)) throw new HttpError(403, 'host não permitido');
-  if (method !== 'GET' && req.headers.origin && req.headers.origin !== `http://${host}`) throw new HttpError(403, 'origem não permitida');
+  const secure = Boolean((req.socket as TLSSocket).encrypted);
+  if (method !== 'GET' && req.headers.origin && req.headers.origin !== `${secure ? 'https' : 'http'}://${host}`) throw new HttpError(403, 'origem não permitida');
 
   // Fora deste computador: só em modo --lan, só IPs privados e só com o código secreto.
   const remote = req.socket.remoteAddress ?? '';
@@ -459,15 +494,15 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     if (!LAN || !isPrivate(remote)) throw new HttpError(403, 'acesso só neste computador');
     const cookie = /(?:^|;\s*)st=([a-f0-9]+)/.exec(req.headers.cookie ?? '')?.[1];
     const given = url.searchParams.get('t');
-    if (given === TOKEN) res.setHeader('Set-Cookie', `st=${TOKEN}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200`);
+    if (given === TOKEN) res.setHeader('Set-Cookie', `st=${TOKEN}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${secure ? '; Secure' : ''}`);
     else if (cookie !== TOKEN) throw new HttpError(401, 'precisa do link com o código (veja o terminal do computador)');
   }
 
   if (parts[0] === 'api' && parts[1] === 'info') {
     // O código só é entregue a quem está no próprio computador.
-    const urls = local && LAN ? lanIps().map((ip) => `http://${ip}:${PORT}/m.html?t=${TOKEN}`) : [];
+    const urls = local && LAN ? lanIps().map((ip) => (TLS ? `https://${ip}:${HTTPS_PORT}` : `http://${ip}:${PORT}`) + `/m.html?t=${TOKEN}`) : [];
     // O QR é gerado aqui, neste computador: o link (com o código) nunca sai da sua rede.
-    return json(res, { lan: LAN, urls, qr: urls.map((u) => qrSvg(u, 300)), pexels: Boolean(pexelsKey()) });
+    return json(res, { lan: LAN, secure: Boolean(TLS), urls, qr: urls.map((u) => qrSvg(u, 300)), pexels: Boolean(pexelsKey()) });
   }
 
   if (parts[0] === 'api' && parts[1] === 'pexels' && parts[2] === 'search' && method === 'GET') {
@@ -581,6 +616,18 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
       return json(res, { ok: true, ...(await pexelsDownload(id, b.scene ? needId(b.scene) : undefined, { type: b.type ?? 'photos', link: b.link, author: b.author, url: b.url })) });
     }
 
+    // PATCH /api/projects/:id/meta  { hostName?, hostRole? } — quem aparece no vídeo (telemóvel)
+    if (sub === 'meta' && method === 'PATCH') {
+      const project = loadProject(id);
+      const b = JSON.parse((await readBody(req)).toString() || '{}') as { hostName?: string; hostRole?: string };
+      const host = project.host ?? { name: '' };
+      if (typeof b.hostName === 'string') host.name = b.hostName.trim().slice(0, 120);
+      if (typeof b.hostRole === 'string') host.role = b.hostRole.trim().slice(0, 160);
+      project.host = host;
+      writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
+      return json(res, { ok: true });
+    }
+
     // PATCH /api/projects/:id/scene/:scene  { location?, shot?, narration? } — o telemóvel edita só isto
     if (sub === 'scene' && parts[4] && method === 'PATCH') {
       const project = loadProject(id);
@@ -628,22 +675,33 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
   throw new HttpError(404, 'rota desconhecida');
 }
 
-createServer((req, res) => {
+const handler = (req: IncomingMessage, res: ServerResponse) => {
   route(req, res).catch((e: unknown) => {
     const status = e instanceof HttpError ? e.status : 500;
     if (res.headersSent) return void res.end();
     json(res, { error: e instanceof Error ? e.message : String(e) }, status);
   });
-}).listen(PORT, BIND, () => {
+};
+
+// PC: HTTP só em 127.0.0.1 (sem avisos de certificado). Telemóvel: HTTPS na rede local (se houver
+// openssl); sem openssl cai para HTTP na rede local e o telemóvel grava com a câmara normal.
+createServer(handler).listen(PORT, LAN && !TLS ? '0.0.0.0' : HOST, () => {
   console.log(`\n  Estúdio do motor de vídeo: http://${HOST}:${PORT}`);
-  if (LAN) {
-    console.log('\n  MODO TELEMÓVEL ligado. No telemóvel (mesmo Wi-Fi), abra um destes links:');
-    for (const ip of lanIps()) console.log(`    http://${ip}:${PORT}/m.html?t=${TOKEN}`);
-    console.log('  O código vale só até fechar este programa. HTTP simples: use só no Wi-Fi da sua casa.\n');
-  } else {
-    console.log('  (só acessível a partir deste computador; para usar o telemóvel: npm run studio -- --lan)\n');
-  }
+  if (!LAN) console.log('  (só acessível a partir deste computador; para usar o telemóvel: iniciar-estudio.bat)\n');
 });
+
+if (LAN && TLS) {
+  createSecureServer(TLS, handler).listen(HTTPS_PORT, '0.0.0.0', () => {
+    console.log('\n  MODO TELEMÓVEL ligado (HTTPS, grava com o texto no ecrã). Abra no telemóvel, no mesmo Wi-Fi:');
+    for (const ip of lanIps()) console.log(`    https://${ip}:${HTTPS_PORT}/m.html?t=${TOKEN}`);
+    console.log('  Na 1.ª vez o telemóvel avisa "ligação não privada": é o seu PC. Toque em Avançado → Continuar.');
+    console.log('  O código vale só até fechar este programa. Use só no Wi-Fi da sua casa.\n');
+  });
+} else if (LAN) {
+  console.log('\n  MODO TELEMÓVEL ligado (HTTP: sem openssl, o telemóvel grava com a câmara normal). Links:');
+  for (const ip of lanIps()) console.log(`    http://${ip}:${PORT}/m.html?t=${TOKEN}`);
+  console.log('  O código vale só até fechar este programa. HTTP simples: use só no Wi-Fi da sua casa.\n');
+}
 
 // Para o `tsc` ver este ficheiro como módulo mesmo sem exports.
 export {};

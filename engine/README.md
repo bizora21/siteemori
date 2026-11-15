@@ -112,12 +112,15 @@ sobre imagens do local. O template junta tudo com acabamento fixo:
 
 ## Telemóvel, imagens do local e música
 
-**Gravar com o telemóvel** (`npm run studio -- --lan`): o terminal mostra um link com um código secreto; abre-se no
-telemóvel (mesmo Wi-Fi). Aí vê-se o texto de cada cena (teleprompter em ecrã inteiro), define-se o **local** e a **nota de
-gravação** de cada cena, grava-se com a câmara nativa (melhor qualidade que gravar no browser) e envia-se. Também envia
-fotos/vídeos do local, que entram como cortes na cena. Segurança: só IPs privados + código gerado a cada arranque; HTTP simples,
-usar só em Wi-Fi de confiança. O navegador do telemóvel não consegue gravar direto na página (exige HTTPS), por isso usa a câmara nativa.
-No computador, o botão "Carregar vídeo (telemóvel)" faz o mesmo por ficheiro.
+**Gravar com o telemóvel** (duplo clique em `iniciar-estudio.bat`, ou `npm run studio -- --lan`): abre o estúdio com um QR
+no ecrã; lê-se com a câmara do telemóvel (mesmo Wi-Fi). A página do telemóvel é um guia passo a passo: escolhe-se o vídeo, vê-se
+o progresso e as cenas, e em cada cena define-se o **local** e uma **nota** (em reportagem também "Quem aparece").
+Grava-se **dentro da página, com o texto por cima da câmara** (teleprompter com tamanho e rolagem), revê-se e envia-se; segue
+sozinho para a cena seguinte. Isto precisa de HTTPS: o estúdio gera um certificado autoassinado com o `openssl` (vem com o Git), em
+`.engine-cache/tls/`, e escuta em HTTPS na porta 4174 só para a rede local. Na 1.ª vez o telemóvel avisa "ligação não privada":
+é o próprio PC, tocar em Avançado → Continuar. Sem `openssl` cai para HTTP e o telemóvel usa a câmara normal (o texto sai do ecrã).
+Também envia fotos/vídeos do local, que entram como cortes na cena. Segurança: só IPs privados + código gerado a cada arranque;
+só Wi-Fi de confiança. No computador, o botão "Carregar vídeo (telemóvel)" faz o mesmo por ficheiro.
 
 **Imagens do local:** carregar ficheiros próprios ou procurar no Pexels (usa `PEXELS_API_KEY` de `.env.local`; a chave nunca vai
 para o navegador). O crédito fica em `credits` e entra na descrição de publicação. O Pexels NÃO tem música. Uma foto de arquivo

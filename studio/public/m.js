@@ -1,7 +1,7 @@
 'use strict';
-// Página do telemóvel: ver o texto, definir local e nota de gravação, gravar com a
-// câmara nativa do telemóvel e enviar para o estúdio. Não usa getUserMedia (precisa
-// de HTTPS; a câmara nativa funciona em HTTP e dá melhor qualidade).
+// Página do telemóvel: guia passo a passo. Uma cena de cada vez; a personalização
+// (quem aparece, local, nota) fica à vista; grava-se DENTRO da página com o texto
+// por cima da câmara (precisa de HTTPS) ou, se não der, com a câmara normal do telemóvel.
 
 const $ = (s, r = document) => r.querySelector(s);
 const h = (tag, attrs = {}, ...kids) => {
@@ -26,56 +26,185 @@ async function api(path, opts = {}) {
   if (!r.ok) throw new Error(data?.error || r.statusText);
   return data;
 }
+const patchJson = (path, body) => api(path, { method: 'PATCH', body: JSON.stringify(body) });
 
 const app = $('#app');
-let cur = null; // { id, data }
-let status = ''; // mensagem de envio
+const S = { id: null, data: null, readSize: 24 };
+const canRecordInPage = () => Boolean(window.isSecureContext && navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+const withVideo = (p) => p.template === 'reportagem' || p.template === 'institucional';
 
-// ── lista de projetos ─────────────────────────────────────────────────────
+function toast(msg, ms = 2800) {
+  let t = $('#toast');
+  if (!t) { t = h('div', { id: 'toast', class: 'toast' }); document.body.append(t); }
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(toast.t);
+  if (ms) toast.t = setTimeout(() => (t.hidden = true), ms);
+}
+
+async function reload() {
+  S.data = await api(`/api/projects/${S.id}`);
+}
+
+// ── 1. escolher o vídeo ───────────────────────────────────────────────────
 async function home() {
-  cur = null;
+  S.id = null;
+  history.replaceState(null, '', location.pathname + location.search.replace(/([?&])p=[^&]*&?/, '$1').replace(/[?&]$/, ''));
   const s = await api('/api/state');
   app.replaceChildren(
-    h('h2', {}, 'Escolha o vídeo a gravar'),
+    h('h2', { style: 'margin-top:4px' }, 'Que vídeo vai gravar?'),
     ...s.projects.map((p) =>
-      h('button', { class: 'card item', style: 'width:100%;text-align:left', onclick: () => open(p.id) },
-        h('b', { style: 'display:block' }, p.title),
-        h('small', { class: 'muted' }, `${p.recorded}/${p.scenes} cenas gravadas`)),
+      h('button', { class: 'card row-scene', onclick: () => openProject(p.id) },
+        h('div', {}, h('b', { style: 'display:block' }, p.title), h('small', { class: 'muted' }, `${p.recorded} de ${p.scenes} cenas enviadas`))),
     ),
   );
 }
 
-async function open(id) {
-  const data = await api(`/api/projects/${id}`);
-  cur = { id, data };
-  history.replaceState(null, '', `?${new URLSearchParams({ ...Object.fromEntries(new URLSearchParams(location.search)), p: id })}`);
-  render();
+async function openProject(id) {
+  S.id = id;
+  const q = new URLSearchParams(location.search);
+  q.set('p', id);
+  history.replaceState(null, '', `${location.pathname}?${q}`);
+  await reload();
+  projectScreen();
 }
 
-async function reload() {
-  cur.data = await api(`/api/projects/${cur.id}`);
-  render();
+// ── 2. o guião do vídeo ───────────────────────────────────────────────────
+function projectScreen() {
+  const { project: p, scenes } = S.data;
+  const n = p.scenes.length;
+  const done = scenes.filter((x) => x.recorded).length;
+  const next = scenes.findIndex((x) => !x.recorded);
+
+  app.replaceChildren(
+    h('button', { onclick: home }, '← Outros vídeos'),
+    h('h2', { style: 'margin:12px 0 4px' }, p.title),
+    h('div', { class: 'bar' }, h('i', { style: `width:${(done / n) * 100}%` })),
+    h('p', { class: 'muted', style: 'margin:6px 0 12px' }, done === n ? '✓ Todas as cenas enviadas.' : `${done} de ${n} cenas enviadas.`),
+    next >= 0
+      ? h('button', { class: 'primary block', onclick: () => sceneScreen(next) }, `▶ Gravar a cena ${next + 1}`)
+      : h('div', { class: 'note' }, 'Tudo enviado. No computador, abra este vídeo no estúdio e carregue em "Gerar rascunho".'),
+
+    p.template === 'reportagem' && h('section', { class: 'card', style: 'margin-top:14px' },
+      h('h3', { style: 'margin:0 0 6px' }, 'Quem aparece no vídeo'),
+      h('label', {}, 'Nome',
+        h('input', { type: 'text', value: p.host?.name === 'Seu nome' ? '' : (p.host?.name ?? ''), placeholder: 'O seu nome', onchange: (e) => saveMeta({ hostName: e.target.value }) })),
+      h('label', {}, 'Função ou descrição (opcional)',
+        h('input', { type: 'text', value: p.host?.role ?? '', placeholder: 'ex.: Professora, Fundador da MOVAGO', onchange: (e) => saveMeta({ hostRole: e.target.value }) })),
+    ),
+
+    h('h3', { style: 'margin:18px 0 0' }, 'Cenas'),
+    ...p.scenes.map((s, i) =>
+      h('button', { class: 'card row-scene', onclick: () => sceneScreen(i) },
+        h('b', { style: 'color:var(--accent)' }, String(i + 1).padStart(2, '0')),
+        h('div', {}, h('b', { style: 'display:block' }, s.id), h('small', { class: 'muted' }, [s.location && `📍 ${s.location}`, s.narration.slice(0, 48) + (s.narration.length > 48 ? '…' : '')].filter(Boolean).join(' · '))),
+        h('span', { class: 'st' }, scenes[i].recorded ? '✅' : '⬜')),
+    ),
+
+    h('details', { class: 'card', style: 'margin-top:16px' },
+      h('summary', {}, 'Como funciona?'),
+      h('div', { class: 'stack', style: 'margin-top:10px' },
+        step(1, 'Toque numa cena (ou em "Gravar a cena").'),
+        step(2, 'Escolha onde vai estar (Local) e escreva uma nota para si, se quiser.'),
+        step(3, canRecordInPage() ? 'Toque em "Gravar": o texto aparece por cima da câmara. Leia e pare no fim.' : 'Toque em "Gravar": abre a câmara do telemóvel (o texto não fica no ecrã; leia antes).'),
+        step(4, 'Repita nas outras cenas. No fim, no computador, carregue em "Gerar rascunho".'),
+      )),
+  );
+}
+const step = (n, t) => h('div', { class: 'step' }, h('b', { class: 'n' }, n), h('span', {}, t));
+
+async function saveMeta(body) {
+  try { await patchJson(`/api/projects/${S.id}/meta`, body); toast('Guardado ✓', 1500); await reload(); } catch (e) { toast('Não guardou: ' + e.message, 5000); }
+}
+
+// ── 3. uma cena ───────────────────────────────────────────────────────────
+function sceneScreen(i) {
+  S.cur = i;
+  const { project: p, scenes } = S.data;
+  const n = p.scenes.length;
+  const s = p.scenes[i];
+  const st = scenes[i];
+  const video = withVideo(p);
+  const inPage = canRecordInPage();
+  const local = p.template === 'reportagem';
+
+  app.replaceChildren(
+    h('div', { class: 'row', style: 'justify-content:space-between' },
+      h('button', { onclick: projectScreen }, '← Guião'),
+      h('b', {}, `Cena ${i + 1} de ${n}`),
+      h('span', {}, h('button', { disabled: i === 0, onclick: () => sceneScreen(i - 1) }, '‹'), ' ', h('button', { disabled: i === n - 1, onclick: () => sceneScreen(i + 1) }, '›'))),
+
+    h('section', { class: 'card', style: 'margin-top:12px' },
+      h('div', { class: 'row' }, h('b', {}, s.id), h('span', { class: 'pill ' + (st.recorded ? 'ok' : '') }, st.recorded ? '✅ enviada' : 'por gravar')),
+      h('p', { class: 'reading', style: `--rs:${S.readSize}px;margin:10px 0 8px` }, s.narration),
+      h('div', { class: 'row' },
+        h('button', { onclick: () => { S.readSize = Math.max(16, S.readSize - 3); sceneScreen(i); } }, 'A−'),
+        h('button', { onclick: () => { S.readSize = Math.min(48, S.readSize + 3); sceneScreen(i); } }, 'A+'),
+        h('button', { onclick: () => editText(i) }, '✎ Editar texto')),
+    ),
+
+    h('section', { class: 'card', style: 'margin-top:12px' },
+      h('h3', { style: 'margin:0 0 6px' }, 'Personalizar esta cena'),
+      local && h('label', {}, 'Local (onde vai estar — só locais verdadeiros)',
+        h('input', { type: 'text', value: s.location ?? '', placeholder: 'ex.: Beira · Porto', onchange: (e) => patchScene(s.id, { location: e.target.value }) })),
+      h('label', {}, 'Nota para si (plano, o que mostrar)',
+        h('textarea', { rows: 2, onchange: (e) => patchScene(s.id, { shot: e.target.value }) }, s.shot ?? '')),
+    ),
+
+    h('section', { class: 'card', style: 'margin-top:12px' },
+      h('h3', { style: 'margin:0 0 8px' }, video ? 'Gravar vídeo' : 'Gravar voz'),
+      inPage
+        ? h('button', { class: 'primary block', onclick: () => recorder(i) }, video ? '🎥 Gravar (o texto fica no ecrã)' : '🎙 Gravar (o texto fica no ecrã)')
+        : h('div', { class: 'note' }, 'Esta ligação não permite gravar dentro da página. Abra o estúdio com iniciar-estudio.bat (liga HTTPS) e use o QR novo. Por agora, leia o texto acima e grave com a câmara normal:'),
+      h('div', { class: 'stack', style: 'margin-top:10px' },
+        video
+          ? fileBtn(inPage ? 'Usar a câmara normal do telemóvel' : '🎥 Gravar com a câmara do telemóvel', 'video/*', 'user', (f) => upload('presenter', s.id, f, 'Vídeo'), !inPage)
+          : fileBtn(inPage ? 'Usar o gravador de voz do telemóvel' : '🎙 Gravar com o gravador do telemóvel', 'audio/*', 'user', (f) => upload('voice', s.id, f, 'Áudio'), !inPage),
+        fileBtn('📁 Escolher um ficheiro já gravado', video ? 'video/*' : 'audio/*', null, (f) => upload(video ? 'presenter' : 'voice', s.id, f, video ? 'Vídeo' : 'Áudio')),
+      ),
+      !inPage && h('p', { class: 'muted', style: 'font-size:14px;margin:10px 0 0' }, 'Dica: a câmara normal tira o texto do ecrã. Ponha o teleprompter no PC, ao lado do telemóvel.'),
+    ),
+
+    local && h('section', { class: 'card', style: 'margin-top:12px' },
+      h('h3', { style: 'margin:0 0 6px' }, 'Imagens do local'),
+      h('p', { class: 'muted', style: 'margin:0 0 8px;font-size:14px' }, `${(s.cutaways?.length ?? 0)} corte(s) nesta cena. Entram enquanto fala; no computador ajusta quando e quanto dura.`),
+      fileBtn('📷 Tirar foto ou vídeo do local', 'image/*,video/*', 'environment', (f) => upload('cutaway', s.id, f, 'Imagem do local')),
+      h('div', { style: 'height:8px' }),
+      fileBtn('📁 Escolher da galeria', 'image/*,video/*', null, (f) => upload('cutaway', s.id, f, 'Imagem do local')),
+    ),
+    h('div', { id: 'upbar', class: 'note', style: 'margin-top:12px', hidden: true }),
+  );
+  window.scrollTo(0, 0);
+}
+
+async function patchScene(sceneId, body) {
+  try { await patchJson(`/api/projects/${S.id}/scene/${sceneId}`, body); toast('Guardado ✓', 1500); await reload(); } catch (e) { toast('Não guardou: ' + e.message, 5000); }
+}
+
+function editText(i) {
+  const s = S.data.project.scenes[i];
+  const v = prompt('Texto desta cena:', s.narration);
+  if (v == null || !v.trim() || v.trim() === s.narration) return;
+  patchScene(s.id, { narration: v }).then(() => sceneScreen(i));
 }
 
 // ── envio ─────────────────────────────────────────────────────────────────
 function upload(kind, sceneId, file, label) {
   return new Promise((ok, fail) => {
-    const bar = $('#upbar');
+    const bar = $('#upbar') ?? h('div');
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', `/api/projects/${cur.id}/upload?kind=${kind}&scene=${sceneId}&name=${encodeURIComponent(file.name || 'gravacao.mp4')}`);
+    xhr.open('POST', `/api/projects/${S.id}/upload?kind=${kind}&scene=${sceneId}&name=${encodeURIComponent(file.name || 'gravacao.mp4')}`);
     xhr.upload.onprogress = (e) => {
       if (!e.lengthComputable) return;
-      const pc = Math.round((e.loaded / e.total) * 100);
       bar.hidden = false;
-      bar.textContent = `${label}: ${pc}% (${(e.loaded / 1048576).toFixed(0)} de ${(e.total / 1048576).toFixed(0)} MB) — não feche esta página`;
+      bar.textContent = `${label}: ${Math.round((e.loaded / e.total) * 100)}% (${(e.loaded / 1048576).toFixed(0)} de ${(e.total / 1048576).toFixed(0)} MB) — não feche esta página`;
     };
     xhr.onload = () => {
       let d = {};
       try { d = JSON.parse(xhr.responseText || '{}'); } catch { /* não-JSON */ }
-      if (xhr.status < 300) ok(d);
-      else fail(new Error(d.error || xhr.statusText));
+      xhr.status < 300 ? ok(d) : fail(new Error(d.error || xhr.statusText));
     };
-    xhr.onerror = () => fail(new Error('falhou a ligação (o telemóvel e o computador estão no mesmo Wi-Fi?)'));
+    xhr.onerror = () => fail(new Error('falhou a ligação (telemóvel e PC no mesmo Wi-Fi?)'));
     xhr.send(file);
   });
 }
@@ -87,105 +216,181 @@ function fileBtn(label, accept, capture, onFile, primary) {
     if (!f) return;
     try {
       await onFile(f);
-      $('#upbar').textContent = 'Enviado ✓';
-      await reload();
+      await afterUpload();
     } catch (e) {
-      $('#upbar').hidden = false;
-      $('#upbar').textContent = 'Erro: ' + e.message;
+      const bar = $('#upbar');
+      if (bar) { bar.hidden = false; bar.textContent = 'Erro: ' + e.message; }
     }
   });
-  return h('label', { class: 'btn' + (primary ? ' primary' : '') }, label, inp);
+  return h('label', { class: 'btn block' + (primary ? ' primary' : '') }, label, inp);
 }
 
-// ── ecrã do projeto ───────────────────────────────────────────────────────
-function render() {
-  const { project: p, scenes } = cur.data;
-  const rep = p.template === 'reportagem';
-  const inst = p.template === 'institucional';
-  const withVideo = rep || inst;
+/** Depois de enviar: passa à próxima cena por gravar (ou volta ao guião se acabou). */
+async function afterUpload() {
+  const cur = Number(S.cur ?? 0);
+  await reload();
+  const next = S.data.scenes.findIndex((x, k) => !x.recorded && k > cur);
+  toast('Enviado ✓');
+  if (next >= 0) sceneScreen(next);
+  else projectScreen();
+}
 
-  app.replaceChildren(
-    h('button', { onclick: home }, '← Outros vídeos'),
-    h('h2', { style: 'margin:10px 0 2px' }, p.title),
-    h('p', { class: 'muted', style: 'margin-top:0' }, withVideo
-      ? 'Grave cada cena com a câmara do telemóvel (vertical, a luz de frente). Defina o local e a nota de cada cena.'
-      : 'Este vídeo usa só a voz: grave o áudio de cada cena (gravador de voz do telemóvel) e envie.'),
-    h('div', { id: 'upbar', class: 'note', hidden: true }),
-    ...p.scenes.map((s, i) => {
-      const st = scenes[i];
-      return h('section', { class: 'card', style: 'margin-bottom:12px' },
-        h('div', { class: 'row' },
-          h('b', { style: 'color:var(--accent)' }, String(i + 1).padStart(2, '0')),
-          h('b', {}, s.id),
-          h('span', { class: 'pill ' + (st.recorded ? 'ok' : '') }, st.recorded ? (st.kind === 'video' ? 'vídeo enviado' : 'áudio enviado') : 'por gravar'),
-          (s.cutaways?.length || s.media) && h('span', { class: 'pill' }, `${(s.cutaways?.length ?? 0) + (s.media ? 1 : 0)} imagem(ns) do local`),
-        ),
-        p.template === 'reportagem' && h('label', { style: 'margin-top:8px' }, 'Local desta cena (só locais verdadeiros)',
-          h('input', { type: 'text', value: s.location ?? '', placeholder: 'ex.: Beira · Porto', onchange: (e) => patch(s.id, { location: e.target.value }) })),
-        h('label', { style: 'margin-top:6px' }, 'Nota: onde estar, que plano, o que mostrar',
-          h('textarea', { rows: 2, onchange: (e) => patch(s.id, { shot: e.target.value }), value: s.shot ?? '' }, s.shot ?? '')),
-        h('p', { class: 'big-text' }, s.narration),
-        h('div', { class: 'btns' },
-          h('button', { class: 'primary', onclick: () => teleprompter(i) }, '📜 Teleprompter'),
-          withVideo && fileBtn('🎥 Gravar vídeo', 'video/*', 'user', (f) => upload('presenter', s.id, f, 'Vídeo'), true),
-          withVideo && fileBtn('📁 Vídeo da galeria', 'video/*', null, (f) => upload('presenter', s.id, f, 'Vídeo')),
-          fileBtn('🎙 Gravar áudio', 'audio/*', 'user', (f) => upload('voice', s.id, f, 'Áudio')),
-          rep && fileBtn('📷 Foto/vídeo do local', 'image/*,video/*', 'environment', (f) => upload('cutaway', s.id, f, 'Imagem do local')),
-          inst && fileBtn('📷 Imagem da cena', 'image/*,video/*', 'environment', (f) => upload('scenemedia', s.id, f, 'Imagem')),
-        ),
-      );
-    }),
-    h('p', { class: 'muted' }, 'A foto/vídeo do local entra como um corte durante a fala desta cena; no computador ajusta quando entra e quanto dura.'),
+// ── gravador dentro da página, com o texto por cima da câmara ─────────────
+function pickMime(video) {
+  const list = video
+    ? ['video/mp4;codecs=avc1,mp4a.40.2', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4']
+    : ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'];
+  return list.find((m) => MediaRecorder.isTypeSupported(m));
+}
+
+function recorder(i) {
+  S.cur = i;
+  const p = S.data.project;
+  const s = p.scenes[i];
+  const video = withVideo(p);
+  let facing = 'user';
+  let stream = null;
+  let mr = null;
+  let chunks = [];
+  let scrollTimer = null;
+  let clock = null;
+  let wake = null;
+  const R = { size: 30, speed: 0 };
+
+  const preview = h('video', { id: 'rec-v', playsinline: true, muted: true, autoplay: true });
+  const text = h('div', { id: 'rec-text' }, s.narration);
+  const timerEl = h('span', { class: 'muted', style: 'color:#ccc' }, '');
+  const recBtn = h('button', { class: 'rec' }, '● Gravar');
+  const speed = h('input', { type: 'range', min: 0, max: 120, value: 0, style: 'width:120px' });
+  const overlay = h('div', { id: 'rec' },
+    video && preview,
+    h('div', { id: 'rec-pt' },
+      h('div', { class: 'meta' }, `Cena ${i + 1}/${p.scenes.length}${s.location ? ' · 📍 ' + s.location : ''}${s.shot ? ' · ' + s.shot : ''}`),
+      text),
+    h('div', { id: 'rec-ctl' },
+      h('div', { class: 'r' },
+        h('button', { onclick: () => { R.size = Math.max(18, R.size - 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A−'),
+        h('button', { onclick: () => { R.size = Math.min(64, R.size + 3); text.style.setProperty('--rs', R.size + 'px'); } }, 'A+'),
+        h('span', { style: 'color:#ccc;font-size:14px' }, 'Rolagem'), speed),
+      h('div', { class: 'r' },
+        h('button', { onclick: cancel }, '✕ Sair'),
+        recBtn,
+        video && h('button', { onclick: flip }, '⟲ Virar')),
+      h('div', { class: 'r' }, timerEl)),
   );
-}
+  text.style.setProperty('--rs', R.size + 'px');
+  document.body.append(overlay);
 
-async function patch(sceneId, body) {
-  try {
-    await api(`/api/projects/${cur.id}/scene/${sceneId}`, { method: 'PATCH', body: JSON.stringify(body) });
-    const s = cur.data.project.scenes.find((x) => x.id === sceneId);
-    Object.assign(s, body);
-  } catch (e) {
-    alert('Não guardou: ' + e.message);
+  async function open() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: video ? { facingMode: facing, width: { ideal: 1080 }, height: { ideal: 1920 } } : false,
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+      });
+    } catch (e) {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: video ? true : false, audio: true });
+      } catch (e2) {
+        cancel();
+        toast('Sem acesso à câmara/microfone: ' + e2.message + '. Permita no navegador e tente de novo.', 8000);
+        return;
+      }
+    }
+    if (video) {
+      preview.srcObject = stream;
+      preview.classList.toggle('mirror', facing === 'user');
+    }
+    try { wake = await navigator.wakeLock?.request('screen'); } catch { /* opcional */ }
   }
+
+  async function flip() {
+    if (mr && mr.state === 'recording') return toast('Pare a gravação antes de virar a câmara.');
+    stream?.getTracks().forEach((t) => t.stop());
+    facing = facing === 'user' ? 'environment' : 'user';
+    await open();
+  }
+
+  function start() {
+    chunks = [];
+    const mime = pickMime(video);
+    mr = new MediaRecorder(stream, mime ? { mimeType: mime, ...(video ? { videoBitsPerSecond: 6_000_000 } : {}) } : undefined);
+    mr.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+    mr.onstop = review;
+    mr.start(1000);
+    const t0 = Date.now();
+    recBtn.textContent = '■ Parar';
+    recBtn.classList.add('rec');
+    clock = setInterval(() => (timerEl.textContent = `● a gravar ${Math.round((Date.now() - t0) / 1000)} s`), 500);
+    text.scrollTop = 0;
+    scrollTimer = setInterval(() => (text.scrollTop += Number(speed.value) / 20), 50);
+  }
+
+  function stopTimers() {
+    clearInterval(clock);
+    clearInterval(scrollTimer);
+  }
+
+  recBtn.onclick = () => (mr && mr.state === 'recording' ? mr.stop() : start());
+
+  function cleanup() {
+    stopTimers();
+    stream?.getTracks().forEach((t) => t.stop());
+    try { wake?.release(); } catch { /* opcional */ }
+    overlay.remove();
+  }
+  function cancel() {
+    if (mr && mr.state === 'recording') { mr.onstop = null; mr.stop(); }
+    cleanup();
+  }
+
+  function review() {
+    stopTimers();
+    stream?.getTracks().forEach((t) => t.stop());
+    const type = mr.mimeType || (video ? 'video/webm' : 'audio/webm');
+    const blob = new Blob(chunks, { type });
+    const ext = video ? (type.includes('mp4') ? 'mp4' : 'webm') : type.includes('mp4') ? 'm4a' : 'webm';
+    const url = URL.createObjectURL(blob);
+    const up = h('div', { class: 'note', hidden: true });
+    const send = h('button', { class: 'primary', onclick: async () => {
+      send.disabled = true;
+      try {
+        up.hidden = false;
+        await uploadBlob(video ? 'presenter' : 'voice', s.id, blob, `rec.${ext}`, up);
+        cleanup();
+        await afterUpload();
+      } catch (e) {
+        send.disabled = false;
+        up.textContent = 'Erro: ' + e.message;
+      }
+    } }, '✓ Enviar esta gravação');
+    overlay.append(h('div', { id: 'rec-review' },
+      h('h3', { style: 'margin:0' }, 'Ouça/veja antes de enviar'),
+      video ? h('video', { src: url, controls: true, playsinline: true }) : h('audio', { src: url, controls: true }),
+      up, send,
+      h('button', { onclick: () => { overlay.querySelector('#rec-review').remove(); timerEl.textContent = ''; recBtn.textContent = '● Gravar'; recBtn.classList.remove('rec'); chunks = []; open(); } }, '↺ Gravar de novo'),
+      h('button', { onclick: cleanup }, 'Sair sem enviar')));
+  }
+
+  open();
 }
 
-// ── teleprompter ──────────────────────────────────────────────────────────
-const pt = { idx: 0, size: 34, timer: null };
-function teleprompter(i) {
-  pt.idx = i;
-  drawPrompter();
-  $('#pt').hidden = false;
+function uploadBlob(kind, sceneId, blob, name, bar) {
+  return new Promise((ok, fail) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `/api/projects/${S.id}/upload?kind=${kind}&scene=${sceneId}&name=${encodeURIComponent(name)}`);
+    xhr.upload.onprogress = (e) => e.lengthComputable && (bar.textContent = `A enviar: ${Math.round((e.loaded / e.total) * 100)}% — não feche esta página`);
+    xhr.onload = () => {
+      let d = {};
+      try { d = JSON.parse(xhr.responseText || '{}'); } catch { /* não-JSON */ }
+      xhr.status < 300 ? ok(d) : fail(new Error(d.error || xhr.statusText));
+    };
+    xhr.onerror = () => fail(new Error('falhou a ligação'));
+    xhr.send(blob);
+  });
 }
-function drawPrompter() {
-  const scenes = cur.data.project.scenes;
-  const s = scenes[pt.idx];
-  const box = $('#pt-text');
-  box.style.fontSize = pt.size + 'px';
-  box.replaceChildren(
-    h('div', { class: 'meta' }, `Cena ${pt.idx + 1}/${scenes.length} · ${s.id}${s.location ? ' · local: ' + s.location : ''}`),
-    s.shot && h('div', { class: 'meta', style: 'font-style:italic' }, `Nota: ${s.shot}`),
-    h('p', {}, s.narration),
-  );
-  box.scrollTop = 0;
-}
-function stopScroll() {
-  clearInterval(pt.timer);
-  pt.timer = null;
-  $('#pt-play').textContent = '▶ Rolar';
-}
-$('#pt-close').onclick = () => { stopScroll(); $('#pt').hidden = true; };
-$('#pt-small').onclick = () => { pt.size = Math.max(18, pt.size - 4); $('#pt-text').style.fontSize = pt.size + 'px'; };
-$('#pt-big').onclick = () => { pt.size = Math.min(90, pt.size + 4); $('#pt-text').style.fontSize = pt.size + 'px'; };
-$('#pt-prev').onclick = () => { stopScroll(); pt.idx = Math.max(0, pt.idx - 1); drawPrompter(); };
-$('#pt-next').onclick = () => { stopScroll(); pt.idx = Math.min(cur.data.project.scenes.length - 1, pt.idx + 1); drawPrompter(); };
-$('#pt-play').onclick = () => {
-  if (pt.timer) return stopScroll();
-  $('#pt-play').textContent = '■ Parar';
-  pt.timer = setInterval(() => ($('#pt-text').scrollTop += Number($('#pt-speed').value) / 20), 50);
-};
 
 // ── arranque ──────────────────────────────────────────────────────────────
 const wanted = new URLSearchParams(location.search).get('p');
-(wanted ? open(wanted) : home()).catch((e) => {
-  app.replaceChildren(h('h2', {}, 'Não consegui ligar ao estúdio'), h('p', {}, e.message), h('p', { class: 'muted' }, 'Abra o link completo que aparece no terminal do computador (inclui o código).'));
+(wanted ? openProject(wanted) : home()).catch((e) => {
+  app.replaceChildren(h('h2', {}, 'Não consegui ligar ao estúdio'), h('p', {}, e.message), h('p', { class: 'muted' }, 'Abra o link completo do QR (inclui o código).'));
 });

@@ -216,7 +216,8 @@ async function openPhone() {
         box.innerHTML = info.qr[i]; // SVG gerado pelo nosso servidor a partir do link
         return h('div', {}, box, h('details', {}, h('summary', {}, 'Prefiro copiar o link'), h('pre', { class: 'pub', style: 'user-select:all;word-break:break-all' }, u)));
       }),
-      h('p', { class: 'muted' }, 'O código muda sempre que reinicia o estúdio. É HTTP simples: use só no Wi-Fi da sua casa. Lá poderá ver o texto de cada cena, definir o local e a nota de gravação, gravar com a câmara do telemóvel e enviar.'),
+      info.secure && h('div', { class: 'note', style: 'margin:8px 0' }, h('b', {}, '1.ª vez: '), 'o telemóvel vai avisar "a ligação não é privada". É normal: é o seu próprio PC. Toque em Avançado → Continuar (ou "Visitar este site"). Depois deixa gravar com o texto por cima da câmara.'),
+      h('p', { class: 'muted' }, 'O código muda sempre que reinicia o estúdio. Use só no Wi-Fi da sua casa. No telemóvel vê o guião cena a cena, escolhe o local, grava e envia.'),
     );
   }
   dlg.showModal();
