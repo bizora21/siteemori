@@ -31,13 +31,14 @@ const FullMedia = ({ m, fadeFrames = 7, box }: { m: SceneMediaProps; fadeFrames?
   if (m.fit === 'contain' && m.type !== 'presenter') {
     // Cartaz / imagem com texto: mostra-se INTEIRA, sem cortar nem fazer zoom, numa zona própria
     // (o rosto e as legendas ficam fora dela). Atrás, a mesma imagem desfocada preenche o ecrã.
-    const clip = Math.max(1, Math.round((m.clipSeconds ?? m.duration) * fps));
+    const startF = Math.round((m.startFrom ?? 0) * fps);
+    const clip = Math.max(1, Math.round((m.clipSeconds ?? m.duration) * fps) - startF);
     const media = (style: React.CSSProperties) =>
       m.type === 'image' ? (
         <Img src={staticFile(m.src)} style={style} />
       ) : (
         <Loop durationInFrames={clip}>
-          <OffthreadVideo src={staticFile(m.src)} muted style={style} />
+          <OffthreadVideo src={staticFile(m.src)} startFrom={startF} muted style={style} />
         </Loop>
       );
     const hold = interpolate(frame, [0, total], [1, 1.012], clamp); // quase parada: o texto tem de se ler
@@ -55,10 +56,11 @@ const FullMedia = ({ m, fadeFrames = 7, box }: { m: SceneMediaProps; fadeFrames?
     const drift = interpolate(frame, [0, total], [0, -18], clamp);
     body = <Img src={staticFile(m.src)} style={{ ...fill, transform: `scale(${zoom}) translateX(${drift}px)` }} />;
   } else if (m.type === 'video') {
-    const clip = Math.max(1, Math.round((m.clipSeconds ?? m.duration) * fps));
+    const startF = Math.round((m.startFrom ?? 0) * fps);
+    const clip = Math.max(1, Math.round((m.clipSeconds ?? m.duration) * fps) - startF);
     body = (
       <Loop durationInFrames={clip}>
-        <OffthreadVideo src={staticFile(m.src)} muted style={fill} />
+        <OffthreadVideo src={staticFile(m.src)} startFrom={startF} muted style={fill} />
       </Loop>
     );
   } else {

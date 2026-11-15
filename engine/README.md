@@ -208,3 +208,19 @@ Regra de ouro: **o rascunho nunca é bloqueado**; serve para rever. O motor avis
 O interruptor **"Legendas"** (ao lado de Guardar, no estúdio) liga/desliga as legendas no vídeo (`"captions": false` no projeto). O
 ficheiro `.srt` e a transcrição continuam a ser gerados, para as plataformas. A versão predefinida **"Sem legendas"** gera o mesmo
 vídeo sem elas, à parte (`--version=semlegendas`), para comparar. Vale para todos os tipos de vídeo, incluindo os 3D.
+
+## Cenários que entram numa palavra, vídeos e descarregamentos
+
+- **"Quando digo esta palavra":** em cada cenário, o botão ⏱ abre o texto da cena e escolhe-se a palavra em que ele entra
+  (`"atWord": n` no JSON). Cada cenário fica até o seguinte entrar; o último, até ao fim da fala da cena. Os tempos vêm das palavras
+  reais da voz (medido: diferença de 0,00 s). Sem escolha, os cenários dividem a cena em partes iguais. O motor avisa se um cenário
+  ficar menos de 1,2 s (palavra demasiado perto do fim) ou se um cartaz ficar menos de 3 s.
+- **Vídeos como cenário:** tocam **sem o som deles** (a voz é sempre a faixa principal), enchem o ecrã (cortam as margens, ou ficam inteiros
+  com "Cartaz"), repetem-se se forem curtos e podem começar a partir de um segundo (`"startFrom": s`). Um vídeo de uma pessoa a caminhar
+  é só mais um clip mudo por baixo da voz; o rosto de quem fala vem do ② Gravar.
+- **Pexels em segundo plano:** os vídeos descarregam a poucos KB/s (um de 14 MB levou ~12 min). O estúdio responde logo (202), mostra a
+  percentagem e deixa continuar a trabalhar; se falhar, diz porquê. As fotos descarregam em segundos. O projeto é relido no fim, por isso
+  edições feitas durante o descarregamento não se perdem (a versão anterior apagava-as).
+- **Render:** usa uma pasta `public` mínima em `.engine-cache/render-public/<id>/` (fontes, logótipos e só os ficheiros do vídeo) e um limite de
+  3 min para abrir o navegador. Antes, o Remotion copiava dezenas de MB de todos os vídeos e falhava com "Timed out after 30000 while setting
+  up the headless browser". Nada se apaga de `video3d/public`.

@@ -137,14 +137,11 @@ async function openPexels(sceneId, onPicked) {
       res.replaceChildren(...hits.map((x) =>
         h('button', { class: 'pex', title: `${x.author} · ${x.type === 'videos' ? Math.round(x.duration) + ' s' : ''}`, onclick: async () => {
           if (!(await flushBeforeUpload())) return;
-          toast('A descarregar do Pexels… (a CDN pode ser lenta)', 0);
           try {
+            // O servidor descarrega em segundo plano e responde logo; a página mostra o progresso.
             const r = await api(`/api/projects/${state.id}/pexels`, { method: 'POST', body: JSON.stringify({ type: x.type, link: x.link, author: x.author, url: x.url, scene: sceneId }) });
-            // o servidor guardou o crédito no projeto: recarrega e só depois aplica a escolha
-            state.data = await api(`/api/projects/${state.id}`);
             dlg.close();
-            toast('Descarregado ✓ (crédito guardado)');
-            onPicked(r.path);
+            followDownload(r.download, x.type === 'videos', onPicked);
           } catch (e) { toast('Erro: ' + e.message, 6000); }
         } },
           h('img', { src: x.thumb, alt: '' }),
@@ -156,6 +153,31 @@ async function openPexels(sceneId, onPicked) {
     }
   };
   dlg.showModal();
+}
+
+/** Acompanha um descarregamento em segundo plano. Pode continuar a trabalhar na página enquanto isto corre. */
+function followDownload(downloadId, isVideo, onPicked) {
+  const note = isVideo ? ' Os vídeos do Pexels descarregam devagar (minutos); pode continuar a trabalhar.' : '';
+  const mb = (n) => (n / 1048576).toFixed(1);
+  const tick = async () => {
+    try {
+      const d = await api(`/api/downloads/${downloadId}`);
+      if (d.status === 'done') {
+        // o servidor guardou o crédito no projeto: traz só os créditos (não apaga o que estiver por guardar)
+        const fresh = await api(`/api/projects/${state.id}`);
+        state.data.project.credits = fresh.project.credits;
+        toast('Descarregado ✓ (crédito guardado)');
+        return onPicked(d.path);
+      }
+      if (d.status === 'failed') return toast('✗ ' + d.error, 9000);
+      const pc = d.total ? ` ${Math.round((d.received / d.total) * 100)}% (${mb(d.received)} de ${mb(d.total)} MB)` : ` ${mb(d.received)} MB`;
+      toast('A descarregar do Pexels…' + pc + '.' + note, 0);
+      setTimeout(tick, 1500);
+    } catch (e) {
+      toast('Erro no descarregamento: ' + e.message, 8000);
+    }
+  };
+  tick();
 }
 
 // ── música (licença obrigatória) ──────────────────────────────────────────

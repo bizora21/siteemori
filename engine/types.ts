@@ -72,6 +72,13 @@ export interface Cutaway {
    * cartazes e imagens com texto), sem zoom, e arruma o rosto e as legendas fora dela.
    */
   fit?: 'cover' | 'contain';
+  /**
+   * O cenário entra quando a pessoa diz esta palavra (posição da palavra no texto da cena, a partir de 0) e
+   * fica até ao cenário seguinte. É a forma mais natural: "mostro a montanha quando digo montanha".
+   */
+  atWord?: number;
+  /** Se for um vídeo: começa a tocar a partir deste segundo do ficheiro (por defeito 0). */
+  startFrom?: number;
 }
 
 /** Dados de um evento (marcha, campanha…): aparecem num cartão no fim do vídeo. */

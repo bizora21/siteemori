@@ -249,14 +249,19 @@ function simpleScene(p, s, i, st) {
   // ③ cenários
   const move = (k, d) => { const j = k + d; if (j < 0 || j >= list.length) return; [list[k], list[j]] = [list[j], list[k]]; dirty(); renderEditor(); };
   const customTimes = list.some((c) => c.at !== undefined);
+  const anchored = list.some((c) => c.atWord !== undefined);
   const hint = list.length === 0
     ? (hasFace ? 'Sem cenário, o seu rosto ocupa o ecrã (com o fundo de onde gravou). Junte cenários para mudar o fundo: o rosto passa a uma bolha.' : 'Sem cenário, a cena fica só com o texto. Junte imagens ou vídeos.')
-    : `${list.length} cenário(s). ${customTimes ? 'Com tempos definidos à mão (JSON avançado).' : 'A cena é dividida em partes iguais, pela ordem em que estão.'} ${list.some((c) => c.fit === 'contain') ? 'Os cartazes aparecem inteiros e o rosto desce para não os tapar. ' : 'Imagens com texto (cartazes)? Marque "Cartaz (inteira)" para não serem cortadas. '}${hasFace ? 'O seu rosto aparece numa bolha por cima.' : ''}`;
+    : `${list.length} cenário(s). ${anchored ? 'Cada cenário entra na palavra que escolheu (⏱) e fica até entrar o seguinte; os sem palavra entram no início.' : customTimes ? 'Com tempos definidos à mão (JSON avançado).' : 'Sem escolha, a cena é dividida em partes iguais, pela ordem em que estão. Carregue em ⏱ para o cenário entrar numa palavra à sua escolha.'} ${list.some((c) => c.fit === 'contain') ? 'Os cartazes aparecem inteiros e o rosto desce para não os tapar. ' : 'Imagens com texto (cartazes)? Marque "Cartaz (inteira)" para não serem cortadas. '}${hasFace ? 'O seu rosto aparece numa bolha por cima.' : ''}`;
   const scenery = h('div', { class: 'zone' },
     h('b', {}, '③ Cenários (o que se vê)'),
     h('p', { class: 'muted', style: 'margin:2px 0 8px' }, hint),
     list.length > 0 && h('div', { class: 'gallery' }, ...list.map((c, k) =>
       h('div', { class: 'cen' }, thumb(c.media, 96),
+        h('button', { class: 'when', title: 'Escolha a palavra do texto em que este cenário aparece', onclick: () => pickWord(s, c) },
+          c.atWord !== undefined ? `⏱ Entra em «${(s.narration.trim().split(/\s+/)[c.atWord] ?? '?').replace(/[.,;:!?]+$/, '')}»` : '⏱ Quando entra? (automático)'),
+        isVideoPath(c.media) && h('label', { class: 'fit-opt', title: 'Se só quer uma parte do vídeo: segundo do ficheiro em que começa' },
+          'Começa aos ', h('input', { type: 'number', min: 0, step: 0.5, value: c.startFrom ?? 0, style: 'width:62px', oninput: (e) => { c.startFrom = Number(e.target.value) || undefined; dirty(); } }), ' s'),
         h('label', { class: 'fit-opt', title: 'Mostra a imagem INTEIRA, sem cortar nem fazer zoom. Use em cartazes e imagens com texto.' },
           h('input', { type: 'checkbox', checked: c.fit === 'contain', onchange: (e) => { c.fit = e.target.checked ? 'contain' : undefined; dirty(); } }), ' Cartaz (inteira)'),
         h('div', { class: 'row', style: 'gap:4px;margin-top:4px' },
@@ -286,4 +291,23 @@ function simpleScene(p, s, i, st) {
         field('Local mostrado (só locais verdadeiros)', s.location, (v) => (s.location = v || undefined)),
         field('Nota para si (plano, o que mostrar)', s.shot, (v) => (s.shot = v || undefined)))),
   );
+}
+
+// ── "Quando entra?": escolher, no próprio texto, a palavra em que o cenário aparece ──
+function pickWord(scene, c) {
+  const dlg = $('#wordpick');
+  const body = $('#wordpick-body');
+  const tokens = scene.narration.trim().split(/\s+/).filter(Boolean);
+  const choose = (idx) => {
+    c.atWord = idx;
+    dirty();
+    dlg.close();
+    renderEditor();
+  };
+  $('#wordpick-hint').textContent = 'Toque na palavra em que este cenário deve aparecer. Ele fica até o cenário seguinte entrar. Evite as últimas palavras: sobra pouco tempo.';
+  body.replaceChildren(
+    h('button', { class: 'wchip' + (c.atWord === undefined ? ' on' : ''), onclick: () => choose(undefined) }, 'Automático (partes iguais)'),
+    ...tokens.map((t, k) => h('button', { class: 'wchip' + (c.atWord === k ? ' on' : ''), onclick: () => choose(k) }, t)),
+  );
+  dlg.showModal();
 }

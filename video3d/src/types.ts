@@ -101,6 +101,8 @@ export interface SceneMediaProps {
   clipSeconds?: number;
   /** "contain": mostrar inteira (cartaz com texto), sem cortar nem fazer zoom. */
   fit?: 'cover' | 'contain';
+  /** Vídeo: segundo do ficheiro em que começa a tocar. */
+  startFrom?: number;
 }
 
 export interface InstitucionalProps {

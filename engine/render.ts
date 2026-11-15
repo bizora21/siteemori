@@ -1,9 +1,9 @@
 // Ponte entre o projeto e as composições Remotion. Cada template sabe montar as
 // suas props; o resto do motor não sabe nada de Remotion.
 
-import { copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { basename, extname, join } from 'node:path';
+import { basename, extname, join, resolve } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
 import { duration, run, stageVideo, voiceLevels } from './ffmpeg';
 import { resolveCues } from './cues';
@@ -68,6 +68,8 @@ export interface SceneMedia {
   clipSeconds?: number;
   /** "contain": mostrar inteira (cartaz com texto). */
   fit?: 'cover' | 'contain';
+  /** Vídeo: segundo do ficheiro em que começa a tocar. */
+  startFrom?: number;
 }
 
 const IMAGE_EXT = /\.(png|jpe?g|webp|gif)$/i;
@@ -155,17 +157,31 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
     // Cenários em sequência durante a fala. Sem tempos indicados, repartem a cena em partes iguais
     // (o utilizador só escolhe as imagens; ajustar os tempos é opcional).
     const list = scene.cutaways ?? [];
-    const auto = list.length > 0 && list.every((c) => c.at === undefined);
-    const cutaways = list.flatMap((c, k): SceneMedia[] => {
+    const anchored = list.some((c) => c.atWord !== undefined);
+    const auto = !anchored && list.length > 0 && list.every((c) => c.at === undefined);
+
+    // "Quando digo esta palavra": o instante vem dos tempos reais das palavras da voz.
+    const wordOffset = tl.wordCounts.slice(0, i).reduce((a, b) => a + b, 0);
+    const wordAt = (w: number): number => {
+      const n = tl.wordCounts[i] ?? 0;
+      if (!n) return 0;
+      const word = tl.words[wordOffset + Math.min(Math.max(0, Math.round(w)), n - 1)];
+      return Math.max(0, (word?.start ?? tl.audioStarts[i]) - tl.audioStarts[i]);
+    };
+    // Cada cenário fica até ao seguinte entrar (o último, até ao fim da fala da cena).
+    const order = anchored
+      ? list.map((c) => ({ c, at: wordAt(c.atWord ?? 0) })).sort((a, b) => a.at - b.at)
+      : list.map((c) => ({ c, at: 0 }));
+    const cutaways = order.flatMap(({ c, at: atAnchor }, k): SceneMedia[] => {
       const f = tryStage(project, projectDir, scene.id, c.media, `${scene.id}-c${k + 1}`);
       if (!f) return [];
       const part = tl.durations[i] / list.length;
-      const at = auto ? k * part : (c.at ?? 0);
-      const wanted = auto ? part : (c.duration ?? 2);
+      const at = anchored ? atAnchor : auto ? k * part : (c.at ?? 0);
+      const wanted = anchored ? (order[k + 1]?.at ?? tl.durations[i]) - atAnchor : auto ? part : (c.duration ?? 2);
       const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
       const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
-      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit }];
+      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit, startFrom: f.image ? undefined : c.startFrom }];
     });
     return { main, face, cutaways };
   });
@@ -241,6 +257,9 @@ function planRenderInner(
 
     // Um cartaz com texto precisa de tempo para ser lido (≈ 3 s, no mínimo).
     media.forEach((m, i) => {
+      for (const c of m.cutaways) {
+        if (c.fit !== 'contain' && c.duration < 1.2) warnings.push(`cena "${project.scenes[i].id}": um cenário aparece só ${c.duration.toFixed(1)} s (a palavra escolhida está muito perto do fim da cena): escolha uma palavra mais cedo.`);
+      }
       for (const c of [m.main, ...m.cutaways]) {
         if (c?.fit === 'contain' && c.duration < 3) warnings.push(`cena "${project.scenes[i].id}": um cartaz aparece só ${c.duration.toFixed(1)} s — pouco para ler o texto (use menos cenários nesta cena ou uma voz mais longa).`);
       }
@@ -293,6 +312,36 @@ function deepMerge(a: Record<string, unknown>, b: Record<string, unknown>): Reco
   return out;
 }
 
+/**
+ * O Remotion copia para CADA render toda a pasta public. Com o tempo video3d/public enchia-se com os
+ * cenários, vozes e músicas de todos os vídeos já gerados (dezenas de MB) e o render passava a falhar por
+ * tempo esgotado ("Timed out … while setting up the headless browser"). Por isso cada render usa uma pasta
+ * public MÍNIMA em .engine-cache/render-public/<id>/: as fontes e logótipos, mais só os ficheiros deste
+ * vídeo. Não se apaga nada de video3d/public; esta pasta é só uma cópia de trabalho (sobrepõe-se a cada render).
+ */
+function makeRenderPublic(id: string, plan: RenderPlan): string {
+  const src = join(VIDEO_DIR, 'public');
+  const dest = resolve('.engine-cache', 'render-public', id);
+  mkdirSync(dest, { recursive: true });
+  const needed = typeof plan.props.music === 'string' && !plan.props.music.includes('/') ? plan.props.music : null;
+  for (const name of readdirSync(src, { withFileTypes: true })) {
+    // Ficheiros soltos (fontes, logótipos, silence.mp3). As músicas antigas pesadas só vão se este vídeo as usar.
+    if (name.isFile() && (!name.name.endsWith('.mp3') || name.name === 'silence.mp3' || name.name === needed)) {
+      copyFileSync(join(src, name.name), join(dest, name.name));
+    }
+  }
+  const mine = (sub: string, name: string) => {
+    const from = join(src, sub, name);
+    if (!existsSync(from)) return;
+    mkdirSync(join(dest, sub), { recursive: true });
+    cpSync(from, join(dest, sub, name), { recursive: true, force: true });
+  };
+  mine('media', id);
+  mine('music', id);
+  mine('audio', `${id}.mp3`);
+  return dest;
+}
+
 export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: boolean }): string {
   mkdirSync(join(VIDEO_DIR, 'props'), { recursive: true });
   mkdirSync(join(VIDEO_DIR, 'out'), { recursive: true });
@@ -300,9 +349,11 @@ export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: b
   writeFileSync(join(VIDEO_DIR, propsFile), JSON.stringify(plan.props, null, 2));
 
   const out = `out/${project.id}${opts.draft ? '-rascunho' : ''}.mp4`;
+  const publicDir = makeRenderPublic(project.id, plan);
   // Rascunho: metade da resolução e 1 só processo — para validar sem fritar uma máquina fraca.
+  // O limite de 3 min evita "Timed out after 30000 while setting up the headless browser" em máquinas lentas.
   const extra = opts.draft ? ['--scale=0.5', '--concurrency=1'] : [];
-  const r = spawnSync('npx', ['remotion', 'render', 'src/index.ts', plan.composition, out, `--props=${propsFile}`, ...extra], {
+  const r = spawnSync('npx', ['remotion', 'render', 'src/index.ts', plan.composition, out, `--props=${propsFile}`, `--public-dir="${publicDir}"`, '--timeout=180000', ...extra], {
     cwd: VIDEO_DIR,
     stdio: 'inherit',
     shell: true,

@@ -133,3 +133,9 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .job-banner.warn { border-color: var(--warn); color: var(--warn); }
 
 .ver-sel input[type=checkbox] { width: auto; margin: 0; }
+
+#wordpick { width: min(760px, 94vw); max-height: 90vh; overflow: auto; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.wchip { padding: 5px 11px; border-radius: 8px; font-size: 16px; }
+.wchip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.when { font-size: 12px; padding: 3px 6px; margin-top: 4px; }

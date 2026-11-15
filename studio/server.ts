@@ -476,7 +476,23 @@ async function pexelsSearch(q: string, type: string, orientation: string): Promi
 }
 
 /** Descarrega para a pasta do projeto (curl: a CDN do Pexels corta ligações longas e o fetch não recupera). */
-async function pexelsDownload(id: string, sceneId: string | undefined, hit: { type: string; link: string; author: string; url: string }): Promise<{ path: string }> {
+interface Download {
+  id: number;
+  project: string;
+  status: 'running' | 'done' | 'failed';
+  dest: string;
+  total: number;
+  path?: string;
+  error?: string;
+}
+const downloads: Download[] = [];
+
+/**
+ * Arranca o descarregamento em SEGUNDO PLANO e devolve logo. Os vídeos do Pexels descarregam a poucos
+ * KB/s e um pedido em espera caducava ao fim de minutos (a página parecia presa e depois falhava).
+ * O progresso vê-se em GET /api/downloads/:n.
+ */
+function startPexelsDownload(id: string, sceneId: string | undefined, hit: { type: string; link: string; author: string; url: string }): Download {
   let u: URL;
   try {
     u = new URL(hit.link);
@@ -485,21 +501,35 @@ async function pexelsDownload(id: string, sceneId: string | undefined, hit: { ty
   }
   // Só descarrega do Pexels (nada de pedidos a endereços arbitrários).
   if (u.protocol !== 'https:' || !(u.hostname === 'pexels.com' || u.hostname.endsWith('.pexels.com'))) throw new HttpError(400, 'só se descarrega do Pexels');
-  const project = loadProject(id);
+  loadProject(id);
   const ext = hit.type === 'videos' ? '.mp4' : '.jpg';
   const dir = join(projectDir(id), 'media');
   mkdirSync(dir, { recursive: true });
   const file = `${sceneId ? sceneId + '-' : ''}pexels-${Date.now()}${ext}`;
   const dest = join(dir, file);
-  await new Promise<void>((ok, fail) => {
-    const c = spawn('curl', ['-sL', '--retry', '3', '--retry-all-errors', '--speed-limit', '2000', '--speed-time', '60', '--max-time', '900', '--max-filesize', String(150 * 1024 * 1024), '-o', dest, hit.link]);
-    c.on('close', (code) => (code === 0 && existsSync(dest) && statSync(dest).size > 5000 ? ok() : (rmSync(dest, { force: true }), fail(new HttpError(502, 'falhou o descarregamento do Pexels')))));
+  const dl: Download = { id: downloads.length + 1, project: id, status: 'running', dest, total: 0 };
+  downloads.push(dl);
+  // Tamanho total (para a percentagem): pedido rápido, sem bloquear nada.
+  fetch(hit.link, { method: 'HEAD', signal: AbortSignal.timeout(10000) })
+    .then((r) => (dl.total = Number(r.headers.get('content-length')) || 0))
+    .catch(() => undefined);
+  const c = spawn('curl', ['-sL', '--retry', '3', '--retry-all-errors', '--speed-limit', '1000', '--speed-time', '90', '--max-time', '1500', '--max-filesize', String(150 * 1024 * 1024), '-o', dest, hit.link]);
+  c.on('close', (code) => {
+    if (code === 0 && existsSync(dest) && statSync(dest).size > 5000) {
+      // A licença do Pexels dispensa crédito, mas guardamos a origem (prova e boa prática).
+      const p = loadProject(id);
+      const credit = `${hit.type === 'videos' ? 'Vídeo' : 'Foto'}: ${hit.author} (Pexels) ${hit.url}`;
+      p.credits = [...new Set([...(p.credits ?? []), credit])];
+      writeFileSync(projectFile(id), JSON.stringify(p, null, 2) + '\n');
+      dl.path = `media/${file}`;
+      dl.status = 'done';
+    } else {
+      rmSync(dest, { force: true });
+      dl.error = 'o descarregamento do Pexels falhou (rede lenta ou ligação cortada). Tente outro vídeo ou uma foto.';
+      dl.status = 'failed';
+    }
   });
-  // A licença do Pexels dispensa crédito, mas guardamos a origem (prova e boa prática).
-  const credit = `${hit.type === 'videos' ? 'Vídeo' : 'Foto'}: ${hit.author} (Pexels) ${hit.url}`;
-  project.credits = [...new Set([...(project.credits ?? []), credit])];
-  writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
-  return { path: `media/${file}` };
+  return dl;
 }
 
 // ── fila de trabalhos (um de cada vez: a máquina é fraca) ─────────────────
@@ -624,6 +654,14 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     });
   }
 
+  // GET /api/downloads/:n — progresso de um descarregamento do Pexels
+  if (parts[1] === 'downloads' && parts[2]) {
+    const d = downloads.find((x) => x.id === Number(parts[2]));
+    if (!d) throw new HttpError(404, 'descarregamento não encontrado');
+    const received = existsSync(d.dest) ? statSync(d.dest).size : 0;
+    return json(res, { status: d.status, received, total: d.total, path: d.path, error: d.error });
+  }
+
   // /api/jobs, /api/jobs/:n/events
   if (parts[1] === 'jobs') {
     if (!parts[2]) return json(res, jobs.map(({ listeners: _l, log: _g, ...j }) => j));
@@ -723,7 +761,8 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     if (sub === 'pexels' && method === 'POST') {
       const b = JSON.parse((await readBody(req)).toString() || '{}') as { type?: string; link?: string; author?: string; url?: string; scene?: string };
       if (!b.link || !b.author || !b.url) throw new HttpError(400, 'faltam dados da imagem');
-      return json(res, { ok: true, ...(await pexelsDownload(id, b.scene ? needId(b.scene) : undefined, { type: b.type ?? 'photos', link: b.link, author: b.author, url: b.url })) });
+      const dl = startPexelsDownload(id, b.scene ? needId(b.scene) : undefined, { type: b.type ?? 'photos', link: b.link, author: b.author, url: b.url });
+      return json(res, { ok: true, download: dl.id }, 202);
     }
 
     // PATCH /api/projects/:id/meta  { hostName?, hostRole? } — quem aparece no vídeo (telemóvel)
