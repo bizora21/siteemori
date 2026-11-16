@@ -137,12 +137,25 @@ const POSTER_BUBBLE_BOTTOM = POSTER_BOX_BOTTOM - POSTER_BUBBLE;
  * A foto da pessoa que "fala" ao ritmo da voz: pulsa e brilha com o volume. Não anima a boca nem
  * finge que a pessoa está a falar: é uma foto que reage ao som (como o ícone de uma chamada).
  */
-const PhotoBubble = ({ src, size, left, bottom, accent, level, y = 12, zoom = 1 }: { src: string; size: number; left: number; bottom: number; accent: string; level: number; y?: number; zoom?: number }) => {
+const PhotoBubble = ({ src, size, left, bottom, accent, level, y = 12, zoom = 1, levelAt }: { src: string; size: number; left: number; bottom: number; accent: string; level: number; y?: number; zoom?: number; levelAt: (t: number) => number }) => {
   const frame = useCurrentFrame();
-  const breathe = 0.006 * Math.sin(frame / 14);
+  const { fps } = useVideoConfig();
+  const tt = frame / fps;
+  const breathe = 0.008 * Math.sin(frame / 14);
+  // Barras de voz à volta da foto: cada uma segue o volume num instante ligeiramente diferente (efeito de onda).
+  const BARS = 40;
+  const gap = size * 0.045;
+  const bw = Math.max(4, size * 0.016);
   return (
     <div style={{ position: 'absolute', left, bottom, width: size, height: size }}>
-      <div style={{ position: 'absolute', inset: -size * 0.13, borderRadius: '50%', border: `${Math.max(2, size * 0.008)}px solid ${accent}`, opacity: 0.1 + 0.4 * level, transform: `scale(${1 + 0.16 * level})` }} />
+      <div style={{ position: 'absolute', left: '50%', top: '50%' }}>
+        {Array.from({ length: BARS }, (_, i) => {
+          const m = i < BARS / 2 ? i : BARS - 1 - i; // simétrico
+          const lv = levelAt(tt + (m - 10) * 0.035);
+          const len = size * (0.02 + 0.11 * Math.min(1, lv * 1.5));
+          return <div key={i} style={{ position: 'absolute', left: -bw / 2, top: -(size / 2 + gap + len), width: bw, height: len, borderRadius: bw, background: accent, opacity: 0.35 + 0.65 * Math.min(1, lv * 1.5), transformOrigin: `50% ${size / 2 + gap + len}px`, transform: `rotate(${(i * 360) / BARS}deg)` }} />;
+        })}
+      </div>
       <div style={{ position: 'absolute', inset: -size * 0.06, borderRadius: '50%', border: `${Math.max(3, size * 0.012)}px solid ${accent}`, opacity: 0.25 + 0.6 * level, transform: `scale(${1 + 0.09 * level})` }} />
       <div
         style={{
@@ -153,7 +166,7 @@ const PhotoBubble = ({ src, size, left, bottom, accent, level, y = 12, zoom = 1 
           border: `${Math.max(4, size * 0.02)}px solid ${accent}`,
           boxShadow: `0 12px 44px rgba(0,0,0,.6), 0 0 ${20 + 60 * level}px ${accent}${level > 0.4 ? '88' : '33'}`,
           background: '#000',
-          transform: `scale(${1 + 0.035 * level + breathe})`,
+          transform: `scale(${1 + 0.07 * level + breathe}) rotate(${Math.sin(frame / 32) * 1.2}deg)`,
         }}
       >
         <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: `50% ${y}%`, transform: `scale(${zoom})`, transformOrigin: `50% ${y}%` }} />
@@ -324,6 +337,7 @@ export const Reportagem = (props: ReportagemProps) => {
           bottom={(avatarCorner ? bubbleBottom : portrait ? 800 : 300) * u}
           accent={accent}
           level={level}
+          levelAt={levelAt}
         />
       )}
 
