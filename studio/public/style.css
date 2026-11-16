@@ -157,3 +157,20 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .tl-edit input[type=text] { width: 100%; }
 
 .tl-edit select, #timeline .actions select { width: auto; max-width: 160px; }
+
+/* ── editor de vídeo ── */
+.ed-top { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.ed-left { flex: none; }
+.ed-right { flex: 1; min-width: 300px; max-height: 390px; overflow: auto; }
+.ed-screen { position: relative; overflow: hidden; background: #000; border-radius: 12px; border: 2px solid var(--line); }
+.ed-face { position: absolute; left: 6%; bottom: 26%; width: 28%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 3px solid #f5b82e; background: #000; }
+.ed-face[hidden] { display: none; }
+.tl-playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #e5484d; z-index: 5; pointer-events: none; }
+.tl-block.face { background: #8e4ec633; border: 1px solid #8e4ec6; }
+.tl-block.mus { background: #0e9aa733; border: 1px solid #0e9aa7; cursor: pointer; }
+.tl-block.fx { background: #c2410c22; border: 1px solid #c2410c; cursor: pointer; }
+.tl-block.sel { outline: 3px solid var(--accent, #2f6fed); }
+.tl-block.cen { cursor: grab; touch-action: none; }
+.tl-th { height: 100%; width: 34px; object-fit: cover; margin-left: -8px; margin-right: 6px; border-radius: 6px 0 0 6px; flex: none; }
+.tl-lane { min-height: 44px; }
+.ed-tools { flex-wrap: wrap; }

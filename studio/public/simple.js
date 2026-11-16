@@ -193,12 +193,14 @@ function personalizeBanner(p) {
 // ── a página simples do vídeo personalizado ───────────────────────────────
 function renderSimple() {
   const { project: p, brand, issues, scenes, files } = state.data;
+  if (p.template === 'reportagem' && typeof renderVideoEditor === 'function' && !edListMode()) return renderVideoEditor();
   const main = $('#main');
   const scroll = window.scrollY;
 
   const head = h('section', { class: 'card stack' },
     h('div', { class: 'row' },
       h('h2', { style: 'margin:0;flex:1' }, p.title),
+      p.template === 'reportagem' && h('button', { class: 'primary', onclick: () => edSetMode('editor') }, '🎞 Abrir o editor com linha do tempo'),
       h('span', { class: 'pill' }, 'Vídeo personalizado'),
       h('span', { class: 'pill' }, `marca: ${brand?.name ?? p.brand}`)),
     field('Título', p.title, (v) => (p.title = v)),

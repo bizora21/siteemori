@@ -137,7 +137,7 @@ function timelineBlock(p) {
     TL.sel !== null && ov[TL.sel] ? overlayEditor(p, ov, TL.sel) : h('p', { class: 'muted', style: 'margin:0' }, 'Sem elemento escolhido. Use + Texto, + Emoji ou + Imagem para começar.'));
 }
 
-function overlayEditor(p, ov, k) {
+function overlayEditor(p, ov, k, noPreview) {
   const o = ov[k];
   const set = (key, v) => { o[key] = v; dirty(); renderEditor(); };
   const setQuiet = (key, v) => { o[key] = v; dirty(); const pv = $('#ov-prev'); if (pv) pv.replaceWith(overlayPreview(p, o)); };
@@ -150,7 +150,7 @@ function overlayEditor(p, ov, k) {
   const spots = [[16, 14], [50, 14], [84, 14], [16, 40], [50, 40], [84, 40], [16, 70], [50, 70], [84, 70]];
   return h('div', { class: 'zone tl-edit' },
     h('div', { class: 'row', style: 'align-items:flex-start;gap:16px;flex-wrap:wrap' },
-      overlayPreview(p, o),
+      !noPreview && overlayPreview(p, o),
       h('div', { class: 'stack', style: 'flex:1;min-width:240px' },
         o.kind === 'text' && h('label', {}, 'Texto', h('input', { type: 'text', value: o.text ?? '', oninput: (e) => setQuiet('text', e.target.value), onchange: () => renderEditor() })),
         o.kind === 'emoji' && h('div', {}, h('div', { class: 'muted' }, 'Emoji'),
@@ -199,27 +199,7 @@ function splitScene(p, i) {
   if (tokens.length < 4) return alert('A cena é curta demais para dividir.');
   const dlg = $('#wordpick');
   $('#wordpick-hint').textContent = 'Toque na palavra onde começa a NOVA cena (o corte fica antes dela).';
-  $('#wordpick-body').replaceChildren(...tokens.map((t, k) => (k === 0 ? null : h('button', { class: 'wchip', onclick: () => {
-    dlg.close();
-    const list = s.cutaways ?? [];
-    const keep = [];
-    const move = [];
-    list.forEach((c, n) => {
-      if (c.atWord !== undefined) (c.atWord < k ? keep : move).push(c.atWord < k ? c : { ...c, atWord: c.atWord - k });
-      else (n < Math.ceil(list.length / 2) ? keep : move).push(c);
-    });
-    let id = `${s.id}-b`;
-    let n = 2;
-    while (p.scenes.some((x) => x.id === id)) id = `${s.id}-b${n++}`;
-    const second = { id, narration: tokens.slice(k).join(' '), ...(move.length ? { cutaways: move } : {}) };
-    s.narration = tokens.slice(0, k).join(' ');
-    s.cutaways = keep.length ? keep : undefined;
-    p.scenes.splice(i + 1, 0, second);
-    // os elementos da cena que ficam depois do corte passam para a nova cena? Ficam na primeira (simples e previsível).
-    dirty();
-    renderEditor();
-    toast('Cena dividida em duas.');
-  } }, t))).filter(Boolean));
+  $('#wordpick-body').replaceChildren(...tokens.map((t, k) => (k === 0 ? null : h('button', { class: 'wchip', onclick: () => { dlg.close(); splitSceneAt(p, i, k); } }, t))).filter(Boolean));
   dlg.showModal();
 }
 
@@ -238,4 +218,27 @@ function joinScene(p, i) {
   p.scenes.splice(i + 1, 1);
   dirty();
   renderEditor();
+}
+
+/** Divide a cena i em duas: a nova cena começa na palavra k (0 = primeira). */
+function splitSceneAt(p, i, k) {
+  const s = p.scenes[i];
+  const tokens = String(s.narration).trim().split(/\s+/).filter(Boolean);
+  const list = s.cutaways ?? [];
+  const keep = [];
+  const move = [];
+  list.forEach((c, n) => {
+    if (c.atWord !== undefined) (c.atWord < k ? keep : move).push(c.atWord < k ? c : { ...c, atWord: c.atWord - k });
+    else (n < Math.ceil(list.length / 2) ? keep : move).push(c);
+  });
+  let id = `${s.id}-b`;
+  let n = 2;
+  while (p.scenes.some((x) => x.id === id)) id = `${s.id}-b${n++}`;
+  const second = { id, narration: tokens.slice(k).join(' '), ...(move.length ? { cutaways: move } : {}) };
+  s.narration = tokens.slice(0, k).join(' ');
+  s.cutaways = keep.length ? keep : undefined;
+  p.scenes.splice(i + 1, 0, second);
+  dirty();
+  renderEditor();
+  toast('Cena cortada em duas.');
 }

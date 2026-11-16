@@ -306,6 +306,9 @@ function planRenderInner(
         ...base,
         lines,
         ...(overlays.length ? { overlays } : {}),
+        // para o editor do estúdio (linha do tempo): onde começa a fala de cada cena e quanto dura
+        audioStarts: tl.audioStarts,
+        sceneDurations: tl.durations,
         scenes: project.scenes.map((s, i) => ({
           title: s.title ?? '',
           location: s.location,

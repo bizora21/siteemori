@@ -220,23 +220,47 @@ function summarize(id: string) {
  */
 function timing(id: string, project: ReturnType<typeof loadProject>) {
   const pf = resolve('video3d/props', `${id}.json`);
-  const pj = join(projectDir(id), 'project.json');
+  const tokens = project.scenes.map((sc) => (sc.kind === 'clip' ? 0 : String(sc.narration ?? '').split(/\s+/).filter(Boolean).length));
   try {
     if (existsSync(pf)) {
       const p = JSON.parse(readFileSync(pf, 'utf8'));
-      if (Array.isArray(p.sceneStarts) && p.sceneStarts.length === project.scenes.length && statSync(pf).mtimeMs >= statSync(pj).mtimeMs) {
-        const total = p.durationInFrames / 30;
-        return { starts: p.sceneStarts as number[], total, exact: true };
+      const flat: { text: string; start: number; end: number }[] = (p.lines ?? []).flatMap((l: { words: { text: string; start: number; end: number }[] }) => l.words);
+      const want = tokens.reduce((x, y) => x + y, 0);
+      // Os tempos só servem se ainda correspondem ao texto (mesmas cenas e quase as mesmas palavras).
+      if (Array.isArray(p.sceneStarts) && p.sceneStarts.length === project.scenes.length && Array.isArray(p.audioStarts) && Math.abs(flat.length - want) <= Math.max(3, want * 0.03)) {
+        let k = 0;
+        const wordT = tokens.map((n) => {
+          const out: number[] = [];
+          for (let j = 0; j < n; j++) out.push(flat[Math.min(k++, flat.length - 1)]?.start ?? 0);
+          return out;
+        });
+        return {
+          starts: p.sceneStarts as number[],
+          audioStarts: p.audioStarts as number[],
+          durations: (p.sceneDurations ?? []) as number[],
+          wordT,
+          lines: p.lines as unknown[],
+          total: p.durationInFrames / 30,
+          exact: true,
+        };
       }
     }
   } catch { /* usa a estimativa */ }
   let t = 0.4;
   const starts: number[] = [];
-  for (const sc of project.scenes) {
-    starts.push(t);
-    t += Math.max(2, String(sc.narration ?? '').split(/s+/).filter(Boolean).length / 2.3) + 0.3;
-  }
-  return { starts, total: t + 2, exact: false };
+  const audioStarts: number[] = [];
+  const durations: number[] = [];
+  const wordT: number[][] = [];
+  project.scenes.forEach((sc, i) => {
+    const n = tokens[i];
+    const dur = Math.max(2, n / 2.3);
+    starts.push(i === 0 ? 0 : t - 0.15);
+    audioStarts.push(t);
+    durations.push(dur);
+    wordT.push(Array.from({ length: n }, (_, j) => t + (j / Math.max(1, n)) * dur));
+    t += dur + 0.3;
+  });
+  return { starts, audioStarts, durations, wordT, lines: [] as unknown[], total: t + 2, exact: false };
 }
 
 function detail(id: string) {
