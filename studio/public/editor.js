@@ -461,6 +461,8 @@ function renderVideoEditor() {
     : null;
 
   const tools = h('div', { class: 'actions ed-tools' },
+    h('button', { disabled: !canUndo(), title: 'Desfazer a última alteração (Ctrl+Z)', onclick: () => histGo(-1) }, '↶ Desfazer'),
+    h('button', { disabled: !canRedo(), title: 'Refazer (Ctrl+Y)', onclick: () => histGo(1) }, '↷ Refazer'),
     h('button', { id: 'ed-play', class: 'primary', style: 'min-width:46px', title: 'Tocar / parar (barra de espaço)', onclick: () => (ED.playing ? edStop() : edPlay()) }, '▶'),
     h('span', { id: 'ed-time', class: 'pill', style: 'font-size:14px' }, ''),
     h('button', { title: 'Corta no cursor: a cena (na palavra seguinte) ou o cenário escolhido', onclick: edCut }, '✂ Cortar aqui'),

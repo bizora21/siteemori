@@ -106,7 +106,56 @@ const dirty = () => {
   state.dirty = true;
   const b = $('#save-btn');
   if (b) b.textContent = 'Guardar *';
+  histPush();
 };
+
+// ── desfazer / refazer: guarda "fotografias" do projeto a cada alteração ──
+const HIST = { id: null, stack: [], i: -1, t: 0 };
+
+function histSync() {
+  const p = state.data?.project;
+  if (!p) return;
+  const j = JSON.stringify(p);
+  if (HIST.id !== state.id) { HIST.id = state.id; HIST.stack = [j]; HIST.i = 0; return; }
+  // alterações vindas de fora (ex.: depois de carregar um ficheiro) também entram no histórico
+  if (HIST.stack[HIST.i] !== j && !state.dirty) { HIST.stack = HIST.stack.slice(0, HIST.i + 1); HIST.stack.push(j); HIST.i++; }
+}
+
+function histPush() {
+  const p = state.data?.project;
+  if (!p || HIST.id !== state.id) return;
+  const j = JSON.stringify(p);
+  if (j === HIST.stack[HIST.i]) return;
+  const now = Date.now();
+  // escrever ou arrastar um cursor gera muitas alterações seguidas: contam como uma só
+  if (HIST.i > 0 && now - HIST.t < 700) HIST.stack[HIST.i] = j;
+  else { HIST.stack = HIST.stack.slice(0, HIST.i + 1); HIST.stack.push(j); HIST.i++; if (HIST.stack.length > 80) { HIST.stack.shift(); HIST.i--; } }
+  HIST.t = now;
+}
+
+const canUndo = () => HIST.id === state.id && HIST.i > 0;
+const canRedo = () => HIST.id === state.id && HIST.i < HIST.stack.length - 1;
+
+function histGo(d) {
+  const k = HIST.i + d;
+  if (HIST.id !== state.id || k < 0 || k >= HIST.stack.length) return toast(d < 0 ? 'Não há mais nada para desfazer.' : 'Não há nada para refazer.');
+  HIST.i = k;
+  HIST.t = 0;
+  state.data.project = JSON.parse(HIST.stack[k]);
+  state.dirty = true;
+  if (typeof ED !== 'undefined') ED.sel = null;
+  renderEditor();
+  toast(d < 0 ? '↶ Desfeito' : '↷ Refeito');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!(e.ctrlKey || e.metaKey)) return;
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return; // ali o Ctrl+Z é do próprio campo
+  const k = e.key.toLowerCase();
+  if (k === 'z' && !e.shiftKey) { e.preventDefault(); histGo(-1); }
+  else if (k === 'y' || (k === 'z' && e.shiftKey)) { e.preventDefault(); histGo(1); }
+});
 
 function field(label, value, onInput, opts = {}) {
   const input = opts.area ? h('textarea', { rows: opts.rows ?? 3 }) : h('input', { type: 'text' });
@@ -120,6 +169,7 @@ function field(label, value, onInput, opts = {}) {
 }
 
 function renderEditor() {
+  histSync();
   const { project: p, brand, issues, scenes, files } = state.data;
   if (p.template === 'reportagem') return renderSimple();
   const tpl = tplOf(p.template);
