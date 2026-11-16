@@ -50,6 +50,42 @@ async function approveFinal() {
   build({});
 }
 
+// ── acabamento: filtro de cor, transição, legendas, vinheta, grão, som ─────
+const FINISH_LOOKS = [['natural', 'Natural'], ['cinema', 'Cinema'], ['quente', 'Quente'], ['frio', 'Frio'], ['vivo', 'Vivo'], ['suave', 'Suave']];
+const FINISH_TRANS = [['fade', 'Fundido'], ['deslizar', 'Deslizar'], ['zoom', 'Zoom'], ['cortina', 'Cortina']];
+const FINISH_CAPS = [['karaoke', 'Karaokê'], ['limpo', 'Limpo (caixa)'], ['destaque', 'Destaque']];
+
+function finishBlock(p) {
+  if (p.template !== 'reportagem') return null;
+  const st = p.style ?? {};
+  const set = (k, v) => { p.style = { ...(p.style ?? {}), [k]: v }; dirty(); renderEditor(); };
+  const pick = (label, key, opts, def) => h('label', { class: 'ver-sel' }, label,
+    (() => {
+      const s = h('select', { onchange: () => set(key, s.value) }, ...opts.map(([v, t]) => h('option', { value: v }, t)));
+      s.value = st[key] ?? def;
+      return s;
+    })());
+  const chk = (label, key, title) => h('label', { class: 'ver-sel', title },
+    h('input', { type: 'checkbox', checked: Boolean(st[key]), onchange: (e) => set(key, e.target.checked) }), label);
+  const au = p.audio ?? {};
+  const setAu = (k, v) => { p.audio = { ...(p.audio ?? {}), [k]: v }; dirty(); renderEditor(); };
+  return h('details', { class: 'card', open: Boolean(p.style || p.audio) },
+    h('summary', null, '✨ Acabamento (aspeto profissional)'),
+    h('p', { class: 'muted' }, 'Tudo opcional e leve para o computador. Veja o efeito no rascunho antes de aprovar.'),
+    h('div', { class: 'actions' },
+      pick('Cor:', 'look', FINISH_LOOKS, 'natural'),
+      pick('Transição:', 'transition', FINISH_TRANS, 'fade'),
+      pick('Legendas:', 'captionStyle', FINISH_CAPS, 'karaoke')),
+    h('div', { class: 'actions' },
+      chk('Vinheta', 'vignette', 'Escurece suavemente os cantos, como no cinema.'),
+      chk('Grão de filme', 'grain', 'Textura fina que dá aspeto de cinema.'),
+      h('label', { class: 'ver-sel', title: 'Nivela o volume para o padrão das redes (−14 LUFS) e limpa a voz.' },
+        h('input', { type: 'checkbox', checked: au.master !== false, onchange: (e) => setAu('master', e.target.checked ? undefined : false) }), 'Som masterizado'),
+      h('label', { class: 'ver-sel', title: 'A música baixa enquanto se fala e sobe nas pausas.' },
+        h('input', { type: 'checkbox', checked: au.ducking !== false, onchange: (e) => setAu('ducking', e.target.checked ? undefined : false) }), 'Música baixa quando falo')),
+  );
+}
+
 // ── secção: ouvir, ver e aprovar ──────────────────────────────────────────
 function approvalSection(p) {
   const st = curStatus();
@@ -208,7 +244,7 @@ function renderSimple() {
     renderEditor();
   } }, '+ Adicionar cena');
 
-  main.replaceChildren(h('div', { class: 'stack' }, head, ...cards, add, musicBlock(p), approvalSection(p), actionsBar()));
+  main.replaceChildren(h('div', { class: 'stack' }, head, ...cards, add, musicBlock(p), finishBlock(p), approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
   loadPublication(files, outIdOf(p));
 }
@@ -320,7 +356,19 @@ function simpleScene(p, s, i, st) {
     !isClip && rec,
     !isClip && scenery,
     h('details', {},
-      h('summary', {}, 'Mais opções desta cena (local, nota)'),
+      h('summary', {}, 'Mais opções desta cena (assinatura, local, nota)'),
+      // Assinatura: só aparece NESTA cena (ex.: onde o psicólogo fala). Em branco = não aparece nada.
+      h('div', { class: 'zone', style: 'margin-top:10px' },
+        h('b', {}, 'Assinatura nesta cena (opcional)'),
+        h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'Para a cena em que aparece a falar: mostra o nome e a função só aqui, durante uns segundos. Deixe em branco nas outras cenas. Escreva só o que é verdade e o que quer mostrar (por exemplo o registo profissional).'),
+        h('div', { class: 'grid3' },
+          field('Nome', s.signature?.name, (v) => setSig(s, 'name', v)),
+          field('Função (ex.: Psicólogo)', s.signature?.role, (v) => setSig(s, 'role', v)),
+          field('Linha extra (ex.: Cédula n.º …)', s.signature?.extra, (v) => setSig(s, 'extra', v))),
+        h('div', { class: 'grid3', style: 'margin-top:8px' },
+          h('label', {}, 'Entra aos (s desde o início da cena)', h('input', { type: 'number', min: 0, step: 0.5, value: s.signature?.at ?? 0.3, oninput: (e) => { setSig(s, 'at', e.target.value === '' ? undefined : Number(e.target.value)); } })),
+          h('label', {}, 'Fica (s)', h('input', { type: 'number', min: 1.5, step: 0.5, value: s.signature?.seconds ?? 5, oninput: (e) => { setSig(s, 'seconds', e.target.value === '' ? undefined : Number(e.target.value)); } })),
+          p.host?.name && h('button', { style: 'align-self:end', onclick: () => { s.signature = { name: p.host.name, role: p.host.role || undefined }; dirty(); renderEditor(); } }, 'Preencher com "Quem aparece"'))),
       h('div', { class: 'grid2', style: 'margin-top:10px' },
         field('Local mostrado (só locais verdadeiros)', s.location, (v) => (s.location = v || undefined)),
         field('Nota para si (plano, o que mostrar)', s.shot, (v) => (s.shot = v || undefined)))),
@@ -344,4 +392,12 @@ function pickWord(scene, c) {
     ...tokens.map((t, k) => h('button', { class: 'wchip' + (c.atWord === k ? ' on' : ''), onclick: () => choose(k) }, t)),
   );
   dlg.showModal();
+}
+
+/** Altera um campo da assinatura da cena; se ficar tudo vazio, a assinatura deixa de existir. */
+function setSig(scene, key, value) {
+  const sig = (scene.signature ??= { name: '' });
+  sig[key] = value === '' ? undefined : value;
+  dirty();
+  if (!sig.name && !sig.role && !sig.extra) scene.signature = undefined;
 }

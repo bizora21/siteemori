@@ -7,6 +7,7 @@ import { basename, extname, join, resolve } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
 import { duration, run, stageVideo, voiceLevels } from './ffmpeg';
 import { resolveCues } from './cues';
+import { masterAudio, qualityReport } from './master';
 import { TEMPLATES } from './templates';
 import type { SceneAudio } from './voice';
 import type { Brand, Project } from './types';
@@ -30,6 +31,14 @@ export interface RenderPlan {
  * public/). Procura primeiro em projects/<id>/ e depois em video3d/public/.
  * Devolve o caminho relativo a public/, ou undefined se o projeto não tem música.
  */
+/** Textura de grão de filme (256×256, ruído cinzento), criada uma vez. */
+function ensureGrain(): void {
+  const f = join(VIDEO_DIR, 'public', 'grain.png');
+  if (existsSync(f)) return;
+  mkdirSync(join(VIDEO_DIR, 'public'), { recursive: true });
+  run(['-f', 'lavfi', '-i', 'color=c=gray:s=256x256,noise=alls=100:allf=t+u', '-frames:v', '1', f]);
+}
+
 function stageMusic(project: Project, projectDir: string): string | undefined {
   if (!project.music) return undefined;
   const rel = project.music.file;
@@ -240,6 +249,8 @@ function planRenderInner(
     // Foto animada pela voz: a foto da pessoa + o volume da voz ao longo do tempo.
     let avatar: { src: string } | undefined;
     let levels: number[] | undefined;
+    const ducking = Boolean(project.music) && project.audio?.ducking !== false;
+    if (ducking) levels = voiceLevels(tl.mp3, LEVEL_STEP); // para baixar a música enquanto se fala
     if (mode === 'photo') {
       if (!project.avatar) {
         warnings.push('versão "foto animada": falta a sua foto (Mais opções do vídeo → Carregar a minha foto). Sai sem foto.');
@@ -255,6 +266,8 @@ function planRenderInner(
         }
       }
     }
+
+    if (project.style?.grain) ensureGrain();
 
     // Um cartaz com texto precisa de tempo para ser lido (≈ 3 s, no mínimo).
     media.forEach((m, i) => {
@@ -279,6 +292,16 @@ function planRenderInner(
           media: media[i].main ?? undefined,
           face: media[i].face ?? undefined,
           clip: s.kind === 'clip' ? true : undefined,
+          // Assinatura: só nesta cena, no momento escolhido (por defeito 0,3 s a seguir ao início da fala, durante 5 s).
+          signature: s.signature?.name?.trim()
+            ? {
+                name: s.signature.name.trim(),
+                role: s.signature.role?.trim() || undefined,
+                extra: s.signature.extra?.trim() || undefined,
+                from: tl.audioStarts[i] + Math.max(0, s.signature.at ?? 0.3),
+                to: Math.min(tl.audioStarts[i] + tl.durations[i], tl.audioStarts[i] + Math.max(0, s.signature.at ?? 0.3) + Math.max(1.5, s.signature.seconds ?? 5)),
+              }
+            : undefined,
           cutaways: media[i].cutaways,
         })),
         host: project.host?.name?.trim() && !/^(seu nome|nome)$/i.test(project.host.name.trim()) ? project.host : undefined,
@@ -287,7 +310,9 @@ function planRenderInner(
         logo: brand.logo,
         aspect: project.aspect ?? '9:16',
         music: stageMusic(project, projectDir),
-        ...(avatar ? { avatar, voiceLevels: levels, levelStep: LEVEL_STEP } : {}),
+        ...(avatar || ducking ? { ...(avatar ? { avatar } : {}), voiceLevels: levels, levelStep: LEVEL_STEP } : {}),
+        duck: project.audio?.ducking !== false,
+        ...(project.style ? { style: project.style } : {}),
         ...(project.event?.title?.trim() ? { event: project.event } : {}),
       },
     };
@@ -354,14 +379,34 @@ export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: b
   const publicDir = makeRenderPublic(project.id, plan);
   // Rascunho: metade da resolução e 1 só processo — para validar sem fritar uma máquina fraca.
   // O limite de 3 min evita "Timed out after 30000 while setting up the headless browser" em máquinas lentas.
-  const extra = opts.draft ? ['--scale=0.5', '--concurrency=1'] : [];
+  // Final: CRF 17 (imagem limpa em 1080 p) e som a 192 kb/s. O rascunho prioriza a rapidez.
+  const extra = opts.draft ? ['--scale=0.5', '--concurrency=1'] : ['--crf=17', '--audio-bitrate=192k'];
   const r = spawnSync('npx', ['remotion', 'render', 'src/index.ts', plan.composition, out, `--props=${propsFile}`, `--public-dir="${publicDir}"`, '--timeout=180000', ...extra], {
     cwd: VIDEO_DIR,
     stdio: 'inherit',
     shell: true,
   });
   if (r.status !== 0) throw new Error('render falhou');
-  return join(VIDEO_DIR, out);
+  const file = join(VIDEO_DIR, out);
+  // Acabamento do som e relatório de qualidade (nada disto impede o vídeo se falhar).
+  let mastered = false;
+  if (project.audio?.master !== false) {
+    try {
+      const m = masterAudio(file);
+      mastered = Boolean(m);
+      if (m) console.log(`  ✓ som masterizado: ${m.before?.lufs.toFixed(1) ?? '?'} → ${m.after?.lufs.toFixed(1) ?? '?'} LUFS`);
+      else console.warn('  ⚠ não consegui masterizar o som (o vídeo ficou como saiu do render)');
+    } catch (e) {
+      console.warn('  ⚠ masterização do som falhou: ' + (e instanceof Error ? e.message : e));
+    }
+  }
+  try {
+    const rows = qualityReport(file, join(VIDEO_DIR, 'out', project.id, `${project.id}-qualidade.md`), { draft: opts.draft, mastered });
+    for (const l of rows) console.log('  ' + l);
+  } catch {
+    /* o relatório é um extra */
+  }
+  return file;
 }
 
 /** Planeia o render. Ficheiros de apoio em falta (cenários, foto, música) ficam em avisos e não impedem o vídeo. */

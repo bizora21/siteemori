@@ -20,8 +20,21 @@ const SANS = "Roboto, 'Helvetica Neue', Arial, sans-serif";
 
 const clamp = { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' } as const;
 
+/**
+ * "Looks": filtros de cor em CSS (leves: não pesam no render como os desfoques). Aplicam-se só às imagens
+ * e vídeos, nunca ao texto. Os mesmos valores estão no estúdio, para pré-visualizar.
+ */
+const LOOKS: Record<string, string> = {
+  natural: 'none',
+  cinema: 'sepia(0.10) hue-rotate(-8deg) contrast(1.14) saturate(0.9) brightness(0.97)',
+  quente: 'sepia(0.18) saturate(1.15) brightness(1.03) hue-rotate(-6deg)',
+  frio: 'saturate(0.95) hue-rotate(10deg) brightness(1.02) contrast(1.06)',
+  vivo: 'saturate(1.32) contrast(1.1)',
+  suave: 'contrast(0.94) saturate(0.92) brightness(1.04)',
+};
+
 /** Mídia em ecrã inteiro: apresentador, vídeo (em ciclo) ou imagem com movimento lento. */
-const FullMedia = ({ m, fadeFrames = 7, box }: { m: SceneMediaProps; fadeFrames?: number; box?: { top: number; bottom: number } }) => {
+const FullMedia = ({ m, fadeFrames = 7, box, transition = 'fade' }: { m: SceneMediaProps; fadeFrames?: number; box?: { top: number; bottom: number }; transition?: string }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const total = Math.max(2, Math.round(m.duration * fps));
@@ -67,7 +80,15 @@ const FullMedia = ({ m, fadeFrames = 7, box }: { m: SceneMediaProps; fadeFrames?
     // Apresentador: o rosto costuma estar no terço superior, por isso o corte favorece-o.
     body = <OffthreadVideo src={staticFile(m.src)} muted style={{ ...fill, objectPosition: '50% 30%' }} />;
   }
-  return <AbsoluteFill style={{ opacity: fade, background: '#000' }}>{body}</AbsoluteFill>;
+  // Entrada do plano: fundido (por defeito), deslizar, zoom suave ou cortina. A saída é sempre um fundido curto.
+  const enter = interpolate(frame, [0, 10], [0, 1], clamp);
+  const exit = interpolate(frame, [total - fadeFrames, total], [1, 0], clamp);
+  const motion: React.CSSProperties =
+    transition === 'deslizar' ? { transform: `translateY(${(1 - enter) * 7}%)` }
+    : transition === 'zoom' ? { transform: `scale(${1.08 - 0.08 * enter})` }
+    : transition === 'cortina' ? { clipPath: `inset(0 ${(1 - enter) * 100}% 0 0)` }
+    : {};
+  return <AbsoluteFill style={{ opacity: transition === 'cortina' ? exit : fade, background: '#000', ...motion }}>{body}</AbsoluteFill>;
 };
 
 /** O rosto num círculo (sem recorte da pessoa: o fundo da gravação fica escondido pela forma). */
@@ -190,6 +211,17 @@ export const Reportagem = (props: ReportagemProps) => {
   };
   const level = props.avatar ? (levelAt(t - 0.1) + levelAt(t - 0.05) + levelAt(t) + levelAt(t + 0.05)) / 4 : 0;
   const avatarCorner = hasScenery(scene);
+  const tr = props.style?.transition;
+  const look = LOOKS[props.style?.look ?? 'natural'] ?? 'none';
+
+  // Música por baixo da voz: sobe nas pausas e baixa enquanto se fala (ducking), com entrada e saída suaves.
+  const musicVolume = (f: number) => {
+    const tt = f / fps;
+    const lv = (levelAt(tt - 0.15) + levelAt(tt - 0.05) + levelAt(tt + 0.05)) / 3;
+    const speaking = props.voiceLevels?.length ? Math.min(1, lv * 1.7) : 1;
+    const base = props.duck === false ? 0.09 : 0.24 - 0.17 * speaking;
+    return base * interpolate(tt, [0, 1.2], [0, 1], clamp) * interpolate(tt, [end - 1.5, end], [1, 0], clamp);
+  };
   const sceneT = t - sceneStart;
 
   // Legenda atual (karaoke discreto: a palavra em voz leva a cor da marca).
@@ -207,6 +239,12 @@ export const Reportagem = (props: ReportagemProps) => {
   const nameIn = interpolate(t, [props.leadSeconds + 0.5, props.leadSeconds + 1.0], [0, 1], clamp);
   const nameOut = interpolate(t, [props.leadSeconds + 3.4, props.leadSeconds + 3.9], [1, 0], clamp);
   const nameVis = Math.min(nameIn, nameOut);
+
+  // Assinatura da cena (opcional): nome, função e uma linha extra, só enquanto dura.
+  const sigNow = props.scenes.map((s) => s.signature).find((sg) => sg && t >= sg.from && t < sg.to);
+  const sigVis = sigNow
+    ? Math.min(interpolate(t, [sigNow.from, sigNow.from + 0.5], [0, 1], clamp), interpolate(t, [sigNow.to - 0.5, sigNow.to], [1, 0], clamp))
+    : 0;
 
   const locIn = interpolate(sceneT, [0.15, 0.6], [0, 1], clamp);
   // A chamada para a ação só aparece no fim: nos últimos ~5 s da voz (ou no início da última cena,
@@ -228,11 +266,12 @@ export const Reportagem = (props: ReportagemProps) => {
 
   return (
     <AbsoluteFill style={{ background: `linear-gradient(160deg, ${bg} 0%, #000 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
+      <AbsoluteFill style={{ filter: look }}>
       {/* Cenário de cada cena (imagem ou vídeo de fundo) */}
       {props.scenes.map((s, i) =>
         s.media ? (
           <Sequence key={`m${i}`} from={Math.round(s.media.from * fps)} durationInFrames={Math.max(2, Math.round(s.media.duration * fps))} layout="none">
-            <FullMedia m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} box={posterBox} />
+            <FullMedia transition={tr} m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} box={posterBox} />
           </Sequence>
         ) : null,
       )}
@@ -241,7 +280,7 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.scenes.map((s, i) =>
         s.face && !hasScenery(s) ? (
           <Sequence key={`f${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
-            <FullMedia m={s.face} fadeFrames={4} />
+            <FullMedia transition={tr} m={s.face} fadeFrames={4} />
           </Sequence>
         ) : null,
       )}
@@ -258,10 +297,12 @@ export const Reportagem = (props: ReportagemProps) => {
       {props.scenes.flatMap((s, i) =>
         (s.cutaways ?? []).map((c, k) => (
           <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps)} durationInFrames={Math.max(2, Math.round(c.duration * fps))} layout="none">
-            <FullMedia m={c} fadeFrames={7} box={posterBox} />
+            <FullMedia transition={tr} m={c} fadeFrames={7} box={posterBox} />
           </Sequence>
         )),
       )}
+
+      </AbsoluteFill>
 
       {/* O rosto em bolha, por cima do cenário e dos cortes */}
       {props.scenes.map((s, i) =>
@@ -283,6 +324,21 @@ export const Reportagem = (props: ReportagemProps) => {
           bottom={(avatarCorner ? bubbleBottom : portrait ? 800 : 300) * u}
           accent={accent}
           level={level}
+        />
+      )}
+
+      {/* Vinheta e grão de filme (opcionais): dão aspeto de cinema, sem peso no render */}
+      {props.style?.vignette && <AbsoluteFill style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 52%, rgba(0,0,0,.5) 100%)', pointerEvents: 'none' }} />}
+      {props.style?.grain && (
+        <AbsoluteFill
+          style={{
+            backgroundImage: `url(${staticFile('grain.png')})`,
+            backgroundSize: '256px 256px',
+            backgroundPosition: `${(frame * 53) % 256}px ${(frame * 97) % 256}px`,
+            opacity: 0.11,
+            mixBlendMode: 'overlay',
+            pointerEvents: 'none',
+          }}
         />
       )}
 
@@ -320,8 +376,29 @@ export const Reportagem = (props: ReportagemProps) => {
         </div>
       )}
 
+      {/* Assinatura da cena (ex.: o psicólogo a falar): painel translúcido para ler-se sobre qualquer fundo */}
+      {sigNow && sigVis > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            left: bubbleNow ? pad + (bubbleSize + 28) * u : pad,
+            right: pad,
+            bottom: bubbleNow ? (bubbleBottom + bubbleSize / 2 - 70) * u : (portrait ? 560 : 250) * u,
+            display: 'flex',
+            opacity: sigVis,
+            transform: `translateX(${(1 - sigVis) * -70}px)`,
+          }}
+        >
+          <div style={{ borderLeft: `${8 * u}px solid ${accent}`, background: 'rgba(0,0,0,.55)', padding: `${16 * u}px ${28 * u}px ${16 * u}px ${24 * u}px`, borderRadius: `0 ${14 * u}px ${14 * u}px 0`, textShadow: '0 2px 10px rgba(0,0,0,.6)', maxWidth: '100%' }}>
+            <div style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 60 * u, lineHeight: 1.05 }}>{sigNow.name}</div>
+            {sigNow.role && <div style={{ fontSize: 38 * u, fontWeight: 600, color: accent, marginTop: 6 * u }}>{sigNow.role}</div>}
+            {sigNow.extra && <div style={{ fontSize: 30 * u, opacity: 0.9, marginTop: 6 * u }}>{sigNow.extra}</div>}
+          </div>
+        </div>
+      )}
+
       {/* Etiqueta de nome (início do vídeo) */}
-      {props.host?.name && nameVis > 0 && (
+      {props.host?.name && nameVis > 0 && !sigNow && (
         <div
           style={{
             position: 'absolute',
@@ -396,38 +473,47 @@ export const Reportagem = (props: ReportagemProps) => {
         </div>
       )}
 
-      {/* Legenda: dentro da zona segura (a interface das redes cobre a base e a direita) */}
-      {showLine && line && (
-        <div
-          style={{
-            position: 'absolute',
-            left: pad,
-            right: pad + (portrait ? 90 * u : 0),
-            bottom: (portrait ? 330 : 110) * u,
-            textAlign: 'center',
-            fontWeight: 800,
-            fontSize: (portrait ? 74 : 60) * u,
-            lineHeight: 1.12,
-            textShadow: `0 0 ${8 * u}px rgba(0,0,0,.95), 0 ${4 * u}px ${22 * u}px rgba(0,0,0,.8)`,
-            WebkitTextStroke: `${2.5 * u}px rgba(0,0,0,.85)`,
-            paintOrder: 'stroke fill',
-          }}
-        >
-          {line.words.map((w, i) => {
-            const active = t >= w.start && t < w.end + 0.04;
-            return (
-              <span key={i} style={{ color: active ? accent : text }}>
-                {w.text}{' '}
-              </span>
-            );
-          })}
-        </div>
-      )}
+      {/* Legenda: dentro da zona segura (a interface das redes cobre a base e a direita). Três estilos. */}
+      {showLine && line && (() => {
+        const cs = props.style?.captionStyle ?? 'karaoke';
+        const box: React.CSSProperties = { position: 'absolute', left: pad, right: pad + (portrait ? 90 * u : 0), bottom: (portrait ? 330 : 110) * u, textAlign: 'center' };
+        const isOn = (w: { start: number; end: number }) => t >= w.start && t < w.end + 0.04;
+        if (cs === 'limpo') {
+          return (
+            <div style={{ ...box, display: 'flex', justifyContent: 'center' }}>
+              <div style={{ background: 'rgba(0,0,0,.5)', padding: `${14 * u}px ${30 * u}px`, borderRadius: 20 * u, fontWeight: 700, fontSize: (portrait ? 60 : 48) * u, lineHeight: 1.18, textShadow: '0 2px 10px rgba(0,0,0,.6)' }}>
+                {line.words.map((w, i) => (
+                  <span key={i} style={{ color: isOn(w) ? accent : text }}>{w.text}{' '}</span>
+                ))}
+              </div>
+            </div>
+          );
+        }
+        if (cs === 'destaque') {
+          return (
+            <div style={{ ...box, fontWeight: 800, fontSize: (portrait ? 66 : 54) * u, lineHeight: 1.35, textShadow: '0 3px 14px rgba(0,0,0,.85)' }}>
+              {line.words.map((w, i) => {
+                const on = isOn(w);
+                return (
+                  <span key={i} style={{ display: 'inline-block', background: on ? accent : 'transparent', color: on ? bg : text, padding: `0 ${10 * u}px`, borderRadius: 12 * u, transform: on ? 'scale(1.06)' : 'none', margin: `0 ${2 * u}px` }}>{w.text}</span>
+                );
+              })}
+            </div>
+          );
+        }
+        return (
+          <div style={{ ...box, fontWeight: 800, fontSize: (portrait ? 74 : 60) * u, lineHeight: 1.12, textShadow: `0 0 ${8 * u}px rgba(0,0,0,.95), 0 ${4 * u}px ${22 * u}px rgba(0,0,0,.8)`, WebkitTextStroke: `${2.5 * u}px rgba(0,0,0,.85)`, paintOrder: 'stroke fill' }}>
+            {line.words.map((w, i) => (
+              <span key={i} style={{ color: isOn(w) ? accent : text }}>{w.text}{' '}</span>
+            ))}
+          </div>
+        );
+      })()}
 
       <Sequence from={Math.round(props.leadSeconds * fps)}>
         <Audio src={staticFile(props.audio)} />
       </Sequence>
-      {props.music && <Audio src={staticFile(props.music)} volume={0.09} />}
+      {props.music && <Audio src={staticFile(props.music)} volume={musicVolume} />}
     </AbsoluteFill>
   );
 };

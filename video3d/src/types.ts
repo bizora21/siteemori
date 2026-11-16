@@ -149,6 +149,8 @@ export interface ReportagemProps {
     face?: SceneMediaProps;
     /** Cena real: o vídeo ocupa o ecrã com o seu próprio som (sem foto animada por cima). */
     clip?: boolean;
+    /** Assinatura no ecrã só nesta cena (from/to em segundos no vídeo). */
+    signature?: { name: string; role?: string; extra?: string; from: number; to: number };
     cutaways?: SceneMediaProps[];
   }[];
   host?: { name: string; role?: string };
@@ -164,6 +166,16 @@ export interface ReportagemProps {
   site: string;
   aspect: '9:16' | '16:9' | '1:1';
   music?: string;
+  /** Acabamento visual: filtro de cor, transição, estilo das legendas, vinheta e grão. */
+  style?: {
+    look?: 'natural' | 'cinema' | 'quente' | 'frio' | 'vivo' | 'suave';
+    transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina';
+    captionStyle?: 'karaoke' | 'limpo' | 'destaque';
+    vignette?: boolean;
+    grain?: boolean;
+  };
+  /** Baixar a música enquanto se fala (por defeito sim). */
+  duck?: boolean;
   /** Evento a promover: cartão final com os dados. */
   event?: { title: string; date?: string; time?: string; place?: string; contact?: string; note?: string };
 }

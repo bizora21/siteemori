@@ -43,6 +43,12 @@ export interface Scene {
    * de uma marcha, uma entrevista). Por defeito a cena é narrada: texto + voz (gravada ou sintética).
    */
   kind?: 'clip';
+  /**
+   * Assinatura no ecrã, SÓ nesta cena (opcional, para onde a pessoa aparece a falar): nome, função e uma linha extra
+   * (ex.: o registo profissional). Escreva só o que é verdade e o que quer mostrar. `at` (s desde o início da cena,
+   * por defeito 0,3) e `seconds` (por defeito 5) ajustam quando entra e quanto dura.
+   */
+  signature?: { name: string; role?: string; extra?: string; at?: number; seconds?: number };
   /** Nome da pessoa que grava (informativo: aparece na folha de gravação). */
   voice?: string;
   /**
@@ -195,6 +201,13 @@ export interface Project {
   avatar?: string;
   /** Enquadramento da foto na bolha: y = posição vertical (0 = topo, 100 = fundo; por defeito 25) e zoom (1 = normal, até 3). */
   avatarFocus?: { y?: number; zoom?: number };
+  /**
+   * Acabamento visual (reportagem): "look" (filtro de cor), transição entre cenários, estilo das legendas,
+   * vinheta e grão de filme. Tudo leve para máquinas sem GPU.
+   */
+  style?: VideoStyle;
+  /** Som: masterizar a -14 LUFS (por defeito sim) e baixar a música enquanto se fala (por defeito sim). */
+  audio?: { master?: boolean; ducking?: boolean };
   /** Versões extra deste vídeo: alterações sobre o projeto base (além das predefinidas em versions.ts). */
   versions?: Record<string, VersionOverrides>;
   publish?: { description?: string; hashtags?: string[] };
@@ -216,7 +229,16 @@ const ASPECTS = ['9:16', '16:9', '1:1'];
 const FACE_MODES = ['video', 'photo', 'none'];
 
 /** O que uma versão pode mudar em relação ao projeto base. */
+export interface VideoStyle {
+  look?: 'natural' | 'cinema' | 'quente' | 'frio' | 'vivo' | 'suave';
+  transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina';
+  captionStyle?: 'karaoke' | 'limpo' | 'destaque';
+  vignette?: boolean;
+  grain?: boolean;
+}
+
 export interface VersionOverrides {
+  style?: VideoStyle;
   label?: string;
   faceMode?: 'video' | 'photo' | 'none';
   captions?: boolean;

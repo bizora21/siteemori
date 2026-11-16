@@ -238,3 +238,22 @@ O tipo escolhe-se no cartão da cena ("Tipo de cena") e determina de onde vem o 
 - Numa cena real sem vídeo, a cena fica 1,5 s em silêncio e há um aviso; um vídeo sem pista de áudio fica em silêncio, com aviso.
 - Em "Cena real" não entram a foto animada nem o rosto em bolha: o vídeo ocupa o ecrã.
 - Em `project.json`: `{ "id": "marcha", "kind": "clip", "presenter": "presenter/marcha.mp4" }` (a narração é opcional e ignorada).
+
+## Acabamento comercial (reportagem)
+
+Tudo opcional, leve (sem GPU) e escolhido no cartão "✨ Acabamento" do estúdio, ou no `project.json`:
+
+```json
+"style": { "look": "cinema", "transition": "zoom", "captionStyle": "destaque", "vignette": true, "grain": true },
+"audio": { "master": true, "ducking": true }
+```
+
+- `look`: natural, cinema, quente, frio, vivo, suave (filtro de cor só nas imagens/vídeos, nunca no texto).
+- `transition`: fade (por defeito), deslizar, zoom, cortina.
+- `captionStyle`: karaoke (por defeito), limpo (caixa escura), destaque (palavra em cápsula).
+- `vignette` e `grain`: aspeto de cinema (o grão usa `video3d/public/grain.png`, criado sozinho e ignorado pelo Git).
+- Som: a música baixa enquanto se fala e sobe nas pausas (`ducking`); no fim, o som é masterizado a −14 LUFS (2 passagens, voz limpa e compressão suave) e fica um `<id>-qualidade.md` com resolução, débito, volume e pico.
+- Final renderizado com CRF 17 e som a 192 kb/s.
+- Assinatura (identificação profissional): só na cena onde a pessoa fala, com `signature.at`/`seconds` manuais.
+
+Limites honestos: sem avatar com lábios sincronizados, sem recorte de pessoa e sem vídeo gerado por IA (exigem GPU).

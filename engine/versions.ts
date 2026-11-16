@@ -38,5 +38,6 @@ export function applyVersion(project: Project, version?: string): Project {
   const v = listVersions(project).find((x) => x.id === version);
   if (!v) throw new Error(`versão "${version}" não existe. Disponíveis: ${listVersions(project).map((x) => x.id).join(', ')}`);
   const { id: _id, label: _label, hint: _hint, ...overrides } = v;
-  return { ...project, ...overrides, id: `${project.id}--${version}` };
+  const style = { ...project.style, ...overrides.style };
+  return { ...project, ...overrides, ...(Object.keys(style).length ? { style } : {}), id: `${project.id}--${version}` };
 }
