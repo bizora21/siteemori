@@ -26,11 +26,11 @@ const clamp = { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' } as const;
  */
 const LOOKS: Record<string, string> = {
   natural: 'none',
-  cinema: 'sepia(0.10) hue-rotate(-8deg) contrast(1.14) saturate(0.9) brightness(0.97)',
-  quente: 'sepia(0.18) saturate(1.15) brightness(1.03) hue-rotate(-6deg)',
-  frio: 'saturate(0.95) hue-rotate(10deg) brightness(1.02) contrast(1.06)',
-  vivo: 'saturate(1.32) contrast(1.1)',
-  suave: 'contrast(0.94) saturate(0.92) brightness(1.04)',
+  cinema: 'sepia(0.22) hue-rotate(-10deg) contrast(1.22) saturate(0.88) brightness(0.94)',
+  quente: 'sepia(0.32) saturate(1.3) brightness(1.04) hue-rotate(-10deg)',
+  frio: 'saturate(0.9) hue-rotate(18deg) brightness(1.02) contrast(1.12)',
+  vivo: 'saturate(1.5) contrast(1.15)',
+  suave: 'contrast(0.9) saturate(0.85) brightness(1.08)',
 };
 
 /** Mídia em ecrã inteiro: apresentador, vídeo (em ciclo) ou imagem com movimento lento. */

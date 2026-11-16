@@ -51,12 +51,40 @@ async function approveFinal() {
 }
 
 // ── acabamento: filtro de cor, transição, legendas, vinheta, grão, som ─────
+// Os mesmos filtros da composição, para ver o efeito já nas miniaturas (sem esperar pelo rascunho).
+const LOOK_CSS = {
+  natural: 'none',
+  cinema: 'sepia(0.22) hue-rotate(-10deg) contrast(1.22) saturate(0.88) brightness(0.94)',
+  quente: 'sepia(0.32) saturate(1.3) brightness(1.04) hue-rotate(-10deg)',
+  frio: 'saturate(0.9) hue-rotate(18deg) brightness(1.02) contrast(1.12)',
+  vivo: 'saturate(1.5) contrast(1.15)',
+  suave: 'contrast(0.9) saturate(0.85) brightness(1.08)',
+};
+
+// ── treinador de qualidade: o que falta para o vídeo ficar profissional ─────
+function qualityCard() {
+  const q = state.data.quality;
+  if (!q || !q.items) return null;
+  const color = q.score >= 90 ? 'ok' : q.score >= 75 ? 'warn' : 'bad';
+  const icon = { falta: '⛔', melhorar: '⚠️', ok: '✅' };
+  return h('section', { class: 'card stack' },
+    h('div', { class: 'row' },
+      h('h3', { style: 'margin:0;flex:1' }, 'Qualidade do vídeo'),
+      h('span', { class: 'pill ' + color, style: 'font-size:15px;padding:3px 12px' }, q.score + '% · ' + q.verdict),
+      h('span', { class: 'muted' }, '~' + q.seconds + ' s')),
+    h('div', { style: 'height:8px;border-radius:6px;background:var(--line);overflow:hidden' },
+      h('div', { style: 'height:100%;width:' + q.score + '%;background:var(--' + color + ')' })),
+    h('ul', { class: 'issues' }, ...q.items.map((x) =>
+      h('li', {}, icon[x.level] + ' ' + x.text, x.how && h('div', { class: 'muted', style: 'margin-left:22px' }, '→ ' + x.how)))));
+}
+
 const FINISH_LOOKS = [['natural', 'Natural'], ['cinema', 'Cinema'], ['quente', 'Quente'], ['frio', 'Frio'], ['vivo', 'Vivo'], ['suave', 'Suave']];
 const FINISH_TRANS = [['fade', 'Fundido'], ['deslizar', 'Deslizar'], ['zoom', 'Zoom'], ['cortina', 'Cortina']];
 const FINISH_CAPS = [['karaoke', 'Karaokê'], ['limpo', 'Limpo (caixa)'], ['destaque', 'Destaque']];
 
 function finishBlock(p) {
   if (p.template !== 'reportagem') return null;
+  const pro = () => { p.style = { look: 'cinema', transition: 'zoom', captionStyle: 'destaque', vignette: true, grain: false }; p.audio = undefined; dirty(); renderEditor(); toast('Aspeto profissional aplicado: veja no rascunho.'); };
   const st = p.style ?? {};
   const set = (k, v) => { p.style = { ...(p.style ?? {}), [k]: v }; dirty(); renderEditor(); };
   const pick = (label, key, opts, def) => h('label', { class: 'ver-sel' }, label,
@@ -71,7 +99,8 @@ function finishBlock(p) {
   const setAu = (k, v) => { p.audio = { ...(p.audio ?? {}), [k]: v }; dirty(); renderEditor(); };
   return h('details', { class: 'card', open: Boolean(p.style || p.audio) },
     h('summary', {}, '✨ Acabamento (aspeto profissional)'),
-    h('p', { class: 'muted' }, 'Tudo opcional e leve para o computador. Veja o efeito no rascunho antes de aprovar.'),
+    h('p', { class: 'muted' }, 'Tudo opcional e leve para o computador. O efeito de cor já se vê nas miniaturas dos cenários; o resto, no rascunho.'),
+    h('div', { class: 'actions' }, h('button', { class: 'primary', onclick: pro }, '✨ Aspeto profissional (um clique)'), h('button', { onclick: () => { p.style = undefined; dirty(); renderEditor(); } }, 'Sem efeitos')),
     h('div', { class: 'actions' },
       pick('Cor:', 'look', FINISH_LOOKS, 'natural'),
       pick('Transição:', 'transition', FINISH_TRANS, 'fade'),
@@ -254,7 +283,7 @@ function renderSimple() {
     renderEditor();
   } }, '+ Adicionar cena');
 
-  main.replaceChildren(h('div', { class: 'stack' }, head, ...cards, add, musicBlock(p), finishBlock(p), approvalSection(p), actionsBar()));
+  main.replaceChildren(h('div', { class: 'stack' }, head, qualityCard(), ...cards, add, musicBlock(p), finishBlock(p), approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
   loadPublication(files, outIdOf(p));
 }
@@ -303,7 +332,7 @@ function simpleScene(p, s, i, st) {
     h('b', {}, '③ Cenários (o que se vê)'),
     h('p', { class: 'muted', style: 'margin:2px 0 8px' }, hint),
     list.length > 0 && h('div', { class: 'gallery' }, ...list.map((c, k) =>
-      h('div', { class: 'cen' }, thumb(c.media, 96),
+      h('div', { class: 'cen' }, (() => { const t = thumb(c.media, 96); t.style.filter = LOOK_CSS[p.style?.look ?? 'natural'] ?? 'none'; return t; })(),
         h('button', { class: 'when', title: 'Escolha a palavra do texto em que este cenário aparece', onclick: () => pickWord(s, c) },
           c.atWord !== undefined ? `⏱ Entra em «${(s.narration.trim().split(/\s+/)[c.atWord] ?? '?').replace(/[.,;:!?]+$/, '')}»` : '⏱ Quando entra? (automático)'),
         isVideoPath(c.media) && h('label', { class: 'fit-opt', title: 'Se só quer uma parte do vídeo: segundo do ficheiro em que começa' },

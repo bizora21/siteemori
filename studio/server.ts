@@ -21,6 +21,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { networkInterfaces } from 'node:os';
 import { basename, extname, join, normalize, relative, resolve, sep } from 'node:path';
 import { lintProject } from '../engine/claims';
+import { coach } from '../engine/coach';
 import { qrSvg } from './qr';
 import { FFMPEG } from '../engine/ffmpeg';
 import { TEMPLATES } from '../engine/templates';
@@ -254,7 +255,8 @@ function detail(id: string) {
         warnings: last.log.filter((l) => l.includes('⚠')).slice(-6),
       }
     : null;
-  return { project, brand, issues, scenes, files, versions, lastJob, status: outputStatus(id, versions.map((v) => v.id)) };
+  const quality = coach(project, dir, scenes.map((x) => x.recorded));
+  return { project, brand, issues, scenes, files, versions, lastJob, quality, status: outputStatus(id, versions.map((v) => v.id)) };
 }
 
 /** O mais recente de tudo o que entra no vídeo (texto, gravações, cenários, música). */

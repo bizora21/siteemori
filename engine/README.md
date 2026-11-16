@@ -257,3 +257,7 @@ Tudo opcional, leve (sem GPU) e escolhido no cartão "✨ Acabamento" do estúdi
 - Assinatura (identificação profissional): só na cena onde a pessoa fala, com `signature.at`/`seconds` manuais.
 
 Limites honestos: sem avatar com lábios sincronizados, sem recorte de pessoa e sem vídeo gerado por IA (exigem GPU).
+
+## Treinador de qualidade
+
+`engine/coach.ts` analisa o projeto (reportagem) e devolve uma pontuação e uma lista do que falta: cenários por cena (um a cada ~4 s), cenas sem imagens, cartazes com pouco tempo, imagens pequenas ou que vão ser cortadas, voz sintética, rosto, música, acabamento, legendas e duração. Aparece no topo da página do estúdio ("Qualidade do vídeo") e nunca bloqueia nada.
