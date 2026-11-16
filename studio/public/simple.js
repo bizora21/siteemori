@@ -70,7 +70,7 @@ function finishBlock(p) {
   const au = p.audio ?? {};
   const setAu = (k, v) => { p.audio = { ...(p.audio ?? {}), [k]: v }; dirty(); renderEditor(); };
   return h('details', { class: 'card', open: Boolean(p.style || p.audio) },
-    h('summary', null, '✨ Acabamento (aspeto profissional)'),
+    h('summary', {}, '✨ Acabamento (aspeto profissional)'),
     h('p', { class: 'muted' }, 'Tudo opcional e leve para o computador. Veja o efeito no rascunho antes de aprovar.'),
     h('div', { class: 'actions' },
       pick('Cor:', 'look', FINISH_LOOKS, 'natural'),
