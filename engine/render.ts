@@ -279,6 +279,25 @@ function planRenderInner(
       }
     });
 
+    // Textos, emojis e imagens da linha do tempo: o tempo é relativo ao início da fala da cena.
+    const overlays = (project.overlays ?? []).flatMap((o, k) => {
+      const i = project.scenes.findIndex((s) => s.id === o.scene);
+      if (i < 0) {
+        warnings.push(`elemento ${k + 1} da linha do tempo: a cena "${o.scene}" já não existe: ignorei-o`);
+        return [];
+      }
+      const from = tl.audioStarts[i] + Math.max(0, o.at ?? 0.5);
+      const to = Math.min(tl.audioStarts[i] + tl.durations[i] + 0.5, from + Math.max(0.8, o.seconds ?? 3));
+      if (to - from < 0.4) return [];
+      let src: string | undefined;
+      if (o.kind === 'image') {
+        const f = o.media ? tryStage(project, projectDir, o.scene, o.media, `ov-${k + 1}`) : null;
+        if (!f || !f.image) return [];
+        src = f.src;
+      } else if (!o.text?.trim()) return [];
+      return [{ kind: o.kind, text: o.text?.trim(), src, from, to, x: o.x ?? 50, y: o.y ?? 30, size: o.size ?? 1, style: o.style ?? 'destaque', anim: o.anim ?? 'pop' }];
+    });
+
     return {
       composition: def.composition,
       warnings,
@@ -286,6 +305,7 @@ function planRenderInner(
       props: {
         ...base,
         lines,
+        ...(overlays.length ? { overlays } : {}),
         scenes: project.scenes.map((s, i) => ({
           title: s.title ?? '',
           location: s.location,

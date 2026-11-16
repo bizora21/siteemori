@@ -214,6 +214,31 @@ function summarize(id: string) {
   return { id, title: p.title, template: p.template, brand: p.brand, scenes: p.scenes.length, recorded, hasDraft: outs.includes(`${id}-rascunho.mp4`), hasFinal: outs.includes(`${id}.mp4`) };
 }
 
+/**
+ * Tempos das cenas para a linha do tempo: os reais (do último "Ouvir a voz"/rascunho) se estiverem
+ * atualizados, senão uma estimativa pelo número de palavras.
+ */
+function timing(id: string, project: ReturnType<typeof loadProject>) {
+  const pf = resolve('video3d/props', `${id}.json`);
+  const pj = join(projectDir(id), 'project.json');
+  try {
+    if (existsSync(pf)) {
+      const p = JSON.parse(readFileSync(pf, 'utf8'));
+      if (Array.isArray(p.sceneStarts) && p.sceneStarts.length === project.scenes.length && statSync(pf).mtimeMs >= statSync(pj).mtimeMs) {
+        const total = p.durationInFrames / 30;
+        return { starts: p.sceneStarts as number[], total, exact: true };
+      }
+    }
+  } catch { /* usa a estimativa */ }
+  let t = 0.4;
+  const starts: number[] = [];
+  for (const sc of project.scenes) {
+    starts.push(t);
+    t += Math.max(2, String(sc.narration ?? '').split(/s+/).filter(Boolean).length / 2.3) + 0.3;
+  }
+  return { starts, total: t + 2, exact: false };
+}
+
 function detail(id: string) {
   const project = loadProject(id);
   const dir = projectDir(id);
@@ -256,7 +281,7 @@ function detail(id: string) {
       }
     : null;
   const quality = coach(project, dir, scenes.map((x) => x.recorded));
-  return { project, brand, issues, scenes, files, versions, lastJob, quality, status: outputStatus(id, versions.map((v) => v.id)) };
+  return { project, brand, issues, scenes, files, versions, lastJob, quality, timing: timing(id, project), status: outputStatus(id, versions.map((v) => v.id)) };
 }
 
 /** O mais recente de tudo o que entra no vídeo (texto, gravações, cenários, música). */

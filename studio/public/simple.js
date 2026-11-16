@@ -283,7 +283,7 @@ function renderSimple() {
     renderEditor();
   } }, '+ Adicionar cena');
 
-  main.replaceChildren(h('div', { class: 'stack' }, head, qualityCard(), ...cards, add, musicBlock(p), finishBlock(p), approvalSection(p), actionsBar()));
+  main.replaceChildren(h('div', { class: 'stack' }, head, qualityCard(), (typeof timelineBlock === 'function' ? timelineBlock(p) : null), ...cards, add, musicBlock(p), finishBlock(p), approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
   loadPublication(files, outIdOf(p));
 }
@@ -385,7 +385,7 @@ function simpleScene(p, s, i, st) {
       : h('p', { style: 'color:var(--warn);margin:8px 0 0' }, '⚠ Falta o vídeo: sem ele esta cena fica 1,5 s em silêncio.'),
   );
 
-  return h('section', { class: 'card scene' },
+  return h('section', { class: 'card scene', id: 'scene-' + i },
     h('header', {},
       h('span', { class: 'no' }, String(i + 1).padStart(2, '0')),
       h('b', {}, s.id), isClip ? h('span', { class: 'pill ok' }, '🎬 cena real') : status, !isClip && est,

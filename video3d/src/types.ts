@@ -153,6 +153,8 @@ export interface ReportagemProps {
     signature?: { name: string; role?: string; extra?: string; from: number; to: number };
     cutaways?: SceneMediaProps[];
   }[];
+  /** Textos, emojis e imagens por cima do vídeo (from/to em segundos no vídeo). */
+  overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa'; anim: 'pop' | 'fade' | 'deslizar' }[];
   host?: { name: string; role?: string };
   /** Foto da pessoa (versão "foto animada"): numa bolha que pulsa com a voz. */
   avatar?: { src: string; y?: number; zoom?: number };

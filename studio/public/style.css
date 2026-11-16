@@ -139,3 +139,21 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .wchip { padding: 5px 11px; border-radius: 8px; font-size: 16px; }
 .wchip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 .when { font-size: 12px; padding: 3px 6px; margin-top: 4px; }
+
+/* ── linha do tempo ── */
+.tl-scroll { overflow-x: auto; padding-bottom: 6px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--line) 18%, transparent); }
+.tl-ruler { position: relative; height: 22px; margin-left: 92px; border-bottom: 1px solid var(--line); }
+.tl-tick { position: absolute; top: 0; font-size: 11px; color: var(--muted); padding-left: 3px; border-left: 1px solid var(--line); height: 22px; }
+.tl-row { display: flex; align-items: stretch; margin-top: 6px; }
+.tl-name { flex: none; width: 92px; position: sticky; left: 0; z-index: 3; font-size: 12px; color: var(--muted); padding: 6px; background: var(--bg, #fff); display: flex; align-items: center; line-height: 1.1; }
+.tl-lane { position: relative; height: 44px; }
+.tl-block { position: absolute; top: 3px; height: 38px; border-radius: 8px; padding: 0 8px; display: flex; align-items: center; font-size: 12px; white-space: nowrap; overflow: hidden; box-sizing: border-box; user-select: none; }
+.tl-block.scene { background: #2f6fed33; border: 1px solid #2f6fed; cursor: pointer; }
+.tl-block.cen { background: #16794d33; border: 1px solid #16794d; }
+.tl-block.ov { background: #f5b82e55; border: 1px solid #d99a00; cursor: grab; touch-action: none; padding-right: 14px; }
+.tl-block.ov.sel { outline: 3px solid var(--accent, #2f6fed); background: #f5b82e99; }
+.tl-lab { overflow: hidden; text-overflow: ellipsis; }
+.tl-handle { position: absolute; right: 0; top: 0; bottom: 0; width: 10px; background: #d99a00; cursor: ew-resize; }
+.tl-edit input[type=text] { width: 100%; }
+
+.tl-edit select, #timeline .actions select { width: auto; max-width: 160px; }

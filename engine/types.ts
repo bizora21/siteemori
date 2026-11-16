@@ -203,6 +203,8 @@ export interface Project {
   avatarFocus?: { y?: number; zoom?: number };
   /** Como se mostram as imagens dos cenários: 'cover' preenche o ecrã (pode cortar), 'contain' mostra-as inteiras. */
   imageFit?: 'cover' | 'contain';
+  /** Textos, emojis e imagens por cima do vídeo (reportagem). */
+  overlays?: Overlay[];
   /**
    * Acabamento visual (reportagem): "look" (filtro de cor), transição entre cenários, estilo das legendas,
    * vinheta e grão de filme. Tudo leve para máquinas sem GPU.
@@ -231,6 +233,30 @@ const ASPECTS = ['9:16', '16:9', '1:1'];
 const FACE_MODES = ['video', 'photo', 'none'];
 
 /** O que uma versão pode mudar em relação ao projeto base. */
+/**
+ * Texto, emoji ou imagem por cima do vídeo, durante alguns segundos de uma cena (linha do tempo do estúdio).
+ * O tempo é relativo ao início da fala da cena, por isso acompanha a voz mesmo que esta mude.
+ */
+export interface Overlay {
+  kind: 'text' | 'emoji' | 'image';
+  /** id da cena onde aparece */
+  scene: string;
+  /** segundos desde o início da fala da cena (por defeito 0,5) */
+  at?: number;
+  /** quanto tempo fica (por defeito 3) */
+  seconds?: number;
+  text?: string;
+  /** imagem (relativa à pasta do projeto) */
+  media?: string;
+  /** posição do centro, em % do ecrã (por defeito 50 / 30) */
+  x?: number;
+  y?: number;
+  /** tamanho: 1 = normal */
+  size?: number;
+  style?: 'destaque' | 'simples' | 'caixa';
+  anim?: 'pop' | 'fade' | 'deslizar';
+}
+
 export interface VideoStyle {
   look?: 'natural' | 'cinema' | 'quente' | 'frio' | 'vivo' | 'suave';
   transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina';

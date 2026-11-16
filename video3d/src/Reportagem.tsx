@@ -487,6 +487,24 @@ export const Reportagem = (props: ReportagemProps) => {
         </div>
       )}
 
+      {/* Textos, emojis e imagens da linha do tempo */}
+      {(props.overlays ?? []).map((o, k) => {
+        if (t < o.from || t >= o.to) return null;
+        const a = Math.min(interpolate(t, [o.from, o.from + 0.35], [0, 1], clamp), interpolate(t, [o.to - 0.3, o.to], [1, 0], clamp));
+        const grow = o.anim === 'pop' ? 0.6 + 0.4 * Math.min(1, interpolate(t, [o.from, o.from + 0.3], [0, 1.18], clamp)) : 1;
+        const rise = o.anim === 'deslizar' ? (1 - a) * 60 * u : 0;
+        const wrap: React.CSSProperties = { position: 'absolute', left: `${o.x}%`, top: `${o.y}%`, transform: `translate(-50%, calc(-50% + ${rise}px)) scale(${grow})`, opacity: a, textAlign: 'center', maxWidth: '86%', pointerEvents: 'none' };
+        if (o.kind === 'image' && o.src) return <div key={k} style={wrap}><Img src={staticFile(o.src)} style={{ width: width * 0.4 * o.size, height: 'auto', borderRadius: 18 * u, boxShadow: '0 10px 36px rgba(0,0,0,.5)' }} /></div>;
+        if (o.kind === 'emoji') return <div key={k} style={{ ...wrap, fontSize: 150 * u * o.size, lineHeight: 1, filter: 'drop-shadow(0 8px 18px rgba(0,0,0,.45))', fontFamily: '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif' }}>{o.text}</div>;
+        const fs = 66 * u * o.size;
+        const look: React.CSSProperties = o.style === 'caixa'
+          ? { background: 'rgba(0,0,0,.62)', color: text, padding: `${14 * u}px ${28 * u}px`, borderRadius: 18 * u }
+          : o.style === 'simples'
+            ? { color: text, textShadow: `0 0 ${8 * u}px rgba(0,0,0,.9), 0 ${4 * u}px ${18 * u}px rgba(0,0,0,.8)` }
+            : { background: accent, color: bg, padding: `${12 * u}px ${28 * u}px`, borderRadius: 16 * u, boxShadow: '0 8px 26px rgba(0,0,0,.4)' };
+        return <div key={k} style={wrap}><span style={{ display: 'inline-block', fontWeight: 800, fontSize: fs, lineHeight: 1.12, ...look }}>{o.text}</span></div>;
+      })}
+
       {/* Legenda: dentro da zona segura (a interface das redes cobre a base e a direita). Três estilos. */}
       {showLine && line && (() => {
         const cs = props.style?.captionStyle ?? 'karaoke';
