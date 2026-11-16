@@ -201,6 +201,8 @@ export interface Project {
   avatar?: string;
   /** Enquadramento da foto na bolha: y = posição vertical (0 = topo, 100 = fundo; por defeito 25) e zoom (1 = normal, até 3). */
   avatarFocus?: { y?: number; zoom?: number };
+  /** Como se mostram as imagens dos cenários: 'cover' preenche o ecrã (pode cortar), 'contain' mostra-as inteiras. */
+  imageFit?: 'cover' | 'contain';
   /**
    * Acabamento visual (reportagem): "look" (filtro de cor), transição entre cenários, estilo das legendas,
    * vinheta e grão de filme. Tudo leve para máquinas sem GPU.

@@ -175,6 +175,16 @@ function renderSimple() {
     field('Título', p.title, (v) => (p.title = v)),
     h('p', { class: 'muted', style: 'margin:0' }, 'Em cada cena: ① escreva o que diz, ② grave (opcional), ③ escolha os cenários que aparecem. No fim, ouça, veja o rascunho e aprove.'),
     h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
+    // Formato e imagens: as duas escolhas que mais mudam o resultado, sempre à vista.
+    h('div', { class: 'zone' },
+      h('b', {}, 'Formato do vídeo'),
+      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 10px' },
+        ...[['9:16', '📱 Vertical 9:16 (TikTok, Reels, Status)'], ['16:9', '🖥 Horizontal 16:9 (YouTube)'], ['1:1', '⬜ Quadrado 1:1']].map(([v, t]) =>
+          h('button', { class: 'chip' + ((p.aspect ?? '9:16') === v ? ' on' : ''), onclick: () => { p.aspect = v; dirty(); renderEditor(); } }, t))),
+      h('b', {}, 'Imagens dos cenários'),
+      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 0' },
+        ...[['cover', '🖼 Preencher o ecrã (pode cortar as bordas)'], ['contain', '🔲 Inteiras (nunca cortar: ideal para cartazes)']].map(([v, t]) =>
+          h('button', { class: 'chip' + ((p.imageFit ?? 'cover') === v ? ' on' : ''), onclick: () => { p.imageFit = v === 'cover' ? undefined : v; dirty(); renderEditor(); } }, t)))),
     h('details', {},
       h('summary', {}, 'Mais opções do vídeo (a minha foto, evento a promover, nome, formato)'),
       h('div', { class: 'zone', style: 'margin-top:10px' },

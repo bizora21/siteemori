@@ -138,8 +138,8 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
     const end = tl.sceneStarts[i + 1] ?? tl.lead + tl.voiceSeconds + 2;
     const asMedia = (f: { src: string; image: boolean; clip: number }, fit?: 'cover' | 'contain'): SceneMedia =>
       f.image
-        ? { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], fit }
-        : { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip, fit };
+        ? { src: f.src, type: 'image', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], fit: fit ?? project.imageFit }
+        : { src: f.src, type: 'video', from: tl.sceneStarts[i], duration: end - tl.sceneStarts[i], clipSeconds: f.clip, fit: fit ?? project.imageFit };
     const asFace = (f: { src: string; clip: number }): SceneMedia => ({ src: f.src, type: 'presenter', from: tl.audioStarts[i], duration: Math.min(f.clip, tl.durations[i]), clipSeconds: f.clip });
 
     let main: SceneMedia | null = null;
@@ -191,7 +191,7 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
       const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
-      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit, startFrom: f.image ? undefined : c.startFrom }];
+      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit ?? project.imageFit, startFrom: f.image ? undefined : c.startFrom }];
     });
     return { main, face, cutaways };
   });

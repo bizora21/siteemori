@@ -5,7 +5,7 @@
 //  - Relatório de qualidade (<id>-qualidade.md): resolução, duração, débito, volume e pico, com ✓/⚠.
 
 import { spawnSync } from 'node:child_process';
-import { renameSync, writeFileSync } from 'node:fs';
+import { copyFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { FFMPEG } from './ffmpeg';
 
 const TARGET_LUFS = -14;
@@ -53,7 +53,13 @@ export function masterAudio(file: string): { before: { lufs: number; peak: numbe
   const af = `${VOICE_CHAIN},loudnorm=I=${TARGET_LUFS}:TP=${TARGET_TP}:LRA=9:measured_I=${stats.input_i}:measured_TP=${stats.input_tp}:measured_LRA=${stats.input_lra}:measured_thresh=${stats.input_thresh}:offset=${stats.target_offset}:linear=true`;
   const r = spawnSync(FFMPEG, ['-y', '-loglevel', 'error', '-i', file, '-c:v', 'copy', '-af', af, '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', tmp], { encoding: 'utf8' });
   if (r.status !== 0) return null;
-  renameSync(tmp, file);
+  // No Windows, se o ficheiro estiver aberto (ex.: no leitor do navegador), o renomear falha: copia por cima.
+  try {
+    renameSync(tmp, file);
+  } catch {
+    copyFileSync(tmp, file);
+    try { unlinkSync(tmp); } catch { /* fica o temporário, sem mal */ }
+  }
   return { before, after: loudness(file) };
 }
 
