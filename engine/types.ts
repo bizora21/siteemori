@@ -203,6 +203,8 @@ export interface Project {
   avatarFocus?: { y?: number; zoom?: number };
   /** Como se mostram as imagens dos cenários: 'cover' preenche o ecrã (pode cortar), 'contain' mostra-as inteiras. */
   imageFit?: 'cover' | 'contain';
+  /** Estabiliza os vídeos tremidos (telemóvel na mão): 'leve' ou 'forte'. Demora mais a preparar. */
+  stabilize?: 'leve' | 'forte';
   /** Textos, emojis e imagens por cima do vídeo (reportagem). */
   overlays?: Overlay[];
   /**

@@ -95,6 +95,8 @@ export function coach(project: Project, projectDir: string, recorded: boolean[])
   if (narrated > 0 && synthetic === narrated) add('melhorar', 'Todas as cenas usam voz sintética.', 'Grave a sua voz (📱 Gravar no telemóvel): a voz humana dá confiança e qualidade.');
   else if (synthetic > 0) add('melhorar', `${synthetic} cena(s) ainda com voz sintética, misturada com a sua.`, 'Grave também essas cenas para o vídeo ter a mesma voz do início ao fim.');
 
+  const hasVideos = project.scenes.some((s) => (s.presenter && s.kind !== 'clip') || (s.cutaways ?? []).some((c) => /\.(mp4|mov|webm|m4v)$/i.test(c.media)));
+  if (hasVideos && !project.stabilize) add('melhorar', 'Há vídeos gravados com o telemóvel na mão: podem tremer.', 'Em Efeitos, ligue "Estabilizar a imagem" (demora mais a preparar).');
   if (!project.avatar && faceScenes === 0) add('melhorar', 'O vídeo não mostra o seu rosto.', 'Carregue a sua foto (Mais opções do vídeo) ou grave o rosto: as pessoas ligam-se mais a quem veem.');
   if ((project.avatarFocus?.zoom ?? 1) > 1.8) add('melhorar', 'A foto está muito aproximada: o rosto pode sair cortado.', 'Baixe o cursor "Aproximar" em Mais opções do vídeo.');
   if (!project.music) add('melhorar', 'Sem música de fundo.', 'Junte uma música livre (bloco Música): o vídeo fica mais envolvente.');

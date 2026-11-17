@@ -192,33 +192,10 @@ function personalizeBanner(p) {
   );
 }
 
-// ── a página simples do vídeo personalizado ───────────────────────────────
-function renderSimple() {
-  const { project: p, brand, issues, scenes, files } = state.data;
-  if (p.template === 'reportagem' && typeof renderVideoEditor === 'function' && !edListMode()) return renderVideoEditor();
-  const main = $('#main');
-  const scroll = window.scrollY;
-
-  const head = h('section', { class: 'card stack' },
-    h('div', { class: 'row' },
-      h('h2', { style: 'margin:0;flex:1' }, p.title),
-      p.template === 'reportagem' && h('button', { class: 'primary', onclick: () => edSetMode('editor') }, '🎞 Abrir o editor com linha do tempo'),
-      h('span', { class: 'pill' }, 'Vídeo personalizado'),
-      h('span', { class: 'pill' }, `marca: ${brand?.name ?? p.brand}`)),
-    field('Título', p.title, (v) => (p.title = v)),
-    h('p', { class: 'muted', style: 'margin:0' }, 'Em cada cena: ① escreva o que diz, ② grave (opcional), ③ escolha os cenários que aparecem. No fim, ouça, veja o rascunho e aprove.'),
-    h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
-    // Formato e imagens: as duas escolhas que mais mudam o resultado, sempre à vista.
-    h('div', { class: 'zone' },
-      h('b', {}, 'Formato do vídeo'),
-      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 10px' },
-        ...[['9:16', '📱 Vertical 9:16 (TikTok, Reels, Status)'], ['16:9', '🖥 Horizontal 16:9 (YouTube)'], ['1:1', '⬜ Quadrado 1:1']].map(([v, t]) =>
-          h('button', { class: 'chip' + ((p.aspect ?? '9:16') === v ? ' on' : ''), onclick: () => { p.aspect = v; dirty(); renderEditor(); } }, t))),
-      h('b', {}, 'Imagens dos cenários'),
-      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 0' },
-        ...[['cover', '🖼 Preencher o ecrã (pode cortar as bordas)'], ['contain', '🔲 Inteiras (nunca cortar: ideal para cartazes)']].map(([v, t]) =>
-          h('button', { class: 'chip' + ((p.imageFit ?? 'cover') === v ? ' on' : ''), onclick: () => { p.imageFit = v === 'cover' ? undefined : v; dirty(); renderEditor(); } }, t)))),
-    h('details', {},
+/** "Mais opções do vídeo": a minha foto, evento a promover, voz, nome, formato. Usado na página em lista e no editor. */
+function moreOptionsBlock(p, open = false) {
+  return (
+    h('details', open ? { open: true } : {},
       h('summary', {}, 'Mais opções do vídeo (a minha foto, evento a promover, nome, formato)'),
       h('div', { class: 'zone', style: 'margin-top:10px' },
         h('b', {}, 'A minha foto (para a versão "Foto animada pela voz")'),
@@ -275,7 +252,37 @@ function renderSimple() {
               h('option', { value: '9:16' }, '9:16 (vertical: TikTok, Reels)'), h('option', { value: '16:9' }, '16:9 (horizontal)'), h('option', { value: '1:1' }, '1:1 (quadrado)'));
             s.value = p.aspect ?? '9:16';
             return s;
-          })()))),
+          })())))
+  );
+}
+
+// ── a página simples do vídeo personalizado ───────────────────────────────
+function renderSimple() {
+  const { project: p, brand, issues, scenes, files } = state.data;
+  if (p.template === 'reportagem' && typeof renderVideoEditor === 'function' && !edListMode()) return renderVideoEditor();
+  const main = $('#main');
+  const scroll = window.scrollY;
+
+  const head = h('section', { class: 'card stack' },
+    h('div', { class: 'row' },
+      h('h2', { style: 'margin:0;flex:1' }, p.title),
+      p.template === 'reportagem' && h('button', { class: 'primary', onclick: () => edSetMode('editor') }, '🎞 Abrir o editor com linha do tempo'),
+      h('span', { class: 'pill' }, 'Vídeo personalizado'),
+      h('span', { class: 'pill' }, `marca: ${brand?.name ?? p.brand}`)),
+    field('Título', p.title, (v) => (p.title = v)),
+    h('p', { class: 'muted', style: 'margin:0' }, 'Em cada cena: ① escreva o que diz, ② grave (opcional), ③ escolha os cenários que aparecem. No fim, ouça, veja o rascunho e aprove.'),
+    h('ul', { class: 'issues', id: 'issues' }, issueItems(issues)),
+    // Formato e imagens: as duas escolhas que mais mudam o resultado, sempre à vista.
+    h('div', { class: 'zone' },
+      h('b', {}, 'Formato do vídeo'),
+      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 10px' },
+        ...[['9:16', '📱 Vertical 9:16 (TikTok, Reels, Status)'], ['16:9', '🖥 Horizontal 16:9 (YouTube)'], ['1:1', '⬜ Quadrado 1:1']].map(([v, t]) =>
+          h('button', { class: 'chip' + ((p.aspect ?? '9:16') === v ? ' on' : ''), onclick: () => { p.aspect = v; dirty(); renderEditor(); } }, t))),
+      h('b', {}, 'Imagens dos cenários'),
+      h('div', { class: 'row', style: 'gap:8px;margin:6px 0 0' },
+        ...[['cover', '🖼 Preencher o ecrã (pode cortar as bordas)'], ['contain', '🔲 Inteiras (nunca cortar: ideal para cartazes)']].map(([v, t]) =>
+          h('button', { class: 'chip' + ((p.imageFit ?? 'cover') === v ? ' on' : ''), onclick: () => { p.imageFit = v === 'cover' ? undefined : v; dirty(); renderEditor(); } }, t)))),
+    moreOptionsBlock(p),
   );
 
   const cards = p.scenes.map((s, i) => simpleScene(p, s, i, scenes[i]));

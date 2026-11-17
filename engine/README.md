@@ -261,3 +261,9 @@ Limites honestos: sem avatar com lábios sincronizados, sem recorte de pessoa e 
 ## Treinador de qualidade
 
 `engine/coach.ts` analisa o projeto (reportagem) e devolve uma pontuação e uma lista do que falta: cenários por cena (um a cada ~4 s), cenas sem imagens, cartazes com pouco tempo, imagens pequenas ou que vão ser cortadas, voz sintética, rosto, música, acabamento, legendas e duração. Aparece no topo da página do estúdio ("Qualidade do vídeo") e nunca bloqueia nada.
+
+## Editor com linha do tempo e estabilização
+
+- O estúdio abre os vídeos de reportagem num **editor**: barra de cima (desfazer/refazer, guardar, qualidade, ver rascunho, publicar), ferramentas à esquerda, ecrã com pré-visualização, painel do que está escolhido e a linha do tempo por baixo (cenas e voz, vídeo e fotos, texto e emojis, música, efeitos). A página antiga continua em "Modo lista".
+- Arrastar e soltar: mover blocos, puxar as pontas (início e duração), trocar a ordem das cenas; os blocos "colam" nas bordas dos outros e no cursor.
+- `stabilize: 'leve' | 'forte'` no projeto estabiliza os vídeos tremidos (filtro `deshake` do ffmpeg, uma passagem). O `vidstab` não é usado porque no Windows corrompe o ficheiro de movimento. 'leve' ≈ 1× a duração do vídeo, 'forte' ≈ 1,7×.

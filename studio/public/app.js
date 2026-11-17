@@ -170,6 +170,7 @@ function field(label, value, onInput, opts = {}) {
 
 function renderEditor() {
   histSync();
+  document.body.classList.remove('ed-full');
   const { project: p, brand, issues, scenes, files } = state.data;
   if (p.template === 'reportagem') return renderSimple();
   const tpl = tplOf(p.template);

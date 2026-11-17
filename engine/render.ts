@@ -118,9 +118,12 @@ function stageFile(project: Project, projectDir: string, sceneId: string, rel: s
     copyFileSync(src, join(outDir, file));
     return { src: `media/${project.id}/${file}`, image: true, clip: 0 };
   }
-  const file = `${name}.mp4`;
+  const stab = project.stabilize;
+  const file = `${name}${stab ? '-st-' + stab : ''}.mp4`;
   const dst = join(outDir, file);
-  if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) stageVideo(src, dst);
+  if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) {
+    if (!stageVideo(src, dst, stab)) stageWarnings.push(`cena "${sceneId}": não consegui estabilizar "${rel}": usei o vídeo como está`);
+  }
   return { src: `media/${project.id}/${file}`, image: false, clip: duration(dst) };
 }
 

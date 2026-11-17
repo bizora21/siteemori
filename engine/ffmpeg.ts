@@ -70,8 +70,20 @@ export function speechBounds(wav: string): { start: number; end: number } {
 }
 
 /** Vídeo do apresentador/ilustração para o Remotion: sem áudio, h264, no máximo 1280 px de largura. */
-export function stageVideo(input: string, out: string): void {
-  run(['-i', input, '-an', '-vf', "scale='min(1280,iw)':-2", '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-r', '30', out]);
+export function stageVideo(input: string, out: string, stabilize?: 'leve' | 'forte'): boolean {
+  const scale = "scale='min(1280,iw)':-2";
+  const enc = ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-r', '30'];
+  if (!stabilize) {
+    run(['-i', input, '-an', '-vf', scale, ...enc, out]);
+    return true;
+  }
+  // Estabilizar com o filtro "deshake" (uma só passagem, já incluído no ffmpeg). O "vidstab" não serve aqui:
+  // no Windows corrompe o ficheiro de movimento. "leve" = pesquisa rápida; "forte" = pesquisa exaustiva (mais lento).
+  const ds = stabilize === 'forte' ? 'deshake=rx=48:ry=48:edge=mirror:blocksize=8:contrast=125:search=1' : 'deshake=rx=16:ry=16:edge=mirror:blocksize=8:contrast=125:search=1';
+  const r = spawnSync(FFMPEG, ['-y', '-loglevel', 'error', '-i', input, '-an', '-vf', `${scale},${ds}`, ...enc, out], { encoding: 'utf8' });
+  if (r.status === 0) return true;
+  run(['-i', input, '-an', '-vf', scale, ...enc, out]); // sem estabilizar, mas o vídeo sai
+  return false;
 }
 
 /**

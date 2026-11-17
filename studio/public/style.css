@@ -174,3 +174,51 @@ dialog::backdrop { background: rgba(0, 0, 0, .5); }
 .tl-th { height: 100%; width: 34px; object-fit: cover; margin-left: -8px; margin-right: 6px; border-radius: 6px 0 0 6px; flex: none; }
 .tl-lane { min-height: 44px; }
 .ed-tools { flex-wrap: wrap; }
+
+/* ═══ Editor de vídeo (organizado, grande, fácil de ler) ═══ */
+body.ed-full aside { display: none; }
+body.ed-full .layout { grid-template-columns: 1fr; max-width: 1700px; padding: 12px 16px; }
+.ed-app { display: flex; flex-direction: column; gap: 12px; }
+.ed-bar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card, var(--bg, #fff)); box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.ed-bar button { font-size: 15px; }
+.ed-title { font-size: 17px; max-width: 28ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-body { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.ed-tools { display: grid; grid-template-columns: repeat(2, 78px); gap: 8px; flex: none; }
+.ed-tool { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 78px; min-height: 68px; padding: 6px 4px; border-radius: 12px; font-size: 13px; line-height: 1.1; text-align: center; }
+.ed-tool .ed-ico { font-size: 26px; line-height: 1; }
+.ed-tool.on { outline: 3px solid var(--accent, #2f6fed); }
+.ed-stage { flex: none; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ed-player { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.ed-panel { flex: 1; min-width: 300px; max-width: 760px; max-height: 470px; overflow: auto; }
+.ed-card { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; background: var(--card, transparent); }
+.ed-steps { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.ed-sec { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.look-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.look-tile { display: flex; flex-direction: column; gap: 4px; padding: 4px; border-radius: 10px; font-size: 13px; }
+.look-tile.on { outline: 3px solid var(--accent, #2f6fed); }
+.look-img { width: 100%; aspect-ratio: 4/3; border-radius: 8px; background-size: cover; background-position: center; }
+.ed-switch { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
+.ed-switch input { width: 20px; height: 20px; }
+.ed-tip { position: fixed; z-index: 1000; padding: 3px 8px; border-radius: 6px; background: #111; color: #fff; font-size: 13px; pointer-events: none; }
+.ed-dlg { width: min(900px, 94vw); max-height: 90vh; padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--bg, #fff); color: inherit; }
+.ed-dlg::backdrop { background: rgba(0,0,0,.5); }
+.ed-dlg-head { position: sticky; top: 0; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--bg, #fff); border-bottom: 1px solid var(--line); z-index: 2; }
+.ed-dlg-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: auto; }
+
+/* linha do tempo maior e mais clara */
+.ed-tl { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.ed-tl-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tl-name { width: 118px; flex: none; gap: 6px; font-size: 13px; flex-direction: row; align-items: center; background: var(--card, var(--bg, #fff)); }
+.tl-lane { min-height: 58px; border-bottom: 1px dashed var(--line); }
+.tl-block { top: 4px; height: 46px; font-size: 13px; cursor: grab; touch-action: none; }
+.tl-block.dragging { opacity: .85; cursor: grabbing; box-shadow: 0 4px 14px rgba(0,0,0,.3); z-index: 6; }
+.tl-block:focus-visible, .ed-tool:focus-visible, .ed-bar button:focus-visible { outline: 3px solid var(--accent, #2f6fed); outline-offset: 2px; }
+.tl-block.scene, .tl-block.mus, .tl-block.fx, .tl-block.face { cursor: pointer; }
+.tl-block.scene { cursor: grab; }
+.tl-handle { width: 12px; }
+.tl-handle.l { left: 0; right: auto; }
+.tl-empty { position: absolute; left: 8px; top: 16px; font-size: 13px; color: var(--muted); pointer-events: none; }
+.tl-playhead { width: 2px; }
+.tl-ph-head { position: absolute; top: 0; left: -6px; width: 14px; height: 14px; background: #e5484d; border-radius: 3px 3px 7px 7px; }
+.tl-ruler { height: 26px; }
+@media (max-width: 900px) { .ed-tools { grid-template-columns: repeat(5, 70px); } .ed-tool { width: 70px; } }
