@@ -154,7 +154,7 @@ export interface ReportagemProps {
     cutaways?: SceneMediaProps[];
   }[];
   /** Textos, emojis e imagens por cima do vídeo (from/to em segundos no vídeo). */
-  overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa'; anim: 'pop' | 'fade' | 'deslizar' }[];
+  overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa' | 'gradiente'; anim: 'pop' | 'fade' | 'deslizar' }[];
   host?: { name: string; role?: string };
   /** Foto da pessoa (versão "foto animada"): numa bolha que pulsa com a voz. */
   avatar?: { src: string; y?: number; zoom?: number };
@@ -171,7 +171,10 @@ export interface ReportagemProps {
   /** Acabamento visual: filtro de cor, transição, estilo das legendas, vinheta e grão. */
   style?: {
     look?: 'natural' | 'cinema' | 'quente' | 'frio' | 'vivo' | 'suave';
-    transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina';
+    transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina' | 'empurrar' | 'iris' | 'diagonal' | 'giro' | 'flash' | 'persiana';
+    transitionSpeed?: 'rapida' | 'normal' | 'lenta';
+    palette?: 'ouro' | 'oceano' | 'por-do-sol' | 'floresta' | 'rosa' | 'aurora' | 'noite' | 'terra';
+    wash?: 'suave' | 'forte';
     captionStyle?: 'karaoke' | 'limpo' | 'destaque';
     vignette?: boolean;
     grain?: boolean;

@@ -54,6 +54,41 @@ async function approveFinal() {
 
 // ── acabamento: filtro de cor, transição, legendas, vinheta, grão, som ─────
 // Os mesmos filtros da composição, para ver o efeito já nas miniaturas (sem esperar pelo rascunho).
+// Paletas de gradiente (as mesmas da composição) e transições disponíveis.
+const PAL = {
+  ouro: { name: 'Ouro', a: '#2b1d05', b: '#0b0903', accent: '#f5b82e', accent2: '#ff8a1f' },
+  oceano: { name: 'Oceano', a: '#062a4a', b: '#02101f', accent: '#37c2ff', accent2: '#2f6bff' },
+  'por-do-sol': { name: 'Pôr do sol', a: '#4a1230', b: '#150817', accent: '#ff7a45', accent2: '#ff3d81' },
+  floresta: { name: 'Floresta', a: '#0b3a2a', b: '#04130e', accent: '#5ee3a0', accent2: '#b6f24a' },
+  rosa: { name: 'Rosa', a: '#3d0f3a', b: '#14051a', accent: '#ff6fd8', accent2: '#a855f7' },
+  aurora: { name: 'Aurora', a: '#0f2a4d', b: '#2a0f4d', accent: '#4dffd2', accent2: '#8a5cff' },
+  noite: { name: 'Noite', a: '#101828', b: '#05070d', accent: '#e8ecf2', accent2: '#8da2c9' },
+  terra: { name: 'Terra', a: '#3a2214', b: '#120a05', accent: '#e0a96d', accent2: '#c0562a' },
+};
+const palFill = (pal, fallback) => (pal ? `linear-gradient(135deg, ${pal.accent}, ${pal.accent2})` : fallback);
+const TRANSITIONS = [
+  ['fade', 'Fundido', '◐'], ['deslizar', 'Deslizar', '⬆'], ['empurrar', 'Empurrar', '➡'], ['zoom', 'Zoom', '🔍'], ['cortina', 'Cortina', '🎭'],
+  ['iris', 'Círculo', '⭕'], ['diagonal', 'Diagonal', '◢'], ['persiana', 'Persiana', '▥'], ['giro', 'Giro', '🌀'], ['flash', 'Flash', '⚡'],
+];
+const TRANSITION_MS = { rapida: 200, normal: 330, lenta: 600 };
+/** Animação de entrada (Web Animations) igual à do vídeo, para a pré-visualização. */
+function enterAnim(el, kind, speed) {
+  const ms = TRANSITION_MS[speed ?? 'normal'];
+  const K = {
+    fade: [{ opacity: 0 }, { opacity: 1 }],
+    deslizar: [{ transform: 'translateY(100%)' }, { transform: 'none' }],
+    empurrar: [{ transform: 'translateX(100%)' }, { transform: 'none' }],
+    zoom: [{ transform: 'scale(1.14)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+    cortina: [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+    iris: [{ clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(78% at 50% 50%)' }],
+    diagonal: [{ clipPath: 'polygon(0 0,-25% 0,-50% 100%,0 100%)' }, { clipPath: 'polygon(0 0,125% 0,100% 100%,0 100%)' }],
+    persiana: [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+    giro: [{ transform: 'rotate(-5deg) scale(1.18)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+    flash: [{ filter: 'brightness(2.8)', opacity: 0 }, { filter: 'brightness(1)', opacity: 1 }],
+  };
+  try { el.animate(K[kind] ?? K.fade, { duration: ms, easing: 'cubic-bezier(.2,.8,.2,1)' }); } catch { /* sem animação */ }
+}
+
 const LOOK_CSS = {
   natural: 'none',
   cinema: 'sepia(0.22) hue-rotate(-10deg) contrast(1.22) saturate(0.88) brightness(0.94)',

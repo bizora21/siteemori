@@ -273,8 +273,20 @@ function edEffects(p) {
     section('Cor do vídeo', 'Escolha o aspeto de todas as imagens e vídeos.',
       h('div', { class: 'look-grid' }, ...looks.map(([v, t]) => h('button', { class: 'look-tile' + ((st.look ?? 'natural') === v ? ' on' : ''), title: t, 'aria-label': 'Cor ' + t, onclick: () => set('look', v) },
         h('div', { class: 'look-img', style: `background-image:${bgImg};filter:${LOOK_CSS[v]}` }), h('span', {}, t))))),
-    section('Como as imagens mudam', 'A transição entre uma imagem e a seguinte.',
-      h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[['fade', 'Fundido'], ['deslizar', 'Deslizar'], ['zoom', 'Zoom'], ['cortina', 'Cortina']].map(([v, t]) => chip(st.transition ?? 'fade', v, t, (x) => set('transition', x))))),
+    section('Paleta de cores (gradiente)', 'Muda o fundo, os destaques, as legendas e os botões do vídeo.',
+      h('div', { class: 'pal-grid' },
+        h('button', { class: 'pal-tile' + (!st.palette ? ' on' : ''), title: 'As cores da sua marca', 'aria-label': 'Cores da marca', onclick: () => set('palette', undefined) }, h('div', { class: 'pal-sw', style: 'background:linear-gradient(135deg,#8892a6,#4a5266)' }, h('span', {}, '🏷')), h('span', {}, 'Da marca')),
+        ...Object.entries(PAL).map(([id, c]) => h('button', { class: 'pal-tile' + (st.palette === id ? ' on' : ''), title: c.name, 'aria-label': 'Paleta ' + c.name, onclick: () => set('palette', id) },
+          h('div', { class: 'pal-sw', style: `background:linear-gradient(135deg,${c.a},${c.b})` }, h('i', { style: `background:linear-gradient(135deg,${c.accent},${c.accent2})` })), h('span', {}, c.name)))),
+      h('div', { class: 'muted', style: 'font-size:13px' }, 'Película de cor por cima das imagens (aspeto duotone):'),
+      h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[[undefined, 'Sem película'], ['suave', 'Suave'], ['forte', 'Forte']].map(([v, t]) => chip(st.wash, v, t, (x) => set('wash', x))))),
+    section('Como as imagens mudam', 'A transição entre uma imagem e a seguinte. Passe o rato para ver.',
+      h('div', { class: 'trans-grid' }, ...TRANSITIONS.map(([v, t, ico]) => {
+        const demo = h('div', { class: 'trans-demo' }, h('i', {}));
+        const play = () => enterAnim(demo.firstChild, v, 'lenta');
+        return h('button', { class: 'trans-tile' + ((st.transition ?? 'fade') === v ? ' on' : ''), title: t, 'aria-label': 'Transição ' + t, onmouseenter: play, onfocus: play, onclick: () => { set('transition', v); }, }, demo, h('span', {}, ico + ' ' + t));
+      })),
+      h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap;align-items:center' }, h('span', { class: 'muted' }, 'Velocidade:'), ...[['rapida', 'Rápida'], ['normal', 'Normal'], ['lenta', 'Lenta']].map(([v, t]) => chip(st.transitionSpeed ?? 'normal', v, t, (x) => set('transitionSpeed', x))))),
     section('Legendas', 'As palavras que aparecem enquanto se fala.',
       sw('Mostrar legendas', p.captions !== false, (on) => { p.captions = on ? undefined : false; dirty(); renderEditor(); }),
       h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[['karaoke', 'Karaokê'], ['limpo', 'Caixa escura'], ['destaque', 'Destaque']].map(([v, t]) => chip(st.captionStyle ?? 'karaoke', v, t, (x) => set('captionStyle', x))))),
@@ -404,6 +416,7 @@ function renderVideoEditor() {
   const sc = $('#ed-scroll');
   if (sc) sc.scrollLeft = keepX;
   edPaint();
+  edFitScreen();
   edSyncDialog();
 }
 
@@ -418,3 +431,14 @@ document.addEventListener('keydown', (e) => {
   else if (e.key.toLowerCase() === 'c' && tag !== 'BUTTON') { e.preventDefault(); edCut(); }
   else if ((e.key === 'Delete' || e.key === 'Backspace') && ED.sel) { e.preventDefault(); edDelete(); }
 });
+
+// ── o ecrã adapta-se ao espaço (telemóvel, janela pequena) ────────────────
+function edFitScreen() {
+  const s = $('#ed-prev');
+  if (!s) return;
+  s.style.zoom = '';
+  const w = s.offsetWidth;
+  const avail = ($('#main')?.clientWidth ?? w) - 24;
+  if (w > avail && avail > 120) s.style.zoom = String(avail / w);
+}
+window.addEventListener('resize', () => { clearTimeout(window.__edFitT); window.__edFitT = setTimeout(edFitScreen, 120); });

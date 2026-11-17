@@ -165,7 +165,7 @@ function overlayEditor(p, ov, k, noPreview) {
           })()),
           h('label', {}, 'Entra aos (s desde o início da fala)', h('input', { type: 'number', min: 0, step: 0.5, value: o.at ?? 0.5, onchange: (e) => set('at', Math.max(0, Number(e.target.value))) })),
           h('label', {}, 'Fica (s)', h('input', { type: 'number', min: 0.8, step: 0.5, value: o.seconds ?? 3, onchange: (e) => set('seconds', Math.max(0.8, Number(e.target.value))) })),
-          o.kind === 'text' && sel('Estilo', 'style', [['destaque', 'Destaque (caixa de cor)'], ['caixa', 'Caixa escura'], ['simples', 'Só o texto']], 'destaque'),
+          o.kind === 'text' && sel('Estilo', 'style', [['destaque', 'Destaque (caixa de cor)'], ['gradiente', 'Letras com gradiente'], ['caixa', 'Caixa escura'], ['simples', 'Só o texto']], 'destaque'),
           sel('Animação', 'anim', [['pop', 'Salta'], ['fade', 'Aparece'], ['deslizar', 'Sobe']], 'pop')),
         h('div', { class: 'grid2' }, num('Tamanho', 'size', 0.5, 3, 0.1, 1), num('Posição →', 'x', 5, 95, 1, 50), num('Posição ↓', 'y', 5, 95, 1, 30)),
         h('div', { class: 'row', style: 'gap:6px;align-items:center' },

@@ -116,15 +116,18 @@ function edPreview() {
   const asp = p.aspect === '16:9' ? [440, 248] : p.aspect === '1:1' ? [320, 320] : [252, 448];
   const k = asp[0] / 1080;
   const look = LOOK_CSS[p.style?.look ?? 'natural'] ?? 'none';
-  const accent = state.data.brand?.colors?.accent ?? '#f5b82e';
+  const pal = PAL[p.style?.palette ?? ''];
+  const accent = pal?.accent ?? state.data.brand?.colors?.accent ?? '#f5b82e';
+  const fill = palFill(pal, accent);
   const box = h('div', { id: 'ed-prev', class: 'ed-screen', style: `width:${asp[0]}px;height:${asp[1]}px` },
     h('div', { id: 'ed-bg', style: `position:absolute;inset:0;filter:${look}` }),
+    p.style?.wash && h('div', { style: `position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:${p.style.wash === 'forte' ? 0.4 : 0.2};background:linear-gradient(160deg,${(pal ?? PAL.oceano).accent},${(pal ?? PAL.oceano).accent2})` }),
     p.style?.vignette && h('div', { style: 'position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 52%,rgba(0,0,0,.5) 100%)' }),
     h('div', { id: 'ed-face', class: 'ed-face', hidden: true }),
     h('div', { id: 'ed-ovs', style: 'position:absolute;inset:0;pointer-events:none' }),
     h('div', { id: 'ed-cap', style: `position:absolute;left:5%;right:5%;bottom:${asp[1] > asp[0] ? 22 : 10}%;text-align:center;font-weight:800;font-size:${64 * k}px;line-height:1.15;color:#fff;text-shadow:0 0 4px #000,0 2px 8px #000` }),
     h('div', { id: 'ed-sig', style: `position:absolute;left:5%;bottom:34%;color:#fff;text-shadow:0 1px 4px #000;border-left:3px solid ${accent};padding-left:8px;display:none` }));
-  ED.ctx = { k, accent, ovEls: [], bgKey: '', faceKey: '' };
+  ED.ctx = { k, accent, fill, pal, ovEls: [], bgKey: '', faceKey: '' };
   const ov = p.overlays ?? [];
   ov.forEach((o) => {
     const el = h('div', { style: `position:absolute;left:${o.x ?? 50}%;top:${o.y ?? 30}%;transform:translate(-50%,-50%);text-align:center;max-width:86%;display:none` });
@@ -132,7 +135,7 @@ function edPreview() {
     else if (o.kind === 'image') el.append(h('img', { src: `/api/projects/${p.id}/file?p=${encodeURIComponent(o.media ?? '')}`, style: `width:${asp[0] * 0.4 * (o.size ?? 1)}px;border-radius:4px` }));
     else {
       const st = o.style ?? 'destaque';
-      const look2 = st === 'caixa' ? 'background:rgba(0,0,0,.62);color:#fff;padding:2px 7px;border-radius:6px;' : st === 'simples' ? 'color:#fff;text-shadow:0 1px 4px #000;' : `background:${accent};color:#101820;padding:2px 7px;border-radius:6px;`;
+      const look2 = st === 'caixa' ? 'background:rgba(0,0,0,.62);color:#fff;padding:2px 7px;border-radius:6px;' : st === 'simples' ? 'color:#fff;text-shadow:0 1px 4px #000;' : o.style === 'gradiente' ? `background:${fill};-webkit-background-clip:text;background-clip:text;color:transparent;` : `background:${fill};color:#101820;padding:2px 7px;border-radius:6px;`;
       el.append(h('span', { style: `display:inline-block;font-weight:800;font-size:${66 * k * (o.size ?? 1)}px;line-height:1.12;${look2}` }, o.text));
     }
     ED.ctx.ovEls.push(el);
@@ -145,7 +148,15 @@ function edPreview() {
 function edMedia(path, video, contain) {
   const { p } = edData();
   const src = `/api/projects/${p.id}/file?p=${encodeURIComponent(path)}`;
-  return video ? h('video', { src, muted: true, playsinline: true, style: `width:100%;height:100%;object-fit:${contain ? 'contain' : 'cover'}` }) : h('img', { src, style: `width:100%;height:100%;object-fit:${contain ? 'contain' : 'cover'}` });
+  const fit = contain ? 'contain' : 'cover';
+  const style = `width:100%;height:100%;object-fit:${fit};position:relative`;
+  const el = video ? h('video', { src, muted: true, playsinline: true, style }) : h('img', { src, style });
+  // cartaz inteiro: atrás, a mesma imagem desfocada preenche o ecrã (como no vídeo final)
+  if (contain && !video) {
+    return h('div', { style: 'position:absolute;inset:0' },
+      h('div', { style: `position:absolute;inset:-10%;background:url("${src}") center/cover;filter:blur(18px) brightness(.45)` }), el);
+  }
+  return el;
 }
 
 function edPaint() {
@@ -168,7 +179,7 @@ function edPaint() {
   if (cur) {
     const isVid = /\.(mp4|mov|webm|m4v)$/i.test(cur.c.media);
     key = `c:${cur.c.media}:${cur.from}`;
-    if (ED.ctx.bgKey !== key) { ED.ctx.bgKey = key; bg.replaceChildren(edMedia(cur.c.media, isVid, (cur.c.fit ?? p.imageFit) === 'contain')); bg.style.background = '#000'; }
+    if (ED.ctx.bgKey !== key) { const first = ED.ctx.bgKey === ''; ED.ctx.bgKey = key; bg.replaceChildren(edMedia(cur.c.media, isVid, (cur.c.fit ?? p.imageFit) === 'contain')); bg.style.background = '#000'; if (ED.playing && !first) enterAnim(bg, p.style?.transition ?? 'fade', p.style?.transitionSpeed); }
     const v = bg.querySelector('video');
     if (v) { const want = (cur.c.startFrom ?? 0) + (t - cur.from); if (Math.abs(v.currentTime - want) > 0.4) v.currentTime = Math.max(0, want); if (ED.playing) v.play().catch(() => {}); else v.pause(); }
   } else if (hasFace) {
@@ -181,7 +192,7 @@ function edPaint() {
   } else if (ED.ctx.bgKey !== 'none') {
     ED.ctx.bgKey = 'none';
     bg.replaceChildren();
-    bg.style.background = 'linear-gradient(160deg,#243b55,#0f2027)';
+    bg.style.background = ED.ctx.pal ? `linear-gradient(160deg,${ED.ctx.pal.a},${ED.ctx.pal.b})` : 'linear-gradient(160deg,#243b55,#0f2027)';
   }
   // rosto em bolha por cima dos cenários
   if (cur && hasFace) {

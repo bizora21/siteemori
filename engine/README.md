@@ -267,3 +267,10 @@ Limites honestos: sem avatar com l√°bios sincronizados, sem recorte de pessoa e 
 - O est√∫dio abre os v√≠deos de reportagem num **editor**: barra de cima (desfazer/refazer, guardar, qualidade, ver rascunho, publicar), ferramentas √† esquerda, ecr√£ com pr√©-visualiza√ß√£o, painel do que est√° escolhido e a linha do tempo por baixo (cenas e voz, v√≠deo e fotos, texto e emojis, m√∫sica, efeitos). A p√°gina antiga continua em "Modo lista".
 - Arrastar e soltar: mover blocos, puxar as pontas (in√≠cio e dura√ß√£o), trocar a ordem das cenas; os blocos "colam" nas bordas dos outros e no cursor.
 - `stabilize: 'leve' | 'forte'` no projeto estabiliza os v√≠deos tremidos (filtro `deshake` do ffmpeg, uma passagem). O `vidstab` n√£o √© usado porque no Windows corrompe o ficheiro de movimento. 'leve' ‚âà 1√ó a dura√ß√£o do v√≠deo, 'forte' ‚âà 1,7√ó.
+
+## TransiÁıes premium e paletas de gradiente
+
+- `style.transition`: fade (fundido cruzado), deslizar, empurrar, zoom, cortina, iris (cÌrculo), diagonal, persiana, giro, flash. O plano novo entra **por cima** do anterior (sobreposiÁ„o), por isso n„o h· "buracos" pretos. `style.transitionSpeed`: rapida (0,2 s), normal (0,33 s), lenta (0,6 s).
+- `style.palette`: ouro, oceano, por-do-sol, floresta, rosa, aurora, noite, terra. Muda o fundo (gradiente), os destaques, as legendas, a barra de progresso e os botıes. `style.wash`: 'suave' | 'forte' = pelÌcula de cor (duotone) por cima das imagens.
+- Os textos da linha do tempo tÍm o estilo `gradiente` (letras com o gradiente da paleta).
+- O editor mostra a paleta, a pelÌcula e a transiÁ„o (ao tocar) na prÈ-visualizaÁ„o.

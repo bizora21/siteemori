@@ -255,13 +255,19 @@ export interface Overlay {
   y?: number;
   /** tamanho: 1 = normal */
   size?: number;
-  style?: 'destaque' | 'simples' | 'caixa';
+  style?: 'destaque' | 'simples' | 'caixa' | 'gradiente';
   anim?: 'pop' | 'fade' | 'deslizar';
 }
 
 export interface VideoStyle {
   look?: 'natural' | 'cinema' | 'quente' | 'frio' | 'vivo' | 'suave';
-  transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina';
+  transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina' | 'empurrar' | 'iris' | 'diagonal' | 'giro' | 'flash' | 'persiana';
+  /** Velocidade das transições (por defeito 'normal'). */
+  transitionSpeed?: 'rapida' | 'normal' | 'lenta';
+  /** Paleta de gradiente: cores do fundo, destaques, legendas e botões. */
+  palette?: 'ouro' | 'oceano' | 'por-do-sol' | 'floresta' | 'rosa' | 'aurora' | 'noite' | 'terra';
+  /** Película de cor (duotone) por cima das imagens, na paleta escolhida. */
+  wash?: 'suave' | 'forte';
   captionStyle?: 'karaoke' | 'limpo' | 'destaque';
   vignette?: boolean;
   grain?: boolean;

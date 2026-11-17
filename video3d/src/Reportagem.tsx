@@ -33,11 +33,25 @@ const LOOKS: Record<string, string> = {
   suave: 'contrast(0.9) saturate(0.85) brightness(1.08)',
 };
 
+/** Paletas de gradiente: fundo (a→b), cor de destaque e segunda cor do gradiente dos destaques. */
+export const PALETTES: Record<string, { a: string; b: string; accent: string; accent2: string }> = {
+  ouro: { a: '#2b1d05', b: '#0b0903', accent: '#f5b82e', accent2: '#ff8a1f' },
+  oceano: { a: '#062a4a', b: '#02101f', accent: '#37c2ff', accent2: '#2f6bff' },
+  'por-do-sol': { a: '#4a1230', b: '#150817', accent: '#ff7a45', accent2: '#ff3d81' },
+  floresta: { a: '#0b3a2a', b: '#04130e', accent: '#5ee3a0', accent2: '#b6f24a' },
+  rosa: { a: '#3d0f3a', b: '#14051a', accent: '#ff6fd8', accent2: '#a855f7' },
+  aurora: { a: '#0f2a4d', b: '#2a0f4d', accent: '#4dffd2', accent2: '#8a5cff' },
+  noite: { a: '#101828', b: '#05070d', accent: '#e8ecf2', accent2: '#8da2c9' },
+  terra: { a: '#3a2214', b: '#120a05', accent: '#e0a96d', accent2: '#c0562a' },
+};
+
+const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
+
 /** Mídia em ecrã inteiro: apresentador, vídeo (em ciclo) ou imagem com movimento lento. */
-const FullMedia = ({ m, fadeFrames = 7, box, transition = 'fade' }: { m: SceneMediaProps; fadeFrames?: number; box?: { top: number; bottom: number }; transition?: string }) => {
+const FullMedia = ({ m, fadeFrames = 7, box, transition = 'fade', speed = 10, extra = 0 }: { m: SceneMediaProps; fadeFrames?: number; box?: { top: number; bottom: number }; transition?: string; speed?: number; extra?: number }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const total = Math.max(2, Math.round(m.duration * fps));
+  const { fps, width } = useVideoConfig();
+  const total = Math.max(2, Math.round(m.duration * fps)) + extra;
   const fade = interpolate(frame, [0, fadeFrames, total - fadeFrames, total], [0, 1, 1, 0], clamp);
   const fill = { width: '100%', height: '100%', objectFit: 'cover' } as const;
   let body;
@@ -80,15 +94,34 @@ const FullMedia = ({ m, fadeFrames = 7, box, transition = 'fade' }: { m: SceneMe
     // Apresentador: o rosto costuma estar no terço superior, por isso o corte favorece-o.
     body = <OffthreadVideo src={staticFile(m.src)} muted style={{ ...fill, objectPosition: '50% 30%' }} />;
   }
-  // Entrada do plano: fundido (por defeito), deslizar, zoom suave ou cortina. A saída é sempre um fundido curto.
-  const enter = interpolate(frame, [0, 10], [0, 1], clamp);
-  const exit = interpolate(frame, [total - fadeFrames, total], [1, 0], clamp);
-  const motion: React.CSSProperties =
-    transition === 'deslizar' ? { transform: `translateY(${(1 - enter) * 7}%)` }
-    : transition === 'zoom' ? { transform: `scale(${1.08 - 0.08 * enter})` }
-    : transition === 'cortina' ? { clipPath: `inset(0 ${(1 - enter) * 100}% 0 0)` }
-    : {};
-  return <AbsoluteFill style={{ opacity: transition === 'cortina' ? exit : fade, background: '#000', ...motion }}>{body}</AbsoluteFill>;
+  // Transição de entrada. Com sobreposição (extra > 0) o plano novo entra POR CIMA do anterior, que fica até ser
+  // tapado: não há "buracos" pretos entre planos. Sem sobreposição (rosto, primeiro plano) usa-se o fundido simples.
+  const prog = easeOut(interpolate(frame, [0, Math.max(2, speed)], [0, 1], clamp));
+  const overlap = extra > 0;
+  const st: React.CSSProperties = {};
+  let opacity = fade;
+  if (overlap) {
+    opacity = 1;
+    switch (transition) {
+      case 'deslizar': st.transform = `translateY(${(1 - prog) * 100}%)`; break;
+      case 'empurrar': st.transform = `translateX(${(1 - prog) * 100}%)`; break;
+      case 'zoom': st.transform = `scale(${1.14 - 0.14 * prog})`; opacity = prog; break;
+      case 'cortina': st.clipPath = `inset(0 ${(1 - prog) * 100}% 0 0)`; break;
+      case 'iris': st.clipPath = `circle(${prog * 78}% at 50% 50%)`; break;
+      case 'diagonal': { const x1 = prog * 150 - 25; st.clipPath = `polygon(0 0, ${x1}% 0, ${x1 - 25}% 100%, 0 100%)`; break; }
+      case 'giro': st.transform = `rotate(${(1 - prog) * -5}deg) scale(${1 + (1 - prog) * 0.18})`; opacity = prog; break;
+      case 'flash': opacity = Math.min(1, prog * 2.2); st.filter = `brightness(${1 + (1 - prog) * 1.8})`; break;
+      case 'persiana': { const w = width / 8; const m2 = `repeating-linear-gradient(90deg, #000 0, #000 ${w * prog}px, transparent ${w * prog}px, transparent ${w}px)`; st.WebkitMaskImage = m2; st.maskImage = m2; break; }
+      default: opacity = prog; // fundido cruzado
+    }
+  } else {
+    const enter = interpolate(frame, [0, 10], [0, 1], clamp);
+    const exit = interpolate(frame, [total - fadeFrames, total], [1, 0], clamp);
+    if (transition === 'deslizar') st.transform = `translateY(${(1 - enter) * 7}%)`;
+    else if (transition === 'zoom') st.transform = `scale(${1.08 - 0.08 * enter})`;
+    else if (transition === 'cortina') { st.clipPath = `inset(0 ${(1 - enter) * 100}% 0 0)`; opacity = exit; }
+  }
+  return <AbsoluteFill style={{ opacity, background: '#000', ...st }}>{body}</AbsoluteFill>;
 };
 
 /** O rosto num círculo (sem recorte da pessoa: o fundo da gravação fica escondido pela forma). */
@@ -191,7 +224,14 @@ export const Reportagem = (props: ReportagemProps) => {
   const end = durationInFrames / fps;
   const u = Math.min(width, height) / 1080;
   const portrait = height > width * 1.2;
-  const { bg, accent, text } = props.colors;
+  const { bg, accent: accent0, text } = props.colors;
+  const pal = PALETTES[props.style?.palette ?? ''];
+  const accent = pal?.accent ?? accent0;
+  // Fundo dos destaques: gradiente da paleta (ou a cor da marca) e a cor do texto por cima, sempre legível.
+  const accentFill = pal ? `linear-gradient(135deg, ${pal.accent}, ${pal.accent2})` : accent;
+  const onAccent = pal ? '#0b0f16' : bg;
+  const SPEEDS = { rapida: 6, normal: 10, lenta: 18 } as const;
+  const spd = SPEEDS[props.style?.transitionSpeed ?? 'normal'];
   const pad = 56 * u;
 
   useEffect(() => {
@@ -278,13 +318,13 @@ export const Reportagem = (props: ReportagemProps) => {
   const ctaBottom = props.avatar && !hasScenery(scene) ? 800 + AVATAR_BIG + 40 : hasBubble ? bubbleBottom + bubbleSize + 40 : portrait ? 560 : 250;
 
   return (
-    <AbsoluteFill style={{ background: `linear-gradient(160deg, ${bg} 0%, #000 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
+    <AbsoluteFill style={{ background: `linear-gradient(160deg, ${pal?.a ?? bg} 0%, ${pal?.b ?? '#000'} 100%)`, fontFamily: SANS, color: text, opacity: fadeOut }}>
       <AbsoluteFill style={{ filter: look }}>
       {/* Cenário de cada cena (imagem ou vídeo de fundo) */}
       {props.scenes.map((s, i) =>
         s.media ? (
-          <Sequence key={`m${i}`} from={Math.round(s.media.from * fps)} durationInFrames={Math.max(2, Math.round(s.media.duration * fps))} layout="none">
-            <FullMedia transition={tr} m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} box={posterBox} />
+          <Sequence key={`m${i}`} from={Math.round(s.media.from * fps) - Math.min(spd, Math.round(s.media.from * fps))} durationInFrames={Math.max(2, Math.round(s.media.duration * fps)) + Math.min(spd, Math.round(s.media.from * fps))} layout="none">
+            <FullMedia transition={tr} speed={spd} extra={s.media.type === 'presenter' ? 0 : Math.min(spd, Math.round(s.media.from * fps))} m={s.media} fadeFrames={s.media.type === 'presenter' ? 4 : 8} box={posterBox} />
           </Sequence>
         ) : null,
       )}
@@ -309,8 +349,8 @@ export const Reportagem = (props: ReportagemProps) => {
       {/* Cortes para imagens/vídeos do local, enquanto a voz continua */}
       {props.scenes.flatMap((s, i) =>
         (s.cutaways ?? []).map((c, k) => (
-          <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps)} durationInFrames={Math.max(2, Math.round(c.duration * fps))} layout="none">
-            <FullMedia transition={tr} m={c} fadeFrames={7} box={posterBox} />
+          <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps) - Math.min(spd, Math.round(c.from * fps))} durationInFrames={Math.max(2, Math.round(c.duration * fps)) + Math.min(spd, Math.round(c.from * fps))} layout="none">
+            <FullMedia transition={tr} speed={spd} extra={Math.min(spd, Math.round(c.from * fps))} m={c} fadeFrames={7} box={posterBox} />
           </Sequence>
         )),
       )}
@@ -341,6 +381,11 @@ export const Reportagem = (props: ReportagemProps) => {
         />
       )}
 
+      {props.style?.wash && (() => {
+        const wp = pal ?? PALETTES.oceano;
+        return <AbsoluteFill style={{ background: `linear-gradient(160deg, ${wp.accent} 0%, ${wp.accent2} 100%)`, opacity: props.style.wash === 'forte' ? 0.4 : 0.2, mixBlendMode: 'soft-light', pointerEvents: 'none' }} />;
+      })()}
+
       {/* Vinheta e grão de filme (opcionais): dão aspeto de cinema, sem peso no render */}
       {props.style?.vignette && <AbsoluteFill style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 52%, rgba(0,0,0,.5) 100%)', pointerEvents: 'none' }} />}
       {props.style?.grain && (
@@ -360,7 +405,7 @@ export const Reportagem = (props: ReportagemProps) => {
       <AbsoluteFill style={{ background: 'linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 52%, rgba(0,0,0,.72) 100%)', pointerEvents: 'none' }} />
 
       {/* Progresso */}
-      <div style={{ position: 'absolute', left: 0, top: 0, height: 6 * u, width: `${progress * 100}%`, background: accent }} />
+      <div style={{ position: 'absolute', left: 0, top: 0, height: 6 * u, width: `${progress * 100}%`, background: accentFill }} />
 
       {/* Marca d'água */}
       {props.logo && <Img src={staticFile(props.logo)} style={{ position: 'absolute', right: pad, top: (portrait ? 118 : 40) * u, height: 64 * u, width: 'auto', opacity: 0.92 }} />}
@@ -446,7 +491,7 @@ export const Reportagem = (props: ReportagemProps) => {
             transform: `translateY(${(1 - ctaIn) * 40}px)`,
           }}
         >
-          <div style={{ background: accent, color: bg, fontWeight: 800, fontSize: 54 * u, padding: `${20 * u}px ${40 * u}px`, borderRadius: 18 * u, textAlign: 'center', lineHeight: 1.15, boxShadow: '0 10px 40px rgba(0,0,0,.45)' }}>
+          <div style={{ background: accentFill, color: onAccent, fontWeight: 800, fontSize: 54 * u, padding: `${20 * u}px ${40 * u}px`, borderRadius: 18 * u, textAlign: 'center', lineHeight: 1.15, boxShadow: '0 10px 40px rgba(0,0,0,.45)' }}>
             {props.cta}
             <div style={{ fontSize: 34 * u, fontWeight: 700, marginTop: 6 * u, opacity: 0.85 }}>{props.site}</div>
           </div>
@@ -483,7 +528,7 @@ export const Reportagem = (props: ReportagemProps) => {
           )}
           {props.event.note && <div style={{ fontSize: 36 * u, marginTop: 16 * u, fontStyle: 'italic', opacity: 0.92 }}>{props.event.note}</div>}
           {props.event.contact && <div style={{ fontSize: 34 * u, marginTop: 18 * u, opacity: 0.85 }}>{props.event.contact}</div>}
-          <div style={{ display: 'inline-block', marginTop: 26 * u, background: accent, color: bg, fontWeight: 800, fontSize: 40 * u, padding: `${12 * u}px ${34 * u}px`, borderRadius: 14 * u }}>{props.cta}</div>
+          <div style={{ display: 'inline-block', marginTop: 26 * u, background: accentFill, color: onAccent, fontWeight: 800, fontSize: 40 * u, padding: `${12 * u}px ${34 * u}px`, borderRadius: 14 * u }}>{props.cta}</div>
         </div>
       )}
 
@@ -501,7 +546,9 @@ export const Reportagem = (props: ReportagemProps) => {
           ? { background: 'rgba(0,0,0,.62)', color: text, padding: `${14 * u}px ${28 * u}px`, borderRadius: 18 * u }
           : o.style === 'simples'
             ? { color: text, textShadow: `0 0 ${8 * u}px rgba(0,0,0,.9), 0 ${4 * u}px ${18 * u}px rgba(0,0,0,.8)` }
-            : { background: accent, color: bg, padding: `${12 * u}px ${28 * u}px`, borderRadius: 16 * u, boxShadow: '0 8px 26px rgba(0,0,0,.4)' };
+            : o.style === 'gradiente'
+              ? { background: accentFill, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 4px 14px rgba(0,0,0,.6))' }
+              : { background: accentFill, color: onAccent, padding: `${12 * u}px ${28 * u}px`, borderRadius: 16 * u, boxShadow: '0 8px 26px rgba(0,0,0,.4)' };
         return <div key={k} style={wrap}><span style={{ display: 'inline-block', fontWeight: 800, fontSize: fs, lineHeight: 1.12, ...look }}>{o.text}</span></div>;
       })}
 
@@ -527,7 +574,7 @@ export const Reportagem = (props: ReportagemProps) => {
               {line.words.map((w, i) => {
                 const on = isOn(w);
                 return (
-                  <span key={i} style={{ display: 'inline-block', background: on ? accent : 'transparent', color: on ? bg : text, padding: `0 ${10 * u}px`, borderRadius: 12 * u, transform: on ? 'scale(1.06)' : 'none', margin: `0 ${2 * u}px` }}>{w.text}</span>
+                  <span key={i} style={{ display: 'inline-block', background: on ? accentFill : 'transparent', color: on ? onAccent : text, padding: `0 ${10 * u}px`, borderRadius: 12 * u, transform: on ? 'scale(1.06)' : 'none', margin: `0 ${2 * u}px` }}>{w.text}</span>
                 );
               })}
             </div>
