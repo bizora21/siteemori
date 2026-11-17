@@ -309,3 +309,17 @@ async function edResync() {
   if (!(await save())) return;
   await refresh();
 }
+
+/** Nova cena a seguir à cena onde está o cursor (ou ao fim). */
+function edAddScene() {
+  const { p } = edData();
+  const i = edSceneAt(ED.t);
+  let n = p.scenes.length + 1;
+  while (p.scenes.some((s) => s.id === `cena-${n}`)) n++;
+  p.scenes.splice(i + 1, 0, { id: `cena-${n}`, narration: 'Escreva aqui o que diz nesta cena.' });
+  ED.sel = { type: 'scene', a: i + 1 };
+  dirty();
+  renderEditor();
+  toast('Cena nova juntada. Escreva o texto no painel à direita.', 4500);
+  edResync();
+}

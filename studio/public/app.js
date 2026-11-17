@@ -266,7 +266,7 @@ function renderEditor() {
     document.body.classList.toggle('ws-full', !ED.showProjects);
     main.replaceChildren(h('div', { class: 'ws-app' }, edBar(p),
       h('div', { class: 'ws' },
-        h('div', { class: 'ws-left stack' }, head, tpl?.kind === '3d' && personalizeBanner(p), stepsCard, ...sceneCards, musicBlock(p), adv),
+        h('div', { class: 'ws-left stack' }, head, tpl?.kind === '3d' && personalizeBanner(p), stepsCard, ...sceneCards, !tpl?.scenes && h('button', { class: 'primary', onclick: () => { let n = p.scenes.length + 1; while (p.scenes.some((s) => s.id === `cena-${n}`)) n++; p.scenes.push({ id: `cena-${n}`, narration: 'Escreva aqui o que diz nesta cena.' }); dirty(); renderEditor(); } }, '+ Adicionar cena'), tpl?.scenes && h('p', { class: 'muted' }, `Este modelo tem sempre ${tpl.scenes} cenas (cada uma é um momento do vídeo 3D). Para um vídeo com o número de cenas que quiser, use o modelo "Reportagem pessoal".`), musicBlock(p), adv),
         h('div', { class: 'ws-right stack' }, approvalSection(p)))));
     window.scrollTo(0, scroll);
     loadPublication(files, p.id);

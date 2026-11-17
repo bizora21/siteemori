@@ -381,6 +381,7 @@ function renderVideoEditor() {
   const bar = edBar(p);
 
   const tools = h('div', { class: 'ed-tools', role: 'toolbar', 'aria-label': 'Ferramentas' },
+    edTool('➕', 'Cena', 'Juntar uma cena nova (mais texto e voz) a seguir à cena onde está o cursor', edAddScene),
     edTool('✂', 'Cortar', 'Corta no cursor: a cena (na palavra seguinte) ou o cenário escolhido (C)', edCut),
     edTool('🔤', 'Texto', 'Juntar um texto no cursor', () => edAddOverlay({ kind: 'text', text: 'Escreva aqui', style: 'destaque', anim: 'pop', y: 14 })),
     edTool('😀', 'Emoji', 'Juntar um emoji no cursor', () => edAddOverlay({ kind: 'emoji', text: '🙏', y: 40, size: 1.2, anim: 'pop' })),
@@ -412,6 +413,7 @@ function renderVideoEditor() {
 
   const tlHead = h('div', { class: 'ed-tl-head' },
     h('b', {}, 'Linha do tempo'),
+    h('button', { class: 'primary', title: 'Juntar uma cena nova a seguir à cena onde está o cursor', onclick: edAddScene }, '➕ Nova cena'),
     h('span', { class: 'muted' }, 'Arraste os blocos · clique na régua para pôr o cursor · ✂ corta no cursor'),
     h('span', { style: 'flex:1' }),
     h('button', { title: 'Afastar (ver mais tempo)', 'aria-label': 'Afastar', onclick: () => { ED.pps = Math.max(6, Math.round(ED.pps * 0.75)); renderEditor(); } }, '−'),
