@@ -1,0 +1,67 @@
+/* ═══ Espaço de trabalho profissional (tema escuro, tudo à vista, sem rolar) ═══ */
+body.ed-full, body.ws-full {
+  color-scheme: dark;
+  --bg: #0b0e13; --panel: #141922; --card: #141922; --ink: #e8ecf3; --muted: #8c97ab; --line: #262d39;
+  --accent: #5b8cff; --accent2: #9b6bff; --accent-ink: #ffffff; --ok: #3fb57d; --warn: #e0ae4a; --bad: #f06a6f;
+  --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 28px rgba(0,0,0,.35);
+  background: radial-gradient(1200px 600px at 70% -10%, #1a2236 0%, var(--bg) 60%) fixed;
+}
+body.ed-full .top, body.ws-full .top { padding: 7px 16px; }
+body.ed-full .layout, body.ws-full .layout { grid-template-columns: minmax(0, 1fr); max-width: none; padding: 8px 12px; gap: 0; }
+body.ed-full aside, body.ws-full aside { display: none; }
+body.ed-full input, body.ed-full select, body.ed-full textarea, body.ws-full input, body.ws-full select, body.ws-full textarea { background: #0e121a; }
+body.ed-full button:not(.primary):not(.on):not(.pill), body.ws-full button:not(.primary):not(.on):not(.pill) { background: #1b2230; }
+body.ed-full .tl-scroll { background: #0e121a; }
+body.ed-full .tl-name { background: #141922; }
+
+/* editor de reportagem: ocupa o ecrã todo; nada de rolar a página */
+body.ed-full { overflow: hidden; }
+body.ed-full .layout { height: calc(100vh - var(--topbar-h, 54px)); }
+.ed-bar button { padding: 6px 10px; }
+.ed-title { max-width: 16ch; }
+body.ed-full #main { height: 100%; min-height: 0; }
+.ed-app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr) 10px minmax(150px, var(--tl-h, 36vh)); row-gap: 6px; }
+.ed-body { min-height: 0; overflow: hidden; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.ed-tools { align-content: start; overflow-y: auto; min-height: 0; max-height: 100%; grid-template-columns: repeat(2, 72px); gap: 6px; padding: 2px; }
+.ed-tool { width: 72px; min-height: 62px; border-radius: 12px; }
+.ed-tool .ed-ico { width: 34px; height: 34px; font-size: 19px; }
+.ed-stage { min-height: 0; justify-content: flex-start; }
+.ed-panel { max-width: none; max-height: 100%; min-height: 0; overflow: auto; }
+.ed-split { cursor: row-resize; display: grid; place-items: center; touch-action: none; }
+.ed-split i { width: 64px; height: 4px; border-radius: 4px; background: var(--line); transition: background .15s; }
+.ed-split:hover i { background: var(--accent); }
+.ed-tl { min-height: 0; overflow: hidden; display: flex; flex-direction: column; padding: 8px 10px; }
+.ed-tl .tl-scroll { flex: 1; min-height: 0; overflow: auto; }
+.ed-tl-head { flex: none; }
+.tl-lane { min-height: 46px; }
+.tl-block { height: 36px; top: 4px; font-size: 12.5px; }
+.tl-ruler { height: 22px; }
+.tl-name { font-size: 12px; }
+.tl-tick { height: 22px; }
+
+/* os restantes projetos (3D, institucional…): barra de cima + formulário à esquerda + painel à direita sempre à vista */
+.ws-app { display: flex; flex-direction: column; gap: 10px; }
+.ws { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 460px); gap: 14px; align-items: start; }
+.ws-left { min-width: 0; }
+.ws-right { position: sticky; top: 8px; max-height: calc(100vh - 110px); overflow: auto; min-width: 0; }
+body.ws-full .ed-bar { position: sticky; top: 0; }
+
+@media (max-width: 1100px) {
+  body.ed-full { overflow: auto; }
+  body.ed-full .layout { height: auto; }
+  .ed-app { height: auto; display: flex; flex-direction: column; gap: 10px; }
+  .ed-body { display: flex; flex-direction: column; overflow: visible; }
+  .ed-tools { display: flex; overflow-x: auto; max-height: none; }
+  .ed-tl { height: auto; min-height: 320px; }
+  .ed-split { display: none; }
+  .ws { grid-template-columns: minmax(0, 1fr); }
+  .ws-right { position: static; max-height: none; }
+}
+
+/* ecrãs de portátil (pouca altura): ferramentas em 3 colunas e linha do tempo um pouco maior */
+@media (max-height: 860px) and (min-width: 1101px) {
+  .ed-tools { grid-template-columns: repeat(3, 64px); }
+  .ed-tool { width: 64px; min-height: 58px; font-size: 12px; }
+  .ed-app { grid-template-rows: auto minmax(0, 1fr) 10px minmax(150px, var(--tl-h, 40vh)); }
+  .tl-lane { min-height: 40px; }
+}

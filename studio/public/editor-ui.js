@@ -3,7 +3,7 @@
 // Usa o núcleo de editor.js (dados, reprodução, cortes) e as funções de simple.js / media.js / timeline.js.
 
 const ED_LABEL_W = 118; // largura da coluna com os nomes das faixas
-const ED_ROW = 50; // altura de cada linha de blocos
+const ED_ROW = 42; // altura de cada linha de blocos
 
 /** Zoom que faz o vídeo todo caber na largura da página. */
 const edFitPps = (total) => Math.min(80, Math.max(9, Math.floor((($('#main')?.clientWidth ?? 1000) - ED_LABEL_W - 120) / Math.max(1, total))));
@@ -343,20 +343,12 @@ function edTool(icon, label, title, onclick, opts = {}) {
     h('span', { class: 'ed-ico', 'aria-hidden': 'true' }, icon), h('span', { class: 'ed-lab' }, label));
 }
 
-function renderVideoEditor() {
-  edStop();
-  const { p, tm } = edData();
-  const main = $('#main');
-  const scroll = window.scrollY;
-  const keepX = ED.scrollX ?? 0;
-  if (!ED.pps || ED.proj !== p.id) { ED.proj = p.id; ED.pps = edFitPps(tm.total); ED.t = 0; ED.sel = null; ED.scrollX = 0; }
-  document.body.classList.toggle('ed-full', !ED.showProjects);
+/** Barra de cima, igual em todos os projetos: projetos, desfazer/refazer, guardar, qualidade, voz, rascunho, publicar. */
+function edBar(p) {
   const q = state.data.quality;
-  const st = curStatus();
   const failed = state.data.lastJob?.status === 'failed';
-  const sceneAtCursor = () => p.scenes[edSceneAt(ED.t)].id;
-
-  const bar = h('div', { class: 'ed-bar', role: 'toolbar', 'aria-label': 'Barra principal' },
+  const exact = p.template !== 'reportagem' || (state.data.timing?.exact ?? true);
+  return h('div', { class: 'ed-bar', role: 'toolbar', 'aria-label': 'Barra principal' },
     h('button', { title: 'Mostrar ou esconder a lista de projetos', onclick: () => { ED.showProjects = !ED.showProjects; renderEditor(); } }, '☰ Projetos'),
     h('b', { class: 'ed-title', title: p.title }, p.title),
     h('button', { disabled: !canUndo(), title: 'Desfazer a última alteração (Ctrl+Z)', onclick: () => histGo(-1) }, '↶ Desfazer'),
@@ -365,11 +357,28 @@ function renderVideoEditor() {
     h('span', { style: 'flex:1' }),
     h('span', { id: 'job-state', class: 'muted' }),
     failed && h('button', { class: 'pill bad', title: 'O último trabalho falhou: veja o motivo', onclick: () => edDialog('publish') }, '⚠ falhou: ver motivo'),
-    q?.items && h('button', { class: 'pill ' + (q.score >= 90 ? 'ok' : q.score >= 75 ? 'warn' : 'bad'), style: 'font-size:14px', title: 'Ver o que falta para o vídeo ficar com melhor qualidade', onclick: () => edDialog('quality') }, `📊 Qualidade ${q.score}%`),
-    h('button', { class: tm.exact ? '' : 'primary', title: tm.exact ? 'Gera a voz de novo (use depois de mudar o texto)' : 'Gera a voz para os tempos ficarem exatos (não demora)', onclick: () => build({ noRender: true }) }, tm.exact ? '🔊 Voz' : '🔊 Calcular tempos'),
+    p.template === 'reportagem' && q?.items && h('button', { class: 'pill ' + (q.score >= 90 ? 'ok' : q.score >= 75 ? 'warn' : 'bad'), style: 'font-size:14px', title: 'Ver o que falta para o vídeo ficar com melhor qualidade', onclick: () => edDialog('quality') }, `📊 Qualidade ${q.score}%`),
+    h('button', { class: exact ? '' : 'primary', title: exact ? 'Gera a voz de novo (use depois de mudar o texto)' : 'Gera a voz para os tempos ficarem exatos (não demora)', onclick: () => build({ noRender: true }) }, exact ? '🔊 Voz' : '🔊 Calcular tempos'),
     h('button', { title: 'Gera uma versão rápida para ver (a meia qualidade)', onclick: () => build({ draft: true }) }, '🎬 Ver rascunho'),
     h('button', { class: 'primary', title: 'Ouvir, ver e publicar o vídeo final', onclick: () => edDialog('publish') }, '✅ Publicar'),
     h('button', { title: 'Como usar o editor', 'aria-label': 'Ajuda', onclick: () => edDialog('help') }, '❓'));
+}
+
+function renderVideoEditor() {
+  edStop();
+  const { p, tm } = edData();
+  const main = $('#main');
+  const scroll = window.scrollY;
+  const keepX = ED.scrollX ?? 0;
+  if (!ED.pps || ED.proj !== p.id) { ED.proj = p.id; ED.pps = edFitPps(tm.total); ED.t = 0; ED.sel = null; ED.scrollX = 0; }
+  document.body.classList.toggle('ed-full', !ED.showProjects);
+  document.documentElement.style.setProperty('--topbar-h', ($('.top')?.offsetHeight ?? 54) + 'px');
+  const q = state.data.quality;
+  const st = curStatus();
+  const failed = state.data.lastJob?.status === 'failed';
+  const sceneAtCursor = () => p.scenes[edSceneAt(ED.t)].id;
+
+  const bar = edBar(p);
 
   const tools = h('div', { class: 'ed-tools', role: 'toolbar', 'aria-label': 'Ferramentas' },
     edTool('✂', 'Cortar', 'Corta no cursor: a cena (na palavra seguinte) ou o cenário escolhido (C)', edCut),
@@ -409,9 +418,26 @@ function renderVideoEditor() {
     h('button', { title: 'Aproximar (mais detalhe)', 'aria-label': 'Aproximar', onclick: () => { ED.pps = Math.min(80, Math.round(ED.pps * 1.35) + 1); renderEditor(); } }, '+'),
     h('button', { title: 'Ajustar ao tamanho da página', onclick: () => { ED.pps = edFitPps(tm.total); renderEditor(); } }, 'Ajustar'));
 
-  main.replaceChildren(h('div', { class: 'ed-app' }, bar,
+  const split = h('div', { class: 'ed-split', role: 'separator', 'aria-label': 'Arraste para dar mais espaço ao vídeo ou à linha do tempo', title: 'Arraste para cima ou para baixo', onpointerdown: (e) => {
+    e.preventDefault();
+    const app = $('.ed-app');
+    const y0 = e.clientY;
+    const h0 = $('.ed-tl').offsetHeight;
+    const mv = (ev) => {
+      ED.tlH = Math.max(190, Math.min(window.innerHeight * 0.7, h0 + (y0 - ev.clientY)));
+      app.style.setProperty('--tl-h', ED.tlH + 'px');
+      edFitScreen();
+    };
+    const up = () => { window.removeEventListener('pointermove', mv); window.removeEventListener('pointerup', up); try { localStorage.setItem('ed-tl-h', String(ED.tlH)); } catch { /* sem armazenamento */ } };
+    window.addEventListener('pointermove', mv);
+    window.addEventListener('pointerup', up);
+  } }, h('i', {}));
+  if (ED.tlH === undefined) { try { ED.tlH = Number(localStorage.getItem('ed-tl-h')) || 0; } catch { ED.tlH = 0; } }
+  const appEl = h('div', { class: 'ed-app', style: ED.tlH ? `--tl-h:${ED.tlH}px` : '' }, bar,
     h('div', { class: 'ed-body' }, tools, stage, h('div', { class: 'ed-panel' }, edPanel())),
-    h('section', { class: 'card ed-tl' }, tlHead, edTimeline())));
+    split,
+    h('section', { class: 'card ed-tl' }, tlHead, edTimeline()));
+  main.replaceChildren(appEl);
   window.scrollTo(0, scroll);
   const sc = $('#ed-scroll');
   if (sc) sc.scrollLeft = keepX;
@@ -438,7 +464,12 @@ function edFitScreen() {
   if (!s) return;
   s.style.zoom = '';
   const w = s.offsetWidth;
-  const avail = ($('#main')?.clientWidth ?? w) - 24;
-  if (w > avail && avail > 120) s.style.zoom = String(avail / w);
+  const hh = s.offsetHeight;
+  const body = $('.ed-body');
+  const fixed = body && getComputedStyle($('.ed-app')).height !== 'auto' && window.innerWidth > 1100;
+  const availW = ($('#main')?.clientWidth ?? w) - 24;
+  const availH = fixed ? body.clientHeight - ($('.ed-player')?.offsetHeight ?? 56) - 14 : Infinity;
+  const z = Math.min(1, availW / w, availH / hh);
+  if (z < 1 && z > 0.2) s.style.zoom = String(z);
 }
 window.addEventListener('resize', () => { clearTimeout(window.__edFitT); window.__edFitT = setTimeout(edFitScreen, 120); });

@@ -170,7 +170,7 @@ function field(label, value, onInput, opts = {}) {
 
 function renderEditor() {
   histSync();
-  document.body.classList.remove('ed-full');
+  document.body.classList.remove('ed-full', 'ws-full');
   const { project: p, brand, issues, scenes, files } = state.data;
   if (p.template === 'reportagem') return renderSimple();
   const tpl = tplOf(p.template);
@@ -262,6 +262,17 @@ function renderEditor() {
     })(),
   );
 
+  if (typeof edBar === 'function') {
+    document.body.classList.toggle('ws-full', !ED.showProjects);
+    main.replaceChildren(h('div', { class: 'ws-app' }, edBar(p),
+      h('div', { class: 'ws' },
+        h('div', { class: 'ws-left stack' }, head, tpl?.kind === '3d' && personalizeBanner(p), stepsCard, ...sceneCards, musicBlock(p), adv),
+        h('div', { class: 'ws-right stack' }, approvalSection(p)))));
+    window.scrollTo(0, scroll);
+    loadPublication(files, p.id);
+    edSyncDialog();
+    return;
+  }
   main.replaceChildren(h('div', { class: 'stack' }, head, tpl?.kind === '3d' && personalizeBanner(p), stepsCard, ...sceneCards, musicBlock(p), adv, approvalSection(p), actionsBar()));
   window.scrollTo(0, scroll);
   loadPublication(files, p.id);
