@@ -178,6 +178,20 @@ export interface ReportagemProps {
     palette?: 'ouro' | 'oceano' | 'por-do-sol' | 'floresta' | 'rosa' | 'aurora' | 'noite' | 'terra';
     wash?: 'suave' | 'forte';
     captionStyle?: 'karaoke' | 'limpo' | 'destaque';
+    caption?: {
+    size?: 'pequena' | 'media' | 'grande' | 'enorme';
+    position?: 'baixo' | 'meio' | 'cima';
+    font?: 'moderna' | 'classica' | 'compacta' | 'redonda';
+    /** cor do texto e da palavra em destaque (#rrggbb); sem isto usa as da marca/paleta */
+    color?: string;
+    highlight?: string;
+    /** fundo atrás do texto */
+    box?: 'nenhuma' | 'escura' | 'cor';
+    /** como se destaca a palavra que está a ser dita */
+    hl?: 'cor' | 'pilula' | 'nenhum';
+    caps?: boolean;
+    outline?: boolean;
+  };
     vignette?: boolean;
     grain?: boolean;
   };

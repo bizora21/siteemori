@@ -579,36 +579,37 @@ export const Reportagem = (props: ReportagemProps) => {
       {/* Legenda: dentro da zona segura (a interface das redes cobre a base e a direita). Três estilos. */}
       {showLine && line && (() => {
         const cs = props.style?.captionStyle ?? 'karaoke';
-        const box: React.CSSProperties = { position: 'absolute', left: pad, right: pad + (portrait ? 90 * u : 0), bottom: (portrait ? 330 : 110) * u, textAlign: 'center' };
+        const c = props.style?.caption ?? {};
+        const base = cs === 'limpo' ? { box: 'escura', hl: 'cor' } : cs === 'destaque' ? { box: 'nenhuma', hl: 'pilula' } : { box: 'nenhuma', hl: 'cor' };
+        const boxK = c.box ?? base.box;
+        const hl = c.hl ?? base.hl;
+        const mult = { pequena: 0.8, media: 1, grande: 1.25, enorme: 1.5 }[c.size ?? 'media'];
+        const fam = { moderna: undefined, classica: 'Georgia, "Times New Roman", serif', compacta: 'Impact, "Arial Narrow", "Arial Black", sans-serif', redonda: '"Trebuchet MS", "Segoe UI", sans-serif' }[c.font ?? 'moderna'];
+        const col = c.color ?? (boxK === 'cor' ? onAccent : text);
+        const hcol = c.highlight ?? (boxK === 'cor' ? '#ffffff' : accent);
+        const fs = (portrait ? 66 : 54) * u * mult;
+        const pos = c.position ?? 'baixo';
+        const place: React.CSSProperties = pos === 'meio' ? { top: '50%', transform: 'translateY(-50%)' } : pos === 'cima' ? { top: (portrait ? 260 : 80) * u } : { bottom: (portrait ? 330 : 110) * u };
+        const outline = c.outline ?? boxK === 'nenhuma';
         const isOn = (w: { start: number; end: number }) => t >= w.start && t < w.end + 0.04;
-        if (cs === 'limpo') {
-          return (
-            <div style={{ ...box, display: 'flex', justifyContent: 'center' }}>
-              <div style={{ background: 'rgba(0,0,0,.5)', padding: `${14 * u}px ${30 * u}px`, borderRadius: 20 * u, fontWeight: 700, fontSize: (portrait ? 60 : 48) * u, lineHeight: 1.18, textShadow: '0 2px 10px rgba(0,0,0,.6)' }}>
-                {line.words.map((w, i) => (
-                  <span key={i} style={{ color: isOn(w) ? accent : text }}>{w.text}{' '}</span>
-                ))}
-              </div>
-            </div>
-          );
-        }
-        if (cs === 'destaque') {
-          return (
-            <div style={{ ...box, fontWeight: 800, fontSize: (portrait ? 66 : 54) * u, lineHeight: 1.35, textShadow: '0 3px 14px rgba(0,0,0,.85)' }}>
+        const shadow = boxK === 'nenhuma' ? `0 0 ${8 * u}px rgba(0,0,0,.95), 0 ${4 * u}px ${22 * u}px rgba(0,0,0,.8)` : `0 2px ${10 * u}px rgba(0,0,0,.5)`;
+        const inner: React.CSSProperties = {
+          fontWeight: c.font === 'classica' ? 700 : 800, fontSize: fs, lineHeight: hl === 'pilula' ? 1.35 : 1.15, fontFamily: fam, textTransform: c.caps ? 'uppercase' : undefined, color: col, textShadow: shadow,
+          ...(outline ? { WebkitTextStroke: `${2.5 * u}px rgba(0,0,0,.85)`, paintOrder: 'stroke fill' } : {}),
+          ...(boxK === 'escura' ? { background: 'rgba(0,0,0,.55)', padding: `${14 * u}px ${30 * u}px`, borderRadius: 20 * u } : {}),
+          ...(boxK === 'cor' ? { background: accentFill, padding: `${14 * u}px ${30 * u}px`, borderRadius: 20 * u, boxShadow: '0 8px 26px rgba(0,0,0,.35)' } : {}),
+        };
+        return (
+          <div style={{ position: 'absolute', left: pad, right: pad + (portrait ? 90 * u : 0), display: 'flex', justifyContent: 'center', textAlign: 'center', ...place }}>
+            <div style={inner}>
               {line.words.map((w, i) => {
-                const on = isOn(w);
-                return (
-                  <span key={i} style={{ display: 'inline-block', background: on ? accentFill : 'transparent', color: on ? onAccent : text, padding: `0 ${10 * u}px`, borderRadius: 12 * u, transform: on ? 'scale(1.06)' : 'none', margin: `0 ${2 * u}px` }}>{w.text}</span>
-                );
+                const on = hl !== 'nenhum' && isOn(w);
+                if (hl === 'pilula') {
+                  return <span key={i} style={{ display: 'inline-block', background: on ? accentFill : 'transparent', color: on ? onAccent : col, padding: `0 ${10 * u}px`, borderRadius: 12 * u, transform: on ? 'scale(1.06)' : 'none', margin: `0 ${2 * u}px` }}>{w.text}</span>;
+                }
+                return <span key={i} style={{ color: on ? hcol : col }}>{w.text}{' '}</span>;
               })}
             </div>
-          );
-        }
-        return (
-          <div style={{ ...box, fontWeight: 800, fontSize: (portrait ? 74 : 60) * u, lineHeight: 1.12, textShadow: `0 0 ${8 * u}px rgba(0,0,0,.95), 0 ${4 * u}px ${22 * u}px rgba(0,0,0,.8)`, WebkitTextStroke: `${2.5 * u}px rgba(0,0,0,.85)`, paintOrder: 'stroke fill' }}>
-            {line.words.map((w, i) => (
-              <span key={i} style={{ color: isOn(w) ? accent : text }}>{w.text}{' '}</span>
-            ))}
           </div>
         );
       })()}

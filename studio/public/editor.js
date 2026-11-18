@@ -126,7 +126,7 @@ function edPreview() {
     h('div', { id: 'ed-face', class: 'ed-face', hidden: true }),
     h('canvas', { id: 'ed-person', width: 270, height: 480, hidden: true, style: 'position:absolute;bottom:0;pointer-events:none' }),
     h('div', { id: 'ed-ovs', style: 'position:absolute;inset:0;pointer-events:none' }),
-    h('div', { id: 'ed-cap', style: `position:absolute;left:5%;right:5%;bottom:${asp[1] > asp[0] ? 22 : 10}%;text-align:center;font-weight:800;font-size:${64 * k}px;line-height:1.15;color:#fff;text-shadow:0 0 4px #000,0 2px 8px #000` }),
+    h('div', { id: 'ed-cap', style: 'position:absolute;left:5%;right:5%;display:flex;justify-content:center;text-align:center' }, h('div', { id: 'ed-cap-in' })),
     h('div', { id: 'ed-sig', style: `position:absolute;left:5%;bottom:34%;color:#fff;text-shadow:0 1px 4px #000;border-left:3px solid ${accent};padding-left:8px;display:none` }));
   ED.ctx = { k, accent, fill, pal, ovEls: [], bgKey: '', faceKey: '' };
   const ov = p.overlays ?? [];
@@ -158,6 +158,27 @@ function edMedia(path, video, contain) {
       h('div', { style: `position:absolute;inset:-10%;background:url("${src}") center/cover;filter:blur(18px) brightness(.45)` }), el);
   }
   return el;
+}
+
+const asp = (p) => (p.aspect === '16:9' ? [440, 248] : p.aspect === '1:1' ? [320, 320] : [252, 448]);
+
+/** O aspeto das legendas (igual ao do vídeo final): tamanho, posição, letra, cores, fundo, destaque. */
+function capLook(p, k, a, accent, fill) {
+  const cs = p.style?.captionStyle ?? 'karaoke';
+  const c = p.style?.caption ?? {};
+  const base = cs === 'limpo' ? { box: 'escura', hl: 'cor' } : cs === 'destaque' ? { box: 'nenhuma', hl: 'pilula' } : { box: 'nenhuma', hl: 'cor' };
+  const box = c.box ?? base.box;
+  const hl = c.hl ?? base.hl;
+  const mult = { pequena: 0.8, media: 1, grande: 1.25, enorme: 1.5 }[c.size ?? 'media'];
+  const port = a[1] > a[0];
+  const fam = { classica: 'Georgia,serif', compacta: 'Impact,"Arial Narrow",sans-serif', redonda: '"Trebuchet MS",sans-serif' }[c.font ?? ''] ?? 'inherit';
+  const col = c.color ?? (box === 'cor' ? '#101820' : '#fff');
+  const hcol = c.highlight ?? (box === 'cor' ? '#fff' : accent);
+  const pos = c.position ?? 'baixo';
+  const place = pos === 'meio' ? 'top:50%;transform:translateY(-50%);' : pos === 'cima' ? `top:${port ? 13 : 8}%;` : `bottom:${port ? 22 : 10}%;`;
+  const outline = c.outline ?? box === 'nenhuma';
+  const inner = `font-weight:800;font-size:${(port ? 66 : 54) * k * mult}px;line-height:${hl === 'pilula' ? 1.35 : 1.15};font-family:${fam};color:${col};${c.caps ? 'text-transform:uppercase;' : ''}text-shadow:${box === 'nenhuma' ? '0 0 4px #000,0 2px 8px #000' : '0 1px 4px rgba(0,0,0,.5)'};${outline ? '-webkit-text-stroke:1px rgba(0,0,0,.85);paint-order:stroke fill;' : ''}${box === 'escura' ? 'background:rgba(0,0,0,.55);padding:5px 12px;border-radius:9px;' : box === 'cor' ? 'background:' + fill + ';padding:5px 12px;border-radius:9px;' : ''}`;
+  return { place, inner, hl, col, hcol };
 }
 
 function edPaint() {
@@ -220,10 +241,19 @@ function edPaint() {
 
   // legendas
   const cap = $('#ed-cap');
-  if (p.captions === false) cap.textContent = '';
+  const capIn = $('#ed-cap-in');
+  if (p.captions === false) capIn.replaceChildren();
   else {
     const line = (tm.lines ?? []).find((l) => t >= l.start && t < l.end + 0.1);
-    cap.replaceChildren(...(line ? line.words.map((w) => h('span', { style: `color:${t >= w.start && t < w.end + 0.04 ? ED.ctx.accent : '#fff'}` }, w.text + ' ')) : []));
+    const o = capLook(p, ED.ctx.k, asp(p), ED.ctx.accent, ED.ctx.fill);
+    cap.style.cssText = 'position:absolute;left:5%;right:5%;display:flex;justify-content:center;text-align:center;' + o.place;
+    capIn.style.cssText = o.inner;
+    capIn.replaceChildren(...(line ? line.words.map((w) => {
+      const on = o.hl !== 'nenhum' && t >= w.start && t < w.end + 0.04;
+      return o.hl === 'pilula'
+        ? h('span', { style: `display:inline-block;margin:0 1px;padding:0 5px;border-radius:6px;${on ? 'background:' + ED.ctx.fill + ';color:#101820;transform:scale(1.06)' : ''}` }, w.text)
+        : h('span', { style: `color:${on ? o.hcol : o.col}` }, w.text + ' ');
+    }) : []));
   }
   // assinatura
   const sig = $('#ed-sig');

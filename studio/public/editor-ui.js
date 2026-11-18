@@ -290,7 +290,7 @@ function edEffects(p) {
       h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap;align-items:center' }, h('span', { class: 'muted' }, 'Velocidade:'), ...[['rapida', 'Rápida'], ['normal', 'Normal'], ['lenta', 'Lenta']].map(([v, t]) => chip(st.transitionSpeed ?? 'normal', v, t, (x) => set('transitionSpeed', x))))),
     section('Legendas', 'As palavras que aparecem enquanto se fala.',
       sw('Mostrar legendas', p.captions !== false, (on) => { p.captions = on ? undefined : false; dirty(); renderEditor(); }),
-      h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[['karaoke', 'Karaokê'], ['limpo', 'Caixa escura'], ['destaque', 'Destaque']].map(([v, t]) => chip(st.captionStyle ?? 'karaoke', v, t, (x) => set('captionStyle', x))))),
+      p.captions !== false && capOptions(p, st, set, chip, sw)),
     section('Imagem', 'Para um aspeto mais profissional.',
       sw('Vinheta (cantos mais escuros)', Boolean(st.vignette), (on) => set('vignette', on)),
       sw('Grão de filme', Boolean(st.grain), (on) => set('grain', on)),
@@ -478,3 +478,4 @@ function edFitScreen() {
   if (z < 1 && z > 0.2) s.style.zoom = String(z);
 }
 window.addEventListener('resize', () => { clearTimeout(window.__edFitT); window.__edFitT = setTimeout(edFitScreen, 120); });
+

@@ -283,3 +283,6 @@ Limites honestos: sem avatar com lÃ¡bios sincronizados, sem recorte de pessoa e 
 
 - `person` (projeto) ou `scenes[].person`: `mode: 'bolha' | 'recorte'`, `side: esquerda|centro|direita`, `size` (% da altura do ecrã, 78 por defeito), `key` ('auto' lê a cor dos 4 cantos do vídeo; 'verde', 'azul' ou `#rrggbb`) e `tolerance` (0,05–0,45; 0,15 por defeito). O recorte usa o filtro `chromakey` do ffmpeg e guarda um WebM VP9 com transparência; a composição mostra-o por cima dos cenários. Precisa de um fundo de UMA só cor atrás da pessoa (pano verde/azul ou parede lisa). Sem fundo uniforme o motor avisa e volta à bolha. Não há recorte por IA (sem GPU): fundos desordenados não funcionam.
 - `scenes[].voiceName`: voz sintética só dessa cena (conversas com duas vozes). Sobrepõe `voice.name` do projeto.
+
+### Legendas premium
+`style.caption` afina as legendas: `size` (pequena/media/grande/enorme), `position` (cima/meio/baixo), `font` (moderna/classica/compacta/redonda), `color`, `highlight`, `box` (nenhuma/escura/cor), `hl` (cor/pilula/nenhum), `caps`, `outline`. `captions: false` desliga-as. No editor: painel Efeitos > Legendas.
