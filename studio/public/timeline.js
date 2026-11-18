@@ -222,6 +222,14 @@ function joinScene(p, i) {
 
 /** Divide a cena i em duas: a nova cena começa na palavra k (0 = primeira). */
 function splitSceneAt(p, i, k) {
+  splitSceneCore(p, i, k, k);
+  dirty();
+  renderEditor();
+  toast('Cena cortada em duas.');
+}
+
+/** O corte em si: rawK = palavra no texto escrito, k = palavra entre as que se dizem (para os cenários). Devolve a cena nova. */
+function splitSceneCore(p, i, rawK, k) {
   const s = p.scenes[i];
   const tokens = String(s.narration).trim().split(/\s+/).filter(Boolean);
   const list = s.cutaways ?? [];
@@ -234,11 +242,9 @@ function splitSceneAt(p, i, k) {
   let id = `${s.id}-b`;
   let n = 2;
   while (p.scenes.some((x) => x.id === id)) id = `${s.id}-b${n++}`;
-  const second = { id, narration: tokens.slice(k).join(' '), ...(move.length ? { cutaways: move } : {}) };
-  s.narration = tokens.slice(0, k).join(' ');
+  const second = { id, narration: tokens.slice(rawK).join(' '), ...(move.length ? { cutaways: move } : {}) };
+  s.narration = tokens.slice(0, rawK).join(' ');
   s.cutaways = keep.length ? keep : undefined;
   p.scenes.splice(i + 1, 0, second);
-  dirty();
-  renderEditor();
-  toast('Cena cortada em duas.');
+  return second;
 }

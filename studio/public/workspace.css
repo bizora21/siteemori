@@ -72,3 +72,12 @@ body.ws-full .ed-bar { position: sticky; top: 0; }
 .voice-row.on { border-color: var(--accent); box-shadow: var(--ring); }
 .voice-flag { font-size: 22px; }
 .voice-name { flex: 1; min-width: 0; }
+
+/* parte escolhida na linha do tempo */
+.tl-range { position: absolute; top: 0; bottom: 0; z-index: 4; pointer-events: none; background: rgba(245,184,46,.16); border-left: 2px solid #f5b82e; border-right: 2px solid #f5b82e; }
+.tl-range-lab { position: absolute; left: 50%; top: 30px; transform: translateX(-50%); background: #f5b82e; color: #101820; font-weight: 800; font-size: 12px; padding: 1px 8px; border-radius: 10px; white-space: nowrap; }
+.tl-range-h { position: absolute; top: 0; width: 14px; height: 26px; background: #f5b82e; border-radius: 4px; cursor: ew-resize; pointer-events: auto; }
+.tl-range-h.l { left: -8px; }
+.tl-range-h.r { right: -8px; }
+.ed-range-bar { flex: none; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 6px 8px; margin: 4px 0; border: 1px solid #f5b82e; border-radius: 10px; background: rgba(245,184,46,.1); }
+.ed-range-bar button.danger { border-color: #e5484d; color: #ff8a90; }

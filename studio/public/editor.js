@@ -57,6 +57,7 @@ const edWordAt = (i, t) => {
 // ── reprodução ────────────────────────────────────────────────────────────
 function edStop() {
   ED.playing = false;
+  ED.stopAt = undefined;
   cancelAnimationFrame(ED.raf);
   ED.audio?.pause();
   ED.music?.pause();
@@ -96,6 +97,7 @@ function edPlay() {
     ED.last = now;
     ED.t = ED.audio && !ED.audio.paused ? ED.audio.currentTime : ED.t + dt;
     if (ED.t >= tm.total) { ED.t = tm.total; edStop(); }
+    if (ED.stopAt && ED.t >= ED.stopAt) { ED.stopAt = undefined; edStop(); }
     edPaint();
     ED.raf = requestAnimationFrame(tick);
   };
@@ -320,7 +322,7 @@ function edCut() {
   const w = tm.wordT[i] ?? [];
   const k = w.findIndex((x) => x > t);
   if (k <= 0) return toast('Ponha o cursor no meio da fala da cena que quer cortar.');
-  splitSceneAt(p, i, k);
+  splitSceneSpoken(p, i, k);
   edResync();
 }
 

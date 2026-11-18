@@ -105,7 +105,8 @@ function edTimeline() {
   const step = pps >= 40 ? 1 : pps >= 22 ? 2 : 5;
   const ticks = [];
   for (let t = 0; t <= tm.total; t += step) ticks.push(h('div', { class: 'tl-tick', style: `left:${t * pps}px` }, `${t}s`));
-  const ruler = h('div', { class: 'tl-ruler', title: 'Clique ou arraste aqui para mover o cursor', style: `width:${W}px;margin-left:0`, onpointerdown: (e) => {
+  const ruler = h('div', { class: 'tl-ruler', title: ED.selMode ? 'Arraste aqui para escolher uma parte' : 'Clique ou arraste aqui para mover o cursor (com Shift: escolher uma parte)', style: `width:${W}px;margin-left:0`, onpointerdown: (e) => {
+    if (ED.selMode || e.shiftKey) return edRangeDrag(e);
     const r = e.currentTarget.getBoundingClientRect();
     edSeek((e.clientX - r.left) / pps);
     const mv = (ev) => edSeek((ev.clientX - r.left) / pps);
@@ -203,6 +204,7 @@ function edTimeline() {
     lane('🔤', 'Texto e emojis', ovs, 'Nada ainda: use "Texto" ou "Emoji"', Math.max(1, rowEnd.length)),
     lane('🎵', 'Música', [music], '', 1),
     lane('✨', 'Efeitos', [fx], '', 1),
+    rangeOverlay(),
     playhead);
   sc.addEventListener('scroll', () => { ED.scrollX = sc.scrollLeft; });
   return sc;
@@ -372,7 +374,7 @@ function renderVideoEditor() {
   const main = $('#main');
   const scroll = window.scrollY;
   const keepX = ED.scrollX ?? 0;
-  if (!ED.pps || ED.proj !== p.id) { ED.proj = p.id; ED.pps = edFitPps(tm.total); ED.t = 0; ED.sel = null; ED.scrollX = 0; }
+  if (!ED.pps || ED.proj !== p.id) { ED.proj = p.id; ED.pps = edFitPps(tm.total); ED.t = 0; ED.sel = null; ED.range = null; ED.selMode = false; ED.scrollX = 0; }
   document.body.classList.toggle('ed-full', !ED.showProjects);
   document.documentElement.style.setProperty('--topbar-h', ($('.top')?.offsetHeight ?? 54) + 'px');
   const q = state.data.quality;
@@ -384,6 +386,7 @@ function renderVideoEditor() {
 
   const tools = h('div', { class: 'ed-tools', role: 'toolbar', 'aria-label': 'Ferramentas' },
     edTool('➕', 'Cena', 'Juntar uma cena nova (mais texto e voz) a seguir à cena onde está o cursor', edAddScene),
+    edTool('⬚', 'Selecionar', 'Escolher uma parte do vídeo (arraste na régua, ou tecle I e O) para a cortar, separar ou juntar coisas lá', () => { ED.selMode = !ED.selMode; renderEditor(); if (ED.selMode) toast('Arraste na régua (os números do tempo) para escolher a parte.', 5000); }, { on: ED.selMode }),
     edTool('✂', 'Cortar', 'Corta no cursor: a cena (na palavra seguinte) ou o cenário escolhido (C)', edCut),
     edTool('🔤', 'Texto', 'Juntar um texto no cursor', () => edAddOverlay({ kind: 'text', text: 'Escreva aqui', style: 'destaque', anim: 'pop', y: 14 })),
     edTool('😀', 'Emoji', 'Juntar um emoji no cursor', () => edAddOverlay({ kind: 'emoji', text: '🙏', y: 40, size: 1.2, anim: 'pop' })),
@@ -417,7 +420,7 @@ function renderVideoEditor() {
   const tlHead = h('div', { class: 'ed-tl-head' },
     h('b', {}, 'Linha do tempo'),
     h('button', { class: 'primary', title: 'Juntar uma cena nova a seguir à cena onde está o cursor', onclick: edAddScene }, '➕ Nova cena'),
-    h('span', { class: 'muted' }, 'Arraste os blocos · clique na régua para pôr o cursor · ✂ corta no cursor'),
+    h('span', { class: 'muted' }, ED.selMode ? '⬚ Arraste na régua para escolher a parte' : 'Arraste os blocos · clique na régua para pôr o cursor · ✂ corta no cursor · ⬚ escolhe uma parte'),
     h('span', { style: 'flex:1' }),
     h('button', { title: 'Afastar (ver mais tempo)', 'aria-label': 'Afastar', onclick: () => { ED.pps = Math.max(6, Math.round(ED.pps * 0.75)); renderEditor(); } }, '−'),
     h('button', { title: 'Aproximar (mais detalhe)', 'aria-label': 'Aproximar', onclick: () => { ED.pps = Math.min(80, Math.round(ED.pps * 1.35) + 1); renderEditor(); } }, '+'),
@@ -441,7 +444,7 @@ function renderVideoEditor() {
   const appEl = h('div', { class: 'ed-app', style: ED.tlH ? `--tl-h:${ED.tlH}px` : '' }, bar,
     h('div', { class: 'ed-body' }, tools, stage, h('div', { class: 'ed-panel' }, edPanel())),
     split,
-    h('section', { class: 'card ed-tl' }, tlHead, edTimeline()));
+    h('section', { class: 'card ed-tl' }, tlHead, rangeBar(p), edTimeline()));
   main.replaceChildren(appEl);
   window.scrollTo(0, scroll);
   const sc = $('#ed-scroll');
@@ -459,6 +462,9 @@ document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' && tag !== 'BUTTON') { e.preventDefault(); ED.playing ? edStop() : edPlay(); }
   else if (e.key === 'ArrowLeft') { e.preventDefault(); edSeek(ED.t - (e.shiftKey ? 1 : 0.1)); }
   else if (e.key === 'ArrowRight') { e.preventDefault(); edSeek(ED.t + (e.shiftKey ? 1 : 0.1)); }
+  else if (e.key.toLowerCase() === 'i') { e.preventDefault(); rangeMark('a'); }
+  else if (e.key.toLowerCase() === 'o') { e.preventDefault(); rangeMark('b'); }
+  else if (e.key === 'Escape' && ED.range) { e.preventDefault(); rangeClose(); }
   else if (e.key.toLowerCase() === 'c' && tag !== 'BUTTON') { e.preventDefault(); edCut(); }
   else if ((e.key === 'Delete' || e.key === 'Backspace') && ED.sel) { e.preventDefault(); edDelete(); }
 });

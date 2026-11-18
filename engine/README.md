@@ -286,3 +286,6 @@ Limites honestos: sem avatar com lábios sincronizados, sem recorte de pessoa e 
 
 ### Legendas premium
 `style.caption` afina as legendas: `size` (pequena/media/grande/enorme), `position` (cima/meio/baixo), `font` (moderna/classica/compacta/redonda), `color`, `highlight`, `box` (nenhuma/escura/cor), `hl` (cor/pilula/nenhum), `caps`, `outline`. `captions: false` desliga-as. No editor: painel Efeitos > Legendas.
+
+### Escolher uma parte (editor)
+Ferramenta ⬚ Selecionar (ou Shift+arrastar na régua, ou teclas I/O): escolhe um intervalo e permite cortá-lo fora, separá-lo numa cena, limpar fotos/textos ou juntar texto/foto/vídeo. Corta por palavras (ignora o texto entre parênteses, que não se diz); não corta ao meio de cenas com gravação.
