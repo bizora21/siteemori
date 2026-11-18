@@ -28,7 +28,7 @@ import { TEMPLATES } from '../engine/templates';
 import { listVersions } from '../engine/versions';
 import { validateBrand, validateProject, type Brand, type Issue, type Project } from '../engine/types';
 import { findHumanFile } from '../engine/voice';
-import { listVoices, synthesizeOnce } from '../lib/social/tts';
+import { cleanNarration, listVoices, synthesizeOnce } from '../lib/social/tts';
 
 const PORT = Number(process.env.STUDIO_PORT ?? 4173);
 const LAN = process.argv.includes('--lan') || process.env.STUDIO_LAN === '1';
@@ -221,7 +221,7 @@ function summarize(id: string) {
  */
 function timing(id: string, project: ReturnType<typeof loadProject>) {
   const pf = resolve('video3d/props', `${id}.json`);
-  const tokens = project.scenes.map((sc) => (sc.kind === 'clip' ? 0 : String(sc.narration ?? '').split(/\s+/).filter(Boolean).length));
+  const tokens = project.scenes.map((sc) => (sc.kind === 'clip' ? 0 : cleanNarration(String(sc.narration ?? '')).split(/\s+/).filter(Boolean).length));
   try {
     if (existsSync(pf)) {
       const p = JSON.parse(readFileSync(pf, 'utf8'));

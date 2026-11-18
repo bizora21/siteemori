@@ -4,12 +4,40 @@
   "template": "reportagem",
   "title": "Modelo de reportagem pessoal (preencher)",
   "aspect": "9:16",
-  "host": { "name": "Seu nome", "role": "Sua função" },
-  "voice": { "mode": "auto", "rate": "-3%", "pauseSeconds": 0.3 },
+  "host": {
+    "name": "Seu nome",
+    "role": "Sua função"
+  },
+  "voice": {
+    "mode": "auto",
+    "rate": "-3%",
+    "pauseSeconds": 0.3
+  },
   "scenes": [
-    { "id": "abertura", "location": "Local 1", "narration": "Gancho: a pergunta ou a frase que prende nos primeiros dois segundos." },
-    { "id": "local-1", "location": "Local 2", "narration": "Desenvolvimento no primeiro local: o que está a mostrar e porque importa." },
-    { "id": "local-2", "location": "Local 3", "narration": "Desenvolvimento no segundo local: o ponto seguinte, com um exemplo concreto." },
-    { "id": "fecho", "location": "Local 1", "narration": "Fecho: o que a pessoa deve fazer agora." }
+    {
+      "id": "abertura",
+      "location": "Local 1",
+      "narration": "Gancho: a pergunta ou a frase que prende nos primeiros dois segundos.",
+      "shot": "Olá",
+      "presenter": "presenter/abertura.mp4"
+    },
+    {
+      "id": "local-1",
+      "location": "Local 2",
+      "narration": "Desenvolvimento no primeiro local: o que está a mostrar e porque importa."
+    },
+    {
+      "id": "local-2",
+      "location": "Local 3",
+      "narration": "Desenvolvimento no segundo local: o ponto seguinte, com um exemplo concreto."
+    },
+    {
+      "id": "fecho",
+      "location": "Local 1",
+      "narration": "Fecho: o que a pessoa deve fazer agora."
+    }
+  ],
+  "credits": [
+    "Foto: SINAL Multimédia (Pexels) https://www.pexels.com/photo/aerial-view-of-maputo-cityscape-with-bustling-streets-30188152/"
   ]
 }

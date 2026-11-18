@@ -187,7 +187,7 @@ function edLines(p, tm) {
   if (ED.linesKey === tm) return ED.linesVal;
   const out = [];
   p.scenes.forEach((s, i) => {
-    const words = (s.narration ?? '').trim().split(/\s+/).filter(Boolean);
+    const words = (s.narration ?? '').replace(/s*([^)]*)/g, '').replace(/[“”"']/g, '').trim().split(/\s+/).filter(Boolean);
     const wt = tm.wordT[i] ?? [];
     const end = (tm.audioStarts[i] ?? 0) + (tm.durations[i] ?? 3);
     for (let k = 0; k < words.length; k += 4) {
