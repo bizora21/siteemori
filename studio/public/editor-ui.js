@@ -251,6 +251,7 @@ function edPanel() {
   }
   if (sel.type === 'scene' && p.scenes[sel.a]) return edCard(`🎙 Cena ${sel.a + 1}`, simpleScene(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a]));
   if (sel.type === 'music') return edCard('🎵 Música', musicBlock(p));
+  if (sel.type === 'voice') return edCard('🗣 Voz sintética', voicePicker(p));
   if (sel.type === 'fx') return edCard('✨ Efeitos', edEffects(p));
   return edCard('Como usar', edHelp(), false);
 }
@@ -325,10 +326,11 @@ function edSyncDialog() {
   }
   if (!ED.dialog) { if (dlg.open) dlg.close(); return; }
   const p = state.data.project;
-  const titles = { publish: '✅ Ouvir, ver e publicar', quality: '📊 Qualidade do vídeo', help: '❓ Como usar o editor', options: '⚙ Mais opções do vídeo' };
+  const titles = { publish: '✅ Ouvir, ver e publicar', quality: '📊 Qualidade do vídeo', help: '❓ Como usar o editor', options: '⚙ Mais opções do vídeo', voice: '🗣 Escolher a voz sintética' };
   const body = ED.dialog === 'publish' ? approvalSection(p)
     : ED.dialog === 'quality' ? [qualityCard(), h('ul', { class: 'issues' }, issueItems(state.data.issues))]
     : ED.dialog === 'options' ? moreOptionsBlock(p, true)
+    : ED.dialog === 'voice' ? voicePicker(p)
     : edHelp();
   dlg.replaceChildren(
     h('div', { class: 'ed-dlg-head' }, h('h3', { style: 'margin:0;flex:1' }, titles[ED.dialog]), h('button', { class: 'primary', onclick: () => dlg.close() }, 'Fechar')),
@@ -398,6 +400,7 @@ function renderVideoEditor() {
       try { const r = await uploadTo('media', sceneAtCursor(), f, 'Cenário'); edAddScenery(r.path); } catch (e) { toast('Erro: ' + e.message, 6000); }
     }),
     edTool('🌄', 'Pexels', 'Procurar fotos e vídeos grátis (paisagens, cidades, animais…)', () => openPexels(sceneAtCursor(), (path) => edAddScenery(path))),
+    edTool('🗣', 'Voz', 'Escolher a voz sintética (ouvir e escolher entre as vozes disponíveis)', () => { ED.sel = { type: 'voice' }; renderEditor(); }, { on: ED.sel?.type === 'voice' }),
     edTool('🎵', 'Música', 'Juntar ou mudar a música de fundo', () => { ED.sel = { type: 'music' }; renderEditor(); }, { on: ED.sel?.type === 'music' }),
     edTool('✨', 'Efeitos', 'Cor, transições, legendas, estabilização e som', () => { ED.sel = { type: 'fx' }; renderEditor(); }, { on: ED.sel?.type === 'fx' }),
     edTool('⚙', 'Opções', 'A minha foto, evento, voz, nome e formato', () => edDialog('options')),

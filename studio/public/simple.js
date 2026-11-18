@@ -267,6 +267,7 @@ function moreOptionsBlock(p, open = false) {
           field('Local', p.event?.place, (v) => ((p.event ??= { title: '' }).place = v || undefined)),
           field('Contacto', p.event?.contact, (v) => ((p.event ??= { title: '' }).contact = v || undefined)),
           field('Nota (ex.: Entrada livre)', p.event?.note, (v) => ((p.event ??= { title: '' }).note = v || undefined)))),
+      h('div', { class: 'zone', style: 'margin-top:10px' }, h('b', {}, '🗣 Voz sintética'), voicePicker(p)),
       h('div', { class: 'grid2', style: 'margin-top:10px' },
         h('label', {}, 'Origem da voz',
           (() => {

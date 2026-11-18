@@ -14,6 +14,54 @@ export const VOICE: Record<Locale, string> = {
   'pt-pt': 'pt-PT-RaquelNeural',
 };
 
+/** Uma voz disponível para escolher. */
+export interface VoiceInfo {
+  /** nome técnico, ex.: pt-PT-DuarteNeural */
+  name: string;
+  /** nome para mostrar, ex.: Duarte */
+  label: string;
+  gender: 'Female' | 'Male';
+  locale: string;
+  /** vozes "multilingue" (de outros países) que também falam português */
+  multilingual: boolean;
+}
+
+/** Lista de reserva se a Microsoft não responder (sem internet). */
+const FALLBACK_VOICES: VoiceInfo[] = [
+  { name: 'pt-PT-RaquelNeural', label: 'Raquel', gender: 'Female', locale: 'pt-PT', multilingual: false },
+  { name: 'pt-PT-DuarteNeural', label: 'Duarte', gender: 'Male', locale: 'pt-PT', multilingual: false },
+  { name: 'pt-BR-FranciscaNeural', label: 'Francisca', gender: 'Female', locale: 'pt-BR', multilingual: false },
+  { name: 'pt-BR-AntonioNeural', label: 'Antônio', gender: 'Male', locale: 'pt-BR', multilingual: false },
+  { name: 'pt-BR-ThalitaMultilingualNeural', label: 'Thalita (multilingue)', gender: 'Female', locale: 'pt-BR', multilingual: true },
+  { name: 'en-US-AvaMultilingualNeural', label: 'Ava (multilingue)', gender: 'Female', locale: 'en-US', multilingual: true },
+  { name: 'en-US-AndrewMultilingualNeural', label: 'Andrew (multilingue)', gender: 'Male', locale: 'en-US', multilingual: true },
+];
+
+let voicesCache: { at: number; list: VoiceInfo[] } | null = null;
+
+/** As vozes em português (e as multilingues que também o falam), pedidas à Microsoft; guardadas 1 hora. */
+export async function listVoices(): Promise<{ voices: VoiceInfo[]; online: boolean }> {
+  if (voicesCache && Date.now() - voicesCache.at < 3600_000) return { voices: voicesCache.list, online: true };
+  try {
+    const raw = await new MsEdgeTTS().getVoices();
+    const list: VoiceInfo[] = raw
+      .filter((v) => /^pt-/i.test(v.Locale) || /Multilingual/i.test(v.ShortName))
+      .map((v) => {
+        const multilingual = /Multilingual/i.test(v.ShortName);
+        const base = v.ShortName.replace(/^[a-z]{2,3}-[A-Za-z]{2,4}-/, '').replace(/MultilingualNeural$|Neural$/, '');
+        return { name: v.ShortName, label: base + (multilingual ? ' (multilingue)' : ''), gender: v.Gender as 'Female' | 'Male', locale: v.Locale, multilingual };
+      })
+      .sort((a, b) => Number(a.multilingual) - Number(b.multilingual) || a.locale.localeCompare(b.locale) || a.label.localeCompare(b.label));
+    if (list.length) {
+      voicesCache = { at: Date.now(), list };
+      return { voices: list, online: true };
+    }
+  } catch {
+    /* sem internet: lista de reserva */
+  }
+  return { voices: FALLBACK_VOICES, online: false };
+}
+
 /** Uma palavra falada, com início e fim em segundos. */
 export interface WordTiming {
   text: string;
@@ -31,6 +79,8 @@ export async function synthesize(
   outFile: string,
   rate = '-8%',
   attempts = 3,
+  /** Voz escolhida (ex.: pt-PT-DuarteNeural); por defeito a da marca/idioma. */
+  voiceName?: string,
 ): Promise<{ words: WordTiming[]; duration: number }> {
   if (process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID) {
     try {
@@ -41,14 +91,14 @@ export async function synthesize(
   }
   for (let i = 1; i <= attempts; i += 1) {
     try {
-      return await synthesizeOnce(text, lang, outFile, rate);
+      return await synthesizeOnce(text, lang, outFile, rate, voiceName);
     } catch (err) {
       // 403 = a Microsoft mudou a autenticação do endpoint; repetir não resolve.
       // Falha já, para o chamador cair no Piper sem esperas inúteis.
       const msg = err instanceof Error ? err.message : String(err);
       if (/40[13]/.test(msg) || i === attempts) {
         // O WebSocket do Node falha em algumas redes; o Python (edge-tts) costuma passar.
-        const viaPy = synthesizePython(text, lang, outFile, rate);
+        const viaPy = synthesizePython(text, lang, outFile, rate, voiceName);
         if (viaPy) return viaPy;
         throw err;
       }
@@ -116,9 +166,10 @@ function synthesizePython(
   lang: Locale,
   outFile: string,
   rate: string,
+  voiceName?: string,
 ): { words: WordTiming[]; duration: number } | null {
   const py = process.env.PYTHON_BIN ?? 'C:/Users/COSSA/AppData/Local/Programs/Python/Python312/python.exe';
-  const r = spawnSync(py, ['-I', 'scripts/edge_tts_py.py', text, VOICE[lang], outFile, rate], {
+  const r = spawnSync(py, ['-I', 'scripts/edge_tts_py.py', text, voiceName ?? VOICE[lang], outFile, rate], {
     encoding: 'utf8',
     maxBuffer: 20_000_000,
     // Sem rede o edge-tts pode ficar pendurado para sempre: falha e deixa o chamador decidir.
@@ -136,15 +187,16 @@ function synthesizePython(
   }
 }
 
-async function synthesizeOnce(
+export async function synthesizeOnce(
   text: string,
   lang: Locale,
   outFile: string,
   /** ritmo da fala; ligeiramente mais lento soa mais calmo e dá tempo de ler */
   rate = '-8%',
+  voiceName?: string,
 ): Promise<{ words: WordTiming[]; duration: number }> {
   const tts = new MsEdgeTTS();
-  await tts.setMetadata(VOICE[lang], OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
+  await tts.setMetadata(voiceName ?? VOICE[lang], OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
     wordBoundaryEnabled: true,
     sentenceBoundaryEnabled: false,
   });

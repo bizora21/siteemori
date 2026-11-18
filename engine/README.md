@@ -274,3 +274,7 @@ Limites honestos: sem avatar com lÃ¡bios sincronizados, sem recorte de pessoa e 
 - `style.palette`: ouro, oceano, por-do-sol, floresta, rosa, aurora, noite, terra. Muda o fundo (gradiente), os destaques, as legendas, a barra de progresso e os botões. `style.wash`: 'suave' | 'forte' = película de cor (duotone) por cima das imagens.
 - Os textos da linha do tempo têm o estilo `gradiente` (letras com o gradiente da paleta).
 - O editor mostra a paleta, a película e a transição (ao tocar) na pré-visualização.
+
+## Escolher a voz sintética
+
+`voice.name` no projeto (ex.: `pt-PT-DuarteNeural`) escolhe a voz do Edge TTS; sem nome usa a da marca/idioma. `voice.rate` (ex.: `+10%`) muda a velocidade. O estúdio lista as vozes (`GET /api/voices`, vindas da Microsoft: português de Portugal e do Brasil e as multilingues) e toca amostras (`GET /api/voices/preview`). As gravações suas têm sempre prioridade; sem internet o motor cai na voz offline Piper.

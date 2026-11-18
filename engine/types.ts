@@ -176,7 +176,8 @@ export interface Project {
   props?: Record<string, unknown>;
   /** Props que dependem do que a voz diz (ver Cue). */
   cues?: Cue[];
-  voice?: { mode?: VoiceMode; rate?: string; pauseSeconds?: number };
+  /** `name`: voz sintética escolhida (ex.: pt-PT-DuarteNeural); sem nome usa a da marca/idioma. */
+  voice?: { mode?: VoiceMode; rate?: string; pauseSeconds?: number; name?: string };
   scenes: Scene[];
   cta?: string;
   site?: string;

@@ -198,6 +198,7 @@ function renderEditor() {
           s.value = p.voice?.mode ?? 'auto';
           return s;
         })()),
+      h('div', {}, h('button', { class: 'primary', title: 'Ouvir e escolher a voz sintética', onclick: () => edDialog('voice') }, '🗣 Escolher a voz sintética'), h('div', { class: 'muted', style: 'font-size:13px;margin-top:4px' }, p.voice?.name ? 'Escolhida: ' + p.voice.name : 'Agora: a voz da marca')),
     ),
     inst && h('div', { class: 'grid3' },
       field('Entidade (quem assina)', p.institutional?.entity, (v) => ((p.institutional ??= {}).entity = v)),

@@ -281,7 +281,8 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
 
   // ── 2/3. Voz sintética (Edge/ElevenLabs → Piper) ──────────────────────
   const rate = ctx.project.voice?.rate ?? '+0%';
-  const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY)]);
+  const voiceName = ctx.project.voice?.name?.trim() || undefined;
+  const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY), voiceName ?? '']);
   const wav = join(ctx.cacheDir, `${scene.id}-${key}.wav`);
   const meta = `${wav}.json`;
   if (existsSync(wav) && existsSync(meta)) {
@@ -292,7 +293,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   let words: WordTiming[];
   let source: VoiceSource = process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID ? 'elevenlabs' : 'edge';
   try {
-    ({ words } = await synthesize(text, ctx.locale as AppLocale, mp3, rate));
+    ({ words } = await synthesize(text, ctx.locale as AppLocale, mp3, rate, 3, voiceName));
     if (words.length === 0) throw new Error('síntese sem palavras');
     restorePunctuation(words, text);
   } catch (err) {

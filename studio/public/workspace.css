@@ -65,3 +65,10 @@ body.ws-full .ed-bar { position: sticky; top: 0; }
   .ed-app { grid-template-rows: auto minmax(0, 1fr) 10px minmax(150px, var(--tl-h, 40vh)); }
   .tl-lane { min-height: 40px; }
 }
+
+/* escolher a voz */
+.voice-list { display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow: auto; }
+.voice-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.voice-row.on { border-color: var(--accent); box-shadow: var(--ring); }
+.voice-flag { font-size: 22px; }
+.voice-name { flex: 1; min-width: 0; }

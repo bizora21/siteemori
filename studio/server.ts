@@ -28,6 +28,7 @@ import { TEMPLATES } from '../engine/templates';
 import { listVersions } from '../engine/versions';
 import { validateBrand, validateProject, type Brand, type Issue, type Project } from '../engine/types';
 import { findHumanFile } from '../engine/voice';
+import { listVoices, synthesizeOnce } from '../lib/social/tts';
 
 const PORT = Number(process.env.STUDIO_PORT ?? 4173);
 const LAN = process.argv.includes('--lan') || process.env.STUDIO_LAN === '1';
@@ -696,6 +697,28 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
   }
 
   if (parts[0] === 'media') return sendFile(req, res, inside(OUT, ...parts.slice(1)));
+
+  // GET /api/voices — as vozes sintéticas disponíveis (português e multilingues)
+  if (parts[1] === 'voices' && !parts[2] && method === 'GET') return json(res, await listVoices());
+
+  // GET /api/voices/preview?voice=pt-PT-DuarteNeural&rate=%2B0%25 — uma amostra curta para ouvir antes de escolher
+  if (parts[1] === 'voices' && parts[2] === 'preview' && method === 'GET') {
+    const voice = url.searchParams.get('voice') ?? '';
+    const rate = url.searchParams.get('rate') ?? '+0%';
+    if (!/^[A-Za-z]{2,3}-[A-Za-z]{2,4}-[A-Za-z0-9]+Neural$/.test(voice)) throw new HttpError(400, 'voz inválida');
+    if (!/^[+-]\d{1,3}%$/.test(rate)) throw new HttpError(400, 'ritmo inválido');
+    const dir = resolve('.engine-cache/voice-preview');
+    mkdirSync(dir, { recursive: true });
+    const file = join(dir, `${voice}${rate.replace('%', 'p').replace('+', 'm')}.mp3`);
+    if (!existsSync(file)) {
+      try {
+        await synthesizeOnce('Olá! Esta é a minha voz. Posso narrar o seu vídeo com calma e clareza.', /^pt-pt/i.test(voice) ? 'pt-pt' : 'pt-br', file, rate, voice);
+      } catch (e) {
+        throw new HttpError(502, 'não consegui gerar a amostra (precisa de internet): ' + (e instanceof Error ? e.message : e));
+      }
+    }
+    return sendFile(req, res, file);
+  }
 
   // /api/state
   if (parts[1] === 'state' && method === 'GET') {
