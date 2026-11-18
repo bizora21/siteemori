@@ -181,6 +181,25 @@ function capLook(p, k, a, accent, fill) {
   return { place, inner, hl, col, hcol };
 }
 
+/** Linhas de legenda: as do servidor (voz já gerada) ou, antes disso, uma estimativa a partir do texto de cada cena. */
+function edLines(p, tm) {
+  if (tm.lines?.length) return tm.lines;
+  if (ED.linesKey === tm) return ED.linesVal;
+  const out = [];
+  p.scenes.forEach((s, i) => {
+    const words = (s.narration ?? '').trim().split(/\s+/).filter(Boolean);
+    const wt = tm.wordT[i] ?? [];
+    const end = (tm.audioStarts[i] ?? 0) + (tm.durations[i] ?? 3);
+    for (let k = 0; k < words.length; k += 4) {
+      const grp = words.slice(k, k + 4);
+      const ws = grp.map((text, j) => { const st = wt[k + j] ?? end; return { text, start: st, end: wt[k + j + 1] ?? end }; });
+      out.push({ start: ws[0].start, end: ws[ws.length - 1].end, words: ws });
+    }
+  });
+  ED.linesKey = tm; ED.linesVal = out;
+  return out;
+}
+
 function edPaint() {
   const prev = $('#ed-prev');
   if (!prev || !ED.ctx) return;
@@ -244,7 +263,7 @@ function edPaint() {
   const capIn = $('#ed-cap-in');
   if (p.captions === false) capIn.replaceChildren();
   else {
-    const line = (tm.lines ?? []).find((l) => t >= l.start && t < l.end + 0.1);
+    const line = edLines(p, tm).find((l) => t >= l.start && t < l.end + 0.1);
     const o = capLook(p, ED.ctx.k, asp(p), ED.ctx.accent, ED.ctx.fill);
     cap.style.cssText = 'position:absolute;left:5%;right:5%;display:flex;justify-content:center;text-align:center;' + o.place;
     capIn.style.cssText = o.inner;
