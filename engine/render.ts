@@ -5,7 +5,7 @@ import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, statSync, wri
 import { spawnSync } from 'node:child_process';
 import { basename, extname, join, resolve } from 'node:path';
 import { toCaptionLines, type CaptionLine } from '../lib/social/tts';
-import { duration, run, stageVideo, voiceLevels } from './ffmpeg';
+import { detectBackdrop, duration, run, stageCutout, stageVideo, voiceLevels } from './ffmpeg';
 import { resolveCues } from './cues';
 import { masterAudio, qualityReport } from './master';
 import { TEMPLATES } from './templates';
@@ -69,7 +69,7 @@ function musicFile(project: Project, projectDir: string): string {
 
 export interface SceneMedia {
   src: string;
-  type: 'image' | 'video' | 'presenter';
+  type: 'image' | 'video' | 'presenter' | 'cutout';
   /** Segundo do vídeo em que entra e quanto tempo fica. */
   from: number;
   duration: number;
@@ -106,6 +106,35 @@ function tryStage(project: Project, projectDir: string, sceneId: string, rel: st
     }
     throw e;
   }
+}
+
+/** Faz (ou reaproveita) o vídeo recortado de uma cena; null (com aviso) se não houver fundo uniforme. */
+function stageCutoutFile(project: Project, projectDir: string, sceneId: string, rel: string, pl: NonNullable<Project['person']>): { src: string; clip: number } | null {
+  const src = join(projectDir, rel);
+  if (!existsSync(src)) return null;
+  let key = pl.key ?? 'auto';
+  if (key === 'verde') key = '#1fa84a';
+  else if (key === 'azul') key = '#1f4fd8';
+  else if (key === 'auto') {
+    const d = detectBackdrop(src);
+    if (!d) {
+      stageWarnings.push(`cena "${sceneId}": não consegui detetar um fundo de uma só cor nos cantos do vídeo — o recorte não foi feito (use um pano verde ou azul, ou escolha a cor do fundo)`);
+      return null;
+    }
+    key = d;
+  }
+  const tol = pl.tolerance ?? 0.15;
+  const outDir = join(VIDEO_DIR, 'public', 'media', project.id);
+  mkdirSync(outDir, { recursive: true });
+  const file = `${sceneId}-recorte-${key.replace('#', '')}-${Math.round(tol * 100)}.webm`;
+  const dst = join(outDir, file);
+  if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) {
+    if (!stageCutout(src, dst, key, tol)) {
+      stageWarnings.push(`cena "${sceneId}": o recorte falhou — usei o rosto em bolha`);
+      return null;
+    }
+  }
+  return { src: `media/${project.id}/${file}`, clip: duration(dst) };
 }
 
 function stageFile(project: Project, projectDir: string, sceneId: string, rel: string, name: string): { src: string; image: boolean; clip: number } {
@@ -151,8 +180,14 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       // O rosto e o cenário são camadas separadas: com cenário, o rosto passa a bolha.
       // Nas versões "foto" e "só voz" o vídeo do rosto não aparece (o áudio dele continua a ser a voz da cena).
       if (wantPresenter && (showFaceVideo || isClip)) {
+        const pl = { ...project.person, ...scene.person };
         const f = tryStage(project, projectDir, scene.id, scene.presenter!, `${scene.id}-rosto`);
         if (f && !f.image) face = asFace(f);
+        // Pessoa "de pé" à frente do cenário: tira a cor do fundo e guarda com transparência.
+        if (pl.mode === 'recorte' && face && !isClip) {
+          const cut = stageCutoutFile(project, projectDir, scene.id, scene.presenter!, pl);
+          if (cut) face = { ...asFace({ src: cut.src, clip: cut.clip }), type: 'cutout' };
+        }
       }
       if (scene.media && !isClip) {
         const f = tryStage(project, projectDir, scene.id, scene.media, scene.id);
@@ -318,6 +353,8 @@ function planRenderInner(
           media: media[i].main ?? undefined,
           face: media[i].face ?? undefined,
           clip: s.kind === 'clip' ? true : undefined,
+          // Disposição da pessoa recortada: lado e tamanho (só quando o recorte foi feito).
+          person: media[i].face?.type === 'cutout' ? { side: { ...project.person, ...s.person }.side ?? 'centro', size: { ...project.person, ...s.person }.size ?? 78 } : undefined,
           // Assinatura: só nesta cena, no momento escolhido (por defeito 0,3 s a seguir ao início da fala, durante 5 s).
           signature: s.signature?.name?.trim()
             ? {

@@ -86,6 +86,35 @@ export function stageVideo(input: string, out: string, stabilize?: 'leve' | 'for
   return false;
 }
 
+/** A cor do fundo uniforme de um vídeo, lida nos 4 cantos (#rrggbb), ou null se os cantos não forem parecidos. */
+export function detectBackdrop(input: string): string | null {
+  const r = spawnSync(FFMPEG, ['-v', 'error', '-ss', '0.4', '-i', input, '-frames:v', '1', '-vf', 'scale=48:48', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], { maxBuffer: 1 << 20 });
+  const b = r.stdout;
+  if (r.status !== 0 || !b || b.length < 48 * 48 * 3) return null;
+  const px = (x: number, y: number) => [b[(y * 48 + x) * 3], b[(y * 48 + x) * 3 + 1], b[(y * 48 + x) * 3 + 2]];
+  const corner = (x0: number, y0: number) => {
+    const acc = [0, 0, 0];
+    for (let y = y0; y < y0 + 4; y++) for (let x = x0; x < x0 + 4; x++) px(x, y).forEach((v, i) => (acc[i] += v / 16));
+    return acc;
+  };
+  const cs = [corner(1, 1), corner(43, 1), corner(1, 43), corner(43, 43)];
+  const mean = [0, 1, 2].map((i) => cs.reduce((a, c) => a + c[i], 0) / 4);
+  const spread = Math.max(...cs.map((c) => Math.hypot(c[0] - mean[0], c[1] - mean[1], c[2] - mean[2])));
+  if (spread > 60) return null;
+  return '#' + mean.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Tira a cor do fundo ("chroma key") e guarda o vídeo com transparência (WebM VP9). O som não vai (a voz vem da faixa única).
+ * Devolve false se não conseguir.
+ */
+export function stageCutout(input: string, out: string, keyHex: string, tolerance = 0.15): boolean {
+  const key = '0x' + keyHex.replace('#', '');
+  const sim = Math.min(0.45, Math.max(0.05, tolerance));
+  const r = spawnSync(FFMPEG, ['-y', '-loglevel', 'error', '-i', input, '-an', '-vf', `scale='min(960,iw)':-2,chromakey=color=${key}:similarity=${sim}:blend=0.04,format=yuva420p`, '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-b:v', '0', '-crf', '33', '-deadline', 'realtime', '-cpu-used', '5', '-row-mt', '1', '-auto-alt-ref', '0', '-r', '30', out], { encoding: 'utf8' });
+  return r.status === 0;
+}
+
 /**
  * Converte qualquer áudio (ex.: o mp3 do TTS) para WAV mono 44,1 kHz.
  * trimTail corta o silêncio FINAL (o TTS deixa ~0,3 s) mantendo 0,1 s de respiração;

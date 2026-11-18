@@ -15,6 +15,8 @@ async function loadVoices() {
   }
   VOICES.loading = false;
   renderVoiceList();
+  // os seletores de voz de cada cena (painel da cena) só se desenham depois da lista chegar
+  if (typeof ED !== 'undefined' && ED.sel?.type === 'scene') renderEditor();
 }
 
 const voiceRateNum = (p) => Number.parseInt(p.voice?.rate ?? '0', 10) || 0;
@@ -85,4 +87,52 @@ function voicePicker(p) {
       } })),
     h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...chips),
     h('div', { id: 'voice-list', class: 'voice-list' }));
+}
+
+// ── extras de cada cena: voz própria e pessoa à frente do cenário ─────────
+function sceneExtras(p, s, i, st) {
+  loadVoices();
+  const chip = (cur, val, label, on, title) => h('button', { class: 'chip' + (cur === val ? ' on' : ''), title, onclick: () => on(val) }, label);
+  const hasVideo = st?.kind === 'video';
+  const pl = s.person ?? {};
+  const setPl = (k, v) => { s.person = { ...(s.person ?? {}), [k]: v }; dirty(); renderEditor(); };
+
+  // voz desta cena
+  const sel = h('select', { onchange: () => { s.voiceName = sel.value || undefined; dirty(); renderEditor(); } },
+    h('option', { value: '' }, p.voice?.name ? 'A do projeto (' + (VOICES.list?.find((v) => v.name === p.voice.name)?.label ?? p.voice.name) + ')' : 'A do projeto (voz da marca)'),
+    ...(VOICES.list ?? []).map((v) => h('option', { value: v.name }, `${voiceFlag(v)} ${v.label} · ${v.gender === 'Female' ? 'feminina' : 'masculina'}`)));
+  sel.value = s.voiceName ?? '';
+  const voiceBlock = h('div', { class: 'zone stack' },
+    h('b', {}, '🗣 Voz desta cena'),
+    h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, 'Para uma conversa com duas vozes, ou uma voz diferente numa cena. Só vale se a cena não tiver gravação sua.'),
+    sel,
+    s.voiceName && h('div', { class: 'row' },
+      h('button', { onclick: () => { const v = VOICES.list?.find((x) => x.name === s.voiceName); if (v) voicePlay(p, v); } }, '▶ Ouvir esta voz'),
+      h('button', { onclick: () => { s.voiceName = undefined; dirty(); renderEditor(); } }, 'Usar a do projeto')));
+
+  // pessoa à frente do cenário
+  const personBlock = h('div', { class: 'zone stack' },
+    h('b', {}, '🧍 A pessoa nesta cena'),
+    !hasVideo
+      ? h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, 'Para pôr a pessoa à frente do cenário, grave ou carregue o seu vídeo nesta cena (botão "② Gravar" / "Carregar vídeo"). A sua voz passa a ser a do vídeo.')
+      : h('div', { class: 'stack' },
+        h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' },
+          chip(pl.mode ?? 'bolha', 'bolha', '⚪ Rosto numa bolha', (v) => setPl('mode', v), 'O rosto num círculo no canto, por cima do cenário'),
+          chip(pl.mode ?? 'bolha', 'recorte', '🧍 De pé à frente do cenário', (v) => setPl('mode', v), 'A pessoa sem o fundo, como se estivesse no sítio do cenário')),
+        pl.mode === 'recorte' && h('div', { class: 'stack' },
+          h('div', {}, h('div', { class: 'muted', style: 'font-size:13px' }, 'Onde fica'),
+            h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[['esquerda', '◀ Esquerda'], ['centro', '● Centro'], ['direita', 'Direita ▶']].map(([v, t]) => chip(pl.side ?? 'centro', v, t, (x) => setPl('side', x))))),
+          h('label', {}, `Tamanho: ${pl.size ?? 78}% do ecrã`, h('input', { type: 'range', min: 40, max: 100, step: 2, value: pl.size ?? 78, oninput: (e) => { (s.person ??= {}).size = Number(e.target.value); e.target.parentNode.firstChild.textContent = `Tamanho: ${e.target.value}% do ecrã`; dirty(); }, onchange: () => renderEditor() })),
+          h('label', {}, 'Cor do fundo atrás de si (a que se tira)',
+            (() => {
+              const k = h('select', { onchange: () => setPl('key', k.value === 'outra' ? '#00ff00' : k.value) },
+                h('option', { value: 'auto' }, 'Automática (lê os cantos do vídeo)'), h('option', { value: 'verde' }, 'Verde'), h('option', { value: 'azul' }, 'Azul'), h('option', { value: 'outra' }, 'Outra cor…'));
+              k.value = !pl.key || pl.key === 'auto' ? 'auto' : pl.key === 'verde' || pl.key === 'azul' ? pl.key : 'outra';
+              return k;
+            })()),
+          pl.key && !['auto', 'verde', 'azul'].includes(pl.key) && h('label', {}, 'Cor', h('input', { type: 'color', value: pl.key, onchange: (e) => setPl('key', e.target.value) })),
+          h('label', {}, `Sensibilidade: ${Math.round((pl.tolerance ?? 0.15) * 100)}%`, h('input', { type: 'range', min: 5, max: 40, step: 1, value: Math.round((pl.tolerance ?? 0.15) * 100), oninput: (e) => { (s.person ??= {}).tolerance = Number(e.target.value) / 100; e.target.parentNode.firstChild.textContent = `Sensibilidade: ${e.target.value}%`; dirty(); }, onchange: () => renderEditor() })),
+          h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, 'Como gravar: fundo de UMA só cor, bem iluminado e sem sombras (pano verde ou azul, ou uma parede lisa); não vista roupa dessa cor. Se ficarem restos do fundo, suba a sensibilidade; se a pessoa ficar "furada", baixe-a. O recorte só se vê no rascunho (a pré-visualização aqui é aproximada).'),
+          h('button', { title: 'Aplica esta disposição a todas as cenas com vídeo seu', onclick: () => { p.person = { ...s.person }; for (const x of p.scenes) x.person = undefined; dirty(); renderEditor(); toast('Disposição aplicada a todas as cenas.'); } }, 'Usar em todas as cenas'))));
+  return h('div', { class: 'stack' }, voiceBlock, personBlock);
 }

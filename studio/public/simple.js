@@ -335,7 +335,7 @@ function renderSimple() {
   loadPublication(files, outIdOf(p));
 }
 
-function simpleScene(p, s, i, st) {
+function simpleScene(p, s, i, st, noExtras = false) {
   const hasFace = st?.kind === 'video';
   const list = (s.cutaways ??= []);
   const words = (t) => (t.trim() ? t.trim().split(/\s+/).length : 0);
@@ -442,7 +442,8 @@ function simpleScene(p, s, i, st) {
     !isClip && rec,
     !isClip && scenery,
     h('details', {},
-      h('summary', {}, 'Mais opções desta cena (assinatura, local, nota)'),
+      h('summary', {}, 'Mais opções desta cena (voz, pessoa, assinatura, local, nota)'),
+      !noExtras && h('div', { style: 'margin-top:10px' }, sceneExtras(p, s, i, st)),
       // Assinatura: só aparece NESTA cena (ex.: onde o psicólogo fala). Em branco = não aparece nada.
       h('div', { class: 'zone', style: 'margin-top:10px' },
         h('b', {}, 'Assinatura nesta cena (opcional)'),

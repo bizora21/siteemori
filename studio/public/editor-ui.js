@@ -249,7 +249,7 @@ function edPanel() {
         h('button', { class: 'danger', onclick: edDelete }, '🗑 Apagar')),
       h('p', { class: 'muted', style: 'margin:0' }, 'Dica: arraste o bloco na linha do tempo para mudar quando entra, ou ponha o cursor dentro dele e carregue em ✂ Cortar.')));
   }
-  if (sel.type === 'scene' && p.scenes[sel.a]) return edCard(`🎙 Cena ${sel.a + 1}`, simpleScene(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a]));
+  if (sel.type === 'scene' && p.scenes[sel.a]) return edCard(`🎙 Cena ${sel.a + 1}`, h('div', { class: 'stack' }, simpleScene(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a], true), sceneExtras(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a])));
   if (sel.type === 'music') return edCard('🎵 Música', musicBlock(p));
   if (sel.type === 'voice') return edCard('🗣 Voz sintética', voicePicker(p));
   if (sel.type === 'fx') return edCard('✨ Efeitos', edEffects(p));

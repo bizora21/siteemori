@@ -43,6 +43,10 @@ export interface Scene {
    * de uma marcha, uma entrevista). Por defeito a cena é narrada: texto + voz (gravada ou sintética).
    */
   kind?: 'clip';
+  /** Voz sintética só desta cena (ex.: pt-PT-DuarteNeural); sem isto usa a do projeto. */
+  voiceName?: string;
+  /** Como a pessoa aparece nesta cena (sobrepõe o `person` do projeto). */
+  person?: PersonLayout;
   /**
    * Assinatura no ecrã, SÓ nesta cena (opcional, para onde a pessoa aparece a falar): nome, função e uma linha extra
    * (ex.: o registo profissional). Escreva só o que é verdade e o que quer mostrar. `at` (s desde o início da cena,
@@ -204,6 +208,8 @@ export interface Project {
   avatarFocus?: { y?: number; zoom?: number };
   /** Como se mostram as imagens dos cenários: 'cover' preenche o ecrã (pode cortar), 'contain' mostra-as inteiras. */
   imageFit?: 'cover' | 'contain';
+  /** Como a pessoa aparece sobre os cenários (por defeito bolha). */
+  person?: PersonLayout;
   /** Estabiliza os vídeos tremidos (telemóvel na mão): 'leve' ou 'forte'. Demora mais a preparar. */
   stabilize?: 'leve' | 'forte';
   /** Textos, emojis e imagens por cima do vídeo (reportagem). */
@@ -258,6 +264,23 @@ export interface Overlay {
   size?: number;
   style?: 'destaque' | 'simples' | 'caixa' | 'gradiente';
   anim?: 'pop' | 'fade' | 'deslizar';
+}
+
+/**
+ * Como a pessoa (vídeo do rosto) aparece sobre os cenários:
+ *  - bolha (por defeito): o rosto num círculo no canto;
+ *  - recorte: a pessoa "de pé" à frente do cenário, sem o fundo. Precisa de um fundo de uma só cor atrás dela
+ *    (pano verde ou azul, ou uma parede lisa): o motor tira essa cor. `key` 'auto' lê a cor dos cantos do vídeo.
+ */
+export interface PersonLayout {
+  mode?: 'bolha' | 'recorte';
+  side?: 'esquerda' | 'centro' | 'direita';
+  /** altura que o vídeo ocupa, em % da altura do ecrã (por defeito 78) */
+  size?: number;
+  /** cor do fundo a tirar: 'auto' (lê os cantos), 'verde', 'azul' ou um valor como #1fa84a */
+  key?: string;
+  /** quanto varia a cor do fundo (0,05 a 0,45; por defeito 0,15) */
+  tolerance?: number;
 }
 
 export interface VideoStyle {

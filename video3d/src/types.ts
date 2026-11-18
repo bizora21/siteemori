@@ -93,7 +93,7 @@ export interface AprenderProps {
 /** Imagem, vídeo ou apresentador de uma cena (preparado pelo motor em public/media/). */
 export interface SceneMediaProps {
   src: string;
-  type: 'image' | 'video' | 'presenter';
+  type: 'image' | 'video' | 'presenter' | 'cutout';
   /** Segundo do vídeo em que entra e quanto tempo fica. */
   from: number;
   duration: number;
@@ -149,6 +149,8 @@ export interface ReportagemProps {
     face?: SceneMediaProps;
     /** Cena real: o vídeo ocupa o ecrã com o seu próprio som (sem foto animada por cima). */
     clip?: boolean;
+    /** Pessoa recortada (sem fundo) à frente do cenário: lado e altura em % do ecrã. */
+    person?: { side: 'esquerda' | 'centro' | 'direita'; size: number };
     /** Assinatura no ecrã só nesta cena (from/to em segundos no vídeo). */
     signature?: { name: string; role?: string; extra?: string; from: number; to: number };
     cutaways?: SceneMediaProps[];

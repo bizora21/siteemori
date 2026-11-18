@@ -278,3 +278,8 @@ Limites honestos: sem avatar com lÃ¡bios sincronizados, sem recorte de pessoa e 
 ## Escolher a voz sintética
 
 `voice.name` no projeto (ex.: `pt-PT-DuarteNeural`) escolhe a voz do Edge TTS; sem nome usa a da marca/idioma. `voice.rate` (ex.: `+10%`) muda a velocidade. O estúdio lista as vozes (`GET /api/voices`, vindas da Microsoft: português de Portugal e do Brasil e as multilingues) e toca amostras (`GET /api/voices/preview`). As gravações suas têm sempre prioridade; sem internet o motor cai na voz offline Piper.
+
+## Pessoa à frente do cenário (recorte) e voz por cena
+
+- `person` (projeto) ou `scenes[].person`: `mode: 'bolha' | 'recorte'`, `side: esquerda|centro|direita`, `size` (% da altura do ecrã, 78 por defeito), `key` ('auto' lê a cor dos 4 cantos do vídeo; 'verde', 'azul' ou `#rrggbb`) e `tolerance` (0,05–0,45; 0,15 por defeito). O recorte usa o filtro `chromakey` do ffmpeg e guarda um WebM VP9 com transparência; a composição mostra-o por cima dos cenários. Precisa de um fundo de UMA só cor atrás da pessoa (pano verde/azul ou parede lisa). Sem fundo uniforme o motor avisa e volta à bolha. Não há recorte por IA (sem GPU): fundos desordenados não funcionam.
+- `scenes[].voiceName`: voz sintética só dessa cena (conversas com duas vozes). Sobrepõe `voice.name` do projeto.

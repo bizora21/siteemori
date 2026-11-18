@@ -124,6 +124,7 @@ function edPreview() {
     p.style?.wash && h('div', { style: `position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:${p.style.wash === 'forte' ? 0.4 : 0.2};background:linear-gradient(160deg,${(pal ?? PAL.oceano).accent},${(pal ?? PAL.oceano).accent2})` }),
     p.style?.vignette && h('div', { style: 'position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 52%,rgba(0,0,0,.5) 100%)' }),
     h('div', { id: 'ed-face', class: 'ed-face', hidden: true }),
+    h('canvas', { id: 'ed-person', width: 270, height: 480, hidden: true, style: 'position:absolute;bottom:0;pointer-events:none' }),
     h('div', { id: 'ed-ovs', style: 'position:absolute;inset:0;pointer-events:none' }),
     h('div', { id: 'ed-cap', style: `position:absolute;left:5%;right:5%;bottom:${asp[1] > asp[0] ? 22 : 10}%;text-align:center;font-weight:800;font-size:${64 * k}px;line-height:1.15;color:#fff;text-shadow:0 0 4px #000,0 2px 8px #000` }),
     h('div', { id: 'ed-sig', style: `position:absolute;left:5%;bottom:34%;color:#fff;text-shadow:0 1px 4px #000;border-left:3px solid ${accent};padding-left:8px;display:none` }));
@@ -172,6 +173,8 @@ function edPaint() {
   const cur = items.find((x) => t >= x.from && t < x.to);
   const st = state.data.scenes[i];
   const hasFace = st?.kind === 'video';
+  const pl = { ...p.person, ...s.person };
+  const cut = hasFace && pl.mode === 'recorte';
 
   // fundo: o cenário atual, ou o rosto (vídeo gravado) em ecrã inteiro
   let key = '';
@@ -182,7 +185,7 @@ function edPaint() {
     if (ED.ctx.bgKey !== key) { const first = ED.ctx.bgKey === ''; ED.ctx.bgKey = key; bg.replaceChildren(edMedia(cur.c.media, isVid, (cur.c.fit ?? p.imageFit) === 'contain')); bg.style.background = '#000'; if (ED.playing && !first) enterAnim(bg, p.style?.transition ?? 'fade', p.style?.transitionSpeed); }
     const v = bg.querySelector('video');
     if (v) { const want = (cur.c.startFrom ?? 0) + (t - cur.from); if (Math.abs(v.currentTime - want) > 0.4) v.currentTime = Math.max(0, want); if (ED.playing) v.play().catch(() => {}); else v.pause(); }
-  } else if (hasFace) {
+  } else if (hasFace && !cut) {
     key = `f:${s.id}`;
     if (ED.ctx.bgKey !== key) { ED.ctx.bgKey = key; bg.replaceChildren(h('video', { src: `/api/projects/${p.id}/voice/${s.id}`, muted: true, playsinline: true, style: 'width:100%;height:100%;object-fit:cover' })); }
     const v = bg.querySelector('video');
@@ -195,7 +198,7 @@ function edPaint() {
     bg.style.background = ED.ctx.pal ? `linear-gradient(160deg,${ED.ctx.pal.a},${ED.ctx.pal.b})` : 'linear-gradient(160deg,#243b55,#0f2027)';
   }
   // rosto em bolha por cima dos cenários
-  if (cur && hasFace) {
+  if (cur && hasFace && !cut) {
     face.hidden = false;
     const fk = `b:${s.id}`;
     if (ED.ctx.faceKey !== fk) { ED.ctx.faceKey = fk; face.replaceChildren(h('video', { src: `/api/projects/${p.id}/voice/${s.id}`, muted: true, playsinline: true, style: 'width:100%;height:100%;object-fit:cover' })); }
@@ -204,6 +207,9 @@ function edPaint() {
     if (v && Math.abs(v.currentTime - want) > 0.4) v.currentTime = want;
     if (v) { if (ED.playing) v.play().catch(() => {}); else v.pause(); }
   } else { face.hidden = true; ED.ctx.faceKey = ''; }
+
+  // pessoa "de pé" à frente do cenário: recorte aproximado (tira a cor do fundo no próprio ecrã)
+  edPaintPerson(p, s, pl, cut, t, tm.audioStarts[i] ?? 0);
 
   // textos, emojis, imagens
   (p.overlays ?? []).forEach((o, k) => {
@@ -322,4 +328,77 @@ function edAddScene() {
   renderEditor();
   toast('Cena nova juntada. Escreva o texto no painel à direita.', 4500);
   edResync();
+}
+
+/** Recorte aproximado para a pré-visualização: tira a cor do fundo a cada imagem (o final usa o filtro do ffmpeg, mais fino). */
+function edPaintPerson(p, s, pl, cut, t, audioStart) {
+  const cv = $('#ed-person');
+  if (!cv) return;
+  if (!cut) { cv.hidden = true; return; }
+  const screen = $('#ed-prev');
+  const sw = screen.offsetWidth;
+  const sh = screen.offsetHeight;
+  const hPx = (sh * (pl.size ?? 78)) / 100;
+  const wPx = hPx * 0.5625;
+  cv.hidden = false;
+  cv.style.height = hPx + 'px';
+  cv.style.width = wPx + 'px';
+  const side = pl.side ?? 'centro';
+  cv.style.left = side === 'esquerda' ? '-3%' : side === 'direita' ? 'auto' : '50%';
+  cv.style.right = side === 'direita' ? '-3%' : 'auto';
+  cv.style.transform = side === 'centro' ? 'translateX(-50%)' : 'none';
+  cv.style.filter = 'drop-shadow(0 6px 14px rgba(0,0,0,.5))';
+  if (!ED.ctx.pv || ED.ctx.pvScene !== s.id) {
+    ED.ctx.pvScene = s.id;
+    ED.ctx.keyRGB = null;
+    const v = document.createElement('video');
+    v.muted = true;
+    v.playsInline = true;
+    v.src = `/api/projects/${p.id}/voice/${s.id}`;
+    v.addEventListener('seeked', () => edDrawPerson(pl));
+    v.addEventListener('loadeddata', () => edDrawPerson(pl));
+    ED.ctx.pv = v;
+  }
+  const v = ED.ctx.pv;
+  const want = Math.max(0, t - audioStart);
+  if (Math.abs(v.currentTime - want) > 0.3) v.currentTime = want;
+  if (ED.playing) v.play().catch(() => {}); else v.pause();
+  edDrawPerson(pl);
+}
+
+function edDrawPerson(pl) {
+  const cv = $('#ed-person');
+  const v = ED.ctx?.pv;
+  if (!cv || !v || v.readyState < 2 || cv.hidden) return;
+  const W = 216;
+  const H = 384;
+  cv.width = W;
+  cv.height = H;
+  const g = cv.getContext('2d', { willReadFrequently: true });
+  g.drawImage(v, 0, 0, W, H);
+  const img = g.getImageData(0, 0, W, H);
+  const d = img.data;
+  const px = (x, y) => { const k = (y * W + x) * 4; return [d[k], d[k + 1], d[k + 2]]; };
+  if (!ED.ctx.keyRGB) {
+    const k = pl.key;
+    if (k === 'verde') ED.ctx.keyRGB = [31, 168, 74];
+    else if (k === 'azul') ED.ctx.keyRGB = [31, 79, 216];
+    else if (k && /^#[0-9a-f]{6}$/i.test(k)) ED.ctx.keyRGB = [parseInt(k.slice(1, 3), 16), parseInt(k.slice(3, 5), 16), parseInt(k.slice(5, 7), 16)];
+    else {
+      const acc = [0, 0, 0];
+      for (const [x0, y0] of [[2, 2], [W - 6, 2], [2, H - 6], [W - 6, H - 6]]) for (let y = y0; y < y0 + 4; y++) for (let x = x0; x < x0 + 4; x++) px(x, y).forEach((c, i) => (acc[i] += c / 64));
+      ED.ctx.keyRGB = acc;
+    }
+  }
+  const kr = ED.ctx.keyRGB;
+  const cbcr = (r, gg, b) => [128 - 0.168736 * r - 0.331264 * gg + 0.5 * b, 128 + 0.5 * r - 0.418688 * gg - 0.081312 * b];
+  const [kcb, kcr] = cbcr(kr[0], kr[1], kr[2]);
+  const sim = pl.tolerance ?? 0.15;
+  const blend = 0.04;
+  for (let k = 0; k < d.length; k += 4) {
+    const [cb, cr] = cbcr(d[k], d[k + 1], d[k + 2]);
+    const diff = Math.hypot(cb - kcb, cr - kcr) / (255 * 1.4142);
+    d[k + 3] = Math.max(0, Math.min(1, (diff - sim) / blend)) * 255;
+  }
+  g.putImageData(img, 0, 0);
 }

@@ -125,6 +125,21 @@ const FullMedia = ({ m, fadeFrames = 7, box, transition = 'fade', speed = 10, ex
 };
 
 /** O rosto num círculo (sem recorte da pessoa: o fundo da gravação fica escondido pela forma). */
+/** A pessoa "de pé" à frente do cenário (vídeo sem fundo, com transparência). */
+const PersonCutout = ({ m, side, size, look }: { m: SceneMediaProps; side: 'esquerda' | 'centro' | 'direita'; size: number; look: string }) => {
+  const frame = useCurrentFrame();
+  const { fps, height } = useVideoConfig();
+  const total = Math.max(2, Math.round(m.duration * fps));
+  const inP = easeOut(interpolate(frame, [0, 12], [0, 1], clamp));
+  const outP = interpolate(frame, [total - 6, total], [1, 0], clamp);
+  const pos: React.CSSProperties = side === 'esquerda' ? { left: '-3%' } : side === 'direita' ? { right: '-3%' } : { left: '50%', marginLeft: 0 };
+  return (
+    <div style={{ position: 'absolute', bottom: -((1 - inP) * 40), height: (height * size) / 100, ...pos, transform: side === 'centro' ? 'translateX(-50%)' : 'none', opacity: inP * outP, filter: `${look === 'none' ? '' : look + ' '}drop-shadow(0 14px 34px rgba(0,0,0,.5))` }}>
+      <OffthreadVideo src={staticFile(m.src)} muted transparent style={{ height: '100%', width: 'auto' }} />
+    </div>
+  );
+};
+
 const FaceBubble = ({ m, size, left, bottom, accent }: { m: SceneMediaProps; size: number; left: number; bottom: number; accent: string }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -304,7 +319,7 @@ export const Reportagem = (props: ReportagemProps) => {
   // se esta for mais longa). Com uma só cena, sem isto ela aparecia logo no primeiro segundo.
   const ctaStart = Math.max(sceneStart, props.voiceEndSeconds - 5);
   const ctaIn = interpolate(t - ctaStart, [0.2, 0.7], [0, 1], clamp);
-  const hasBubble = hasScenery(scene) && (Boolean(scene?.face) || Boolean(props.avatar));
+  const hasBubble = hasScenery(scene) && ((Boolean(scene?.face) && scene?.face?.type !== 'cutout') || Boolean(props.avatar));
   // Há um cartaz (imagem inteira) no ecrã agora? Então o rosto desce para não o tapar.
   const posterNow = props.scenes.some(
     (s) =>
@@ -331,7 +346,7 @@ export const Reportagem = (props: ReportagemProps) => {
 
       {/* Rosto em ecrã inteiro: só nas cenas SEM cenário (com cenário passa a bolha) */}
       {props.scenes.map((s, i) =>
-        s.face && !hasScenery(s) ? (
+        s.face && s.face.type !== 'cutout' && !hasScenery(s) ? (
           <Sequence key={`f${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
             <FullMedia transition={tr} m={s.face} fadeFrames={4} />
           </Sequence>
@@ -359,9 +374,18 @@ export const Reportagem = (props: ReportagemProps) => {
 
       {/* O rosto em bolha, por cima do cenário e dos cortes */}
       {props.scenes.map((s, i) =>
-        s.face && hasScenery(s) ? (
+        s.face && s.face.type !== 'cutout' && hasScenery(s) ? (
           <Sequence key={`b${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
             <FaceBubble m={s.face} size={bubbleSize * u} left={pad} bottom={bubbleBottom * u} accent={accent} />
+          </Sequence>
+        ) : null,
+      )}
+
+      {/* A pessoa recortada, de pé à frente do cenário */}
+      {props.scenes.map((s, i) =>
+        s.face?.type === 'cutout' && s.person ? (
+          <Sequence key={`p${i}`} from={Math.round(s.face.from * fps)} durationInFrames={Math.max(2, Math.round(s.face.duration * fps))} layout="none">
+            <PersonCutout m={s.face} side={s.person.side} size={s.person.size} look={look} />
           </Sequence>
         ) : null,
       )}

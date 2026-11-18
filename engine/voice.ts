@@ -281,7 +281,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
 
   // ── 2/3. Voz sintética (Edge/ElevenLabs → Piper) ──────────────────────
   const rate = ctx.project.voice?.rate ?? '+0%';
-  const voiceName = ctx.project.voice?.name?.trim() || undefined;
+  const voiceName = scene.voiceName?.trim() || ctx.project.voice?.name?.trim() || undefined;
   const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY), voiceName ?? '']);
   const wav = join(ctx.cacheDir, `${scene.id}-${key}.wav`);
   const meta = `${wav}.json`;
