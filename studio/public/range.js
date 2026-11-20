@@ -208,6 +208,7 @@ function rangeCutOut() {
   }
   const gone = p.scenes.splice(iso.first, count).map((s) => s.id);
   p.overlays = (p.overlays ?? []).filter((o) => !gone.includes(o.scene));
+  if (p.sounds) { p.sounds = p.sounds.filter((o) => !gone.includes(o.scene)); if (!p.sounds.length) p.sounds = undefined; }
   ED.range = null;
   ED.sel = null;
   dirty();

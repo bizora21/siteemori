@@ -337,6 +337,8 @@ async function save() {
 }
 
 async function build(opts) {
+  const ph = state.data.project.scenes.map((s, i) => (/Escreva aqui/i.test(s.narration ?? '') ? i + 1 : 0)).filter(Boolean);
+  if (ph.length && !confirm(`A cena ${ph.join(', ')} ainda tem o texto de exemplo ("Escreva aqui…"): a voz vai lê-lo.\n\nEscreva primeiro o que quer dizer.\n\nContinuar mesmo assim?`)) return;
   if (state.dirty && !(await save())) return;
   // Um rascunho nunca é bloqueado pelas regras de conteúdo; só o final.
   const finalRun = !opts.noRender && !opts.draft;

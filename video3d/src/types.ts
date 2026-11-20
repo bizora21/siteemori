@@ -158,6 +158,7 @@ export interface ReportagemProps {
     cutaways?: SceneMediaProps[];
   }[];
   /** Textos, emojis e imagens por cima do vídeo (from/to em segundos no vídeo). */
+  sounds?: { src: string; from: number; to: number; volume: number }[];
   overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa' | 'gradiente'; anim: 'pop' | 'fade' | 'deslizar' }[];
   host?: { name: string; role?: string };
   /** Foto da pessoa (versão "foto animada"): numa bolha que pulsa com a voz. */

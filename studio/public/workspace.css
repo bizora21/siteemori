@@ -93,3 +93,18 @@ body.ws-full .ed-bar { position: sticky; top: 0; }
 
 .tl-trans { position: absolute; left: 2px; top: 2px; z-index: 3; width: 22px; height: 22px; line-height: 22px; text-align: center; font-style: normal; font-size: 13px; border-radius: 50%; background: #f5b82e; color: #101820; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.5); }
 .tl-trans:hover { transform: scale(1.15); }
+
+.tl-block.say { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.18); color: #dfe6ee; font-size: 12px; cursor: pointer; }
+.tl-block.say:hover { border-color: #f5b82e; }
+.tl-block.snd { background: linear-gradient(135deg, #1f7a5a, #2fae83); color: #fff; }
+.tl-block.snd.sel { outline: 2px solid #f5b82e; }
+.tl-block.scene.todo { background: rgba(245,184,46,.22); border: 1px dashed #f5b82e; color: #ffd98a; }
+
+/* linha do tempo mais compacta: cabem todas as faixas (cenas, texto falado, vídeo, texto, sons, música, efeitos) */
+.ed-app { grid-template-rows: auto minmax(0, 1fr) 10px minmax(170px, var(--tl-h, 46vh)); }
+.tl-row { margin-top: 3px; }
+.tl-lane { min-height: 34px; }
+.tl-block { height: 28px; top: 3px; font-size: 12px; }
+.tl-block.say { font-size: 11.5px; }
+.tl-name { font-size: 12px; }
+.ed-tool .ed-lab { font-size: 11px; white-space: nowrap; letter-spacing: -.2px; }

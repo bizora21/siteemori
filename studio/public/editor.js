@@ -61,6 +61,7 @@ function edStop() {
   cancelAnimationFrame(ED.raf);
   ED.audio?.pause();
   ED.music?.pause();
+  Object.values(ED.snd ?? {}).forEach((a) => a.pause());
   document.querySelectorAll('#ed-prev video').forEach((v) => v.pause());
   const b = $('#ed-play');
   if (b) b.textContent = '▶';
@@ -68,7 +69,7 @@ function edStop() {
 
 function edAudioFor() {
   const st = curStatus();
-  const key = `${state.id}|${state.version}|${st.audio?.exists}|${state.data.timing.exact}`;
+  const key = `${state.id}|${state.version}|${st.audio?.exists}|${st.audio?.mtime}`;
   if (!st.audio?.exists) { ED.audio = null; ED.audioKey = ''; return null; }
   if (ED.audioKey !== key) {
     ED.audio = new Audio(`/api/projects/${state.id}/audio?version=${state.version}&t=${Date.now()}`);
@@ -262,6 +263,19 @@ function edPaint() {
     ED.ctx.ovEls[k].style.display = t >= from && t < from + (o.seconds ?? 3) ? '' : 'none';
   });
 
+  // sons juntados: tocam na hora certa durante a reprodução
+  ED.snd ??= {};
+  (p.sounds ?? []).forEach((o) => {
+    const oi = Math.max(0, p.scenes.findIndex((x) => x.id === o.scene));
+    const from = (tm.audioStarts[oi] ?? 0) + (o.at ?? 0);
+    const to = from + (o.seconds ?? 5);
+    const a = (ED.snd[o.file] ??= new Audio(`/api/projects/${p.id}/file?p=${encodeURIComponent(o.file)}`));
+    a.volume = Math.min(1, Math.max(0, o.volume ?? 0.6));
+    const on = ED.playing && t >= from && t < to;
+    if (on && a.paused) { a.currentTime = Math.max(0, t - from); a.play().catch(() => {}); }
+    if (!on && !a.paused) a.pause();
+  });
+
   // legendas
   const cap = $('#ed-cap');
   const capIn = $('#ed-cap-in');
@@ -336,6 +350,7 @@ function edDelete() {
   else if (sel.type === 'cen') { p.scenes[sel.a].cutaways.splice(sel.b, 1); if (!p.scenes[sel.a].cutaways.length) p.scenes[sel.a].cutaways = undefined; ED.sel = null; }
   else if (sel.type === 'scene') { if (p.scenes.length < 2) return alert('O vídeo precisa de pelo menos uma cena.'); if (!confirm(`Remover a cena ${sel.a + 1}?`)) return; p.scenes.splice(sel.a, 1); ED.sel = null; dirty(); renderEditor(); return edResync(); }
   else if (sel.type === 'music') { p.music = undefined; ED.sel = null; }
+  else if (sel.type === 'snd') { p.sounds.splice(sel.a, 1); if (!p.sounds.length) p.sounds = undefined; ED.sel = null; }
   else return toast('Este elemento não se apaga aqui.');
   dirty(); renderEditor();
 }

@@ -314,7 +314,7 @@ function detail(id: string) {
 function newestInput(id: string): number {
   const dir = projectDir(id);
   let t = existsSync(projectFile(id)) ? statSync(projectFile(id)).mtimeMs : 0;
-  for (const sub of ['voice', 'presenter', 'media', 'music']) {
+  for (const sub of ['voice', 'presenter', 'media', 'music', 'sounds']) {
     const d = join(dir, sub);
     if (!existsSync(d)) continue;
     for (const f of readdirSync(d)) t = Math.max(t, statSync(join(d, f)).mtimeMs);
@@ -330,7 +330,8 @@ function outputStatus(id: string, versionIds: string[] = []) {
   const newest = newestInput(id);
   const info = (file: string) => {
     if (!existsSync(file)) return { exists: false, fresh: false };
-    return { exists: true, fresh: statSync(file).mtimeMs >= newest };
+    const m = statSync(file).mtimeMs;
+    return { exists: true, fresh: m >= newest, mtime: Math.round(m) };
   };
   const of = (oid: string) => ({
     audio: info(resolve('video3d/public/audio', `${oid}.mp3`)),
@@ -361,7 +362,7 @@ function personalize(id: string): string {
   };
   mkdirSync(projectDir(nid), { recursive: true });
   // As gravações (voz, rosto) e a música vêm juntas: não é preciso gravar outra vez.
-  for (const sub of ['voice', 'presenter', 'music']) if (existsSync(join(projectDir(id), sub))) cpSync(join(projectDir(id), sub), join(projectDir(nid), sub), { recursive: true });
+  for (const sub of ['voice', 'presenter', 'music', 'sounds']) if (existsSync(join(projectDir(id), sub))) cpSync(join(projectDir(id), sub), join(projectDir(nid), sub), { recursive: true });
   writeFileSync(projectFile(nid), JSON.stringify(p, null, 2) + '\n');
   return nid;
 }
@@ -485,6 +486,14 @@ async function uploadFile(req: IncomingMessage, id: string, kind: string, sceneI
     project.avatar = `avatar${ext}`;
     writeFileSync(projectFile(id), JSON.stringify(project, null, 2) + '\n');
     return { path: project.avatar };
+  }
+
+  if (kind === 'sound') {
+    if (!AUDIO_EXT.includes(ext)) throw new HttpError(415, 'o som deve ser mp3, wav, m4a, ogg, flac ou webm');
+    mkdirSync(join(dir, 'sounds'), { recursive: true });
+    const file = safeName(name);
+    await streamToFile(req, join(dir, 'sounds', file));
+    return { path: `sounds/${file}` };
   }
 
   if (kind === 'music') {
@@ -822,7 +831,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     // GET /api/projects/:id/file?p=media/x.jpg — pré-visualização (só estas subpastas)
     if (sub === 'file' && method === 'GET') {
       const p = url.searchParams.get('p') ?? '';
-      if (!/^(media|presenter|music|voice)\/|^avatar\.(jpg|jpeg|png|webp)$/.test(p)) throw new HttpError(400, 'caminho inválido');
+      if (!/^(media|presenter|music|voice|sounds)\/|^avatar\.(jpg|jpeg|png|webp)$/.test(p)) throw new HttpError(400, 'caminho inválido');
       return sendFile(req, res, inside(projectDir(id), ...p.split('/')));
     }
 

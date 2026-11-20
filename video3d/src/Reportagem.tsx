@@ -623,6 +623,14 @@ export const Reportagem = (props: ReportagemProps) => {
       <Sequence from={Math.round(props.leadSeconds * fps)}>
         <Audio src={staticFile(props.audio)} />
       </Sequence>
+      {(props.sounds ?? []).map((a, k) => {
+        const len = Math.max(2, Math.round((a.to - a.from) * fps));
+        return (
+          <Sequence key={`snd${k}`} from={Math.round(a.from * fps)} durationInFrames={len}>
+            <Audio src={staticFile(a.src)} volume={(f) => a.volume * Math.min(1, f / 8, Math.max(0, (len - f) / 12))} />
+          </Sequence>
+        );
+      })}
       {props.music && <Audio src={staticFile(props.music)} volume={musicVolume} />}
     </AbsoluteFill>
   );

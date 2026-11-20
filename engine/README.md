@@ -292,3 +292,6 @@ Ferramenta ⬚ Selecionar (ou Shift+arrastar na régua, ou teclas I/O): escolhe 
 
 ### Transição por imagem
 `cutaways[].transition` escolhe como cada foto/vídeo entra (qualquer das transições, ou `corte` = sem transição); sem isso usa `style.transition`. No editor: marcador na ponta de cada bloco da linha "Vídeo e fotos" ou painel da imagem.
+
+### Sons na linha do tempo
+`sounds[]` (file, scene, at, seconds, volume, label): ambiente do local, efeitos ou gravações suas, na hora certa (misturados no vídeo, com entrada/saída suaves). No editor: faixa "Sons e ambiente" (clique, largue um ficheiro ou grave no microfone) e ferramenta Som.

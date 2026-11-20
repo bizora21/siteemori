@@ -19,6 +19,7 @@ async function autoRun() {
   const p = state.data.project;
   const sig = autoSig(p);
   if (AUTO.done[state.id] === sig || AUTO.failed === sig) return;
+  if (p.scenes.some((s) => /Escreva aqui/i.test(s.narration ?? ''))) return; // ainda há texto de exemplo: não gerar a voz
   if (state.data.issues?.some((i) => i.level === 'error' && !i.finalOnly)) return;
   const jb = state.data.lastJob?.status;
   if (jb === 'queued' || jb === 'running') return autoPlan(4000);

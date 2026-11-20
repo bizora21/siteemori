@@ -3,7 +3,7 @@
 // Usa o núcleo de editor.js (dados, reprodução, cortes) e as funções de simple.js / media.js / timeline.js.
 
 const ED_LABEL_W = 118; // largura da coluna com os nomes das faixas
-const ED_ROW = 42; // altura de cada linha de blocos
+const ED_ROW = 34; // altura de cada linha de blocos
 
 /** Zoom que faz o vídeo todo caber na largura da página. */
 const edFitPps = (total) => Math.min(80, Math.max(9, Math.floor((($('#main')?.clientWidth ?? 1000) - ED_LABEL_W - 120) / Math.max(1, total))));
@@ -99,10 +99,10 @@ function edTimeline() {
   const lane = (icon, name, kids, hint, rows = 1, opts = {}) => h('div', { class: 'tl-row' },
     h('div', { class: 'tl-name' }, h('span', { 'aria-hidden': 'true', style: 'font-size:18px' }, icon), h('span', {}, name)),
     h('div', { class: 'tl-lane', style: `width:${W}px;height:${rows * ED_ROW + 8}px`, onpointerdown: (e) => { if (e.target === e.currentTarget) edSeek((e.clientX - e.currentTarget.getBoundingClientRect().left) / pps); },
-      onclick: opts.menu ? (e) => { if (e.target === e.currentTarget) edAddMenu(e.clientX, e.clientY, edLaneTime(e, e.currentTarget)); } : undefined,
+      onclick: opts.menu ? (e) => { if (e.target === e.currentTarget) (opts.menu === 'sound' ? edSoundMenu : edAddMenu)(e.clientX, e.clientY, edLaneTime(e, e.currentTarget)); } : undefined,
       ondragover: opts.menu ? (e) => { e.preventDefault(); e.currentTarget.classList.add('drop'); } : undefined,
       ondragleave: opts.menu ? (e) => e.currentTarget.classList.remove('drop') : undefined,
-      ondrop: opts.menu ? (e) => edLaneDrop(e, e.currentTarget) : undefined },
+      ondrop: opts.menu ? (e) => edLaneDrop(e, e.currentTarget, opts.menu) : undefined },
       kids.length ? null : h('span', { class: 'tl-empty' }, hint), ...kids));
 
   // régua (clique ou arraste para mover o cursor)
@@ -124,7 +124,7 @@ function edTimeline() {
     const from = tm.starts[i] ?? 0;
     const to = tm.starts[i + 1] ?? tm.total;
     const rec = state.data.scenes[i]?.recorded;
-    const el = blk(from, to, 'scene' + (selIs('scene', i) ? ' sel' : ''), h('span', { class: 'tl-lab' }, `${i + 1} · ${rec ? '🎙 ' : ''}${s.narration.slice(0, 50)}`), `Cena ${i + 1}: ${s.narration.slice(0, 80)}. Arraste para mudar a ordem.`, () => select({ type: 'scene', a: i }));
+    const el = blk(from, to, 'scene' + (selIs('scene', i) ? ' sel' : '') + (/Escreva aqui/i.test(s.narration) ? ' todo' : ''), h('span', { class: 'tl-lab' }, /Escreva aqui/i.test(s.narration) ? `${i + 1} · ✎ falta escrever o texto desta cena` : `${i + 1} · ${rec ? '🎙 ' : ''}${s.narration.slice(0, 50)}`), `Cena ${i + 1}: ${s.narration.slice(0, 80)}. Arraste para mudar a ordem.`, () => select({ type: 'scene', a: i }));
     el.addEventListener('pointerdown', (e) => edDrag(e, el, { from, secs: to - from, min: 0, max: tm.total, snaps: [], done: ({ from: f, moved }) => {
       if (!moved) return select({ type: 'scene', a: i });
       // a cena passa para depois de outra quando o seu início ultrapassa o meio dessa outra
@@ -138,6 +138,37 @@ function edTimeline() {
       toast('Cenas trocadas de ordem. Carregue em "Calcular tempos" para atualizar os tempos.', 5000);
       edResync();
     } }));
+    return el;
+  });
+
+  // O que se diz (as palavras da narração, no tempo certo): clique para pôr o cursor ali
+  const say = edLines(p, tm).map((l) => {
+    const txt = l.words.map((w) => w.text).join(' ');
+    const el = blk(l.start, Math.max(l.end, l.start + 0.3), 'say', h('span', { class: 'tl-lab' }, txt), txt, () => edSeek(l.start + 0.01));
+    el.addEventListener('click', () => edSeek(l.start + 0.01));
+    return el;
+  });
+
+  // Sons e ambiente
+  const snds = (p.sounds ?? []).map((o, k) => {
+    const oi = Math.max(0, p.scenes.findIndex((x) => x.id === o.scene));
+    const from = (tm.audioStarts[oi] ?? 0) + (o.at ?? 0);
+    const secs = o.seconds ?? 5;
+    const nm = o.label || o.file.split('/').pop();
+    const el = blk(from, from + secs, 'snd' + (selIs('snd', k) ? ' sel' : ''), [h('i', { class: 'tl-handle l', title: 'Puxe para mudar o início' }), h('span', { class: 'tl-lab' }, '🔊 ' + nm), h('i', { class: 'tl-handle', title: 'Puxe para mudar a duração' })], `Som: ${nm}. Arraste para mover.`, () => select({ type: 'snd', a: k }));
+    el.addEventListener('pointerdown', (e) => {
+      const mode = e.target.classList.contains('tl-handle') ? (e.target.classList.contains('l') ? 'left' : 'right') : 'move';
+      edDrag(e, el, { from, secs, mode, min: 0, max: tm.total - 0.5, snaps: edSnapPoints(-1), done: ({ from: f, secs: s2, moved }) => {
+        if (moved) {
+          if (mode === 'move') o.scene = p.scenes[edSceneAt(f)].id;
+          if (mode !== 'right') { const own = Math.max(0, p.scenes.findIndex((x) => x.id === o.scene)); o.at = Math.max(0, Math.round((f - (tm.audioStarts[own] ?? 0)) * 10) / 10); }
+          if (mode !== 'move') o.seconds = Math.round(s2 * 10) / 10;
+          dirty();
+        }
+        ED.sel = { type: 'snd', a: k };
+        renderEditor();
+      } });
+    });
     return el;
   });
 
@@ -205,8 +236,10 @@ function edTimeline() {
   const sc = h('div', { class: 'tl-scroll', id: 'ed-scroll', style: 'position:relative' },
     h('div', { style: 'display:flex' }, h('div', { style: `width:${ED_LABEL_W}px;flex:none` }), ruler),
     lane('🎙', 'Cenas e voz', scenes, 'Sem cenas', 1),
+    lane('📝', 'O que se diz', say, 'Escreva o texto das cenas', 1),
     lane('🎬', 'Vídeo e fotos', vids, 'Clique aqui, ou largue uma foto ou vídeo', 1, { menu: true }),
     lane('🔤', 'Texto e emojis', ovs, 'Nada ainda: use "Texto" ou "Emoji"', Math.max(1, rowEnd.length)),
+    lane('🔊', 'Sons e ambiente', snds, 'Clique aqui, ou largue um som do local', 1, { menu: 'sound' }),
     lane('🎵', 'Música', [music], '', 1),
     lane('✨', 'Efeitos', [fx], '', 1),
     ...edSceneMarks(),
@@ -260,6 +293,7 @@ function edPanel() {
       h('p', { class: 'muted', style: 'margin:0' }, 'Dica: arraste o bloco na linha do tempo para mudar quando entra, ou ponha o cursor dentro dele e carregue em ✂ Cortar.')));
   }
   if (sel.type === 'scene' && p.scenes[sel.a]) return edCard(`🎙 Cena ${sel.a + 1}`, h('div', { class: 'stack' }, simpleScene(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a], true), sceneExtras(p, p.scenes[sel.a], sel.a, state.data.scenes[sel.a])));
+  if (sel.type === 'snd') return edCard('🔊 Som', edSoundPanel(p, sel.a));
   if (sel.type === 'music') return edCard('🎵 Música', musicBlock(p));
   if (sel.type === 'voice') return edCard('🗣 Voz sintética', voicePicker(p));
   if (sel.type === 'fx') return edCard('✨ Efeitos', edEffects(p));
@@ -411,6 +445,7 @@ function renderVideoEditor() {
       try { const r = await uploadTo('media', sceneAtCursor(), f, 'Cenário'); edAddScenery(r.path); } catch (e) { toast('Erro: ' + e.message, 6000); }
     }),
     edTool('🌄', 'Pexels', 'Procurar fotos e vídeos grátis (paisagens, cidades, animais…)', () => openPexels(sceneAtCursor(), (path) => edAddScenery(path))),
+    edTool('🔊', 'Som', 'Juntar um som do local (ambiente, efeito) ou gravar um agora', () => { edAim(); const r = $('#ed-scroll').getBoundingClientRect(); edSoundMenu(r.left + 160, r.bottom - 60, ED.t); }),
     edTool('🗣', 'Voz', 'Escolher a voz sintética (ouvir e escolher entre as vozes disponíveis)', () => { ED.sel = { type: 'voice' }; renderEditor(); }, { on: ED.sel?.type === 'voice' }),
     edTool('🎵', 'Música', 'Juntar ou mudar a música de fundo', () => { ED.sel = { type: 'music' }; renderEditor(); }, { on: ED.sel?.type === 'music' }),
     edTool('✨', 'Efeitos', 'Cor, transições, legendas, estabilização e som', () => { ED.sel = { type: 'fx' }; renderEditor(); }, { on: ED.sel?.type === 'fx' }),

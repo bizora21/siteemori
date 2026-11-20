@@ -338,6 +338,23 @@ function planRenderInner(
       return [{ kind: o.kind, text: o.text?.trim(), src, from, to, x: o.x ?? 50, y: o.y ?? 30, size: o.size ?? 1, style: o.style ?? 'destaque', anim: o.anim ?? 'pop' }];
     });
 
+    // Sons juntados (ambiente do local, efeitos): convertidos para mp3 e postos na hora certa.
+    const sounds = (project.sounds ?? []).flatMap((o, k) => {
+      const i = project.scenes.findIndex((s) => s.id === o.scene);
+      const src = join(projectDir, o.file);
+      if (i < 0 || !existsSync(src)) {
+        warnings.push(`som ${k + 1}: ${i < 0 ? `a cena "${o.scene}" já não existe` : 'o ficheiro não foi encontrado'}: ignorei-o`);
+        return [];
+      }
+      const outDir = join(VIDEO_DIR, 'public', 'media', project.id);
+      mkdirSync(outDir, { recursive: true });
+      const file = `snd-${k + 1}.mp3`;
+      const dst = join(outDir, file);
+      if (!existsSync(dst) || statSync(dst).mtimeMs < statSync(src).mtimeMs) run(['-i', src, '-vn', '-ar', '44100', '-ac', '2', '-b:a', '160k', dst]);
+      const from = tl.audioStarts[i] + Math.max(0, o.at ?? 0);
+      return [{ src: `media/${project.id}/${file}`, from, to: from + Math.max(0.3, o.seconds ?? duration(dst)), volume: Math.min(1, Math.max(0, o.volume ?? 0.6)) }];
+    });
+
     return {
       composition: def.composition,
       warnings,
@@ -346,6 +363,7 @@ function planRenderInner(
         ...base,
         lines,
         ...(overlays.length ? { overlays } : {}),
+        ...(sounds.length ? { sounds } : {}),
         // para o editor do estúdio (linha do tempo): onde começa a fala de cada cena e quanto dura
         audioStarts: tl.audioStarts,
         sceneDurations: tl.durations,

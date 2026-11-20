@@ -216,6 +216,8 @@ export interface Project {
   stabilize?: 'leve' | 'forte';
   /** Textos, emojis e imagens por cima do vídeo (reportagem). */
   overlays?: Overlay[];
+  /** Sons juntados na linha do tempo (ambiente do local, efeitos, gravações suas). */
+  sounds?: SoundClip[];
   /**
    * Acabamento visual (reportagem): "look" (filtro de cor), transição entre cenários, estilo das legendas,
    * vinheta e grão de filme. Tudo leve para máquinas sem GPU.
@@ -283,6 +285,19 @@ export interface PersonLayout {
   key?: string;
   /** quanto varia a cor do fundo (0,05 a 0,45; por defeito 0,15) */
   tolerance?: number;
+}
+
+/** Um som na linha do tempo: começa `at` segundos depois do início da fala da cena. */
+export interface SoundClip {
+  /** ficheiro dentro do projeto, ex.: sounds/chuva.mp3 */
+  file: string;
+  scene: string;
+  at?: number;
+  /** quanto dura (por defeito, o ficheiro todo) */
+  seconds?: number;
+  /** 0 a 1 (por defeito 0,6) */
+  volume?: number;
+  label?: string;
 }
 
 export interface VideoStyle {
