@@ -94,6 +94,8 @@ export interface Cutaway {
   atWord?: number;
   /** Se for um vídeo: começa a tocar a partir deste segundo do ficheiro (por defeito 0). */
   startFrom?: number;
+  /** Como este cenário entra (sobrepõe a transição do vídeo todo); 'corte' = sem transição. */
+  transition?: 'fade' | 'deslizar' | 'zoom' | 'cortina' | 'empurrar' | 'iris' | 'diagonal' | 'giro' | 'flash' | 'persiana' | 'corte';
 }
 
 /** Dados de um evento (marcha, campanha…): aparecem num cartão no fim do vídeo. */

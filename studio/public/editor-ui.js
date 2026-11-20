@@ -150,7 +150,7 @@ function edTimeline() {
     items.forEach((x) => {
       const vid = edIsVideo(x.c.media);
       const name = x.c.media.split('/').pop();
-      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [!vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, `Cena ${i + 1} · ` + (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
+      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [h('i', { class: 'tl-trans', title: `Como entra: ${edTransName(x.c.transition, p)}. Clique para mudar.`, 'aria-label': 'Mudar a transição de entrada', onpointerdown: (ev) => ev.stopPropagation(), onclick: (ev) => { ev.stopPropagation(); edTransMenu(ev.clientX, ev.clientY, x.c); } }, edTransIcon(x.c.transition, p)), !vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, `Cena ${i + 1} · ` + (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
       el.addEventListener('pointerdown', (e) => edDrag(e, el, { from: x.from, secs: x.to - x.from, min: a0, max: a0 + (tm.durations[i] ?? 3) - 0.5, snaps: edSnapPoints(-1), done: ({ from, moved }) => {
         if (!moved) return select({ type: 'cen', a: i, b: x.idx });
         const list = s.cutaways;
@@ -251,6 +251,8 @@ function edPanel() {
     return edCard(vid ? '🎬 Vídeo' : '🖼 Foto', h('div', { class: 'stack' },
       h('div', { class: 'muted' }, c.media.split('/').pop()),
       h('label', { class: 'fit-opt' }, h('input', { type: 'checkbox', checked: c.fit === 'contain', onchange: (e) => { c.fit = e.target.checked ? 'contain' : undefined; dirty(); renderEditor(); } }), ' Mostrar inteira, sem cortar (para cartazes com texto)'),
+      h('div', {}, h('div', { class: 'muted', style: 'font-size:13px' }, 'Como esta imagem entra'),
+        h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[[undefined, 'A do vídeo todo'], ['corte', '✂ Corte seco'], ...TRANSITIONS.map(([v, t, ico]) => [v, ico + ' ' + t])].map(([v, t]) => h('button', { class: 'chip' + (c.transition === v ? ' on' : ''), onclick: () => { c.transition = v; dirty(); renderEditor(); } }, t)))),
       vid && h('label', {}, 'Começar o vídeo aos (segundos)', h('input', { type: 'number', min: 0, step: 0.5, value: c.startFrom ?? 0, onchange: (e) => { c.startFrom = Number(e.target.value) || undefined; dirty(); renderEditor(); } })),
       h('div', { class: 'row', style: 'gap:8px;flex-wrap:wrap' },
         h('button', { onclick: () => pickWord(p.scenes[sel.a], c) }, '⏱ Escolher a palavra em que entra'),

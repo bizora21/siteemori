@@ -363,11 +363,17 @@ export const Reportagem = (props: ReportagemProps) => {
 
       {/* Cortes para imagens/vídeos do local, enquanto a voz continua */}
       {props.scenes.flatMap((s, i) =>
-        (s.cutaways ?? []).map((c, k) => (
-          <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps) - Math.min(spd, Math.round(c.from * fps))} durationInFrames={Math.max(2, Math.round(c.duration * fps)) + Math.min(spd, Math.round(c.from * fps))} layout="none">
-            <FullMedia transition={tr} speed={spd} extra={Math.min(spd, Math.round(c.from * fps))} m={c} fadeFrames={7} box={posterBox} />
-          </Sequence>
-        )),
+        (s.cutaways ?? []).map((c, k) => {
+          // transição própria deste cenário; "corte" entra de repente (2 imagens de sobreposição, sem animação)
+          const cut = c.transition === 'corte';
+          const sp = cut ? 1 : spd;
+          const ex = Math.min(sp, Math.round(c.from * fps));
+          return (
+            <Sequence key={`c${i}-${k}`} from={Math.round(c.from * fps) - ex} durationInFrames={Math.max(2, Math.round(c.duration * fps)) + ex} layout="none">
+              <FullMedia transition={cut ? 'fade' : c.transition ?? tr} speed={sp} extra={ex} m={c} fadeFrames={7} box={posterBox} />
+            </Sequence>
+          );
+        }),
       )}
 
       </AbsoluteFill>

@@ -103,6 +103,8 @@ export interface SceneMediaProps {
   fit?: 'cover' | 'contain';
   /** Vídeo: segundo do ficheiro em que começa a tocar. */
   startFrom?: number;
+  /** Transição própria deste cenário ('corte' = sem transição). */
+  transition?: string;
 }
 
 export interface InstitucionalProps {

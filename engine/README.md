@@ -289,3 +289,6 @@ Limites honestos: sem avatar com lábios sincronizados, sem recorte de pessoa e 
 
 ### Escolher uma parte (editor)
 Ferramenta ⬚ Selecionar (ou Shift+arrastar na régua, ou teclas I/O): escolhe um intervalo e permite cortá-lo fora, separá-lo numa cena, limpar fotos/textos ou juntar texto/foto/vídeo. Corta por palavras (ignora o texto entre parênteses, que não se diz); não corta ao meio de cenas com gravação.
+
+### Transição por imagem
+`cutaways[].transition` escolhe como cada foto/vídeo entra (qualquer das transições, ou `corte` = sem transição); sem isso usa `style.transition`. No editor: marcador na ponta de cada bloco da linha "Vídeo e fotos" ou painel da imagem.

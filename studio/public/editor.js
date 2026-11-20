@@ -226,7 +226,7 @@ function edPaint() {
   if (cur) {
     const isVid = /\.(mp4|mov|webm|m4v)$/i.test(cur.c.media);
     key = `c:${cur.c.media}:${cur.from}`;
-    if (ED.ctx.bgKey !== key) { const first = ED.ctx.bgKey === ''; ED.ctx.bgKey = key; bg.replaceChildren(edMedia(cur.c.media, isVid, (cur.c.fit ?? p.imageFit) === 'contain')); bg.style.background = '#000'; if (ED.playing && !first) enterAnim(bg, p.style?.transition ?? 'fade', p.style?.transitionSpeed); }
+    if (ED.ctx.bgKey !== key) { const first = ED.ctx.bgKey === ''; ED.ctx.bgKey = key; bg.replaceChildren(edMedia(cur.c.media, isVid, (cur.c.fit ?? p.imageFit) === 'contain')); bg.style.background = '#000'; if (ED.playing && !first && cur.c.transition !== 'corte') enterAnim(bg, cur.c.transition ?? p.style?.transition ?? 'fade', cur.c.transition ? 'rapida' : p.style?.transitionSpeed); }
     const v = bg.querySelector('video');
     if (v) { const want = (cur.c.startFrom ?? 0) + (t - cur.from); if (Math.abs(v.currentTime - want) > 0.4) v.currentTime = Math.max(0, want); if (ED.playing) v.play().catch(() => {}); else v.pause(); }
   } else if (hasFace && !cut) {

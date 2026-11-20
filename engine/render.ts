@@ -79,6 +79,8 @@ export interface SceneMedia {
   fit?: 'cover' | 'contain';
   /** Vídeo: segundo do ficheiro em que começa a tocar. */
   startFrom?: number;
+  /** Transição própria deste cenário. */
+  transition?: string;
 }
 
 const IMAGE_EXT = /\.(png|jpe?g|webp|gif)$/i;
@@ -229,7 +231,7 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       const from = tl.audioStarts[i] + at;
       // Nunca passa do fim da fala da cena.
       const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
-      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit ?? project.imageFit, startFrom: f.image ? undefined : c.startFrom }];
+      return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit ?? project.imageFit, startFrom: f.image ? undefined : c.startFrom, transition: c.transition }];
     });
     return { main, face, cutaways };
   });

@@ -92,3 +92,21 @@ function edSceneMarks() {
   const { p, tm } = edData();
   return p.scenes.map((s, i) => h('div', { class: 'tl-sceneline', style: `left:${ED_LABEL_W + (tm.starts[i] ?? 0) * ED.pps}px`, 'aria-hidden': 'true' }, h('span', {}, String(i + 1))));
 }
+
+// ── transição própria de cada foto/vídeo ──────────────────────────────────
+const edTransName = (v, p) => (v === 'corte' ? 'corte seco' : (TRANSITIONS.find((x) => x[0] === (v ?? p.style?.transition ?? 'fade'))?.[1] ?? 'fundido').toLowerCase()) + (v ? '' : ' (a do vídeo todo)');
+const edTransIcon = (v, p) => (v === 'corte' ? '✂' : (TRANSITIONS.find((x) => x[0] === (v ?? p.style?.transition ?? 'fade'))?.[2] ?? '◐'));
+
+/** Menu no ponto clicado: escolher como esta foto ou vídeo entra. */
+function edTransMenu(x, y, c) {
+  edMenuClose();
+  const { p } = edData();
+  const pick = (v) => { c.transition = v; dirty(); edMenuClose(); renderEditor(); toast('Transição: ' + edTransName(v, p), 3000); };
+  const opt = (v, t) => h('button', { role: 'menuitem', class: c.transition === v ? 'primary' : '', onclick: () => pick(v) }, t);
+  const m = h('div', { id: 'ed-menu', class: 'ed-menu', role: 'menu', style: `left:${Math.min(x, window.innerWidth - 270)}px;top:${Math.max(8, y - 340)}px` },
+    h('b', {}, 'Como esta imagem entra'),
+    opt(undefined, '◐ A do vídeo todo'), opt('corte', '✂ Corte seco (sem transição)'),
+    ...TRANSITIONS.map(([v, t, ico]) => opt(v, ico + ' ' + t)));
+  document.body.append(m);
+  setTimeout(() => document.addEventListener('pointerdown', function away(ev) { if (!m.contains(ev.target)) { edMenuClose(); document.removeEventListener('pointerdown', away); } }), 0);
+}
