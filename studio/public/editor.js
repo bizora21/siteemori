@@ -387,6 +387,7 @@ async function edResync() {
 
 /** Nova cena a seguir à cena onde está o cursor (ou ao fim). */
 function edAddScene() {
+  edAim();
   const { p } = edData();
   const i = edSceneAt(ED.t);
   let n = p.scenes.length + 1;
