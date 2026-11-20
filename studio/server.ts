@@ -242,6 +242,7 @@ function timing(id: string, project: ReturnType<typeof loadProject>) {
           wordT,
           lines: p.lines as unknown[],
           total: p.durationInFrames / 30,
+          lead: typeof p.leadSeconds === 'number' ? p.leadSeconds : 0.4,
           exact: true,
         };
       }
@@ -261,7 +262,7 @@ function timing(id: string, project: ReturnType<typeof loadProject>) {
     wordT.push(Array.from({ length: n }, (_, j) => t + (j / Math.max(1, n)) * dur));
     t += dur + 0.3;
   });
-  return { starts, audioStarts, durations, wordT, lines: [] as unknown[], total: t + 2, exact: false };
+  return { starts, audioStarts, durations, wordT, lines: [] as unknown[], total: t + 2, lead: 0.4, exact: false };
 }
 
 function detail(id: string) {

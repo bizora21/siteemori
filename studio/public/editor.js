@@ -82,7 +82,7 @@ function edPlay() {
   if (ED.t >= tm.total - 0.2) ED.t = 0;
   ED.playing = true;
   const a = edAudioFor();
-  if (a) { a.currentTime = ED.t; a.play().catch(() => {}); }
+  if (a) { if (ED.t >= edLeadOf()) { a.currentTime = ED.t - edLeadOf(); a.play().catch(() => {}); } else a.pause(); }
   if (p.music?.file && /^music\//.test(p.music.file)) {
     ED.music = new Audio(`/api/projects/${state.id}/file?p=${encodeURIComponent(p.music.file)}`);
     ED.music.volume = 0.15;
@@ -95,7 +95,9 @@ function edPlay() {
     if (!ED.playing) return;
     const dt = (now - ED.last) / 1000;
     ED.last = now;
-    ED.t = ED.audio && !ED.audio.paused ? ED.audio.currentTime : ED.t + dt;
+    const lead = edLeadOf();
+    if (ED.audio && ED.audio.paused && !ED.audio.ended && ED.t >= lead) { ED.audio.currentTime = ED.t - lead; ED.audio.play().catch(() => {}); }
+    ED.t = ED.audio && !ED.audio.paused ? ED.audio.currentTime + lead : ED.t + dt;
     if (ED.t >= tm.total) { ED.t = tm.total; edStop(); }
     if (ED.stopAt && ED.t >= ED.stopAt) { ED.stopAt = undefined; edStop(); }
     edPaint();
@@ -107,7 +109,7 @@ function edPlay() {
 function edSeek(t) {
   const { tm } = edData();
   ED.t = Math.max(0, Math.min(tm.total, t));
-  if (ED.audio) ED.audio.currentTime = ED.t;
+  if (ED.audio) ED.audio.currentTime = Math.max(0, ED.t - edLeadOf());
   if (ED.music) ED.music.currentTime = ED.t;
   edPaint();
 }
@@ -371,11 +373,24 @@ function edAddScenery(path) {
   const items = edScenery(i);
   list.forEach((c) => { if (c.atWord === undefined) { const y = items.find((z) => z.c === c); c.atWord = edWordAt(i, y ? y.from : 0); } });
   const rel = ED.t - (tm.audioStarts[i] ?? 0);
-  list.push({ media: path, atWord: rel < 0.5 ? 0 : edWordAt(i, ED.t) });
+  let w = rel < 0.5 ? 0 : edWordAt(i, ED.t);
+  let clashed = false;
+  // já há um cenário a começar nesta palavra: o novo entra a meio dele, para os dois se verem
+  const clash = edScenery(i).find((x) => (x.c.atWord ?? 0) === w);
+  if (clash) {
+    const n = (tm.wordT[i] ?? []).length;
+    let w2 = edWordAt(i, (clash.from + clash.to) / 2);
+    if (w2 <= w) w2 = w + 1;
+    if (w2 >= n) { toast('Não há espaço para outra imagem aqui. Ponha o cursor mais à frente.', 5000); return; }
+    w = w2;
+    clashed = true;
+  }
+  list.push({ media: path, atWord: w });
   list.sort((a, b) => (a.atWord ?? 0) - (b.atWord ?? 0));
   ED.sel = { type: 'cen', a: i, b: list.findIndex((c) => c.media === path) };
   dirty(); renderEditor();
   edAimNote(i, 'Cenário');
+  if (clashed) toast('Já havia uma imagem ali: a nova entra a meio dela. Arraste o bloco para ajustar.', 6000);
 }
 
 

@@ -107,6 +107,7 @@ const dirty = () => {
   const b = $('#save-btn');
   if (b) b.textContent = 'Guardar *';
   histPush();
+  if (typeof autoPlan === 'function') autoPlan();
 };
 
 // ── desfazer / refazer: guarda "fotografias" do projeto a cada alteração ──

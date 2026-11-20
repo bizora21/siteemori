@@ -96,9 +96,13 @@ function edTimeline() {
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect?.(); } });
     return el;
   };
-  const lane = (icon, name, kids, hint, rows = 1) => h('div', { class: 'tl-row' },
+  const lane = (icon, name, kids, hint, rows = 1, opts = {}) => h('div', { class: 'tl-row' },
     h('div', { class: 'tl-name' }, h('span', { 'aria-hidden': 'true', style: 'font-size:18px' }, icon), h('span', {}, name)),
-    h('div', { class: 'tl-lane', style: `width:${W}px;height:${rows * ED_ROW + 8}px`, onpointerdown: (e) => { if (e.target === e.currentTarget) edSeek((e.clientX - e.currentTarget.getBoundingClientRect().left) / pps); } },
+    h('div', { class: 'tl-lane', style: `width:${W}px;height:${rows * ED_ROW + 8}px`, onpointerdown: (e) => { if (e.target === e.currentTarget) edSeek((e.clientX - e.currentTarget.getBoundingClientRect().left) / pps); },
+      onclick: opts.menu ? (e) => { if (e.target === e.currentTarget) edAddMenu(e.clientX, e.clientY, edLaneTime(e, e.currentTarget)); } : undefined,
+      ondragover: opts.menu ? (e) => { e.preventDefault(); e.currentTarget.classList.add('drop'); } : undefined,
+      ondragleave: opts.menu ? (e) => e.currentTarget.classList.remove('drop') : undefined,
+      ondrop: opts.menu ? (e) => edLaneDrop(e, e.currentTarget) : undefined },
       kids.length ? null : h('span', { class: 'tl-empty' }, hint), ...kids));
 
   // régua (clique ou arraste para mover o cursor)
@@ -146,7 +150,7 @@ function edTimeline() {
     items.forEach((x) => {
       const vid = edIsVideo(x.c.media);
       const name = x.c.media.split('/').pop();
-      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [!vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
+      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [!vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, `Cena ${i + 1} · ` + (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
       el.addEventListener('pointerdown', (e) => edDrag(e, el, { from: x.from, secs: x.to - x.from, min: a0, max: a0 + (tm.durations[i] ?? 3) - 0.5, snaps: edSnapPoints(-1), done: ({ from, moved }) => {
         if (!moved) return select({ type: 'cen', a: i, b: x.idx });
         const list = s.cutaways;
@@ -160,6 +164,7 @@ function edTimeline() {
       vids.push(el);
     });
   });
+  vids.push(...edGapBlocks(blk));
 
   // Texto e emojis (em linhas, para não ficarem uns por cima dos outros)
   const rowEnd = [];
@@ -200,10 +205,11 @@ function edTimeline() {
   const sc = h('div', { class: 'tl-scroll', id: 'ed-scroll', style: 'position:relative' },
     h('div', { style: 'display:flex' }, h('div', { style: `width:${ED_LABEL_W}px;flex:none` }), ruler),
     lane('🎙', 'Cenas e voz', scenes, 'Sem cenas', 1),
-    lane('🎬', 'Vídeo e fotos', vids, 'Sem fotos nem vídeos: use "Foto / vídeo"', 1),
+    lane('🎬', 'Vídeo e fotos', vids, 'Clique aqui, ou largue uma foto ou vídeo', 1, { menu: true }),
     lane('🔤', 'Texto e emojis', ovs, 'Nada ainda: use "Texto" ou "Emoji"', Math.max(1, rowEnd.length)),
     lane('🎵', 'Música', [music], '', 1),
     lane('✨', 'Efeitos', [fx], '', 1),
+    ...edSceneMarks(),
     rangeOverlay(),
     playhead);
   sc.addEventListener('scroll', () => { ED.scrollX = sc.scrollLeft; });
@@ -452,6 +458,7 @@ function renderVideoEditor() {
   edPaint();
   edFitScreen();
   edSyncDialog();
+  autoOnOpen();
 }
 
 // ── teclado: Espaço, setas, C, Delete ─────────────────────────────────────
