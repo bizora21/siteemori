@@ -338,15 +338,32 @@ function edDelete() {
   dirty(); renderEditor();
 }
 
+/**
+ * Para onde vai o que se junta: a cena que está escolhida (se o cursor não está nela, o cursor passa para o início dela),
+ * senão a cena onde está o cursor.
+ */
+function edAim() {
+  if (ED.range) return;
+  const sel = ED.sel;
+  if (!sel || (sel.type !== 'scene' && sel.type !== 'cen')) return;
+  const { tm } = edData();
+  if (edSceneAt(ED.t) !== sel.a) ED.t = (tm.audioStarts[sel.a] ?? 0) + 0.01;
+}
+
+const edAimNote = (i, what) => toast(`${what} juntado à cena ${i + 1}. ${state.data.timing.exact ? '' : 'Os tempos ainda são aproximados: carregue em "Calcular tempos".'}`, 4500);
+
 function edAddOverlay(o) {
+  edAim();
   const { p, tm } = edData();
   const i = edSceneAt(ED.t);
   (p.overlays ??= []).push({ scene: p.scenes[i].id, at: Math.max(0, Math.round((ED.t - (tm.audioStarts[i] ?? 0)) * 10) / 10), seconds: 3, x: 50, y: 30, size: 1, ...o });
   ED.sel = { type: 'ov', a: p.overlays.length - 1 };
   dirty(); renderEditor();
+  edAimNote(i, 'Texto');
 }
 
 function edAddScenery(path) {
+  edAim();
   const { p, tm } = edData();
   const i = edSceneAt(ED.t);
   const s = p.scenes[i];
@@ -358,6 +375,7 @@ function edAddScenery(path) {
   list.sort((a, b) => (a.atWord ?? 0) - (b.atWord ?? 0));
   ED.sel = { type: 'cen', a: i, b: list.findIndex((c) => c.media === path) };
   dirty(); renderEditor();
+  edAimNote(i, 'Cenário');
 }
 
 

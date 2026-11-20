@@ -380,7 +380,7 @@ function renderVideoEditor() {
   const q = state.data.quality;
   const st = curStatus();
   const failed = state.data.lastJob?.status === 'failed';
-  const sceneAtCursor = () => p.scenes[edSceneAt(ED.t)].id;
+  const sceneAtCursor = () => { edAim(); return p.scenes[edSceneAt(ED.t)].id; };
 
   const bar = edBar(p);
 
