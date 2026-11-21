@@ -344,6 +344,14 @@ function planRenderInner(
       return [{ kind: o.kind, text: o.text?.trim(), src, from, to, x: o.x ?? 50, y: o.y ?? 30, size: o.size ?? 1, style: o.style ?? 'destaque', anim: o.anim ?? 'pop' }];
     });
 
+    // Cartão final institucional (emblema + nome da entidade): acrescenta tempo ao fim do vídeo.
+    let endCard: { src?: string; lines: string[]; from: number; seconds: number; dark?: boolean } | undefined;
+    if (project.endCard?.lines?.some((l) => l.trim())) {
+      const e = project.endCard;
+      const staged = e.emblem ? tryStage(project, projectDir, project.scenes[0].id, e.emblem, 'endcard') : null;
+      endCard = { src: staged?.image ? staged.src : undefined, lines: e.lines.filter((l) => l.trim()), from: total, seconds: Math.max(2, e.seconds ?? 3.5), dark: e.dark };
+    }
+
     // Sons juntados (ambiente do local, efeitos): convertidos para mp3 e postos na hora certa.
     const sounds = (project.sounds ?? []).flatMap((o, k) => {
       const i = project.scenes.findIndex((s) => s.id === o.scene);
@@ -370,6 +378,7 @@ function planRenderInner(
         lines,
         ...(overlays.length ? { overlays } : {}),
         ...(sounds.length ? { sounds } : {}),
+        ...(endCard ? { endCard, durationInFrames: Math.ceil((total + endCard.seconds) * FPS) } : {}),
         // para o editor do estúdio (linha do tempo): onde começa a fala de cada cena e quanto dura
         audioStarts: tl.audioStarts,
         sceneDurations: tl.durations,

@@ -623,6 +623,25 @@ export const Reportagem = (props: ReportagemProps) => {
       <Sequence from={Math.round(props.leadSeconds * fps)}>
         <Audio src={staticFile(props.audio)} />
       </Sequence>
+      {/* Cartão final institucional: emblema e nome da entidade (como o papel timbrado) */}
+      {props.endCard && t >= props.endCard.from && (() => {
+        const e = props.endCard;
+        const a = interpolate(t, [e.from, e.from + 0.5], [0, 1], clamp);
+        const rise = (1 - easeOut(Math.min(1, (t - e.from) / 0.9))) * 36 * u;
+        const ink = e.dark ? '#ffffff' : '#1a1a1a';
+        return (
+          <AbsoluteFill style={{ background: e.dark ? '#101820' : '#ffffff', opacity: a, alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 44 * u, paddingLeft: 80 * u, paddingRight: 80 * u }}>
+            {e.src && <Img src={staticFile(e.src)} style={{ width: 340 * u, height: 'auto', transform: `translateY(${rise}px)` }} />}
+            <div style={{ transform: `translateY(${rise}px)`, textAlign: 'center' }}>
+              {e.lines.map((l, i) => (
+                <div key={i} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 44 * u, lineHeight: 1.22, color: ink, letterSpacing: 1 * u, textTransform: 'uppercase' }}>{l}</div>
+              ))}
+            </div>
+            <div style={{ width: 170 * u, height: 8 * u, background: accent, borderRadius: 4 * u }} />
+          </AbsoluteFill>
+        );
+      })()}
+
       {(props.sounds ?? []).map((a, k) => {
         const len = Math.max(2, Math.round((a.to - a.from) * fps));
         return (

@@ -8,20 +8,14 @@
     "rate": "-6%"
   },
   "style": {
-    "look": "vivo",
-    "palette": "por-do-sol",
+    "look": "cinema",
     "transition": "zoom",
-    "transitionSpeed": "rapida",
-    "captionStyle": "karaoke",
+    "captionStyle": "destaque",
+    "vignette": true,
+    "grain": false,
     "caption": {
-      "font": "compacta",
-      "size": "media",
-      "caps": true,
-      "position": "baixo",
-      "hl": "cor",
-      "highlight": "#FFD23F"
-    },
-    "vignette": true
+      "hl": "cor"
+    }
   },
   "imageFit": "cover",
   "cta": "25 DE NOVEMBRO · 07H00",
@@ -409,5 +403,17 @@
       "style": "destaque",
       "anim": "pop"
     }
-  ]
+  ],
+  "music": {
+    "file": "music/Neon-Lights.mp3",
+    "license": "",
+    "source": ""
+  },
+  "endCard": {
+    "emblem": "media/emblema-mocambique.png",
+    "lines": [
+      "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+    ],
+    "seconds": 3.5
+  }
 }

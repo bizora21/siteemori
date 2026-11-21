@@ -312,3 +312,6 @@ npx tsx engine/cli.ts build <id> --draft
 `picks.json`: `{ "<cena>": [ { "pick": 3, "from": 1.5 }, { "pick": "outra#0:6" } ] }` (número na folha do plano, ou um vídeo da folha de outro plano).
 O `build` guarda cópia do projeto anterior e mantém a música e o áudio juntados à mão. O último vídeo de cada cena fica até à cena seguinte (sem
 "buracos" de fundo liso na pausa); na última cena, até ao fim. Exemplo: `engine/campaigns/marcha-beira.json`.
+
+### Selo institucional (cartão final)
+`endCard` {emblem, lines, seconds, dark}: depois do último plano mostra um cartão tipo papel timbrado com o emblema e o nome da entidade (acrescenta `seconds` ao vídeo). No editor: ✨ Efeitos → "Selo institucional no fim".

@@ -64,6 +64,13 @@
         "#Beira",
         "#Mocambique"
       ]
+    },
+    "endCard": {
+      "emblem": "media/emblema-mocambique.png",
+      "lines": [
+        "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+      ],
+      "seconds": 3.5
     }
   },
   "scenes": [

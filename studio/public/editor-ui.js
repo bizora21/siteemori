@@ -335,6 +335,21 @@ function edEffects(p) {
     section('Legendas', 'As palavras que aparecem enquanto se fala.',
       sw('Mostrar legendas', p.captions !== false, (on) => { p.captions = on ? undefined : false; dirty(); renderEditor(); }),
       p.captions !== false && capOptions(p, st, set, chip, sw)),
+    section('Selo institucional no fim', 'Um cartão final com o emblema e o nome da entidade (papel timbrado).',
+      sw('Mostrar o selo no fim do vídeo', Boolean(p.endCard), (on) => { p.endCard = on ? (p.endCard ?? { lines: [''], seconds: 3.5 }) : undefined; dirty(); renderEditor(); }),
+      p.endCard && h('div', { class: 'stack' },
+        h('label', {}, 'Nome da entidade (em maiúsculas)', h('textarea', { rows: 3, value: (p.endCard.lines ?? []).join('\n'), oninput: (e) => { p.endCard.lines = e.target.value.split('\n'); dirty(); } })),
+        h('div', { class: 'row', style: 'align-items:center;flex-wrap:wrap;gap:8px' },
+          h('button', { onclick: async () => {
+            const f = await pickFile('image/png,image/jpeg,image/webp');
+            if (!f) return;
+            if (!(await flushBeforeUpload())) return;
+            try { const r = await uploadTo('media', p.scenes[0].id, f, 'Emblema'); p.endCard.emblem = r.path; dirty(); renderEditor(); } catch (e) { toast('Erro: ' + e.message, 6000); }
+          } }, p.endCard.emblem ? '🔄 Mudar o emblema' : '🏛 Carregar o emblema'),
+          h('span', { class: 'muted', style: 'font-size:13px' }, p.endCard.emblem ? p.endCard.emblem.split('/').pop() : 'Use uma imagem grande e nítida, com fundo branco ou transparente.')),
+        h('label', {}, `Dura ${p.endCard.seconds ?? 3.5} s`, h('input', { type: 'range', min: 2, max: 8, step: 0.5, value: p.endCard.seconds ?? 3.5, oninput: (e) => { p.endCard.seconds = Number(e.target.value); e.target.parentNode.firstChild.textContent = `Dura ${e.target.value} s`; dirty(); } })),
+        sw('Fundo escuro (em vez de branco)', Boolean(p.endCard.dark), (on) => { p.endCard.dark = on || undefined; dirty(); renderEditor(); }),
+        h('div', { class: 'muted', style: 'font-size:13px' }, 'Só se vê no rascunho e no vídeo final, a seguir ao último plano. Confirme que tem autorização para usar o emblema.'))),
     section('Imagem', 'Para um aspeto mais profissional.',
       sw('Vinheta (cantos mais escuros)', Boolean(st.vignette), (on) => set('vignette', on)),
       sw('Grão de filme', Boolean(st.grain), (on) => set('grain', on)),

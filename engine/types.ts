@@ -129,6 +129,18 @@ export interface Music {
   source: string;
 }
 
+/** Cartão de fecho com o emblema e o nome da entidade (timbre). Acrescenta `seconds` ao fim do vídeo. */
+export interface EndCard {
+  /** Imagem do emblema/logótipo dentro do projeto (ex.: media/emblema.png). */
+  emblem?: string;
+  /** Texto do timbre, em maiúsculas (cada item é uma linha; linhas compridas quebram sozinhas). */
+  lines: string[];
+  /** Quanto tempo fica no ecrã (por defeito 3,5). */
+  seconds?: number;
+  /** Fundo escuro em vez de branco (por defeito branco, como o papel timbrado). */
+  dark?: boolean;
+}
+
 export interface Institutional {
   /** Entidade que assina o vídeo (aparece no cabeçalho). */
   entity: string;
@@ -193,6 +205,8 @@ export interface Project {
   host?: { name: string; role?: string };
   /** Créditos de imagens/vídeos de terceiros (ex.: Pexels). Entram na descrição de publicação. */
   credits?: string[];
+  /** Cartão final institucional (timbre): emblema e nome da entidade, depois do último plano. */
+  endCard?: EndCard;
   /** Evento a promover: o fim do vídeo mostra um cartão com título, data, hora, local e contacto. */
   event?: EventInfo;
   approval?: Approval;

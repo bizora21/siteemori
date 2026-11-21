@@ -158,6 +158,8 @@ export interface ReportagemProps {
     cutaways?: SceneMediaProps[];
   }[];
   /** Textos, emojis e imagens por cima do vídeo (from/to em segundos no vídeo). */
+  /** Cartão final institucional (emblema + nome da entidade). */
+  endCard?: { src?: string; lines: string[]; from: number; seconds: number; dark?: boolean };
   sounds?: { src: string; from: number; to: number; volume: number }[];
   overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa' | 'gradiente'; anim: 'pop' | 'fade' | 'deslizar' }[];
   host?: { name: string; role?: string };
