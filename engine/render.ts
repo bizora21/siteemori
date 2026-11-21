@@ -466,6 +466,14 @@ export function renderVideo(project: Project, plan: RenderPlan, opts: { draft: b
 
   const out = `out/${project.id}${opts.draft ? '-rascunho' : ''}.mp4`;
   const publicDir = makeRenderPublic(project.id, plan);
+  // O Versículo 3D lê sempre music.mp3 da pasta public: na cópia de trabalho põe a música deste projeto, ou silêncio
+  // (nunca a de outro vídeo; a music.mp3 original de video3d/public não se toca).
+  if (plan.composition === 'Verse3D') {
+    const dst = join(publicDir, 'music.mp3');
+    const own = project.music ? join('projects', project.id, project.music.file) : '';
+    if (own && existsSync(own)) copyFileSync(own, dst);
+    else run(['-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-t', '120', '-b:a', '64k', dst]);
+  }
   // Rascunho: metade da resolução e 1 só processo — para validar sem fritar uma máquina fraca.
   // O limite de 3 min evita "Timed out after 30000 while setting up the headless browser" em máquinas lentas.
   // Final: CRF 17 (imagem limpa em 1080 p) e som a 192 kb/s. O rascunho prioriza a rapidez.
