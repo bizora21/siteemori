@@ -194,6 +194,11 @@ function musicBlock(p) {
       field('Fonte (link da página da faixa/licença)', m.source, (v) => (m.source = v)),
       field('Crédito a mostrar na descrição (se a licença exigir atribuição)', m.attribution, (v) => (m.attribution = v || undefined)),
       h('div', { class: 'row' },
+        h('button', { title: 'Preenche a licença com a sua declaração de que pode usar esta música', onclick: () => {
+          m.license = `Declarado pelo utilizador em ${today}: tenho licença para usar esta música em vídeos públicos e comerciais.`;
+          m.source = m.source || 'Indicada pelo utilizador (ficheiro ' + m.file.split('/').pop() + ')';
+          dirty(); renderEditor();
+        } }, '✔ Tenho licença para esta música'),
         h('button', { onclick: () => {
           const name = m.file.split('/').pop().replace(/\.[^.]+$/, '');
           m.license = `FiftySounds: uso gratuito pessoal e comercial; atribuição OBRIGATÓRIA com link para o site; proibido revender/redistribuir as faixas. Lido em ${today} em https://www.fiftysounds.com/pt/informacoes-de-licenciamento.html. Não refere TikTok/Instagram nem vídeos de governo: confirmar.`;

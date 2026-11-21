@@ -422,7 +422,7 @@ export function validateProject(p: unknown): Issue[] {
     if (x.scenes.length < 2) out.push({ level: 'error', message: 'institucional: precisa de pelo menos 2 cenas' });
   }
   if (x.music && !(isStr(x.music.license) && isStr(x.music.source))) {
-    out.push({ level: 'error', message: 'música sem license/source documentadas — o motor recusa faixas sem licença' });
+    out.push({ level: 'error', finalOnly: true, message: 'música sem licença e fonte indicadas: preencha-as (painel Música) antes do vídeo final; o rascunho não é bloqueado' });
   }
   return out;
 }

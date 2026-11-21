@@ -800,7 +800,7 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     if (!sub && method === 'PUT') {
       const p = JSON.parse((await readBody(req)).toString()) as Project;
       if (p.id !== id) throw new HttpError(400, 'o id não pode mudar');
-      const errs = validateProject(p).filter((i) => i.level === 'error');
+      const errs = validateProject(p).filter((i) => i.level === 'error' && !i.finalOnly);
       if (errs.length) return json(res, { ok: false, issues: errs }, 422);
       writeFileSync(projectFile(id), JSON.stringify(p, null, 2) + '\n');
       return json(res, { ok: true });

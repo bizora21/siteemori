@@ -55,7 +55,9 @@ function open(idOrPath: string): { project: Project; brand: Brand; dir: string }
   // Uma cena real não tem texto: garante que a narração é sempre uma string (vazia), para nada rebentar.
   for (const s of project.scenes ?? []) if (s && typeof s.narration !== 'string') s.narration = '';
   const pIssues = validateProject(project);
-  if (show(pIssues)) throw new Error('projeto inválido');
+  // Os erros "só do final" (ex.: música sem licença) não impedem rascunhos: mostram-se como aviso e bloqueiam o final.
+  if (show(pIssues.filter((i) => !i.finalOnly))) throw new Error('projeto inválido');
+  show(pIssues.filter((i) => i.finalOnly).map((i) => ({ ...i, level: 'warn' as const })));
   const brandFile = join(ROOT, 'brands', `${project.brand}.json`);
   if (!existsSync(brandFile)) throw new Error(`marca não encontrada: ${brandFile}`);
   const brand = load<Brand>(brandFile);
@@ -134,6 +136,7 @@ async function build(id: string): Promise<void> {
   const issues = lintProject(project, brand).map((i) =>
     i.level === 'error' && i.finalOnly && !finalRun ? { ...i, level: 'warn' as const, message: `${i.message} — só bloqueia o vídeo FINAL` } : i,
   );
+  if (finalRun && validateProject(project).some((i) => i.finalOnly && i.level === 'error')) throw new Error('a música não tem licença e fonte: preencha-as no painel Música antes do vídeo final');
   if (show(issues)) throw new Error('o roteiro viola as regras da marca — corrija antes de gerar o vídeo final');
   if (project.template === 'institucional' && !project.approval && !draft && !flag('no-render')) {
     throw new Error('vídeo institucional sem "approval": preencha quem autorizou o conteúdo (ou use --draft / --no-render)');
