@@ -1,0 +1,21 @@
+{
+  "id": "marcha-beira-3d",
+  "brand": "campanha-16-dias",
+  "template": "verse3d",
+  "title": "Marcha 25 de Novembro (versão 3D) — Homens da Beira contra a violência baseada no género",
+  "locale": "pt-pt",
+  "voice": { "mode": "synthetic", "name": "pt-PT-DuarteNeural", "rate": "-6%" },
+  "cta": "JUNTA-TE À MARCHA · 25 DE NOVEMBRO · 07H00",
+  "site": "Praça da Independência → Pavilhão de Desportos",
+  "props": { "title": ["UM HOMEM FORTE", "NÃO VIOLENTA"], "ctaArrow": false, "skipIntro": false },
+  "publish": {
+    "description": "Homens da Beira, esta mensagem é para nós! 💪🧡\nUm homem forte não violenta. Um homem forte respeita e faz a diferença.\n\n📅 25 de Novembro · 🕖 07h00\n📍 Partida: Praça da Independência → Destino: Pavilhão de Desportos\n\nTodos os homens da cidade da Beira estão convidados à marcha contra a violência baseada no género, no âmbito dos 16 Dias de Activismo. Junta-te à marcha e partilha este vídeo com um amigo!",
+    "hashtags": ["#16DiasDeActivismo", "#16DiasDeAtivismo", "#MarchaBeira", "#HomensContraAViolencia", "#UmHomemForteRespeita", "#Beira", "#Mocambique"]
+  },
+  "scenes": [
+    {
+      "id": "narracao",
+      "narration": "Homens, a luta contra a violência também é nossa! Ser homem é também assumir responsabilidades. A violência contra mulheres e raparigas também é uma questão nossa. A verdadeira força de um homem está no respeito, na coragem e nas suas atitudes. Podemos fazer a diferença. Podemos ser parte da mudança. Beira, é hora de nos unirmos! No dia 25 de Novembro, todos os homens da cidade da Beira estão convidados a juntar-se à marcha contra a violência baseada no género. Partimos às sete horas, na Praça da Independência, em direcção ao Pavilhão de Desportos. Vamos juntos mostrar que somos fortes. Fortes pelo respeito. Fortes pela igualdade. Fortes contra a violência. Contamos contigo!"
+    }
+  ]
+}

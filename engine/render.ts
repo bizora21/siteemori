@@ -227,10 +227,16 @@ function stageMedia(project: Project, projectDir: string, tl: Timeline, audios: 
       if (!f) return [];
       const part = tl.durations[i] / list.length;
       const at = anchored ? atAnchor : auto ? k * part : (c.at ?? 0);
-      const wanted = anchored ? (order[k + 1]?.at ?? tl.durations[i]) - atAnchor : auto ? part : (c.duration ?? 2);
+      // O último cenário da cena fica até a cena seguinte começar (a pausa entre cenas não mostra um fundo liso);
+      // na última cena, até ao fim do vídeo.
+      const lastOne = k === order.length - 1;
+      const sceneEnd = lastOne
+        ? i + 1 < project.scenes.length ? tl.audioStarts[i + 1] : tl.lead + tl.voiceSeconds + (project.tail ?? TEMPLATES[project.template].tail)
+        : tl.audioStarts[i] + tl.durations[i];
+      const restRel = sceneEnd - tl.audioStarts[i];
+      const wanted = anchored ? (order[k + 1] ? order[k + 1].at : restRel) - atAnchor : auto ? (lastOne ? restRel - k * part : part) : (c.duration ?? 2);
       const from = tl.audioStarts[i] + at;
-      // Nunca passa do fim da fala da cena.
-      const dur = Math.max(0.5, Math.min(wanted, tl.audioStarts[i] + tl.durations[i] - from));
+      const dur = Math.max(0.5, Math.min(wanted, sceneEnd - from));
       return [{ src: f.src, type: f.image ? 'image' : 'video', from, duration: dur, clipSeconds: f.image ? undefined : f.clip, fit: c.fit ?? project.imageFit, startFrom: f.image ? undefined : c.startFrom, transition: c.transition }];
     });
     return { main, face, cutaways };

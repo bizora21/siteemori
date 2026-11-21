@@ -25,7 +25,8 @@
     "video3d:aprender2": "tsx scripts/build-aprender2-video.ts",
     "video3d:comboio": "tsx scripts/build-comboio-video.ts",
     "engine": "tsx engine/cli.ts",
-    "studio": "tsx studio/server.ts"
+    "studio": "tsx studio/server.ts",
+    "campaign": "tsx engine/campaign.ts"
   },
   "dependencies": {
     "lucide-react": "0.417.0",

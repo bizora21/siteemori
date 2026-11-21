@@ -1,0 +1,24 @@
+{
+  "id": "campanha-16-dias",
+  "name": "16 Dias de Activismo",
+  "locale": "pt-pt",
+  "site": "Praça da Independência → Pavilhão de Desportos",
+  "cta": "25 DE NOVEMBRO · 07H00",
+  "colors": {
+    "bg": "#1A0E05",
+    "accent": "#FF8A1F",
+    "text": "#FFFFFF"
+  },
+  "hashtags": [
+    "#16DiasDeActivismo",
+    "#MarchaBeira",
+    "#HomensContraAViolencia",
+    "#NaoAViolencia",
+    "#Beira",
+    "#Mocambique"
+  ],
+  "claims": {
+    "approved": [],
+    "forbidden": []
+  }
+}

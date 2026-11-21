@@ -295,3 +295,20 @@ Ferramenta ⬚ Selecionar (ou Shift+arrastar na régua, ou teclas I/O): escolhe 
 
 ### Sons na linha do tempo
 `sounds[]` (file, scene, at, seconds, volume, label): ambiente do local, efeitos ou gravações suas, na hora certa (misturados no vídeo, com entrada/saída suaves). No editor: faixa "Sons e ambiente" (clique, largue um ficheiro ou grave no microfone) e ferramenta Som.
+
+## Campanhas (preset → vídeo)
+
+Um preset em `engine/campaigns/<id>.json` descreve a campanha inteira: marca, estilo, cenas com a locução, os planos de vídeo a procurar no Pexels
+(várias pesquisas com contexto por plano, ex.: "african men walking together"; palavras a evitar) e os textos no ecrã, ligados a PALAVRAS da locução
+(`when`/`until`/`offset`), por isso acompanham a voz mesmo que ela mude. Uma cena pode ter fundo gráfico (`background.gradient`).
+
+```
+npm run campaign -- search <preset>    # procura candidatos, ordena-os (formato, duração, resolução, título) e gera folhas numeradas
+                                       #   projects/<id>/campaign/<cena>-<n>.jpg  → escolher À VISTA e escrever picks.json
+npm run campaign -- build  <preset>    # descarrega as escolhas, cria o projeto, gera a voz e sincroniza os textos
+npx tsx engine/cli.ts build <id> --draft
+```
+
+`picks.json`: `{ "<cena>": [ { "pick": 3, "from": 1.5 }, { "pick": "outra#0:6" } ] }` (número na folha do plano, ou um vídeo da folha de outro plano).
+O `build` guarda cópia do projeto anterior e mantém a música e o áudio juntados à mão. O último vídeo de cada cena fica até à cena seguinte (sem
+"buracos" de fundo liso na pausa); na última cena, até ao fim. Exemplo: `engine/campaigns/marcha-beira.json`.

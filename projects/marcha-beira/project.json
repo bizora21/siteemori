@@ -1,0 +1,413 @@
+{
+  "template": "reportagem",
+  "aspect": "9:16",
+  "voice": {
+    "mode": "synthetic",
+    "name": "pt-PT-DuarteNeural",
+    "pauseSeconds": 0.45,
+    "rate": "-6%"
+  },
+  "style": {
+    "look": "vivo",
+    "palette": "por-do-sol",
+    "transition": "zoom",
+    "transitionSpeed": "rapida",
+    "captionStyle": "karaoke",
+    "caption": {
+      "font": "compacta",
+      "size": "media",
+      "caps": true,
+      "position": "baixo",
+      "hl": "cor",
+      "highlight": "#FFD23F"
+    },
+    "vignette": true
+  },
+  "imageFit": "cover",
+  "cta": "25 DE NOVEMBRO · 07H00",
+  "site": "Praça da Independência → Pavilhão de Desportos",
+  "publish": {
+    "description": "Homens da Beira, esta mensagem é para nós! 💪🧡\nUm homem forte não violenta. Um homem forte respeita e faz a diferença.\n\n📅 25 de Novembro · 🕖 07h00\n📍 Partida: Praça da Independência → Destino: Pavilhão de Desportos\n\nTodos os homens da cidade da Beira estão convidados à marcha contra a violência baseada no género, no âmbito dos 16 Dias de Activismo. Junta-te à marcha e partilha este vídeo com um amigo!",
+    "hashtags": [
+      "#16DiasDeActivismo",
+      "#16DiasDeAtivismo",
+      "#MarchaBeira",
+      "#HomensContraAViolencia",
+      "#UmHomemForteRespeita",
+      "#Beira",
+      "#Mocambique"
+    ]
+  },
+  "id": "marcha-beira",
+  "brand": "campanha-16-dias",
+  "title": "Marcha 25 de Novembro — Homens da Beira contra a violência baseada no género",
+  "scenes": [
+    {
+      "id": "abertura",
+      "narration": "Homens, a luta contra a violência também é nossa!",
+      "cutaways": [
+        {
+          "media": "media/abertura-1-pexels-8508690.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/abertura-2-pexels-13802094.mp4",
+          "atWord": 5
+        }
+      ]
+    },
+    {
+      "id": "responsabilidade",
+      "narration": "Ser homem é também assumir responsabilidades. A violência contra mulheres e raparigas também é uma questão nossa.",
+      "cutaways": [
+        {
+          "media": "media/responsabilidade-1-pexels-7448245.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/responsabilidade-2-pexels-10160473.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/responsabilidade-3-pexels-6974189.mp4",
+          "atWord": 12
+        }
+      ]
+    },
+    {
+      "id": "forca",
+      "narration": "A verdadeira força de um homem está no respeito, na coragem e nas suas atitudes.",
+      "cutaways": [
+        {
+          "media": "media/forca-1-pexels-6623652.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/forca-2-pexels-6308531.mp4",
+          "atWord": 5
+        },
+        {
+          "media": "media/forca-3-pexels-7579051.mp4",
+          "atWord": 9
+        }
+      ]
+    },
+    {
+      "id": "uniao",
+      "narration": "Podemos fazer a diferença. Podemos ser parte da mudança.",
+      "cutaways": [
+        {
+          "media": "media/uniao-1-pexels-33648887.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/uniao-2-pexels-10160474.mp4",
+          "atWord": 4
+        }
+      ]
+    },
+    {
+      "id": "mobilizacao",
+      "narration": "Beira, é hora de nos unirmos!",
+      "cutaways": [
+        {
+          "media": "media/mobilizacao-1-pexels-35540334.mp4",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "No dia 25 de Novembro, todos os homens da cidade da Beira estão convidados a juntar-se à marcha contra a violência baseada no género.",
+      "cutaways": [
+        {
+          "media": "media/convite-1-pexels-40538889.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/convite-2-pexels-6616743.mp4",
+          "atWord": 5
+        },
+        {
+          "media": "media/convite-3-pexels-20556553.mp4",
+          "atWord": 12
+        },
+        {
+          "media": "media/convite-4-pexels-36743112.mp4",
+          "atWord": 17
+        }
+      ]
+    },
+    {
+      "id": "informacoes",
+      "narration": "Partimos às sete horas, na Praça da Independência, em direcção ao Pavilhão de Desportos.",
+      "cutaways": [
+        {
+          "media": "media/bg-informacoes.png",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "encerramento",
+      "narration": "Vamos juntos mostrar que somos fortes. Fortes pelo respeito. Fortes pela igualdade. Fortes contra a violência. Contamos contigo!",
+      "cutaways": [
+        {
+          "media": "media/encerramento-1-pexels-10160477.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/encerramento-2-pexels-6616732.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/encerramento-3-pexels-39548781.mp4",
+          "atWord": 12
+        },
+        {
+          "media": "media/encerramento-4-pexels-20488159.mp4",
+          "atWord": 16
+        }
+      ]
+    }
+  ],
+  "credits": [
+    "Vídeo: Ivan S (Pexels) https://www.pexels.com/video/man-with-beard-looking-at-camera-8508690/",
+    "Vídeo: Mizuno K (Pexels) https://www.pexels.com/video/a-man-in-a-suit-looking-at-his-phone-while-walking-in-the-city-13802094/",
+    "Vídeo: August de Richelieu (Pexels) https://www.pexels.com/video/men-talking-to-each-other-7448245/",
+    "Vídeo: Ron Lach (Pexels) https://www.pexels.com/video/men-in-brown-coat-looking-at-the-camera-10160473/",
+    "Vídeo: SHVETS production (Pexels) https://www.pexels.com/video/a-man-covering-half-of-his-face-with-his-hand-6974189/",
+    "Vídeo: Keira Burton (Pexels) https://www.pexels.com/video/father-carrying-his-smiling-son-on-his-shoulder-6623652/",
+    "Vídeo: Uriel Mont (Pexels) https://www.pexels.com/video/men-looking-at-the-camera-6308531/",
+    "Vídeo: Kindel Media (Pexels) https://www.pexels.com/video/smiling-couple-sitting-beside-a-sign-7579051/",
+    "Vídeo: creative  photographer 🇳🇬 (Pexels) https://www.pexels.com/video/vibrant-african-drummers-in-traditional-attire-33648887/",
+    "Vídeo: Ron Lach (Pexels) https://www.pexels.com/video/men-standing-together-10160474/",
+    "Vídeo: SDMK VINTAGE (Pexels) https://www.pexels.com/video/vibrant-community-parade-in-rural-africa-35540334/",
+    "Vídeo: G star Media (Pexels) https://www.pexels.com/video/aerial-view-of-large-street-protest-40538889/",
+    "Vídeo: cottonbro studio (Pexels) https://www.pexels.com/video/men-posing-on-camera-6616743/",
+    "Vídeo: Amanat Ali Warraich (Pexels) https://www.pexels.com/video/a-group-of-men-walking-down-a-dirt-road-20556553/",
+    "Vídeo: Harrun  Muhammad (Pexels) https://www.pexels.com/video/traditional-african-festival-with-cultural-attire-36743112/",
+    "Vídeo: Ron Lach (Pexels) https://www.pexels.com/video/men-standing-on-a-chair-at-the-beach-10160477/",
+    "Vídeo: cottonbro studio (Pexels) https://www.pexels.com/video/video-of-three-men-standing-in-front-of-the-camera-6616732/",
+    "Vídeo: Tafsin Naeem (Pexels) https://www.pexels.com/video/group-of-people-walking-on-vast-beach-39548781/",
+    "Vídeo: Matthias Groeneveld (Pexels) https://www.pexels.com/video/a-man-walking-down-a-path-at-sunset-20488159/"
+  ],
+  "overlays": [
+    {
+      "kind": "text",
+      "scene": "abertura",
+      "at": 0,
+      "seconds": 3.2,
+      "text": "HOMENS, ESTA MENSAGEM É PARA NÓS!",
+      "x": 50,
+      "y": 16,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "responsabilidade",
+      "at": 0,
+      "seconds": 2.4,
+      "text": "SER HOMEM É TAMBÉM ASSUMIR RESPONSABILIDADES.",
+      "x": 50,
+      "y": 14,
+      "size": 0.9,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "responsabilidade",
+      "at": 3.4,
+      "seconds": 3.4,
+      "text": "A VIOLÊNCIA CONTRA MULHERES E RAPARIGAS TAMBÉM É UMA QUESTÃO NOSSA.",
+      "x": 50,
+      "y": 14,
+      "size": 0.9,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "forca",
+      "at": 0,
+      "seconds": 1.4,
+      "text": "A NOSSA FORÇA NÃO ESTÁ NA VIOLÊNCIA.",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "forca",
+      "at": 1.3,
+      "seconds": 3,
+      "text": "ESTÁ NO RESPEITO, NA CORAGEM E NAS NOSSAS ATITUDES.",
+      "x": 50,
+      "y": 14,
+      "size": 0.9,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "uniao",
+      "at": 0,
+      "seconds": 4.3,
+      "text": "JUNTOS PODEMOS FAZER A DIFERENÇA.",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "mobilizacao",
+      "at": 0,
+      "seconds": 2.2,
+      "text": "BEIRA, É HORA DE NOS UNIRMOS!",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 0.2,
+      "seconds": 1.4,
+      "text": "25 DE NOVEMBRO",
+      "x": 50,
+      "y": 14,
+      "size": 1.5,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 1.6,
+      "seconds": 1.6,
+      "text": "TODOS OS HOMENS DA CIDADE DA BEIRA!",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 4.5,
+      "seconds": 2.5,
+      "text": "MARCHA CONTRA A VIOLÊNCIA BASEADA NO GÉNERO",
+      "x": 50,
+      "y": 14,
+      "size": 0.9,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 0.5,
+      "seconds": 4.7,
+      "text": "📅 25 DE NOVEMBRO",
+      "x": 50,
+      "y": 20,
+      "size": 1.25,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 0.6,
+      "seconds": 4.6,
+      "text": "🕖 07H00",
+      "x": 50,
+      "y": 31,
+      "size": 1.25,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 1.7,
+      "seconds": 3.5,
+      "text": "📍 PARTIDA: PRAÇA DA INDEPENDÊNCIA",
+      "x": 50,
+      "y": 43,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 3.2,
+      "seconds": 2,
+      "text": "DESTINO: PAVILHÃO DE DESPORTOS",
+      "x": 50,
+      "y": 54,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 3.5,
+      "seconds": 1.7,
+      "text": "TODOS OS HOMENS DA CIDADE DA BEIRA ESTÃO CONVIDADOS!",
+      "x": 50,
+      "y": 66,
+      "size": 0.85,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "encerramento",
+      "at": 0.3,
+      "seconds": 1.7,
+      "text": "UM HOMEM FORTE NÃO VIOLENTA.",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "encerramento",
+      "at": 2.8,
+      "seconds": 5.1,
+      "text": "UM HOMEM FORTE FAZ A DIFERENÇA.",
+      "x": 50,
+      "y": 14,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "encerramento",
+      "at": 9.8,
+      "seconds": 1.3,
+      "text": "JUNTA-TE À MARCHA!",
+      "x": 50,
+      "y": 14,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    }
+  ]
+}

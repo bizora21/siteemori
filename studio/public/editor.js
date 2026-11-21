@@ -136,7 +136,7 @@ function edPreview() {
   ED.ctx = { k, accent, fill, pal, ovEls: [], bgKey: '', faceKey: '' };
   const ov = p.overlays ?? [];
   ov.forEach((o) => {
-    const el = h('div', { style: `position:absolute;left:${o.x ?? 50}%;top:${o.y ?? 30}%;transform:translate(-50%,-50%);text-align:center;max-width:86%;display:none` });
+    const el = h('div', { style: `position:absolute;left:${o.x ?? 50}%;top:${o.y ?? 30}%;transform:translate(-50%,-50%);text-align:center;width:max-content;max-width:86%;display:none` });
     if (o.kind === 'emoji') { el.style.fontSize = `${150 * k * (o.size ?? 1)}px`; el.style.lineHeight = '1'; el.textContent = o.text; }
     else if (o.kind === 'image') el.append(h('img', { src: `/api/projects/${p.id}/file?p=${encodeURIComponent(o.media ?? '')}`, style: `width:${asp[0] * 0.4 * (o.size ?? 1)}px;border-radius:4px` }));
     else {

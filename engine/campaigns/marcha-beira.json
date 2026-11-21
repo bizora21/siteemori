@@ -1,0 +1,525 @@
+{
+  "id": "marcha-beira",
+  "title": "Marcha 25 de Novembro — Homens da Beira contra a violência baseada no género",
+  "brand": {
+    "id": "campanha-16-dias",
+    "name": "16 Dias de Activismo",
+    "locale": "pt-pt",
+    "site": "Praça da Independência → Pavilhão de Desportos",
+    "cta": "25 DE NOVEMBRO · 07H00",
+    "colors": {
+      "bg": "#1A0E05",
+      "accent": "#FF8A1F",
+      "text": "#FFFFFF"
+    },
+    "hashtags": [
+      "#16DiasDeActivismo",
+      "#MarchaBeira",
+      "#HomensContraAViolencia",
+      "#NaoAViolencia",
+      "#Beira",
+      "#Mocambique"
+    ],
+    "claims": {
+      "approved": [],
+      "forbidden": []
+    }
+  },
+  "project": {
+    "template": "reportagem",
+    "aspect": "9:16",
+    "voice": {
+      "mode": "synthetic",
+      "name": "pt-PT-DuarteNeural",
+      "pauseSeconds": 0.45,
+      "rate": "-6%"
+    },
+    "style": {
+      "look": "vivo",
+      "palette": "por-do-sol",
+      "transition": "zoom",
+      "transitionSpeed": "rapida",
+      "captionStyle": "karaoke",
+      "caption": {
+        "font": "compacta",
+        "size": "media",
+        "caps": true,
+        "position": "baixo",
+        "hl": "cor",
+        "highlight": "#FFD23F"
+      },
+      "vignette": true
+    },
+    "imageFit": "cover",
+    "cta": "25 DE NOVEMBRO · 07H00",
+    "site": "Praça da Independência → Pavilhão de Desportos",
+    "publish": {
+      "description": "Homens da Beira, esta mensagem é para nós! 💪🧡\nUm homem forte não violenta. Um homem forte respeita e faz a diferença.\n\n📅 25 de Novembro · 🕖 07h00\n📍 Partida: Praça da Independência → Destino: Pavilhão de Desportos\n\nTodos os homens da cidade da Beira estão convidados à marcha contra a violência baseada no género, no âmbito dos 16 Dias de Activismo. Junta-te à marcha e partilha este vídeo com um amigo!",
+      "hashtags": [
+        "#16DiasDeActivismo",
+        "#16DiasDeAtivismo",
+        "#MarchaBeira",
+        "#HomensContraAViolencia",
+        "#UmHomemForteRespeita",
+        "#Beira",
+        "#Mocambique"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "abertura",
+      "narration": "Homens, a luta contra a violência também é nossa!",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "black man looking at camera",
+            "african man portrait confident",
+            "african man staring at camera"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "child",
+            "baby"
+          ]
+        },
+        {
+          "atWord": 5,
+          "queries": [
+            "african man urban portrait",
+            "black man city confident",
+            "african man outdoors serious"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "child",
+            "baby"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "HOMENS, ESTA MENSAGEM É PARA NÓS!",
+          "when": "0",
+          "until": "end",
+          "y": 16,
+          "size": 1.3
+        }
+      ]
+    },
+    {
+      "id": "responsabilidade",
+      "narration": "Ser homem é também assumir responsabilidades. A violência contra mulheres e raparigas também é uma questão nossa.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african men talking",
+            "black men community conversation",
+            "african men discussing outdoors"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "african men walking",
+            "black men walking city",
+            "african men outdoors"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 12,
+          "queries": [
+            "black man determined serious",
+            "african man serious face",
+            "african man looking forward"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "angry"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "SER HOMEM É TAMBÉM ASSUMIR RESPONSABILIDADES.",
+          "when": "ser",
+          "until": "responsabilidades",
+          "y": 14,
+          "size": 0.9
+        },
+        {
+          "text": "A VIOLÊNCIA CONTRA MULHERES E RAPARIGAS TAMBÉM É UMA QUESTÃO NOSSA.",
+          "when": "violência",
+          "until": "end",
+          "y": 14,
+          "size": 0.9
+        }
+      ]
+    },
+    {
+      "id": "forca",
+      "narration": "A verdadeira força de um homem está no respeito, na coragem e nas suas atitudes.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "black father with child",
+            "african father with son",
+            "black father and daughter happy"
+          ],
+          "avoid": [
+            "woman",
+            "women"
+          ]
+        },
+        {
+          "atWord": 5,
+          "queries": [
+            "african men solidarity",
+            "black men friends hugging",
+            "african men friendship"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 9,
+          "queries": [
+            "african couple together smiling",
+            "black man supporting woman",
+            "african man helping woman"
+          ],
+          "avoid": [
+            "fight",
+            "argue"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "A NOSSA FORÇA NÃO ESTÁ NA VIOLÊNCIA.",
+          "when": "0",
+          "until": "homem",
+          "y": 14,
+          "size": 1.05
+        },
+        {
+          "text": "ESTÁ NO RESPEITO, NA CORAGEM E NAS NOSSAS ATITUDES.",
+          "when": "está",
+          "until": "end",
+          "y": 14,
+          "size": 0.9
+        }
+      ]
+    },
+    {
+      "id": "uniao",
+      "narration": "Podemos fazer a diferença. Podemos ser parte da mudança.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african men walking street",
+            "african friends walking together",
+            "black young men walking sunny city",
+            "men walking in africa"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 4,
+          "queries": [
+            "black men community gathering",
+            "african men standing together",
+            "african men group outdoors"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "JUNTOS PODEMOS FAZER A DIFERENÇA.",
+          "when": "0",
+          "until": "end",
+          "y": 14,
+          "size": 1.05
+        }
+      ]
+    },
+    {
+      "id": "mobilizacao",
+      "narration": "Beira, é hora de nos unirmos!",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "peaceful march africa",
+            "african community march",
+            "people marching street africa"
+          ],
+          "avoid": [
+            "police",
+            "riot",
+            "fire"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "BEIRA, É HORA DE NOS UNIRMOS!",
+          "when": "0",
+          "until": "end",
+          "y": 14,
+          "size": 1.05
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "No dia 25 de Novembro, todos os homens da cidade da Beira estão convidados a juntar-se à marcha contra a violência baseada no género.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african street people walking",
+            "africa city crowd walking",
+            "mozambique people street",
+            "african youth marching"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        },
+        {
+          "atWord": 5,
+          "queries": [
+            "african men solidarity",
+            "black men standing together",
+            "african men group portrait"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 12,
+          "queries": [
+            "african community gathering",
+            "african men walking road",
+            "group of african men walking"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 17,
+          "queries": [
+            "men peaceful march",
+            "african people march banners",
+            "people marching together"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "25 DE NOVEMBRO",
+          "when": "dia",
+          "until": "novembro",
+          "y": 14,
+          "size": 1.5
+        },
+        {
+          "text": "TODOS OS HOMENS DA CIDADE DA BEIRA!",
+          "when": "todos",
+          "until": "beira",
+          "y": 14,
+          "size": 1.05
+        },
+        {
+          "text": "MARCHA CONTRA A VIOLÊNCIA BASEADA NO GÉNERO",
+          "when": "marcha",
+          "until": "end",
+          "y": 14,
+          "size": 0.9
+        }
+      ]
+    },
+    {
+      "id": "informacoes",
+      "narration": "Partimos às sete horas, na Praça da Independência, em direcção ao Pavilhão de Desportos.",
+      "shots": [],
+      "texts": [
+        {
+          "text": "📅 25 DE NOVEMBRO",
+          "when": "0",
+          "until": "end",
+          "y": 20,
+          "size": 1.25,
+          "style": "caixa"
+        },
+        {
+          "text": "🕖 07H00",
+          "when": "sete",
+          "until": "end",
+          "y": 31,
+          "size": 1.25,
+          "style": "caixa"
+        },
+        {
+          "text": "📍 PARTIDA: PRAÇA DA INDEPENDÊNCIA",
+          "when": "praça",
+          "until": "end",
+          "y": 43,
+          "size": 0.95,
+          "style": "caixa"
+        },
+        {
+          "text": "DESTINO: PAVILHÃO DE DESPORTOS",
+          "when": "direcção",
+          "until": "end",
+          "y": 54,
+          "size": 0.95,
+          "style": "caixa",
+          "offset": 0
+        },
+        {
+          "text": "TODOS OS HOMENS DA CIDADE DA BEIRA ESTÃO CONVIDADOS!",
+          "when": "direcção",
+          "offset": 0.35,
+          "until": "end",
+          "y": 66,
+          "size": 0.85,
+          "style": "caixa"
+        }
+      ],
+      "background": {
+        "gradient": [
+          "#FF8A1F",
+          "#B5260E"
+        ]
+      }
+    },
+    {
+      "id": "encerramento",
+      "narration": "Vamos juntos mostrar que somos fortes. Fortes pelo respeito. Fortes pela igualdade. Fortes contra a violência. Contamos contigo!",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african men standing together outdoors",
+            "black men group outdoors sunny",
+            "african men friends laughing outdoors"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "african men standing side by side",
+            "black men standing together confident",
+            "african men group looking at camera"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        },
+        {
+          "atWord": 12,
+          "queries": [
+            "african people marching sunrise",
+            "peaceful march africa",
+            "people walking together sunset africa"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        },
+        {
+          "atWord": 16,
+          "queries": [
+            "black men walking together",
+            "african men walking road sunset",
+            "group of african men walking"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "UM HOMEM FORTE NÃO VIOLENTA.",
+          "when": "0",
+          "until": "fortes",
+          "y": 14,
+          "size": 1.05
+        },
+        {
+          "text": "UM HOMEM FORTE FAZ A DIFERENÇA.",
+          "when": "fortes#2",
+          "until": "fortes#4",
+          "y": 14,
+          "size": 1.05
+        },
+        {
+          "text": "JUNTA-TE À MARCHA!",
+          "when": "contamos",
+          "until": "end",
+          "y": 14,
+          "size": 1.3
+        }
+      ]
+    }
+  ]
+}

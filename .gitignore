@@ -80,3 +80,4 @@ package-lock.json
 # Foto da pessoa (dado pessoal; o repositório é público)
 /projects/*/avatar.*
 video3d/public/grain.png
+/projects/*/campaign/
