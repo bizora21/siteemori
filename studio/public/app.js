@@ -401,7 +401,7 @@ async function loadPublication(files, id) {
     h('h4', {}, 'Publicação'),
     h('pre', { class: 'pub' }, `${desc}\n\n${tags}`),
     h('div', { class: 'row', style: 'margin-top:8px' }, b1, b2,
-      files.filter((x) => x.endsWith('.srt') || x.endsWith('transcricao.txt')).map((x) => h('a', { href: `/media/${x}`, target: '_blank' }, x.split('/')[1])),
+      files.filter((x) => x.endsWith('.srt') || x.endsWith('transcricao.txt') || x.endsWith('publicacao.md')).map((x) => dlButton(`/media/${x}`, x.split('/')[1], '⬇ ' + x.split('/')[1])),
     ),
   );
 }

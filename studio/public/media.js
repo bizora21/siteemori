@@ -180,16 +180,63 @@ function followDownload(downloadId, isVideo, onPicked) {
   tick();
 }
 
+// ── guardar um ficheiro no sítio que o utilizador escolher ────────────────
+const SAVE_TYPES = { mp4: 'video/mp4', mp3: 'audio/mpeg', wav: 'audio/wav', m4a: 'audio/mp4', ogg: 'audio/ogg', srt: 'text/plain', txt: 'text/plain', md: 'text/markdown', png: 'image/png', jpg: 'image/jpeg' };
+
+/** Abre a janela "Guardar como…" (escolhe a pasta e o nome). Se o navegador não a tiver, descarrega para a pasta Transferências. */
+async function saveAs(url, name) {
+  const ext = (name.split('.').pop() ?? '').toLowerCase();
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await showSaveFilePicker({ suggestedName: name, types: [{ description: name, accept: { [SAVE_TYPES[ext] ?? 'application/octet-stream']: ['.' + ext] } }] });
+      toast('A guardar…', 3000);
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('o ficheiro não está disponível (' + r.status + ')');
+      const w = await handle.createWritable();
+      await r.body.pipeTo(w);
+      toast('✓ Guardado onde escolheu.', 5000);
+      return;
+    } catch (e) {
+      if (e?.name === 'AbortError') return; // cancelou a janela
+      toast('Não consegui guardar nesse sítio (' + (e.message ?? e) + '). Vou descarregar para as Transferências.', 5000);
+    }
+  }
+  const a = h('a', { href: url, download: name });
+  document.body.append(a);
+  a.click();
+  a.remove();
+}
+
+const dlButton = (url, name, label = '⬇ Baixar…') => h('button', { title: 'Escolher a pasta onde guardar', onclick: () => saveAs(url, name) }, label);
+
 // ── música (licença obrigatória) ──────────────────────────────────────────
+/** Onde encontrar músicas prontas (ligações a abrir noutro separador). */
+function musicSources() {
+  const a = (href, t) => h('a', { href, target: '_blank', rel: 'noopener' }, t);
+  return h('details', {},
+    h('summary', {}, '🔎 Onde encontrar músicas prontas (grátis)'),
+    h('div', { class: 'stack', style: 'gap:6px;margin-top:8px' },
+      h('div', {}, a('https://pixabay.com/music/', 'Pixabay Música'), ' — não precisa de conta; veja a licença de cada faixa.'),
+      h('div', {}, a('https://studio.youtube.com/channel/UC/music', 'Biblioteca de Áudio do YouTube'), ' — com a sua conta Google; há faixas que pedem crédito.'),
+      h('div', {}, a('https://uppbeat.io/', 'Uppbeat'), ' — versão grátis com crédito obrigatório.'),
+      h('div', {}, a('https://www.fiftysounds.com/pt/', 'FiftySounds'), ' — crédito obrigatório.'),
+      h('div', {}, a('https://freemusicarchive.org/', 'Free Music Archive'), ' — cada faixa tem a sua licença.'),
+      h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, 'Pesquise por: afrobeat instrumental · uplifting african percussion · cinematic motivational. Evite músicas tristes. Depois de descarregar, use "Carregar música" aqui em baixo e confirme a licença na página da faixa: o Pexels não tem música.')));
+}
+
 function musicBlock(p) {
   const m = p.music;
   const today = new Date().toISOString().slice(0, 10);
   return h('section', { class: 'card stack' },
     h('h3', { style: 'margin:0' }, 'Música (opcional)'),
+    musicSources(),
     h('p', { class: 'muted', style: 'margin:0' },
       'Só com licença que permita uso comercial. Guarde a prova (página da licença) e preencha os campos: o motor recusa música sem licença e fonte, e o crédito entra sozinho na descrição.'),
     m ? h('div', { class: 'stack', style: 'gap:8px' },
-      h('div', { class: 'row' }, h('b', {}, m.file), h('button', { class: 'danger', onclick: () => { p.music = undefined; dirty(); renderEditor(); } }, 'Remover música')),
+      h('div', { class: 'row', style: 'flex-wrap:wrap' }, h('b', {}, m.file), h('button', { class: 'danger', onclick: () => { p.music = undefined; dirty(); renderEditor(); } }, 'Remover música')),
+      h('div', { class: 'row', style: 'flex-wrap:wrap;align-items:center' },
+        dlButton(`/api/projects/${p.id}/file?p=${encodeURIComponent(m.file)}`, m.file.split('/').pop(), '⬇ Guardar uma cópia desta música…'),
+        h('span', { class: 'muted', style: 'font-size:13px' }, 'Está em: projects\\' + p.id + '\\' + m.file.replace(/\//g, '\\'))),
       field('Licença (o que permite, com a data em que a leu)', m.license, (v) => (m.license = v), { area: true, rows: 2 }),
       field('Fonte (link da página da faixa/licença)', m.source, (v) => (m.source = v)),
       field('Crédito a mostrar na descrição (se a licença exigir atribuição)', m.attribution, (v) => (m.attribution = v || undefined)),
