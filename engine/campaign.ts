@@ -8,14 +8,22 @@
 // (pick = número na folha do plano, ou "cena#plano:n" para um vídeo da folha de outro plano; from = segundo do vídeo onde começar, opcional).
 
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { cleanNarration } from '../lib/social/tts';
 import { contactSheet, download, searchVideos, type Candidate } from './pexels';
 import { run } from './ffmpeg';
 import type { Overlay, Project } from './types';
 
-interface Shot { atWord: number; queries: string[]; avoid?: string[] }
+interface Shot {
+  atWord: number;
+  queries?: string[];
+  avoid?: string[];
+  /** imagem/vídeo teu, já dentro do projeto (ex.: media/cartaz.png): não se procura no Pexels */
+  media?: string;
+  fit?: 'cover' | 'contain';
+  startFrom?: number;
+}
 interface Text { text: string; when: string; until?: string; offset?: number; y?: number; size?: number; style?: Overlay['style']; anim?: Overlay['anim'] }
 interface PresetScene { id: string; narration: string; shots: Shot[]; texts: Text[]; /** fundo gráfico (sem vídeo): gradiente entre duas cores */ background?: { gradient: [string, string] } }
 interface Preset {
@@ -43,9 +51,17 @@ async function search(): Promise<void> {
   mkdirSync(campDir, { recursive: true });
   const candFile = join(campDir, 'candidates.json');
   const all: Record<string, Candidate[]> = existsSync(candFile) ? JSON.parse(readFileSync(candFile, 'utf8')) : {};
-  const used = new Set<number>(); // não repetir o mesmo vídeo em planos diferentes
+  const used = new Set<number>(); // não repetir o mesmo vídeo em planos diferentes (nem de outros projetos)
+  for (const d of readdirSync('projects', { withFileTypes: true })) {
+    if (!d.isDirectory() || d.name === preset.id) continue;
+    try {
+      const other = JSON.parse(readFileSync(join('projects', d.name, 'project.json'), 'utf8')) as Project;
+      for (const c of other.credits ?? []) for (const m of c.matchAll(/-(\d+)\/?(?:\s|$)/g)) used.add(Number(m[1]));
+    } catch { /* projeto sem ficheiro */ }
+  }
   for (const s of preset.scenes) {
     for (const [k, shot] of s.shots.entries()) {
+      if (shot.media || !shot.queries) continue;
       const id = key(s.id, k);
       let cands = all[id];
       if (!cands) {
@@ -80,6 +96,7 @@ async function build(): Promise<void> {
   const credits: string[] = [];
   const scenes = preset.scenes.map((s) => {
     const cutaways = s.shots.flatMap((shot, k) => {
+      if (shot.media) return [{ media: shot.media, atWord: shot.atWord, ...(shot.fit ? { fit: shot.fit } : {}), ...(shot.startFrom ? { startFrom: shot.startFrom } : {}) }];
       const p = picks[s.id]?.[k];
       // pick: número na folha deste plano, ou "cena#plano:n" para usar um vídeo da folha de outro plano
       const ref = p ? (typeof p.pick === 'number' ? { k: key(s.id, k), n: p.pick } : { k: p.pick.split(':')[0], n: Number(p.pick.split(':')[1]) }) : undefined;

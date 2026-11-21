@@ -1,0 +1,483 @@
+{
+  "id": "homens-sofala",
+  "title": "Homem que é homem não bate, respeita — Homens de Sofala, 25 de Novembro",
+  "brand": {
+    "id": "campanha-16-dias",
+    "name": "16 Dias de Activismo",
+    "locale": "pt-pt",
+    "site": "Praça da Independência → Pavilhão de Desportos",
+    "cta": "25 DE NOVEMBRO · 07H00",
+    "colors": {
+      "bg": "#1A0E05",
+      "accent": "#FF8A1F",
+      "text": "#FFFFFF"
+    },
+    "hashtags": [
+      "#16DiasDeActivismo",
+      "#MarchaBeira",
+      "#HomensContraAViolencia",
+      "#NaoAViolencia",
+      "#Beira",
+      "#Mocambique"
+    ],
+    "claims": {
+      "approved": [],
+      "forbidden": []
+    }
+  },
+  "project": {
+    "template": "reportagem",
+    "aspect": "9:16",
+    "voice": {
+      "mode": "synthetic",
+      "name": "pt-PT-DuarteNeural",
+      "rate": "-2%",
+      "pitch": "-12Hz",
+      "pauseSeconds": 0.4
+    },
+    "style": {
+      "look": "cinema",
+      "palette": "ouro",
+      "transition": "zoom",
+      "transitionSpeed": "rapida",
+      "captionStyle": "karaoke",
+      "caption": {
+        "font": "compacta",
+        "size": "media",
+        "caps": true,
+        "position": "baixo",
+        "hl": "cor",
+        "highlight": "#FFD21F"
+      },
+      "vignette": true
+    },
+    "imageFit": "cover",
+    "cta": "25 DE NOVEMBRO · 07H00",
+    "site": "Praça da Independência → Pavilhão de Desportos",
+    "endCard": {
+      "emblem": "media/emblema-dpgcas.png",
+      "lines": [
+        "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+      ],
+      "seconds": 3
+    },
+    "publish": {
+      "description": "Homem que é homem não bate, respeita! 💪\nHomens de Sofala, sejam agentes da mudança.\n\n📅 25 de Novembro · 🕖 07h00\n📍 Partida: Praça da Independência → Destino: Pavilhão de Desportos\n\nRespeito, igualdade e dignidade. Junta-te à Marcha dos 16 Dias de Activismo e partilha este vídeo com um amigo.\n\nDirecção Provincial de Género, Criança e Acção Social de Sofala",
+      "hashtags": [
+        "#16DiasDeActivismo",
+        "#16DiasDeAtivismo",
+        "#HomemQueEHomemNaoBate",
+        "#MarchaSofala",
+        "#Sofala",
+        "#Beira",
+        "#Mocambique"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "abertura",
+      "narration": "Homem que é homem não bate. Respeita.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african man serious portrait close up",
+            "black man intense gaze camera",
+            "african man staring camera dramatic light"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls",
+            "child"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "HOMEM QUE É HOMEM NÃO BATE, RESPEITA!",
+          "when": "0",
+          "until": "end",
+          "y": 16,
+          "size": 1.2
+        }
+      ]
+    },
+    {
+      "id": "silencio",
+      "narration": "Quantas vezes ficámos calados, a olhar para o lado, como se não fosse connosco? É connosco.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african man looking away pensive",
+            "black man thinking outdoors",
+            "african man silhouette window"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls",
+            "sad",
+            "crying"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "african men silhouette sunset",
+            "african men backs walking away",
+            "black men standing silhouette dusk"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        },
+        {
+          "atWord": 10,
+          "queries": [
+            "black man looking at camera serious",
+            "african man hand on chin portrait",
+            "african man determined face"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls",
+            "angry"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "QUANTAS VEZES FICÁMOS CALADOS?",
+          "when": "0",
+          "until": "calados",
+          "y": 16,
+          "size": 1.05
+        },
+        {
+          "text": "É CONNOSCO.",
+          "when": "é",
+          "until": "end",
+          "y": 16,
+          "size": 1.5
+        }
+      ]
+    },
+    {
+      "id": "escudo",
+      "narration": "Aquela que chora em silêncio é mãe, é irmã, é filha. Podemos ser o escudo, e não a ferida.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african mother with daughter smiling",
+            "black mother hugging child",
+            "african family happy together"
+          ],
+          "avoid": [
+            "crying",
+            "sad",
+            "bruise"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "black father hugging daughter",
+            "african man carrying child smiling",
+            "black father and son happy"
+          ],
+          "avoid": [
+            "woman",
+            "women"
+          ]
+        },
+        {
+          "atWord": 11,
+          "queries": [
+            "african father holding child hand walking",
+            "black man protecting child",
+            "african man holding little girl hand"
+          ],
+          "avoid": [
+            "woman",
+            "women"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "PODEMOS SER O ESCUDO, E NÃO A FERIDA.",
+          "when": "podemos",
+          "until": "end",
+          "y": 16,
+          "size": 1.05
+        }
+      ]
+    },
+    {
+      "id": "forca",
+      "narration": "A verdadeira força não levanta a mão. Levanta a cabeça, levanta a voz, levanta os outros.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african man looking up sky hopeful",
+            "black man face sunlight hopeful",
+            "african man looking up determined"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        },
+        {
+          "atWord": 7,
+          "queries": [
+            "african man raising fist",
+            "black man raised fist",
+            "african man fist up sky"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        },
+        {
+          "atWord": 13,
+          "queries": [
+            "people raising hands together africa",
+            "crowd hands up africa unity",
+            "africans raising hands celebration"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "A VERDADEIRA FORÇA NÃO LEVANTA A MÃO.",
+          "when": "0",
+          "until": "mão",
+          "y": 16,
+          "size": 1
+        },
+        {
+          "text": "LEVANTA A CABEÇA. LEVANTA A VOZ. LEVANTA OS OUTROS.",
+          "when": "levanta#2",
+          "until": "end",
+          "y": 16,
+          "size": 0.95
+        }
+      ]
+    },
+    {
+      "id": "eu",
+      "narration": "Eu estou aqui. E tu? Chegou a hora de agir.",
+      "shots": [
+        {
+          "atWord": 0,
+          "media": "media/eu-rosto.jpg",
+          "fit": "contain"
+        },
+        {
+          "atWord": 5,
+          "queries": [
+            "african men walking determination",
+            "black men walking road forward",
+            "african men marching together determined"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "EU ESTOU AQUI. E TU?",
+          "when": "0",
+          "until": "tu",
+          "y": 14,
+          "size": 1.2
+        },
+        {
+          "text": "CHEGOU A HORA DE AGIR.",
+          "when": "chegou",
+          "until": "end",
+          "y": 16,
+          "size": 1.15
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "Homens de Sofala, sejam agentes da mudança! No dia 25 de Novembro, às sete horas, na Praça da Independência.",
+      "shots": [
+        {
+          "atWord": 0,
+          "media": "media/cartaz-16-dias.png",
+          "fit": "contain"
+        },
+        {
+          "atWord": 12,
+          "queries": [
+            "african community march",
+            "peaceful march africa people walking",
+            "african people walking together street"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "25 DE NOVEMBRO · 07H00",
+          "when": "sete",
+          "until": "end",
+          "y": 14,
+          "size": 1.1
+        }
+      ]
+    },
+    {
+      "id": "informacoes",
+      "narration": "Caminhamos até ao Pavilhão de Desportos, lado a lado, com respeito, igualdade e dignidade.",
+      "shots": [],
+      "background": {
+        "gradient": [
+          "#4B1F8F",
+          "#1E0B3F"
+        ]
+      },
+      "texts": [
+        {
+          "text": "📅 25 DE NOVEMBRO",
+          "when": "0",
+          "until": "end",
+          "y": 20,
+          "size": 1.25,
+          "style": "caixa"
+        },
+        {
+          "text": "🕖 07H00",
+          "when": "0",
+          "offset": 0.4,
+          "until": "end",
+          "y": 31,
+          "size": 1.25,
+          "style": "caixa"
+        },
+        {
+          "text": "📍 PARTIDA: PRAÇA DA INDEPENDÊNCIA",
+          "when": "0",
+          "offset": 0.9,
+          "until": "end",
+          "y": 43,
+          "size": 0.95,
+          "style": "caixa"
+        },
+        {
+          "text": "DESTINO: PAVILHÃO DE DESPORTOS",
+          "when": "pavilhão",
+          "until": "end",
+          "y": 54,
+          "size": 0.95,
+          "style": "caixa"
+        },
+        {
+          "text": "RESPEITO · IGUALDADE · DIGNIDADE",
+          "when": "respeito",
+          "until": "end",
+          "y": 68,
+          "size": 0.95,
+          "style": "caixa"
+        }
+      ]
+    },
+    {
+      "id": "fecho",
+      "narration": "Em Sofala, queremos homens de respeito. Não esperes por amanhã. Junta-te à marcha!",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "group of african men walking sunrise",
+            "african men walking road dawn",
+            "black men walking together morning"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "african man silhouette sunset walking",
+            "black man walking toward sunrise silhouette",
+            "man walking into the sun africa"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "girl",
+            "girls"
+          ]
+        },
+        {
+          "atWord": 10,
+          "queries": [
+            "african men marching united",
+            "men walking together united africa",
+            "african people marching forward"
+          ],
+          "avoid": [
+            "riot",
+            "fire",
+            "police"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "EM SOFALA, QUEREMOS HOMENS DE RESPEITO.",
+          "when": "0",
+          "until": "respeito",
+          "y": 16,
+          "size": 1
+        },
+        {
+          "text": "JUNTA-TE À MARCHA!",
+          "when": "junta-te",
+          "until": "end",
+          "y": 16,
+          "size": 1.3
+        }
+      ]
+    }
+  ]
+}

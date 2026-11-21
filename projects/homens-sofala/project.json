@@ -1,0 +1,387 @@
+{
+  "template": "reportagem",
+  "aspect": "9:16",
+  "voice": {
+    "mode": "synthetic",
+    "name": "pt-PT-DuarteNeural",
+    "rate": "-2%",
+    "pitch": "-12Hz",
+    "pauseSeconds": 0.4
+  },
+  "style": {
+    "look": "cinema",
+    "palette": "ouro",
+    "transition": "zoom",
+    "transitionSpeed": "rapida",
+    "captionStyle": "karaoke",
+    "caption": {
+      "font": "compacta",
+      "size": "media",
+      "caps": true,
+      "position": "baixo",
+      "hl": "cor",
+      "highlight": "#FFD21F"
+    },
+    "vignette": true
+  },
+  "imageFit": "cover",
+  "cta": "25 DE NOVEMBRO · 07H00",
+  "site": "Praça da Independência → Pavilhão de Desportos",
+  "endCard": {
+    "emblem": "media/emblema-dpgcas.png",
+    "lines": [
+      "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+    ],
+    "seconds": 3
+  },
+  "publish": {
+    "description": "Homem que é homem não bate, respeita! 💪\nHomens de Sofala, sejam agentes da mudança.\n\n📅 25 de Novembro · 🕖 07h00\n📍 Partida: Praça da Independência → Destino: Pavilhão de Desportos\n\nRespeito, igualdade e dignidade. Junta-te à Marcha dos 16 Dias de Activismo e partilha este vídeo com um amigo.\n\nDirecção Provincial de Género, Criança e Acção Social de Sofala",
+    "hashtags": [
+      "#16DiasDeActivismo",
+      "#16DiasDeAtivismo",
+      "#HomemQueEHomemNaoBate",
+      "#MarchaSofala",
+      "#Sofala",
+      "#Beira",
+      "#Mocambique"
+    ]
+  },
+  "id": "homens-sofala",
+  "brand": "campanha-16-dias",
+  "title": "Homem que é homem não bate, respeita — Homens de Sofala, 25 de Novembro",
+  "scenes": [
+    {
+      "id": "abertura",
+      "narration": "Homem que é homem não bate. Respeita.",
+      "cutaways": [
+        {
+          "media": "media/abertura-1-pexels-9370393.mp4",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "silencio",
+      "narration": "Quantas vezes ficámos calados, a olhar para o lado, como se não fosse connosco? É connosco.",
+      "cutaways": [
+        {
+          "media": "media/silencio-1-pexels-8496467.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/silencio-2-pexels-20720942.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/silencio-3-pexels-9370351.mp4",
+          "atWord": 10
+        }
+      ]
+    },
+    {
+      "id": "escudo",
+      "narration": "Aquela que chora em silêncio é mãe, é irmã, é filha. Podemos ser o escudo, e não a ferida.",
+      "cutaways": [
+        {
+          "media": "media/escudo-1-pexels-5337307.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/escudo-2-pexels-8421304.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/escudo-3-pexels-6321582.mp4",
+          "atWord": 11
+        }
+      ]
+    },
+    {
+      "id": "forca",
+      "narration": "A verdadeira força não levanta a mão. Levanta a cabeça, levanta a voz, levanta os outros.",
+      "cutaways": [
+        {
+          "media": "media/forca-1-pexels-7866246.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/forca-2-pexels-4323008.mp4",
+          "atWord": 7
+        },
+        {
+          "media": "media/forca-3-pexels-39710116.mp4",
+          "atWord": 13
+        }
+      ]
+    },
+    {
+      "id": "eu",
+      "narration": "Eu estou aqui. E tu? Chegou a hora de agir.",
+      "cutaways": [
+        {
+          "media": "media/eu-rosto.jpg",
+          "atWord": 0,
+          "fit": "contain"
+        },
+        {
+          "media": "media/eu-2-pexels-10160482.mp4",
+          "atWord": 5
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "Homens de Sofala, sejam agentes da mudança! No dia 25 de Novembro, às sete horas, na Praça da Independência.",
+      "cutaways": [
+        {
+          "media": "media/cartaz-16-dias.png",
+          "atWord": 0,
+          "fit": "contain"
+        },
+        {
+          "media": "media/convite-2-pexels-4096807.mp4",
+          "atWord": 12
+        }
+      ]
+    },
+    {
+      "id": "informacoes",
+      "narration": "Caminhamos até ao Pavilhão de Desportos, lado a lado, com respeito, igualdade e dignidade.",
+      "cutaways": [
+        {
+          "media": "media/bg-informacoes.png",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "fecho",
+      "narration": "Em Sofala, queremos homens de respeito. Não esperes por amanhã. Junta-te à marcha!",
+      "cutaways": [
+        {
+          "media": "media/fecho-1-pexels-41117614.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/fecho-2-pexels-18089046.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/fecho-3-pexels-27850346.mp4",
+          "atWord": 10
+        }
+      ]
+    }
+  ],
+  "credits": [
+    "Vídeo: Lara Jameson (Pexels) https://www.pexels.com/video/the-cover-of-the-book-black-is-beautiful-9370393/",
+    "Vídeo: Ivan S (Pexels) https://www.pexels.com/video/man-looking-at-camera-8496467/",
+    "Vídeo: Ammad Rasool (Pexels) https://www.pexels.com/video/african-man-walking-away-20720942/",
+    "Vídeo: Lara Jameson (Pexels) https://www.pexels.com/video/a-man-with-an-afro-is-posing-for-a-photo-9370351/",
+    "Vídeo: Andy Barbour (Pexels) https://www.pexels.com/video/a-mother-hugging-her-daughter-5337307/",
+    "Vídeo: Sasha  Kim (Pexels) https://www.pexels.com/video/father-kissing-his-baby-8421304/",
+    "Vídeo: Tima Miroshnichenko (Pexels) https://www.pexels.com/video/father-helping-his-daughter-with-first-steps-6321582/",
+    "Vídeo: Barbara Olsen (Pexels) https://www.pexels.com/video/a-happy-man-looking-up-7866246/",
+    "Vídeo: cottonbro studio (Pexels) https://www.pexels.com/video/a-black-fist-is-shown-in-front-of-a-white-background-4323008/",
+    "Vídeo: Şeyhmus Kino (Pexels) https://www.pexels.com/video/joyful-crowd-of-kids-raising-hands-outdoors-39710116/",
+    "Vídeo: Ron Lach (Pexels) https://www.pexels.com/video/low-angle-view-of-a-men-looking-at-camera-10160482/",
+    "Vídeo: Xolisa Dlamini (Pexels) https://www.pexels.com/video/people-dancing-on-the-street-in-the-parade-4096807/",
+    "Vídeo: just a hobby (Pexels) https://www.pexels.com/video/scenic-beach-walk-with-palm-trees-at-sunrise-41117614/",
+    "Vídeo: Matthias Groeneveld (Pexels) https://www.pexels.com/video/a-man-walking-down-a-path-with-the-sun-shining-behind-him-18089046/",
+    "Vídeo: Folu Adedinni (Pexels) https://www.pexels.com/video/three-men-in-traditional-clothing-walking-down-a-street-27850346/"
+  ],
+  "overlays": [
+    {
+      "kind": "text",
+      "scene": "abertura",
+      "at": 0,
+      "seconds": 3.2,
+      "text": "HOMEM QUE É HOMEM NÃO BATE, RESPEITA!",
+      "x": 50,
+      "y": 16,
+      "size": 1.2,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "silencio",
+      "at": 0,
+      "seconds": 1.7,
+      "text": "QUANTAS VEZES FICÁMOS CALADOS?",
+      "x": 50,
+      "y": 16,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "silencio",
+      "at": 4.9,
+      "seconds": 1,
+      "text": "É CONNOSCO.",
+      "x": 50,
+      "y": 16,
+      "size": 1.5,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "escudo",
+      "at": 4,
+      "seconds": 2.4,
+      "text": "PODEMOS SER O ESCUDO, E NÃO A FERIDA.",
+      "x": 50,
+      "y": 16,
+      "size": 1.05,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "forca",
+      "at": 0,
+      "seconds": 1.7,
+      "text": "A VERDADEIRA FORÇA NÃO LEVANTA A MÃO.",
+      "x": 50,
+      "y": 16,
+      "size": 1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "forca",
+      "at": 2.5,
+      "seconds": 3.4,
+      "text": "LEVANTA A CABEÇA. LEVANTA A VOZ. LEVANTA OS OUTROS.",
+      "x": 50,
+      "y": 16,
+      "size": 0.95,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "eu",
+      "at": 0,
+      "seconds": 2,
+      "text": "EU ESTOU AQUI. E TU?",
+      "x": 50,
+      "y": 14,
+      "size": 1.2,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "eu",
+      "at": 2.8,
+      "seconds": 1.6,
+      "text": "CHEGOU A HORA DE AGIR.",
+      "x": 50,
+      "y": 16,
+      "size": 1.15,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 5.1,
+      "seconds": 2.5,
+      "text": "25 DE NOVEMBRO · 07H00",
+      "x": 50,
+      "y": 14,
+      "size": 1.1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 0.5,
+      "seconds": 4.8,
+      "text": "📅 25 DE NOVEMBRO",
+      "x": 50,
+      "y": 20,
+      "size": 1.25,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 0.9,
+      "seconds": 4.4,
+      "text": "🕖 07H00",
+      "x": 50,
+      "y": 31,
+      "size": 1.25,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 1.4,
+      "seconds": 3.9,
+      "text": "📍 PARTIDA: PRAÇA DA INDEPENDÊNCIA",
+      "x": 50,
+      "y": 43,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 0.8,
+      "seconds": 4.5,
+      "text": "DESTINO: PAVILHÃO DE DESPORTOS",
+      "x": 50,
+      "y": 54,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "informacoes",
+      "at": 3,
+      "seconds": 2.3,
+      "text": "RESPEITO · IGUALDADE · DIGNIDADE",
+      "x": 50,
+      "y": 68,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "fecho",
+      "at": 0.1,
+      "seconds": 2.1,
+      "text": "EM SOFALA, QUEREMOS HOMENS DE RESPEITO.",
+      "x": 50,
+      "y": 16,
+      "size": 1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "fecho",
+      "at": 4.9,
+      "seconds": 1.3,
+      "text": "JUNTA-TE À MARCHA!",
+      "x": 50,
+      "y": 16,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    }
+  ]
+}

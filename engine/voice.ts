@@ -282,7 +282,8 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   // ── 2/3. Voz sintética (Edge/ElevenLabs → Piper) ──────────────────────
   const rate = ctx.project.voice?.rate ?? '+0%';
   const voiceName = scene.voiceName?.trim() || ctx.project.voice?.name?.trim() || undefined;
-  const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY), voiceName ?? '']);
+  const pitch = ctx.project.voice?.pitch?.trim() || undefined;
+  const key = fingerprint(['synthetic-v2', text, ctx.locale, rate, Boolean(process.env.ELEVENLABS_API_KEY), voiceName ?? '', pitch ?? '']);
   const wav = join(ctx.cacheDir, `${scene.id}-${key}.wav`);
   const meta = `${wav}.json`;
   if (existsSync(wav) && existsSync(meta)) {
@@ -293,7 +294,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   let words: WordTiming[];
   let source: VoiceSource = process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID ? 'elevenlabs' : 'edge';
   try {
-    ({ words } = await synthesize(text, ctx.locale as AppLocale, mp3, rate, 3, voiceName));
+    ({ words } = await synthesize(text, ctx.locale as AppLocale, mp3, rate, 3, voiceName, pitch));
     if (words.length === 0) throw new Error('síntese sem palavras');
     restorePunctuation(words, text);
   } catch (err) {
@@ -305,6 +306,7 @@ export async function voiceScene(ctx: VoiceContext, scene: Scene): Promise<Scene
   toWav(mp3, wav, { trimTail: true });
   const dur = duration(wav);
   const out: SceneAudio = { scene: scene.id, wav, words, duration: dur, source, cached: false };
-  writeFileSync(meta, JSON.stringify(out));
+  // A voz offline de reserva não fica em cache: da próxima vez tenta-se de novo a voz boa.
+  if (source !== 'piper') writeFileSync(meta, JSON.stringify(out));
   return out;
 }

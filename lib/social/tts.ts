@@ -81,6 +81,8 @@ export async function synthesize(
   attempts = 3,
   /** Voz escolhida (ex.: pt-PT-DuarteNeural); por defeito a da marca/idioma. */
   voiceName?: string,
+  /** Tom da voz (ex.: '-8Hz' mais grave, '+6Hz' mais agudo). */
+  pitch?: string,
 ): Promise<{ words: WordTiming[]; duration: number }> {
   if (process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID) {
     try {
@@ -89,10 +91,19 @@ export async function synthesize(
       console.warn(`  ⚠ ElevenLabs falhou (${err instanceof Error ? err.message : err}) — a usar Edge TTS`);
     }
   }
+  let limited = 0;
   for (let i = 1; i <= attempts; i += 1) {
     try {
-      return await synthesizeOnce(text, lang, outFile, rate, voiceName);
+      return await synthesizeOnce(text, lang, outFile, rate, voiceName, pitch);
     } catch (err) {
+      // 429 = a Microsoft limita pedidos seguidos: espera um pouco e repete (em vez de cair já na voz offline)
+      if (/429/.test(err instanceof Error ? err.message : String(err)) && limited < 5) {
+        limited += 1;
+        console.warn(`  ⚠ TTS limitado (429) — a esperar ${15 * limited} s e repetir…`);
+        await new Promise((r) => setTimeout(r, 15000 * limited));
+        i -= 1;
+        continue;
+      }
       // 403 = a Microsoft mudou a autenticação do endpoint; repetir não resolve.
       // Falha já, para o chamador cair no Piper sem esperas inúteis.
       const msg = err instanceof Error ? err.message : String(err);
@@ -194,6 +205,7 @@ export async function synthesizeOnce(
   /** ritmo da fala; ligeiramente mais lento soa mais calmo e dá tempo de ler */
   rate = '-8%',
   voiceName?: string,
+  pitch?: string,
 ): Promise<{ words: WordTiming[]; duration: number }> {
   const tts = new MsEdgeTTS();
   await tts.setMetadata(voiceName ?? VOICE[lang], OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
@@ -201,7 +213,7 @@ export async function synthesizeOnce(
     sentenceBoundaryEnabled: false,
   });
 
-  const { audioStream, metadataStream } = tts.toStream(text, { rate });
+  const { audioStream, metadataStream } = tts.toStream(text, { rate, ...(pitch ? { pitch } : {}) });
 
   const chunks: Buffer[] = [];
   audioStream.on('data', (c: Buffer) => chunks.push(c));

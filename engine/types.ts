@@ -195,7 +195,7 @@ export interface Project {
   /** Props que dependem do que a voz diz (ver Cue). */
   cues?: Cue[];
   /** `name`: voz sintética escolhida (ex.: pt-PT-DuarteNeural); sem nome usa a da marca/idioma. */
-  voice?: { mode?: VoiceMode; rate?: string; pauseSeconds?: number; name?: string };
+  voice?: { mode?: VoiceMode; rate?: string; pauseSeconds?: number; name?: string; /** tom da voz, ex.: '-8Hz' (mais grave) */ pitch?: string };
   scenes: Scene[];
   cta?: string;
   site?: string;
