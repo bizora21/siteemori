@@ -141,6 +141,13 @@ function edTimeline() {
     return el;
   });
 
+  // Selo institucional (cartão final): os últimos segundos do vídeo
+  if (p.endCard?.lines?.some((l) => l.trim()) && tm.exact) {
+    const secs = p.endCard.seconds ?? 3.5;
+    scenes.push(blk(Math.max(0, tm.total - secs), tm.total, 'endcard', h('span', { class: 'tl-lab' }, '🏛 selo final'), 'Cartão final com o emblema e o nome da entidade. Clique para mudar (Efeitos).', () => select({ type: 'fx' })));
+    scenes[scenes.length - 1].addEventListener('click', () => select({ type: 'fx' }));
+  }
+
   // O que se diz (as palavras da narração, no tempo certo): clique para pôr o cursor ali
   const say = edLines(p, tm).map((l) => {
     const txt = l.words.map((w) => w.text).join(' ');
@@ -415,14 +422,14 @@ function edBar(p) {
     h('b', { class: 'ed-title', title: p.title }, p.title),
     h('button', { disabled: !canUndo(), title: 'Desfazer a última alteração (Ctrl+Z)', onclick: () => histGo(-1) }, '↶ Desfazer'),
     h('button', { disabled: !canRedo(), title: 'Refazer (Ctrl+Y)', onclick: () => histGo(1) }, '↷ Refazer'),
-    h('button', { id: 'save-btn', title: 'Guardar o projeto (também guarda sozinho antes de gerar)', onclick: save }, state.dirty ? '💾 Guardar *' : '💾 Guardar'),
+    h('button', { id: 'save-btn', title: 'Guardar o projeto (também guarda sozinho antes de gerar)', onclick: () => save(true) }, state.dirty ? '💾 Guardar *' : '💾 Guardar'),
     h('span', { style: 'flex:1' }),
     h('span', { id: 'job-state', class: 'muted' }),
     failed && h('button', { class: 'pill bad', title: 'O último trabalho falhou: veja o motivo', onclick: () => edDialog('publish') }, '⚠ falhou: ver motivo'),
     p.template === 'reportagem' && q?.items && h('button', { class: 'pill ' + (q.score >= 90 ? 'ok' : q.score >= 75 ? 'warn' : 'bad'), style: 'font-size:14px', title: 'Ver o que falta para o vídeo ficar com melhor qualidade', onclick: () => edDialog('quality') }, `📊 Qualidade ${q.score}%`),
     h('button', { class: exact ? '' : 'primary', title: exact ? 'Gera a voz de novo (use depois de mudar o texto)' : 'Gera a voz para os tempos ficarem exatos (não demora)', onclick: () => build({ noRender: true }) }, exact ? '🔊 Voz' : '🔊 Calcular tempos'),
-    h('button', { title: 'Gera uma versão rápida para ver (a meia qualidade)', onclick: () => build({ draft: true }) }, '🎬 Ver rascunho'),
-    h('button', { class: 'primary', title: 'Ouvir, ver e publicar o vídeo final', onclick: () => edDialog('publish') }, '✅ Publicar'),
+    h('button', { class: (curStatus().draft.exists && !curStatus().draft.fresh) ? 'primary' : '', title: (curStatus().draft.exists && !curStatus().draft.fresh) ? 'O rascunho que existe é ANTIGO: gere-o de novo para ver as alterações' : 'Gera uma versão rápida para ver (a meia qualidade)', onclick: () => build({ draft: true }) }, (curStatus().draft.exists && !curStatus().draft.fresh) ? '🎬 Atualizar rascunho ●' : '🎬 Ver rascunho'),
+    h('button', { class: 'primary', title: 'Ver o rascunho, aprovar e gerar o vídeo final', onclick: () => edDialog('publish') }, '✅ Ver e publicar'),
     h('button', { title: 'Como usar o editor', 'aria-label': 'Ajuda', onclick: () => edDialog('help') }, '❓'));
 }
 

@@ -324,11 +324,12 @@ function sceneCard(p, s, i, st, tpl, inst, rep) {
 }
 
 // ── guardar e gerar ───────────────────────────────────────────────────────
-async function save() {
+async function save(manual) {
   try {
     await api(`/api/projects/${state.id}`, { method: 'PUT', body: JSON.stringify(state.data.project) });
     state.dirty = false;
     await refresh();
+    if (manual === true) toast('✓ Guardado. O vídeo já gerado não muda sozinho: carregue em 🎬 Ver rascunho para ver as alterações.', 7000);
     return true;
   } catch (e) {
     alert('Não foi possível guardar: ' + e.message);

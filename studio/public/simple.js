@@ -190,16 +190,24 @@ function approvalSection(p) {
           ? h('div', { class: 'job-banner warn' }, h('b', {}, '✓ Gerou, com avisos (' + lj.label + '):'), ...lj.warnings.map((w) => h('div', {}, w.replace(/^\s*⚠\s*/, '⚠ '))))
           : null;
 
+  const oldDraft = st.draft.exists && !st.draft.fresh;
+  const oldBanner = oldDraft
+    ? h('div', { class: 'job-banner warn', style: 'display:flex;flex-direction:column;gap:6px' },
+      h('b', {}, '⚠ O vídeo que vê abaixo é ANTIGO'),
+      h('div', {}, 'Foi gerado antes das suas últimas alterações (cortes, textos, volumes, cartão final…). Guardar não refaz o vídeo: é preciso gerar o rascunho de novo para ver o que mudou.'),
+      h('div', {}, h('button', { class: 'primary', onclick: () => build({ draft: true }) }, '🎬 Gerar o rascunho NOVO agora')))
+    : null;
   return h('section', { class: 'card stack', id: 'approve' },
     h('h3', { style: 'margin:0' }, 'Ouvir, ver e aprovar' + (ver ? ` — ${ver.label}` : '')),
+    oldBanner,
     banner,
     chips,
     ver && h('p', { class: 'muted', style: 'margin:0' }, ver.hint),
     ver?.faceMode === 'photo' && !p.avatar && h('p', { style: 'color:var(--warn);margin:0' }, '⚠ Esta versão precisa da sua foto: "Mais opções do vídeo" → "Carregar a minha foto".'),
     row(1, 'Ouvir a voz', 'Carregue em "🔊 Ouvir a voz" (leva segundos). Confirme a ordem das cenas, as pausas e se o que disse é o que está escrito.',
-      st.audio.exists ? [stale(st.audio), h('audio', { controls: true, src: `/api/projects/${p.id}/audio?version=${state.version}&t=${Date.now()}`, style: 'width:100%' })] : none('Ainda não gerado.')),
+      st.audio.exists ? [h('audio', { controls: true, src: `/api/projects/${p.id}/audio?version=${state.version}&t=${Date.now()}`, style: 'width:100%' })] : none('Ainda não gerado.')),
     row(2, 'Ver o rascunho', 'Carregue em "🎬 Ver rascunho": o vídeo completo em baixa resolução, com cenários, legendas e música.',
-      st.draft.exists ? [stale(st.draft), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${oid}-rascunho.mp4?t=${Date.now()}` }), h('div', { class: 'row', style: 'flex-wrap:wrap;align-items:center;margin-top:6px' }, dlButton(`/media/${oid}-rascunho.mp4`, `${oid}-rascunho.mp4`, '⬇ Baixar o rascunho…'), h('span', { class: 'muted', style: 'font-size:13px' }, `Está em: video3d\\out\\${oid}-rascunho.mp4`))] : none('Ainda não gerado.')),
+      st.draft.exists ? [stale(st.draft), h('video', { controls: true, class: (vertical ? 'vertical' : '') + (oldDraft ? ' old' : ''), title: oldDraft ? 'Vídeo antigo: gere o rascunho de novo' : '', src: `/media/${oid}-rascunho.mp4?t=${Date.now()}` }), h('div', { class: 'row', style: 'flex-wrap:wrap;align-items:center;margin-top:6px' }, dlButton(`/media/${oid}-rascunho.mp4`, `${oid}-rascunho.mp4`, '⬇ Baixar o rascunho…'), h('span', { class: 'muted', style: 'font-size:13px' }, `Está em: video3d\\out\\${oid}-rascunho.mp4`))] : none('Ainda não gerado.')),
     row(3, 'Aprovar', 'O botão "✅ Aprovar e gerar o vídeo final" só fica ativo depois de ver um rascunho atual. Gera o vídeo em qualidade total.',
       st.final.exists ? [stale(st.final), h('video', { controls: true, class: vertical ? 'vertical' : '', src: `/media/${oid}.mp4?t=${Date.now()}` }), h('div', { class: 'row', style: 'flex-wrap:wrap;align-items:center;margin-top:6px' }, dlButton(`/media/${oid}.mp4`, `${oid}.mp4`, '⬇ Baixar o vídeo final…'), h('span', { class: 'muted', style: 'font-size:13px' }, `Está em: video3d\\out\\${oid}.mp4`))] : none('Ainda não gerado.')),
     h('section', { class: 'stack', id: 'console-box', hidden: true },

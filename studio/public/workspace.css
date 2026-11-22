@@ -136,3 +136,6 @@ label.vol input[type=range] { width: 100%; }
 .trim-step { padding: 8px; border: 1px solid rgba(255,255,255,.14); border-radius: 10px; }
 .trim-dlg button.danger:not(:disabled) { border-color: #e5484d; color: #ff8a90; }
 .trim-foot { position: sticky; bottom: -14px; background: #141b24; padding: 8px 0; z-index: 2; }
+
+video.old { opacity: .35; filter: grayscale(.6); outline: 3px dashed #f5b82e; }
+.tl-block.endcard { background: #fff; color: #222; border: 1px solid #f5b82e; font-weight: 700; }

@@ -138,6 +138,7 @@ function edPreview() {
     p.style?.wash && h('div', { style: `position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:${p.style.wash === 'forte' ? 0.4 : 0.2};background:linear-gradient(160deg,${(pal ?? PAL.oceano).accent},${(pal ?? PAL.oceano).accent2})` }),
     p.style?.vignette && h('div', { style: 'position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 52%,rgba(0,0,0,.5) 100%)' }),
     h('div', { id: 'ed-face', class: 'ed-face', hidden: true }),
+    h('div', { id: 'ed-endcard', style: 'position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 8%;text-align:center;z-index:6' }),
     h('canvas', { id: 'ed-person', width: 270, height: 480, hidden: true, style: 'position:absolute;bottom:0;pointer-events:none' }),
     h('div', { id: 'ed-ovs', style: 'position:absolute;inset:0;pointer-events:none' }),
     h('div', { id: 'ed-cap', style: 'position:absolute;left:5%;right:5%;display:flex;justify-content:center;text-align:center' }, h('div', { id: 'ed-cap-in' })),
@@ -284,6 +285,24 @@ function edPaint() {
     if (on && a.paused) { a.currentTime = Math.max(0, t - from); a.play().catch(() => {}); }
     if (!on && !a.paused) a.pause();
   });
+
+  // cartão final institucional (emblema + nome da entidade)
+  const ecEl = $('#ed-endcard');
+  if (ecEl) {
+    const ec = p.endCard;
+    const secs = ec?.seconds ?? 3.5;
+    const showEc = Boolean(ec?.lines?.some((l) => l.trim())) && tm.exact && t >= tm.total - secs;
+    ecEl.style.display = showEc ? 'flex' : 'none';
+    const key = showEc ? JSON.stringify([ec.emblem, ec.lines, ec.dark]) : '';
+    if (showEc && ecEl.dataset.k !== key) {
+      ecEl.dataset.k = key;
+      ecEl.style.background = ec.dark ? '#101820' : '#fff';
+      ecEl.replaceChildren(
+        ec.emblem && h('img', { src: `/api/projects/${p.id}/file?p=${encodeURIComponent(ec.emblem)}`, style: 'width:36%;height:auto' }),
+        ...ec.lines.filter((l) => l.trim()).map((l) => h('div', { style: `font-family:Georgia,serif;font-weight:700;font-size:${Math.max(9, 44 * ED.ctx.k)}px;line-height:1.2;color:${ec.dark ? '#fff' : '#1a1a1a'};text-transform:uppercase` }, l)),
+        h('div', { style: 'width:30%;height:4px;background:' + ED.ctx.accent + ';border-radius:2px' }));
+    }
+  }
 
   // legendas
   const cap = $('#ed-cap');
