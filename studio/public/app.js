@@ -350,40 +350,81 @@ async function build(opts) {
   if (!opts.noRender && !opts.draft && tplOf(state.data.project.template)?.kind === '3d' && !confirm('Render final 3D: demora vários minutos nesta máquina. Continuar? (O rascunho é bem mais rápido.)')) return;
   try {
     const r = await api(`/api/projects/${state.id}/build`, { method: 'POST', body: JSON.stringify({ ...opts, version: state.version || undefined }) });
-    followJob(r.job);
+    const tot = state.data?.timing?.total;
+    const mins = tot ? Math.max(1, Math.round((tot * (opts.draft ? 5.5 : opts.noRender ? 0.5 : 12)) / 60)) : 0;
+    const est = !opts.noRender && mins ? `Neste computador leva cerca de ${mins} min.` : '';
+    followJob(r.job, opts.noRender ? 'voz e tempos' : opts.draft ? 'rascunho' : 'vídeo final', est);
   } catch (e) {
     alert(e.message);
   }
 }
 
-function followJob(jobId) {
-  const box = $('#console-box');
-  const cons = $('#console');
-  box.hidden = false;
-  cons.textContent = '';
+// ── acompanhar um trabalho (voz, rascunho, final): painel flutuante que não se perde quando o editor se redesenha ──
+const JOB = { id: 0, status: '', label: '', pct: 0, line: '', err: '', t0: 0, est: '' };
+let jobTimer = 0;
+
+function jobPaint() {
+  let el = $('#job-float');
+  if (!el) { el = h('div', { id: 'job-float', class: 'job-float' }); document.body.append(el); }
+  if (!JOB.status) { el.hidden = true; return; }
+  el.hidden = false;
+  const running = JOB.status === 'queued' || JOB.status === 'running';
+  const secs = Math.round((Date.now() - JOB.t0) / 1000);
+  el.className = 'job-float ' + (JOB.status === 'failed' ? 'bad' : JOB.status === 'done' ? 'ok' : '');
+  el.replaceChildren(...[
+    h('div', { class: 'row', style: 'align-items:center;gap:8px' },
+      h('b', { style: 'flex:1' }, JOB.status === 'queued' ? '⏳ Na fila: ' + JOB.label : running ? '⏳ A gerar: ' + JOB.label : JOB.status === 'done' ? '✓ Pronto: ' + JOB.label : '✗ Falhou: ' + JOB.label),
+      !running && h('button', { title: 'Fechar', onclick: () => { JOB.status = ''; jobPaint(); } }, '✕')),
+    running && h('div', { class: 'bar' }, h('i', { style: `width:${JOB.pct}%` })),
+    running && h('div', { class: 'muted', style: 'font-size:13px' }, `${JOB.pct}% · ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} decorridos${JOB.line ? ' · ' + JOB.line : ''}`),
+    running && JOB.est && h('div', { class: 'muted', style: 'font-size:12px' }, JOB.est + ' Pode continuar a editar.'),
+    !running && JOB.status === 'failed' && h('div', { style: 'font-size:13px;white-space:pre-wrap' }, JOB.err || 'Veja o motivo em ✅ Ver e publicar.'),
+    !running && h('button', { class: 'primary', onclick: () => { JOB.status = ''; jobPaint(); if (typeof edDialog === 'function' && $('#ed-prev')) edDialog('publish'); } }, JOB.status === 'done' ? 'Ver o resultado' : 'Ver detalhes')].filter(Boolean));
+}
+
+function followJob(jobId, label = '', est = '') {
+  Object.assign(JOB, { id: jobId, status: 'queued', label, pct: 0, line: '', err: '', t0: Date.now(), est });
+  clearInterval(jobTimer);
+  jobTimer = setInterval(() => { if (JOB.status === 'queued' || JOB.status === 'running') jobPaint(); else clearInterval(jobTimer); }, 1000);
+  jobPaint();
+  // (o registo completo também aparece no diálogo "Ver e publicar", se estiver aberto)
+  let logText = '';
   const es = new EventSource(`/api/jobs/${jobId}/events`);
-  const stateEl = $('#job-state');
   es.addEventListener('log', (e) => {
-    cons.textContent += JSON.parse(e.data) + '\n';
-    cons.scrollTop = cons.scrollHeight;
+    const l = JSON.parse(e.data);
+    logText += l + '\n';
+    const cons = $('#console');
+    if (cons) { cons.textContent = logText; cons.scrollTop = cons.scrollHeight; $('#console-box') && ($('#console-box').hidden = false); }
   });
   es.addEventListener('progress', (e) => {
     const line = JSON.parse(e.data);
-    $('#progress').textContent = line;
-    const m = /(\d+)\/(\d+)/.exec(line);
-    if (m) $('#bar').style.width = `${Math.round((Number(m[1]) / Number(m[2])) * 100)}%`;
+    const m = /(Rendered|Stitched|Encoded)\s+(\d+)\/(\d+)/.exec(line);
+    if (m) { JOB.pct = Math.min(99, Math.round((Number(m[2]) / Number(m[3])) * 100)); JOB.line = m[1] === 'Rendered' ? 'a desenhar os quadros' : 'a juntar o vídeo'; }
+    else if (/Bundling/.test(line)) JOB.line = 'a preparar';
+    else JOB.line = line.replace(/\s+/g, ' ').slice(0, 60);
+    const pr = $('#progress');
+    if (pr) pr.textContent = line;
+    if (m && $('#bar')) $('#bar').style.width = `${JOB.pct}%`;
+    jobPaint();
   });
   es.addEventListener('status', async (e) => {
     const st = JSON.parse(e.data);
-    if (stateEl) stateEl.textContent = { queued: 'na fila…', running: 'a gerar…', done: '✓ concluído', failed: '✗ falhou — vê o registo acima' }[st] ?? st;
+    JOB.status = st;
+    const stateEl = $('#job-state');
+    if (stateEl) stateEl.textContent = { queued: 'na fila…', running: 'a gerar…', done: '✓ concluído', failed: '✗ falhou' }[st] ?? st;
+    if (st === 'running') JOB.pct = Math.max(JOB.pct, 1);
     if (st === 'done' || st === 'failed') {
       es.close();
-      await refresh();
-      $('#console-box').hidden = false;
-      $('#console').textContent = cons.textContent;
-    }
+      if (st === 'done') JOB.pct = 100;
+      else JOB.err = (logText.split('\n').filter((l) => /✗|rro/.test(l)).slice(-2).join('\n') || logText.split('\n').filter(Boolean).slice(-3).join('\n')).slice(0, 400);
+      jobPaint();
+      try { await refresh(); } catch { /* sem rede */ }
+      const cons = $('#console');
+      if (cons) { cons.textContent = logText; $('#console-box') && ($('#console-box').hidden = false); }
+      if (st === 'done') setTimeout(() => { if (JOB.status === 'done') { JOB.status = ''; jobPaint(); } }, 60000);
+    } else jobPaint();
   });
-  es.onerror = () => es.close();
+  es.onerror = () => { es.close(); if (JOB.status === 'queued' || JOB.status === 'running') { JOB.status = 'failed'; JOB.err = 'Perdi a ligação ao estúdio. Se ele ainda está aberto, o trabalho continua; carregue Ctrl+F5 para ver.'; jobPaint(); } };
 }
 
 async function loadPublication(files, id) {

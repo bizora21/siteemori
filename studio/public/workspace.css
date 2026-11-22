@@ -139,3 +139,11 @@ label.vol input[type=range] { width: 100%; }
 
 video.old { opacity: .35; filter: grayscale(.6); outline: 3px dashed #f5b82e; }
 .tl-block.endcard { background: #fff; color: #222; border: 1px solid #f5b82e; font-weight: 700; }
+
+/* painel flutuante do trabalho em curso (rascunho, voz, final) */
+.job-float { position: fixed; left: 16px; bottom: 16px; z-index: 200; width: min(360px, calc(100vw - 32px)); padding: 12px; border-radius: 12px; background: #141b24; border: 1px solid #f5b82e; box-shadow: 0 10px 34px rgba(0,0,0,.55); display: flex; flex-direction: column; gap: 6px; color: #e6ebf2; }
+.job-float.ok { border-color: #2fae83; }
+.job-float.bad { border-color: #e5484d; }
+.job-float .bar { height: 8px; border-radius: 6px; background: rgba(255,255,255,.12); overflow: hidden; }
+.job-float .bar i { display: block; height: 100%; background: #f5b82e; transition: width .4s; }
+.job-float[hidden] { display: none; }
