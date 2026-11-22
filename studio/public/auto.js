@@ -3,7 +3,7 @@
 
 const AUTO = { timer: 0, busy: false, done: {}, failed: '', asked: {} };
 
-const autoSig = (p) => JSON.stringify([p.scenes.map((s) => [s.id, s.narration, s.voiceName, s.kind, s.presenter]), p.voice]);
+const autoSig = (p) => JSON.stringify([p.scenes.map((s) => [s.id, s.narration, s.voiceName, s.kind, s.presenter, s.clipRev]), p.voice]);
 
 /** Chamado depois de cada alteração: marca a hora de atualizar quando se parar de mexer. */
 function autoPlan(delay = 2500) {

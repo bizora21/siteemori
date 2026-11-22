@@ -288,7 +288,7 @@ export const Reportagem = (props: ReportagemProps) => {
     const lv = (levelAt(tt - 0.15) + levelAt(tt - 0.05) + levelAt(tt + 0.05)) / 3;
     const speaking = props.voiceLevels?.length ? Math.min(1, lv * 1.7) : 1;
     const base = props.duck === false ? 0.09 : 0.24 - 0.17 * speaking;
-    return base * interpolate(tt, [0, 1.2], [0, 1], clamp) * interpolate(tt, [end - 1.5, end], [1, 0], clamp);
+    return Math.min(1, base * (props.musicGain ?? 1)) * interpolate(tt, [0, 1.2], [0, 1], clamp) * interpolate(tt, [end - 1.5, end], [1, 0], clamp);
   };
   const sceneT = t - sceneStart;
 
@@ -621,7 +621,7 @@ export const Reportagem = (props: ReportagemProps) => {
       })()}
 
       <Sequence from={Math.round(props.leadSeconds * fps)}>
-        <Audio src={staticFile(props.audio)} />
+        <Audio src={staticFile(props.audio)} volume={Math.min(1, props.voiceGain ?? 1)} />
       </Sequence>
       {/* Cartão final institucional: emblema e nome da entidade (como o papel timbrado) */}
       {props.endCard && t >= props.endCard.from && (() => {

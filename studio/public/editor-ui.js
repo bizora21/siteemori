@@ -6,7 +6,7 @@ const ED_LABEL_W = 118; // largura da coluna com os nomes das faixas
 const ED_ROW = 34; // altura de cada linha de blocos
 
 /** Zoom que faz o vídeo todo caber na largura da página. */
-const edFitPps = (total) => Math.min(80, Math.max(9, Math.floor((($('#main')?.clientWidth ?? 1000) - ED_LABEL_W - 120) / Math.max(1, total))));
+const edFitPps = (total) => Math.min(80, Math.max(9, Math.floor((Math.max($('#main')?.clientWidth ?? 0, window.innerWidth - 60) - ED_LABEL_W - 70) / Math.max(1, total))));
 
 const edIsVideo = (f) => /\.(mp4|mov|webm|m4v)$/i.test(f);
 
@@ -92,7 +92,7 @@ function edTimeline() {
   const select = (sel) => { ED.sel = sel; renderEditor(); };
 
   const blk = (from, to, cls, kids, label, onSelect) => {
-    const el = h('div', { class: 'tl-block ' + cls, tabindex: '0', role: 'button', 'aria-label': label, title: label, style: `left:${from * pps}px;width:${Math.max(10, (to - from) * pps)}px` }, kids);
+    const el = h('div', { class: 'tl-block ' + cls + ((to - from) * pps < 44 ? ' tiny' : ''), tabindex: '0', role: 'button', 'aria-label': label, title: label, style: `left:${from * pps}px;width:${Math.max(10, (to - from) * pps)}px` }, kids);
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect?.(); } });
     return el;
   };
@@ -124,7 +124,7 @@ function edTimeline() {
     const from = tm.starts[i] ?? 0;
     const to = tm.starts[i + 1] ?? tm.total;
     const rec = state.data.scenes[i]?.recorded;
-    const el = blk(from, to, 'scene' + (selIs('scene', i) ? ' sel' : '') + (/Escreva aqui/i.test(s.narration) ? ' todo' : ''), h('span', { class: 'tl-lab' }, /Escreva aqui/i.test(s.narration) ? `${i + 1} · ✎ falta escrever o texto desta cena` : `${i + 1} · ${rec ? '🎙 ' : ''}${s.narration.slice(0, 50)}`), `Cena ${i + 1}: ${s.narration.slice(0, 80)}. Arraste para mudar a ordem.`, () => select({ type: 'scene', a: i }));
+    const el = blk(from, to, 'scene' + (selIs('scene', i) ? ' sel' : '') + (/Escreva aqui/i.test(s.narration) ? ' todo' : ''), h('span', { class: 'tl-lab' }, s.kind === 'clip' ? `${i + 1} · 🎬 cena real (som original)` : /Escreva aqui/i.test(s.narration) ? `${i + 1} · ✎ falta escrever o texto desta cena` : `${i + 1} · ${rec ? '🎙 ' : ''}${s.narration.slice(0, 50)}`), `Cena ${i + 1}: ${s.narration.slice(0, 80)}. Arraste para mudar a ordem.`, () => select({ type: 'scene', a: i }));
     el.addEventListener('pointerdown', (e) => edDrag(e, el, { from, secs: to - from, min: 0, max: tm.total, snaps: [], done: ({ from: f, moved }) => {
       if (!moved) return select({ type: 'scene', a: i });
       // a cena passa para depois de outra quando o seu início ultrapassa o meio dessa outra
@@ -177,11 +177,11 @@ function edTimeline() {
   p.scenes.forEach((s, i) => {
     const items = edScenery(i);
     const a0 = tm.audioStarts[i] ?? 0;
-    if (!items.length && state.data.scenes[i]?.kind === 'video') vids.push(blk(a0, a0 + (tm.durations[i] ?? 3), 'face', '🧑 o seu rosto', 'O seu rosto gravado', () => select({ type: 'scene', a: i })));
+    if (!items.length && state.data.scenes[i]?.kind === 'video') vids.push(blk(a0, a0 + (tm.durations[i] ?? 3), 'face', s.kind === 'clip' ? '🎬 cena real (som original)' : '🧑 o seu rosto', s.kind === 'clip' ? 'Vídeo real com o som original' : 'O seu rosto gravado', () => select({ type: 'scene', a: i })));
     items.forEach((x) => {
       const vid = edIsVideo(x.c.media);
       const name = x.c.media.split('/').pop();
-      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [h('i', { class: 'tl-trans', title: `Como entra: ${edTransName(x.c.transition, p)}. Clique para mudar.`, 'aria-label': 'Mudar a transição de entrada', onpointerdown: (ev) => ev.stopPropagation(), onclick: (ev) => { ev.stopPropagation(); edTransMenu(ev.clientX, ev.clientY, x.c); } }, edTransIcon(x.c.transition, p)), !vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, `Cena ${i + 1} · ` + (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
+      const el = blk(x.from, x.to, 'cen' + (selIs('cen', i, x.idx) ? ' sel' : ''), [(x.to - x.from) * pps >= 56 && h('i', { class: 'tl-trans', title: `Como entra: ${edTransName(x.c.transition, p)}. Clique para mudar.`, 'aria-label': 'Mudar a transição de entrada', onpointerdown: (ev) => ev.stopPropagation(), onclick: (ev) => { ev.stopPropagation(); edTransMenu(ev.clientX, ev.clientY, x.c); } }, edTransIcon(x.c.transition, p)), !vid && h('img', { class: 'tl-th', alt: '', src: `/api/projects/${p.id}/file?p=${encodeURIComponent(x.c.media)}` }), h('span', { class: 'tl-lab' }, (x.to - x.from) * pps < 96 ? `${vid ? '🎬' : '🖼'} ${i + 1}` : `Cena ${i + 1} · ` + (x.c.fit === 'contain' ? '🔲 ' : vid ? '🎬 ' : '') + name)], `${vid ? 'Vídeo' : 'Imagem'} ${name}. Arraste para mudar quando entra.`, () => select({ type: 'cen', a: i, b: x.idx }));
       el.addEventListener('pointerdown', (e) => edDrag(e, el, { from: x.from, secs: x.to - x.from, min: a0, max: a0 + (tm.durations[i] ?? 3) - 0.5, snaps: edSnapPoints(-1), done: ({ from, moved }) => {
         if (!moved) return select({ type: 'cen', a: i, b: x.idx });
         const list = s.cutaways;
@@ -286,6 +286,7 @@ function edPanel() {
       h('label', { class: 'fit-opt' }, h('input', { type: 'checkbox', checked: c.fit === 'contain', onchange: (e) => { c.fit = e.target.checked ? 'contain' : undefined; dirty(); renderEditor(); } }), ' Mostrar inteira, sem cortar (para cartazes com texto)'),
       h('div', {}, h('div', { class: 'muted', style: 'font-size:13px' }, 'Como esta imagem entra'),
         h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[[undefined, 'A do vídeo todo'], ['corte', '✂ Corte seco'], ...TRANSITIONS.map(([v, t, ico]) => [v, ico + ' ' + t])].map(([v, t]) => h('button', { class: 'chip' + (c.transition === v ? ' on' : ''), onclick: () => { c.transition = v; dirty(); renderEditor(); } }, t)))),
+      vid && h('button', { title: 'Escolher só as partes que quer manter', onclick: () => trimDialog(c.media, { title: 'Cortar este vídeo', onDone: (r) => { c.media = r.path; c.startFrom = undefined; dirty(); renderEditor(); } }) }, '✂ Cortar partes deste vídeo…'),
       vid && h('label', {}, 'Começar o vídeo aos (segundos)', h('input', { type: 'number', min: 0, step: 0.5, value: c.startFrom ?? 0, onchange: (e) => { c.startFrom = Number(e.target.value) || undefined; dirty(); renderEditor(); } })),
       h('div', { class: 'row', style: 'gap:8px;flex-wrap:wrap' },
         h('button', { onclick: () => pickWord(p.scenes[sel.a], c) }, '⏱ Escolher a palavra em que entra'),
@@ -363,7 +364,7 @@ function edEffects(p) {
       p.stabilize && h('div', { class: 'muted', style: 'font-size:13px' }, 'Vai demorar mais a gerar o rascunho (cerca de 1× a 2× a duração dos vídeos).')),
     section('Som', 'Música e voz.',
       sw('Voz limpa e volume certo (masterização)', au.master !== false, (on) => setAu('master', on ? undefined : false), 'Nivela o volume para o padrão das redes (−14 LUFS).'),
-      sw('Música baixa quando se fala', au.ducking !== false, (on) => setAu('ducking', on ? undefined : false), 'A música desce enquanto fala e sobe nas pausas.')),
+      volumeControls(p)),
     section('Formato do vídeo', null,
       h('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, ...[['9:16', '📱 Vertical'], ['16:9', '🖥 Horizontal'], ['1:1', '⬜ Quadrado']].map(([v, t]) => chip(p.aspect ?? '9:16', v, t, (x) => { p.aspect = x; dirty(); renderEditor(); })))),
     section('Imagens', 'Como cabem no ecrã.',

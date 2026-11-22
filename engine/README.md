@@ -315,3 +315,6 @@ O `build` guarda cópia do projeto anterior e mantém a música e o áudio junta
 
 ### Selo institucional (cartão final)
 `endCard` {emblem, lines, seconds, dark}: depois do último plano mostra um cartão tipo papel timbrado com o emblema e o nome da entidade (acrescenta `seconds` ao vídeo). No editor: ✨ Efeitos → "Selo institucional no fim".
+
+### Cortar vídeos e volumes
+Editor: janela "✂ Cortar partes do vídeo…" (cena real e vídeos de cenário): mostra onde há fala, escolhe-se o que MANTER e cria-se o vídeo cortado (API POST /trim; GET /speech). `audio.musicVolume` e `audio.voiceVolume` (1 = normal) ajustam a música e a voz; sliders em Música e em Efeitos → Som.

@@ -23,7 +23,7 @@ import { basename, extname, join, normalize, relative, resolve, sep } from 'node
 import { lintProject } from '../engine/claims';
 import { coach } from '../engine/coach';
 import { qrSvg } from './qr';
-import { FFMPEG } from '../engine/ffmpeg';
+import { FFMPEG, hasAudioStream } from '../engine/ffmpeg';
 import { TEMPLATES } from '../engine/templates';
 import { listVersions } from '../engine/versions';
 import { validateBrand, validateProject, type Brand, type Issue, type Project } from '../engine/types';
@@ -204,6 +204,14 @@ function inside(base: string, ...parts: string[]): string {
   const p = normalize(join(base, ...parts));
   if (p !== base && !p.startsWith(base + sep)) throw new HttpError(400, 'caminho inválido');
   return p;
+}
+
+/** Caminho (media/ ou presenter/) de um vídeo do projeto, validado. */
+function videoInProject(id: string, rel: string): string {
+  if (!/^(media|presenter)\/[^/]+\.(mp4|mov|webm|m4v)$/i.test(rel)) throw new HttpError(400, 'vídeo inválido');
+  const f = inside(projectDir(id), ...rel.split('/'));
+  if (!existsSync(f)) throw new HttpError(404, 'vídeo não encontrado');
+  return f;
 }
 
 // ── estado de um projeto ─────────────────────────────────────────────────
@@ -826,6 +834,67 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     if (sub === 'personalize' && method === 'POST') {
       if (!TEMPLATES[loadProject(id).template] || TEMPLATES[loadProject(id).template].kind !== '3d') throw new HttpError(400, 'só se personaliza um vídeo 3D');
       return json(res, { id: personalize(id) }, 201);
+    }
+
+    // GET /api/projects/:id/speech?p=media/x.mp4 — onde há fala no vídeo (para escolher o que cortar sem ouvir tudo)
+    if (sub === 'speech' && method === 'GET') {
+      const src = videoInProject(id, url.searchParams.get('p') ?? '');
+      // O limiar das pausas adapta-se ao volume médio (gravações com ruído de fundo ou música não têm silêncio verdadeiro).
+      const vd = spawnSync(FFMPEG, ['-hide_banner', '-nostats', '-i', src, '-vn', '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 1 << 24, timeout: 120000 });
+      const mean = Number(/mean_volume: (-?[\d.]+) dB/.exec(String(vd.stderr ?? ''))?.[1] ?? -25);
+      const noise = Math.max(-45, Math.min(-20, mean - 8));
+      const r = spawnSync(FFMPEG, ['-hide_banner', '-nostats', '-i', src, '-vn', '-af', `silencedetect=noise=${noise.toFixed(0)}dB:d=0.5`, '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 1 << 24, timeout: 120000 });
+      const log = String(r.stderr ?? '');
+      const dm = /Duration: (\d+):(\d+):(\d+\.\d+)/.exec(log);
+      const total = dm ? Number(dm[1]) * 3600 + Number(dm[2]) * 60 + Number(dm[3]) : 0;
+      const sil: [number, number][] = [];
+      let open: number | null = null;
+      for (const m of log.matchAll(/silence_(start|end): (-?[\d.]+)/g)) {
+        if (m[1] === 'start') open = Math.max(0, Number(m[2]));
+        else if (open !== null) { sil.push([open, Number(m[2])]); open = null; }
+      }
+      if (open !== null) sil.push([open, total]);
+      const parts: { from: number; to: number }[] = [];
+      let cur = 0;
+      for (const [a, b] of sil) { if (a - cur >= 0.8) parts.push({ from: Math.round(cur * 10) / 10, to: Math.round(a * 10) / 10 }); cur = Math.max(cur, b); }
+      if (total - cur >= 0.8) parts.push({ from: Math.round(cur * 10) / 10, to: Math.round(total * 10) / 10 });
+      return json(res, { duration: total, parts });
+    }
+
+    // POST /api/projects/:id/trim { path, keep: [[de, até], ...] } — guarda só as partes escolhidas (as outras são cortadas fora)
+    if (sub === 'trim' && method === 'POST') {
+      const b = JSON.parse((await readBody(req)).toString() || '{}') as { path?: string; keep?: [number, number][]; replace?: boolean };
+      const rel = String(b.path ?? '');
+      const src = videoInProject(id, rel);
+      const keep = (b.keep ?? [])
+        .map(([x, y]) => [Number(x), Number(y)] as [number, number])
+        .filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y) && x >= 0 && y - x >= 0.3)
+        .sort((p, q) => p[0] - q[0]);
+      if (!keep.length || keep.length > 20) throw new HttpError(400, 'escolha de 1 a 20 partes (cada uma com pelo menos 0,3 s)');
+      const audio = hasAudioStream(src);
+      const parts = keep.map(([x, y], i) => `[0:v]trim=start=${x}:end=${y},setpts=PTS-STARTPTS[v${i}]` + (audio ? `;[0:a]atrim=start=${x}:end=${y},asetpts=PTS-STARTPTS[a${i}]` : ''));
+      const join2 = keep.map((_, i) => `[v${i}]` + (audio ? `[a${i}]` : '')).join('') + `concat=n=${keep.length}:v=1:a=${audio ? 1 : 0}[v]` + (audio ? '[a]' : '');
+      const dir = projectDir(id);
+      const stem = basename(rel).replace(/\.[^.]+$/, '').replace(/-corte-\d+$/, '');
+      // Na cena real (presenter/) o ficheiro da cena é substituído (o original fica guardado); noutros casos faz-se um ficheiro novo.
+      const replace = Boolean(b.replace) && rel.startsWith('presenter/');
+      const outRel = replace ? rel : `media/${stem}-corte-${Date.now()}.mp4`;
+      const tmp = join(dir, `.corte-${Date.now()}.mp4`);
+      mkdirSync(join(dir, 'media'), { recursive: true });
+      const args = ['-y', '-loglevel', 'error', '-i', src, '-filter_complex', [...parts, join2].join(';'), '-map', '[v]', ...(audio ? ['-map', '[a]'] : []), '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', '30', ...(audio ? ['-c:a', 'aac', '-b:a', '160k'] : []), '-movflags', '+faststart', tmp];
+      const code = await new Promise<number>((ok) => {
+        const c = spawn(FFMPEG, args);
+        let err = '';
+        c.stderr.on('data', (d) => (err += d));
+        c.on('close', (n) => { if (n !== 0) console.warn('trim:', err.slice(-400)); ok(n ?? 1); });
+      });
+      if (code !== 0 || !existsSync(tmp)) { rmSync(tmp, { force: true }); throw new HttpError(500, 'não consegui cortar o vídeo'); }
+      if (replace) {
+        const backup = join(dir, 'presenter', `${stem}-original-${Date.now()}.mp4`);
+        renameSync(src, backup);
+      }
+      renameSync(tmp, join(dir, ...outRel.split('/')));
+      return json(res, { ok: true, path: outRel, seconds: keep.reduce((a, [x, y]) => a + (y - x), 0) });
     }
 
     // GET /api/projects/:id/file?p=media/x.jpg — pré-visualização (só estas subpastas)

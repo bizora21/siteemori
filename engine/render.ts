@@ -410,6 +410,8 @@ function planRenderInner(
         music: stageMusic(project, projectDir),
         ...(avatar || ducking ? { ...(avatar ? { avatar } : {}), voiceLevels: levels, levelStep: LEVEL_STEP } : {}),
         duck: project.audio?.ducking !== false,
+        ...(project.audio?.musicVolume !== undefined ? { musicGain: project.audio.musicVolume } : {}),
+        ...(project.audio?.voiceVolume !== undefined ? { voiceGain: project.audio.voiceVolume } : {}),
         ...(project.style ? { style: project.style } : {}),
         ...(project.event?.title?.trim() ? { event: project.event } : {}),
       },

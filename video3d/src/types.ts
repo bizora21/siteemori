@@ -160,6 +160,9 @@ export interface ReportagemProps {
   /** Textos, emojis e imagens por cima do vídeo (from/to em segundos no vídeo). */
   /** Cartão final institucional (emblema + nome da entidade). */
   endCard?: { src?: string; lines: string[]; from: number; seconds: number; dark?: boolean };
+  /** Multiplicadores do volume da música e da voz (1 = normal). */
+  musicGain?: number;
+  voiceGain?: number;
   sounds?: { src: string; from: number; to: number; volume: number }[];
   overlays?: { kind: 'text' | 'emoji' | 'image'; text?: string; src?: string; from: number; to: number; x: number; y: number; size: number; style: 'destaque' | 'simples' | 'caixa' | 'gradiente'; anim: 'pop' | 'fade' | 'deslizar' }[];
   host?: { name: string; role?: string };

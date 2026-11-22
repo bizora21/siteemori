@@ -130,6 +130,17 @@
       ]
     },
     {
+      "id": "dirigente",
+      "kind": "clip",
+      "narration": "",
+      "presenter": "presenter/dirigente.mp4",
+      "signature": {
+        "name": "Governador da Província de Sofala",
+        "at": 0.5,
+        "seconds": 10
+      }
+    },
+    {
       "id": "convite",
       "narration": "Homens de Sofala, sejam agentes da mudança! No dia 25 de Novembro, às sete horas, na Praça da Independência.",
       "cutaways": [
@@ -139,7 +150,7 @@
           "fit": "contain"
         },
         {
-          "media": "media/convite-2-pexels-4096807.mp4",
+          "media": "media/convite-2-pexels-34217928.mp4",
           "atWord": 12
         }
       ]
@@ -185,10 +196,10 @@
     "Vídeo: cottonbro studio (Pexels) https://www.pexels.com/video/a-black-fist-is-shown-in-front-of-a-white-background-4323008/",
     "Vídeo: Şeyhmus Kino (Pexels) https://www.pexels.com/video/joyful-crowd-of-kids-raising-hands-outdoors-39710116/",
     "Vídeo: Ron Lach (Pexels) https://www.pexels.com/video/low-angle-view-of-a-men-looking-at-camera-10160482/",
-    "Vídeo: Xolisa Dlamini (Pexels) https://www.pexels.com/video/people-dancing-on-the-street-in-the-parade-4096807/",
     "Vídeo: just a hobby (Pexels) https://www.pexels.com/video/scenic-beach-walk-with-palm-trees-at-sunrise-41117614/",
     "Vídeo: Matthias Groeneveld (Pexels) https://www.pexels.com/video/a-man-walking-down-a-path-with-the-sun-shining-behind-him-18089046/",
-    "Vídeo: Folu Adedinni (Pexels) https://www.pexels.com/video/three-men-in-traditional-clothing-walking-down-a-street-27850346/"
+    "Vídeo: Folu Adedinni (Pexels) https://www.pexels.com/video/three-men-in-traditional-clothing-walking-down-a-street-27850346/",
+    "Vídeo: Luciana Scherbosky (Pexels) https://www.pexels.com/video/large-peaceful-demonstration-in-mendoza-streets-34217928/"
   ],
   "overlays": [
     {
@@ -383,5 +394,10 @@
       "style": "destaque",
       "anim": "pop"
     }
-  ]
+  ],
+  "music": {
+    "file": "music/Arcane.mp3",
+    "license": "",
+    "source": ""
+  }
 }

@@ -426,6 +426,7 @@ function simpleScene(p, s, i, st, noExtras = false) {
     h('p', { class: 'muted', style: 'margin:2px 0 8px' }, 'O vídeo entra no vídeo final com o seu som original (multidão, ambiente, alguém a falar). Não leva narração nem legendas; só se acerta o volume.'),
     h('div', { class: 'rec-row' },
       h('button', { class: 'primary', onclick: () => uploadScene('presenter', s.id, 'video/*', 'Vídeo') }, st?.recorded ? 'Trocar o vídeo' : 'Carregar o vídeo da cena real'),
+      st?.recorded && h('button', { title: 'Escolher só as partes que quer manter', onclick: () => trimDialog(s.presenter ?? st.file, { replace: true, title: 'Cortar o vídeo desta cena', onDone: async () => { s.clipRev = (s.clipRev ?? 0) + 1; dirty(); await save(); } }) }, '✂ Cortar partes do vídeo…'),
       st?.recorded && h('button', { class: 'danger', onclick: () => delRec(s.id) }, 'Apagar o vídeo')),
     st?.recorded
       ? h('div', { style: 'margin-top:8px' }, h('video', { controls: true, src: `/api/projects/${p.id}/voice/${s.id}?t=${Date.now()}`, style: 'height:190px;border-radius:8px' }), h('div', { class: 'muted', style: 'font-size:13px' }, `guardado no PC: ${st.file}`))

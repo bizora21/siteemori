@@ -55,6 +55,14 @@ const edWordAt = (i, t) => {
 };
 
 // ── reprodução ────────────────────────────────────────────────────────────
+/** Aplica já (enquanto toca) os volumes escolhidos. */
+function edApplyVolumes() {
+  const p = state.data?.project;
+  if (!p) return;
+  if (ED.audio) ED.audio.volume = Math.min(1, p.audio?.voiceVolume ?? 1);
+  if (ED.music) ED.music.volume = Math.min(1, 0.15 * (p.audio?.musicVolume ?? 1));
+}
+
 function edStop() {
   ED.playing = false;
   ED.stopAt = undefined;
@@ -83,10 +91,11 @@ function edPlay() {
   if (ED.t >= tm.total - 0.2) ED.t = 0;
   ED.playing = true;
   const a = edAudioFor();
+  if (a) a.volume = Math.min(1, p.audio?.voiceVolume ?? 1);
   if (a) { if (ED.t >= edLeadOf()) { a.currentTime = ED.t - edLeadOf(); a.play().catch(() => {}); } else a.pause(); }
   if (p.music?.file && /^music\//.test(p.music.file)) {
     ED.music = new Audio(`/api/projects/${state.id}/file?p=${encodeURIComponent(p.music.file)}`);
-    ED.music.volume = 0.15;
+    ED.music.volume = Math.min(1, 0.15 * (p.audio?.musicVolume ?? 1));
     ED.music.currentTime = ED.t;
     ED.music.play().catch(() => {});
   }
@@ -156,7 +165,7 @@ function edMedia(path, video, contain) {
   const src = `/api/projects/${p.id}/file?p=${encodeURIComponent(path)}`;
   const fit = contain ? 'contain' : 'cover';
   const style = `width:100%;height:100%;object-fit:${fit};position:relative`;
-  const el = video ? h('video', { src, muted: true, playsinline: true, style }) : h('img', { src, style });
+  const el = video ? h('video', { src, muted: true, playsinline: true, preload: 'auto', style }) : h('img', { src, style });
   // cartaz inteiro: atrás, a mesma imagem desfocada preenche o ecrã (como no vídeo final)
   if (contain && !video) {
     return h('div', { style: 'position:absolute;inset:0' },
@@ -232,7 +241,7 @@ function edPaint() {
     if (v) { const want = (cur.c.startFrom ?? 0) + (t - cur.from); if (Math.abs(v.currentTime - want) > 0.4) v.currentTime = Math.max(0, want); if (ED.playing) v.play().catch(() => {}); else v.pause(); }
   } else if (hasFace && !cut) {
     key = `f:${s.id}`;
-    if (ED.ctx.bgKey !== key) { ED.ctx.bgKey = key; bg.replaceChildren(h('video', { src: `/api/projects/${p.id}/voice/${s.id}`, muted: true, playsinline: true, style: 'width:100%;height:100%;object-fit:cover' })); }
+    if (ED.ctx.bgKey !== key) { ED.ctx.bgKey = key; bg.replaceChildren(h('video', { src: `/api/projects/${p.id}/voice/${s.id}`, muted: true, playsinline: true, preload: 'auto', style: 'width:100%;height:100%;object-fit:cover' })); }
     const v = bg.querySelector('video');
     const want = Math.max(0, t - (tm.audioStarts[i] ?? 0));
     if (v && Math.abs(v.currentTime - want) > 0.4) v.currentTime = want;

@@ -224,12 +224,39 @@ function musicSources() {
       h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, 'Pesquise por: afrobeat instrumental · uplifting african percussion · cinematic motivational. Evite músicas tristes. Depois de descarregar, use "Carregar música" aqui em baixo e confirme a licença na página da faixa: o Pexels não tem música.')));
 }
 
+/** Volume da música e da voz (e baixar a música quando se fala): sempre à vista no painel da música e em Efeitos. */
+function volumeControls(p) {
+  const au = () => (p.audio ??= {});
+  const pct = (v, d) => Math.round((v ?? d) * 100);
+  const slider = (label, key, min, max, def) => {
+    const cur = pct(p.audio?.[key], def);
+    const lab = h('span', {}, `${label}: ${cur}%`);
+    return h('label', { class: 'vol' }, lab,
+      h('input', { type: 'range', min, max, step: 5, value: cur, oninput: (e) => {
+        const n = Number(e.target.value);
+        au()[key] = n === def * 100 ? undefined : n / 100;
+        lab.textContent = `${label}: ${n}%`;
+        dirty();
+        if (typeof edApplyVolumes === 'function') edApplyVolumes();
+      } }));
+  };
+  return h('div', { class: 'stack zone' },
+    h('b', {}, '🔊 Volumes'),
+    slider('🎵 Música', 'musicVolume', 0, 300, 1),
+    slider('🗣 Voz', 'voiceVolume', 20, 100, 1),
+    h('label', { class: 'ed-switch' },
+      h('input', { type: 'checkbox', checked: p.audio?.ducking !== false, onchange: (e) => { au().ducking = e.target.checked ? undefined : false; dirty(); } }),
+      h('span', {}, 'A música baixa quando se fala')),
+    h('p', { class: 'muted', style: 'margin:0;font-size:13px' }, '100% é o volume normal. Para ouvir o efeito, carregue em ▶ no editor ou em 🎬 Ver rascunho. No fim o som todo é nivelado para as redes.'));
+}
+
 function musicBlock(p) {
   const m = p.music;
   const today = new Date().toISOString().slice(0, 10);
   return h('section', { class: 'card stack' },
     h('h3', { style: 'margin:0' }, 'Música (opcional)'),
     musicSources(),
+    volumeControls(p),
     h('p', { class: 'muted', style: 'margin:0' },
       'Só com licença que permita uso comercial. Guarde a prova (página da licença) e preencha os campos: o motor recusa música sem licença e fonte, e o crédito entra sozinho na descrição.'),
     m ? h('div', { class: 'stack', style: 'gap:8px' },

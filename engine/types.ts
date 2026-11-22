@@ -43,6 +43,8 @@ export interface Scene {
    * de uma marcha, uma entrevista). Por defeito a cena é narrada: texto + voz (gravada ou sintética).
    */
   kind?: 'clip';
+  /** Sobe cada vez que o vídeo da cena real é cortado (para o estúdio refazer os tempos). */
+  clipRev?: number;
   /** Voz sintética só desta cena (ex.: pt-PT-DuarteNeural); sem isto usa a do projeto. */
   voiceName?: string;
   /** Como a pessoa aparece nesta cena (sobrepõe o `person` do projeto). */
@@ -238,7 +240,7 @@ export interface Project {
    */
   style?: VideoStyle;
   /** Som: masterizar a -14 LUFS (por defeito sim) e baixar a música enquanto se fala (por defeito sim). */
-  audio?: { master?: boolean; ducking?: boolean };
+  audio?: { master?: boolean; ducking?: boolean; /** volume da música (1 = normal) */ musicVolume?: number; /** volume da voz (1 = normal, máximo 1) */ voiceVolume?: number };
   /** Versões extra deste vídeo: alterações sobre o projeto base (além das predefinidas em versions.ts). */
   versions?: Record<string, VersionOverrides>;
   publish?: { description?: string; hashtags?: string[] };
