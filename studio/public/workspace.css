@@ -132,3 +132,7 @@ label.vol input[type=range] { width: 100%; }
 .tl-trans { opacity: 0; transition: opacity .15s; }
 .tl-block:hover .tl-trans, .tl-block.sel .tl-trans { opacity: 1; }
 .tl-block.say.tiny { background: rgba(255,255,255,.08); border: 0; border-radius: 4px; }
+
+.trim-step { padding: 8px; border: 1px solid rgba(255,255,255,.14); border-radius: 10px; }
+.trim-dlg button.danger:not(:disabled) { border-color: #e5484d; color: #ff8a90; }
+.trim-foot { position: sticky; bottom: -14px; background: #141b24; padding: 8px 0; z-index: 2; }
