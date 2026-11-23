@@ -30,6 +30,7 @@
   "endCard": {
     "emblem": "media/emblema-dpgcas.png",
     "lines": [
+      "CONSELHO EXECUTIVO PROVINCIAL",
       "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
     ],
     "seconds": 3
@@ -135,10 +136,13 @@
       "narration": "",
       "presenter": "presenter/dirigente.mp4",
       "signature": {
-        "name": "Governador da Província de Sofala",
-        "at": 0.5,
-        "seconds": 10
-      }
+        "name": "Lourenço Bulha",
+        "at": 2,
+        "seconds": 20,
+        "role": "Governador da Província de Sofala"
+      },
+      "cutaways": [],
+      "clipRev": 4
     },
     {
       "id": "convite",
@@ -399,5 +403,8 @@
     "file": "music/Arcane.mp3",
     "license": "",
     "source": ""
+  },
+  "audio": {
+    "musicVolume": 1.3
   }
 }
