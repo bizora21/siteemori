@@ -52,6 +52,8 @@ async function search(): Promise<void> {
   const candFile = join(campDir, 'candidates.json');
   const all: Record<string, Candidate[]> = existsSync(candFile) ? JSON.parse(readFileSync(candFile, 'utf8')) : {};
   const used = new Set<number>(); // não repetir o mesmo vídeo em planos diferentes (nem de outros projetos)
+  // vídeos de fundo já guardados em assets/video-bg também contam como usados
+  try { for (const f of readdirSync('assets/video-bg')) if (f.endsWith('.json')) { const j = JSON.parse(readFileSync(join('assets/video-bg', f), 'utf8')); if (j.id) used.add(Number(j.id)); } } catch { /* sem pasta */ }
   for (const d of readdirSync('projects', { withFileTypes: true })) {
     if (!d.isDirectory() || d.name === preset.id) continue;
     try {
@@ -90,7 +92,8 @@ async function build(): Promise<void> {
 
   // marca da campanha
   mkdirSync(join('projects', 'brands'), { recursive: true });
-  writeFileSync(join('projects', 'brands', `${preset.brand.id}.json`), JSON.stringify(preset.brand, null, 2) + '\n');
+  // Só se grava a marca se o preset a descreve inteira; com só o `id` usa-se a marca que já existe (não se sobrepõe).
+  if (preset.brand.name) writeFileSync(join('projects', 'brands', `${preset.brand.id}.json`), JSON.stringify(preset.brand, null, 2) + '\n');
 
   mkdirSync(join(dir, 'media'), { recursive: true });
   const credits: string[] = [];
