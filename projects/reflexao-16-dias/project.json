@@ -1,0 +1,361 @@
+{
+  "template": "reportagem",
+  "aspect": "9:16",
+  "voice": {
+    "mode": "synthetic",
+    "name": "pt-PT-DuarteNeural",
+    "rate": "-6%",
+    "pitch": "-12Hz",
+    "pauseSeconds": 0.55
+  },
+  "style": {
+    "look": "cinema",
+    "palette": "noite",
+    "transition": "fade",
+    "transitionSpeed": "lenta",
+    "captionStyle": "karaoke",
+    "caption": {
+      "font": "compacta",
+      "size": "media",
+      "caps": true,
+      "position": "baixo",
+      "hl": "cor",
+      "highlight": "#FFD21F"
+    },
+    "vignette": true
+  },
+  "imageFit": "cover",
+  "cta": "",
+  "site": "Pavilhão de Desportos",
+  "endCard": {
+    "emblem": "media/emblema-dpgcas.png",
+    "lines": [
+      "CONSELHO EXECUTIVO PROVINCIAL",
+      "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+    ],
+    "seconds": 3
+  },
+  "publish": {
+    "description": "A tua mão só vai proteger. 🤍\nQuando a raiva subir: para. Respira. Sai da sala. Resolve falando, nunca com a mão.\nBater não é força. Mudar é o que um homem de verdade faz.\n\n📅 25 de Novembro · 🕗 08h00\n📍 Pavilhão de Desportos\nCerimónia dos 16 Dias de Activismo. Todos são bem-vindos: homens, mulheres, jovens e famílias.\n\nDirecção Provincial de Género, Criança e Acção Social de Sofala",
+    "hashtags": [
+      "#16DiasDeActivismo",
+      "#16DiasDeAtivismo",
+      "#BaterNaoEForca",
+      "#ViolenciaBaseadaNoGenero",
+      "#Sofala",
+      "#Beira",
+      "#Mocambique"
+    ]
+  },
+  "tail": 0.7,
+  "id": "reflexao-16-dias",
+  "brand": "campanha-16-dias",
+  "title": "A tua mão só vai proteger — Reflexão dos 16 Dias de Activismo, cerimónia 25 de Novembro",
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Quando foi a última vez que a tua mão fez alguém ter medo?",
+      "cutaways": [
+        {
+          "media": "media/gancho-1-pexels-7350235.mp4",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "casa",
+      "narration": "Em casa, há quem já nem respire fundo quando tu chegas. E há uma criança que vê tudo, e aprende tudo.",
+      "cutaways": [
+        {
+          "media": "media/casa-1-pexels-7239153.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/casa-2-pexels-7003484.mp4",
+          "atWord": 11
+        }
+      ]
+    },
+    {
+      "id": "verdade",
+      "narration": "Bater não é força. É o medo a tentar mandar.",
+      "cutaways": [
+        {
+          "media": "media/verdade-1-pexels-39536271.mp4",
+          "atWord": 0
+        }
+      ]
+    },
+    {
+      "id": "util",
+      "narration": "Quando a raiva subir: para. Respira. Sai da sala. Resolve falando, nunca com a mão.",
+      "cutaways": [
+        {
+          "media": "media/util-1-pexels-8173049.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/util-2-pexels-40955484.mp4",
+          "atWord": 6
+        },
+        {
+          "media": "media/util-3-pexels-13326108.mp4",
+          "atWord": 10
+        }
+      ]
+    },
+    {
+      "id": "decisao",
+      "narration": "Mudar não te faz fraco. Mudar é o que faz um homem de verdade. Hoje podes decidir que a tua mão só vai proteger.",
+      "cutaways": [
+        {
+          "media": "media/decisao-1-pexels-6623654.mp4",
+          "atWord": 0
+        },
+        {
+          "media": "media/decisao-2-pexels-40334009.mp4",
+          "atWord": 12
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "Amanhã, vinte e cinco de Novembro, às oito horas, no Pavilhão de Desportos. Vem com a tua família. Todos são bem-vindos.",
+      "cutaways": [
+        {
+          "media": "media/bg-convite.png",
+          "atWord": 0
+        }
+      ]
+    }
+  ],
+  "credits": [
+    "Vídeo: Norma Mortenson (Pexels) https://www.pexels.com/video/young-man-looking-at-camera-headshot-7350235/",
+    "Vídeo: Max Vakhtbovych (Pexels) https://www.pexels.com/video/pedestal-shot-of-an-armchair-by-a-table-7239153/",
+    "Vídeo: KATRIN  BOLOVTSOVA (Pexels) https://www.pexels.com/video/young-boy-looking-at-decorated-egg-7003484/",
+    "Vídeo: Huzaifa Khan (Pexels) https://www.pexels.com/video/dramatic-sky-with-storm-clouds-and-sunlight-39536271/",
+    "Vídeo: RDNE Stock project (Pexels) https://www.pexels.com/video/man-doing-a-yoga-pose-8173049/",
+    "Vídeo: Themba Mtegha (Pexels) https://www.pexels.com/video/man-leaving-home-for-work-in-sunny-corridor-40955484/",
+    "Vídeo: Mizuno K (Pexels) https://www.pexels.com/video/two-men-talking-while-having-a-sandwich-at-an-outdoor-cafe-13326108/",
+    "Vídeo: Keira Burton (Pexels) https://www.pexels.com/video/adult-man-holding-a-baby-6623654/",
+    "Vídeo: Thanzeena Husain (Pexels) https://www.pexels.com/video/father-and-child-enjoying-beach-sunset-40334009/"
+  ],
+  "overlays": [
+    {
+      "kind": "text",
+      "scene": "gancho",
+      "at": 0,
+      "seconds": 2.9,
+      "text": "QUANDO FOI A ÚLTIMA VEZ QUE A TUA MÃO FEZ ALGUÉM TER MEDO?",
+      "x": 50,
+      "y": 16,
+      "size": 0.95,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "casa",
+      "at": 0,
+      "seconds": 3.1,
+      "text": "HÁ QUEM JÁ NEM RESPIRE FUNDO QUANDO TU CHEGAS.",
+      "x": 50,
+      "y": 16,
+      "size": 0.95,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "casa",
+      "at": 4.4,
+      "seconds": 2.4,
+      "text": "UMA CRIANÇA VÊ TUDO, E APRENDE TUDO.",
+      "x": 50,
+      "y": 16,
+      "size": 1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "verdade",
+      "at": 0,
+      "seconds": 1.2,
+      "text": "BATER NÃO É FORÇA.",
+      "x": 50,
+      "y": 18,
+      "size": 1.4,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "verdade",
+      "at": 0.5,
+      "seconds": 3.2,
+      "text": "É O MEDO A TENTAR MANDAR.",
+      "x": 50,
+      "y": 18,
+      "size": 1.2,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "util",
+      "at": 0,
+      "seconds": 1.1,
+      "text": "QUANDO A RAIVA SUBIR:",
+      "x": 50,
+      "y": 14,
+      "size": 1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "util",
+      "at": 1.2,
+      "seconds": 6.9,
+      "text": "1. PARA.",
+      "x": 50,
+      "y": 24,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "util",
+      "at": 2.5,
+      "seconds": 5.7,
+      "text": "2. RESPIRA.",
+      "x": 50,
+      "y": 34,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "util",
+      "at": 4,
+      "seconds": 4.1,
+      "text": "3. SAI DA SALA.",
+      "x": 50,
+      "y": 44,
+      "size": 1.3,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "util",
+      "at": 5.7,
+      "seconds": 2.4,
+      "text": "4. FALA. NUNCA COM A MÃO.",
+      "x": 50,
+      "y": 54,
+      "size": 1.1,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "decisao",
+      "at": 0,
+      "seconds": 1.4,
+      "text": "MUDAR NÃO TE FAZ FRACO.",
+      "x": 50,
+      "y": 16,
+      "size": 1.15,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "decisao",
+      "at": 4.9,
+      "seconds": 2.8,
+      "text": "A TUA MÃO SÓ VAI PROTEGER.",
+      "x": 50,
+      "y": 16,
+      "size": 1.25,
+      "style": "destaque",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 0,
+      "seconds": 8.9,
+      "text": "AMANHÃ · CERIMÓNIA DOS 16 DIAS DE ACTIVISMO",
+      "x": 50,
+      "y": 13,
+      "size": 0.85,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 0.7,
+      "seconds": 8.2,
+      "text": "📅 25 DE NOVEMBRO",
+      "x": 50,
+      "y": 26,
+      "size": 1.25,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 2.2,
+      "seconds": 6.7,
+      "text": "🕗 08H00",
+      "x": 50,
+      "y": 37,
+      "size": 1.35,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 3.2,
+      "seconds": 5.7,
+      "text": "📍 PAVILHÃO DE DESPORTOS",
+      "x": 50,
+      "y": 48,
+      "size": 0.95,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 5.8,
+      "seconds": 3.1,
+      "text": "HOMENS · MULHERES · JOVENS · FAMÍLIAS",
+      "x": 50,
+      "y": 60,
+      "size": 0.8,
+      "style": "caixa",
+      "anim": "pop"
+    },
+    {
+      "kind": "text",
+      "scene": "convite",
+      "at": 7.3,
+      "seconds": 1.5,
+      "text": "TODOS SÃO BEM-VINDOS",
+      "x": 50,
+      "y": 70,
+      "size": 0.9,
+      "style": "caixa",
+      "anim": "pop"
+    }
+  ]
+}

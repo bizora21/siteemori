@@ -1,0 +1,360 @@
+{
+  "id": "reflexao-16-dias",
+  "title": "A tua mão só vai proteger — Reflexão dos 16 Dias de Activismo, cerimónia 25 de Novembro",
+  "brand": {
+    "id": "campanha-16-dias"
+  },
+  "project": {
+    "template": "reportagem",
+    "aspect": "9:16",
+    "voice": {
+      "mode": "synthetic",
+      "name": "pt-PT-DuarteNeural",
+      "rate": "-6%",
+      "pitch": "-12Hz",
+      "pauseSeconds": 0.55
+    },
+    "style": {
+      "look": "cinema",
+      "palette": "noite",
+      "transition": "fade",
+      "transitionSpeed": "lenta",
+      "captionStyle": "karaoke",
+      "caption": {
+        "font": "compacta",
+        "size": "media",
+        "caps": true,
+        "position": "baixo",
+        "hl": "cor",
+        "highlight": "#FFD21F"
+      },
+      "vignette": true
+    },
+    "imageFit": "cover",
+    "cta": "",
+    "site": "Pavilhão de Desportos",
+    "endCard": {
+      "emblem": "media/emblema-dpgcas.png",
+      "lines": [
+        "CONSELHO EXECUTIVO PROVINCIAL",
+        "DIRECÇÃO PROVINCIAL DE GÉNERO, CRIANÇA E ACÇÃO SOCIAL DE SOFALA"
+      ],
+      "seconds": 3
+    },
+    "publish": {
+      "description": "A tua mão só vai proteger. 🤍\nQuando a raiva subir: para. Respira. Sai da sala. Resolve falando, nunca com a mão.\nBater não é força. Mudar é o que um homem de verdade faz.\n\n📅 25 de Novembro · 🕗 08h00\n📍 Pavilhão de Desportos\nCerimónia dos 16 Dias de Activismo. Todos são bem-vindos: homens, mulheres, jovens e famílias.\n\nDirecção Provincial de Género, Criança e Acção Social de Sofala",
+      "hashtags": [
+        "#16DiasDeActivismo",
+        "#16DiasDeAtivismo",
+        "#BaterNaoEForca",
+        "#ViolenciaBaseadaNoGenero",
+        "#Sofala",
+        "#Beira",
+        "#Mocambique"
+      ]
+    },
+    "tail": 0.7
+  },
+  "scenes": [
+    {
+      "id": "gancho",
+      "narration": "Quando foi a última vez que a tua mão fez alguém ter medo?",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african man looking at his own hands",
+            "black man staring at hands thoughtful",
+            "man looking down at hands close up"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "child",
+            "fist",
+            "angry"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "QUANDO FOI A ÚLTIMA VEZ QUE A TUA MÃO FEZ ALGUÉM TER MEDO?",
+          "when": "0",
+          "until": "end",
+          "y": 16,
+          "size": 0.95
+        }
+      ]
+    },
+    {
+      "id": "casa",
+      "narration": "Em casa, há quem já nem respire fundo quando tu chegas. E há uma criança que vê tudo, e aprende tudo.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "empty chair at dining table home evening",
+            "quiet african home interior evening",
+            "door ajar dim light home"
+          ],
+          "avoid": [
+            "woman",
+            "man",
+            "people"
+          ]
+        },
+        {
+          "atWord": 11,
+          "queries": [
+            "african child looking through window",
+            "african child at doorway watching",
+            "little african boy looking away thoughtful"
+          ],
+          "avoid": [
+            "crying",
+            "sad",
+            "bruise",
+            "woman"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "HÁ QUEM JÁ NEM RESPIRE FUNDO QUANDO TU CHEGAS.",
+          "when": "0",
+          "until": "chegas",
+          "y": 16,
+          "size": 0.95
+        },
+        {
+          "text": "UMA CRIANÇA VÊ TUDO, E APRENDE TUDO.",
+          "when": "criança",
+          "until": "end",
+          "y": 16,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "id": "verdade",
+      "narration": "Bater não é força. É o medo a tentar mandar.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "dark storm clouds sky dramatic",
+            "stormy sky clouds time lapse",
+            "dramatic dark clouds rolling"
+          ],
+          "avoid": [
+            "people",
+            "man",
+            "woman"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "BATER NÃO É FORÇA.",
+          "when": "0",
+          "until": "força",
+          "y": 18,
+          "size": 1.4
+        },
+        {
+          "text": "É O MEDO A TENTAR MANDAR.",
+          "when": "é",
+          "until": "end",
+          "y": 18,
+          "size": 1.2
+        }
+      ]
+    },
+    {
+      "id": "util",
+      "narration": "Quando a raiva subir: para. Respira. Sai da sala. Resolve falando, nunca com a mão.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african man breathing deeply eyes closed outdoors",
+            "black man calm breathing sunlight",
+            "man taking a deep breath outside"
+          ],
+          "avoid": [
+            "woman",
+            "women",
+            "angry"
+          ]
+        },
+        {
+          "atWord": 6,
+          "queries": [
+            "open door sunlight leaving room",
+            "man walking out door into sunlight",
+            "person walking out of house morning light"
+          ],
+          "avoid": [
+            "woman",
+            "women"
+          ]
+        },
+        {
+          "atWord": 10,
+          "queries": [
+            "two african men talking calmly",
+            "african man talking calmly face to face",
+            "black men conversation calm outdoors"
+          ],
+          "avoid": [
+            "angry",
+            "argue",
+            "fight",
+            "woman"
+          ]
+        }
+      ],
+      "texts": [
+        {
+          "text": "QUANDO A RAIVA SUBIR:",
+          "when": "0",
+          "until": "subir",
+          "y": 14,
+          "size": 1
+        },
+        {
+          "text": "1. PARA.",
+          "when": "para",
+          "until": "end",
+          "y": 24,
+          "size": 1.3
+        },
+        {
+          "text": "2. RESPIRA.",
+          "when": "respira",
+          "until": "end",
+          "y": 34,
+          "size": 1.3
+        },
+        {
+          "text": "3. SAI DA SALA.",
+          "when": "sai",
+          "until": "end",
+          "y": 44,
+          "size": 1.3
+        },
+        {
+          "text": "4. FALA. NUNCA COM A MÃO.",
+          "when": "resolve",
+          "until": "end",
+          "y": 54,
+          "size": 1.1
+        }
+      ]
+    },
+    {
+      "id": "decisao",
+      "narration": "Mudar não te faz fraco. Mudar é o que faz um homem de verdade. Hoje podes decidir que a tua mão só vai proteger.",
+      "shots": [
+        {
+          "atWord": 0,
+          "queries": [
+            "african father hugging child tenderly",
+            "black father holding baby gently",
+            "african man kissing child forehead"
+          ],
+          "avoid": [
+            "woman",
+            "women"
+          ]
+        },
+        {
+          "atWord": 12,
+          "queries": [
+            "african man holding child hand walking sunset",
+            "black father walking with child sunrise",
+            "african family walking together sunset"
+          ],
+          "avoid": []
+        }
+      ],
+      "texts": [
+        {
+          "text": "MUDAR NÃO TE FAZ FRACO.",
+          "when": "0",
+          "until": "fraco",
+          "y": 16,
+          "size": 1.15
+        },
+        {
+          "text": "A TUA MÃO SÓ VAI PROTEGER.",
+          "when": "hoje",
+          "until": "end",
+          "y": 16,
+          "size": 1.25
+        }
+      ]
+    },
+    {
+      "id": "convite",
+      "narration": "Amanhã, vinte e cinco de Novembro, às oito horas, no Pavilhão de Desportos. Vem com a tua família. Todos são bem-vindos.",
+      "shots": [],
+      "background": {
+        "gradient": [
+          "#4B1F8F",
+          "#1E0B3F"
+        ]
+      },
+      "texts": [
+        {
+          "text": "AMANHÃ · CERIMÓNIA DOS 16 DIAS DE ACTIVISMO",
+          "when": "0",
+          "until": "end",
+          "y": 13,
+          "size": 0.85,
+          "style": "caixa"
+        },
+        {
+          "text": "📅 25 DE NOVEMBRO",
+          "when": "vinte",
+          "until": "end",
+          "y": 26,
+          "size": 1.25,
+          "style": "caixa"
+        },
+        {
+          "text": "🕗 08H00",
+          "when": "oito",
+          "until": "end",
+          "y": 37,
+          "size": 1.35,
+          "style": "caixa"
+        },
+        {
+          "text": "📍 PAVILHÃO DE DESPORTOS",
+          "when": "pavilhão",
+          "until": "end",
+          "y": 48,
+          "size": 0.95,
+          "style": "caixa"
+        },
+        {
+          "text": "HOMENS · MULHERES · JOVENS · FAMÍLIAS",
+          "when": "família",
+          "until": "end",
+          "y": 60,
+          "size": 0.8,
+          "style": "caixa"
+        },
+        {
+          "text": "TODOS SÃO BEM-VINDOS",
+          "when": "todos",
+          "until": "end",
+          "y": 70,
+          "size": 0.9,
+          "style": "caixa"
+        }
+      ]
+    }
+  ]
+}

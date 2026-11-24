@@ -507,7 +507,7 @@ export const Reportagem = (props: ReportagemProps) => {
       )}
 
       {/* Última cena: chamada para a ação */}
-      {isLast && t >= ctaStart && !props.event && (
+      {isLast && t >= ctaStart && !props.event && Boolean(props.cta?.trim()) && (
         <div
           style={{
             position: 'absolute',
