@@ -141,6 +141,14 @@ function Body() {
         encerrar a noite sem olhar para a tela, e acompanhar a sua constância no calendário.
         Dá para começar de graça.
       </p>
+      <p>
+        Está começando agora na oração? Veja o guia{' '}
+        <InlineLink href="/pt-br/blog/como-orar-iniciantes/">
+          como orar a Deus corretamente, com passo a passo e exemplo de oração
+        </InlineLink>
+        .
+      </p>
+
       <p>Citações bíblicas: tradução João Ferreira de Almeida (domínio público).</p>
     </>
   );

@@ -70,6 +70,14 @@ function Body() {
       <h2>Orar pela família junto com outras pessoas</h2>
       <p>Compartilhar um pedido com pessoas de confiança é uma prática bíblica (Tiago 5:16), e é o centro da <InlineLink href="/pt-br/blog/intercessao-o-que-e/">oração de intercessão</InlineLink>. Quem não tem um grupo por perto pode usar a comunidade da Emori: lá é possível compartilhar um pedido de oração, por exemplo na categoria Pedido, e outras pessoas oram junto. Um cuidado: evite detalhes que identifiquem alguém da sua família. Dá para pedir oração sem expor a vida de ninguém. Se quiser um ritmo diário, o guia da <InlineLink href="/pt-br/blog/oracao-diaria-habito/">oração diária</InlineLink> ajuda a manter a constância.</p>
 
+      <p>
+        Está começando agora na oração? Veja o guia{' '}
+        <InlineLink href="/pt-br/blog/como-orar-iniciantes/">
+          como orar a Deus corretamente, com passo a passo e exemplo de oração
+        </InlineLink>
+        .
+      </p>
+
       <p>Citações bíblicas: tradução João Ferreira de Almeida (domínio público).</p>
     </>
   );

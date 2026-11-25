@@ -159,6 +159,14 @@ function Body() {
         pessoas partilham motivos para agradecer, e o calendário e os marcos ajudam a manter a
         constância. Podes começar de graça.
       </p>
+      <p>
+        Estás a começar agora na oração? Vê o guia{' '}
+        <InlineLink href="/pt-pt/blog/como-orar-iniciantes/">
+          como orar a Deus corretamente, com passo a passo e exemplo de oração
+        </InlineLink>
+        .
+      </p>
+
       <p>Citações bíblicas: tradução João Ferreira de Almeida (domínio público).</p>
     </>
   );

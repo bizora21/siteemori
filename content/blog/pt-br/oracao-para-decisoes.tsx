@@ -216,6 +216,14 @@ function Body() {
       </p>
 
       <p>
+        Está começando agora na oração? Veja o guia{' '}
+        <InlineLink href="/pt-br/blog/como-orar-iniciantes/">
+          como orar a Deus corretamente, com passo a passo e exemplo de oração
+        </InlineLink>
+        .
+      </p>
+
+      <p>
         <em>Citações bíblicas: tradução João Ferreira de Almeida (domínio público).</em>
       </p>
     </>
